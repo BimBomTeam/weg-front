@@ -32,7 +32,7 @@ export default class GameScene {
     this.radius = this.circumference / (Math.PI * 2);
 
     // instantiate components
-    this.floor = new Floor(this);
+    this.floor = new Floor(this, {width:300, height:20, depth:300});
     // this.ball = new Ball(this);
 
     // kick off our animation!

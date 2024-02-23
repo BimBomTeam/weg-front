@@ -1,11 +1,11 @@
 import * as THREE from "three";
 
 export default class Floor {
-  constructor(sketch) {
+  constructor(sketch, sizeProperties) {
     // setup
-    const width = sketch.blockWidth * sketch.count;
-    const height = sketch.blockWidth;
-    const depth = sketch.blockWidth * sketch.count;
+    const width = sizeProperties.width;
+    const height = sizeProperties.height;
+    const depth = sizeProperties.depth;
 
     // create Oimo body
     this.body = sketch.world.add({
