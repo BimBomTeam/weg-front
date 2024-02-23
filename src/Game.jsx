@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import UiMenu from "./UI/UIiMenu";
-import * as gameScript from "./threejs/main";
+import GameScene from "./threejs/main";
 
 const Game = () => {
   useEffect(() => {
-    gameScript.mainGameFunc(changeUiVisibility);
+    const game = new GameScene(changeUiVisibility);
   }, []);
 
   const [isUi, setUi] = useState(false);

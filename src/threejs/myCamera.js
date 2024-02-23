@@ -4,9 +4,9 @@ export default class MyCamera extends THREE.PerspectiveCamera {
   camera = null;
   constructor(playerPosition) {
     super(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    this.cameraHeight = 10;
-    this.cameraDistance = 12;
-    this.smoothness = 0.025;
+    this.cameraHeight = 50;
+    this.cameraDistance = 120;
+    this.smoothness = 0.02;
 
     this.lookAt(playerPosition);
     this.position.set(0, this.cameraHeight, this.cameraDistance);
@@ -16,8 +16,8 @@ export default class MyCamera extends THREE.PerspectiveCamera {
       maxX: 2,
       minY: -1,
       maxY: 1,
-      minZ: -2,
-      maxZ: 2,
+      minZ: 0, //far from you. more is longer
+      maxZ: 80,
     };
   }
 
