@@ -1,0 +1,29 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+a {
+  text-decoration: none;
+  color: inherit;
+  &:hover {
+    color: inherit;
+  }
+}
+
+#root {
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+#webgl {
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
