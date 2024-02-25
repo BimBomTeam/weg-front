@@ -10,12 +10,14 @@ import Block from "./example/block.js";
 import Ball from "./example/ball.js";
 import Floor from "./example/floor.js";
 import Player from "./player.js";
+import Stats from "stats.js";
 
 //#setting scene camera renderer
 export default class GameScene {
   constructor(changeUiVisibility) {
     // do all the boilerplate setup for ThreeJS
     this.setup();
+    this.statsInint();
 
     // SKETCH VARIABLES
     // the width of one of our blocks
@@ -39,8 +41,18 @@ export default class GameScene {
     this.animate();
   }
 
+  //STATS
+  statsInint(){
+    this.stats=new Stats()
+    this.stats.showPanel(0)
+    document.body.appendChild(this.stats.dom)
+  }
+
   // ANIMATION
   animate() {
+    this.stats.begin()
+
+
     this.player.velocity.x = 0;
     this.player.velocity.z = 0;
 
@@ -58,6 +70,8 @@ export default class GameScene {
     this.camera.cameraUpdate(this.player.mesh.position);
 
     this.completeFrame();
+
+    this.stats.end()
   }
   completeFrame() {
     // update world
