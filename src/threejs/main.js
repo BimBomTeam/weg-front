@@ -11,47 +11,46 @@ import Ball from "./example/ball.js";
 import Floor from "./example/floor.js";
 import Player from "./player.js";
 import Stats from "stats.js";
+import Environment from "./environnment.js";
+import GameMap from "./gameMap.js";
 
 //#setting scene camera renderer
 export default class GameScene {
   constructor(changeUiVisibility) {
-    // do all the boilerplate setup for ThreeJS
+    this._init();
+  }
+
+  async _init() {
+    await this.loadEnv();
+
     this.setup();
     this.statsInint();
 
-    // SKETCH VARIABLES
-    // the width of one of our blocks
-    this.blockWidth = 20;
-    // how many blocks we want around each level of the tower
-    this.count = 6;
-    // how many levels we want in the tower
-    this.levels = 6;
-    // the size of the gap we want between each block
-    this.mitreGap = 1.2;
-    // the circumference of the tower
-    this.circumference = this.blockWidth * this.count * this.mitreGap;
-    // the radius of the tower
-    this.radius = this.circumference / (Math.PI * 2);
-
-    // instantiate components
-    this.floor = new Floor(this, {width:300, height:20, depth:300});
-    // this.ball = new Ball(this);
-
+    this.map = new GameMap(
+      this.environment.mapMesh,
+      { x: 0, y: 0, z: 0 },
+      this
+    );
     // kick off our animation!
     this.animate();
+    this.player.mesh.geometry.width;
+  }
+
+  async loadEnv() {
+    this.environment = new Environment();
+    await this.environment.loadAssets();
   }
 
   //STATS
-  statsInint(){
-    this.stats=new Stats()
-    this.stats.showPanel(0)
-    document.body.appendChild(this.stats.dom)
+  statsInint() {
+    this.stats = new Stats();
+    this.stats.showPanel(0);
+    document.body.appendChild(this.stats.dom);
   }
 
   // ANIMATION
   animate() {
-    this.stats.begin()
-
+    this.stats.begin();
 
     this.player.velocity.x = 0;
     this.player.velocity.z = 0;
@@ -64,14 +63,13 @@ export default class GameScene {
     else if (this.keyHl.key.s.pressed)
       this.player.velocity.z = this.player.speed;
 
-    this.floor.update();
     this.player.update();
 
     this.camera.cameraUpdate(this.player.mesh.position);
 
     this.completeFrame();
 
-    this.stats.end()
+    this.stats.end();
   }
   completeFrame() {
     // update world
@@ -148,6 +146,7 @@ export default class GameScene {
 
     let dirLight = new THREE.DirectionalLight(0xffffff, 1, 100);
     dirLight.position.set(-3, 5, -3);
+    dirLight.castShadow = true;
     this.scene.add(dirLight);
   }
   setupCameraControl() {
