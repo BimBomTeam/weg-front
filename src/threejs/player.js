@@ -25,7 +25,7 @@ export default class Player {
     this.mesh.position.set(this.position.x, this.position.y, this.position.z);
     const material = new CANNON.Material();
     material.friction = 0;
-    const boxShape = new CANNON.Box(new CANNON.Vec3(sizeProperties.width, sizeProperties.height, sizeProperties.depth));
+    const boxShape = new CANNON.Box(new CANNON.Vec3(sizeProperties.width / 2, sizeProperties.height / 2, sizeProperties.depth / 2));
     this.body = new CANNON.Body({
       mass: 50,
       type: CANNON.Body.DYNAMIC,
