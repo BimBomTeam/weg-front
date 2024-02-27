@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import * as OIMO from "oimo";
 import * as CANNON from "cannon"
+import CannonUtils from './cannonUtils'
 
 export default class Player {
   constructor(sizeProperties, sketch) {
@@ -25,16 +26,18 @@ export default class Player {
     this.mesh.position.set(this.position.x, this.position.y, this.position.z);
     const material = new CANNON.Material();
     material.friction = 0;
-    const boxShape = new CANNON.Box(new CANNON.Vec3(sizeProperties.width / 2, sizeProperties.height / 2, sizeProperties.depth / 2));
+    const sphereShape = new CANNON.Sphere(sizeProperties.width / 2)
     this.body = new CANNON.Body({
       mass: 50,
       type: CANNON.Body.DYNAMIC,
       fixedRotation: true,
       material: material
     })
-    this.body.addShape(boxShape);
+    this.body.addShape(sphereShape);
     this.body.position = new CANNON.Vec3(0, 50, 0);
     sketch.world.addBody(this.body);
+
+
 
     return this;
   }
