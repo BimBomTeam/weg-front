@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import * as OIMO from "oimo";
+import * as CANNON from "cannon"
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { KeyHandler } from "./keyListener";
 import { Platform } from "./scene";
@@ -73,7 +74,7 @@ export default class GameScene {
   }
   completeFrame() {
     // update world
-    this.world.step();
+    this.world.step(1/144);
     // render this frame of our animation
     this.renderer.render(this.scene, this.camera);
     // line up our next frame
@@ -89,15 +90,10 @@ export default class GameScene {
     this.setupRenderer();
     this.setupLights();
 
-    this.world = new OIMO.World({
-      timestep: 1 / 60,
-      iterations: 8,
-      broadphase: 2, // 1 brute force, 2 sweep and prune, 3 volume tree
-      worldscale: 1, // scale full world
-      random: true, // randomize sample
-      info: false, // calculate statistic or not
-      gravity: [0, -98, 0],
-    });
+    this.world = new CANNON.World();
+    this.world.gravity = new CANNON.Vec3(0, -9.81 * 3, 0); // Set gravity
+
+    // Create a ground plane
 
     this.setupPlayer();
     this.setupCamera();

@@ -1,10 +1,11 @@
 import * as THREE from "three";
 import * as OIMO from "oimo";
+import * as CANNON from "cannon"
 
 export default class Player {
   constructor(sizeProperties, sketch) {
     // setup
-    this.material = new THREE.MeshStandardMaterial({ color: 0x0000ff });
+    this.material = new THREE.MeshStandardMaterial({ color: "#FDA006" });
     this.geometry = new THREE.BoxGeometry(
       sizeProperties.width,
       sizeProperties.height,
@@ -14,23 +15,26 @@ export default class Player {
     this.mesh.castShadow = true;
     sketch.scene.add(this.mesh);
 
-    this.speed = 1;
-    this.maxSpeed=15;
+    this.speed = 50;
+    this.maxSpeed=50;
 
     this.velocity = { x: 0, y: 0, z: 0 };
 
     this.position = { x: 0, y: 50, z: 0 };
 
     this.mesh.position.set(this.position.x, this.position.y, this.position.z);
-
-    this.body = sketch.world.add({
-      type: "box",
-      size: [sizeProperties.width, sizeProperties.height, sizeProperties.depth],
-      pos: [this.position.x, this.position.y, this.position.z],
-      move: true,
-      friction: 1,
-      restitution: 0.1,
-    });
+    const material = new CANNON.Material();
+    material.friction = 0;
+    const boxShape = new CANNON.Box(new CANNON.Vec3(sizeProperties.width, sizeProperties.height, sizeProperties.depth));
+    this.body = new CANNON.Body({
+      mass: 50,
+      type: CANNON.Body.DYNAMIC,
+      fixedRotation: true,
+      material: material
+    })
+    this.body.addShape(boxShape);
+    this.body.position = new CANNON.Vec3(0, 50, 0);
+    sketch.world.addBody(this.body);
 
     return this;
   }
@@ -43,17 +47,18 @@ export default class Player {
     //   this.body.applyImpulse(center, force);
     // }
 
-
+    const sin45 = Math.sin(Math.PI / 4)
     //#movement implementation
-    if(Math.abs(this.body.linearVelocity.x)+Math.abs(this.body.linearVelocity.z)<=this.maxSpeed){
-      this.body.linearVelocity.add({x:this.velocity.x, y:0, z:this.velocity.z})
+    if(Math.abs(this.body.velocity.x)+Math.abs(this.body.velocity.z)<=this.maxSpeed){
+      this.body.velocity = new CANNON.Vec3(this.velocity.x, this.body.velocity.y, this.velocity.z);
     }
-
-    this.body.angularVelocity.set(0, 0, 0);
+    else {
+      this.body.velocity = new CANNON.Vec3(this.velocity.x * sin45, this.body.velocity.y, this.velocity.z * sin45);
+    }
     
 
-    this.mesh.position.copy(this.body.getPosition());
-    this.mesh.quaternion.copy(this.body.getQuaternion());
+    this.mesh.position.copy(this.body.position);
+    this.mesh.quaternion.copy(this.body.quaternion);
   }
   // const player = new TestPlayer({
   //   sizeProperties: { width: 1, height: 1, depth: 1 },
