@@ -1,17 +1,25 @@
-import { useState } from "react";
+import React, { useState, useRef } from "react";
 import DialogForm from "../server/DialogForm";
-
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { ToastContainer } from "react-toastify";
 
 const UiMenu = () => {
   const [text, setText] = useState("");
+  const textareaRef = useRef(null);
 
   const onTextChange = (event) => {
-    setText(event.target.value);
+    const inputText = event.target.value;
+    if (inputText.length <= 255) {
+      setText(inputText);
+      if (textareaRef.current) {
+        textareaRef.current.style.height = "auto";
+        textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+      }
+    } else {
+      toast.error("Maximum character limit reached (255 characters)");
+    }
   };
 
-  //Send data to server
   const onButtonClick = async () => {
     try {
       const data = await DialogForm(text);
@@ -23,9 +31,17 @@ const UiMenu = () => {
 
   return (
     <div className="main-ui">
-      <input type="text" value={text} onChange={onTextChange} />
-      <button onClick={onButtonClick}>Fetch Data</button>
-      <ToastContainer position="top-center" closeOnClick="true" />
+      <div className="input-container">
+        <textarea
+          ref={textareaRef}
+          placeholder="Write something.."
+          value={text}
+          onChange={onTextChange}
+          rows={5}
+        />
+        <button onClick={onButtonClick}>Send</button>
+        <ToastContainer position="top-center" closeOnClick={true} />
+      </div>
     </div>
   );
 };

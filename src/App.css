@@ -13,7 +13,10 @@ canvas{
   z-index: 2;
   display: block;
   position: fixed;
-  left: 50%;
+  width: 600px;
+  height: auto;
+  top: 90%;
+  transform: translate(-40%, -50%);
 }
 
 #webgl{
