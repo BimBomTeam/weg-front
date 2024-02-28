@@ -1,11 +1,17 @@
-import React, { useState, useRef } from "react";
-import DialogForm from "../server/DialogForm";
+import React, { useState, useRef, useEffect } from "react";
+import DialogForm from "../../server/DialogForm";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const UiMenu = () => {
   const [text, setText] = useState("");
   const textareaRef = useRef(null);
+
+  useEffect(() => {
+    if (!text && textareaRef.current) {
+      textareaRef.current.style.height = "auto";
+    }
+  }, [text]);
 
   const onTextChange = (event) => {
     const inputText = event.target.value;
@@ -39,7 +45,8 @@ const UiMenu = () => {
           onChange={onTextChange}
           rows={5}
         />
-        <button onClick={onButtonClick}>Send</button>
+        <p>{text.length}/255</p>
+        <button onClick={onButtonClick}></button>
         <ToastContainer position="top-center" closeOnClick={true} />
       </div>
     </div>

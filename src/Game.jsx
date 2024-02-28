@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import UiMenu from "./UI/UIiMenu";
+import UiMenu from "./components/UI/UIiMenu";
 import * as gameScript from "./threejs/main";
 
 const Game = () => {

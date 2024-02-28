@@ -9,15 +9,7 @@ canvas{
   height: 100vh;
 }
 
-.main-ui{
-  z-index: 2;
-  display: block;
-  position: fixed;
-  width: 600px;
-  height: auto;
-  top: 90%;
-  transform: translate(-40%, -50%);
-}
+
 
 #webgl{
   width: 100vw;
