@@ -3,4 +3,6 @@
   display: block;
   position: fixed;
   left: 50%;
+  top: 70%;
+  transform: translateX(-50%);// Ustawia punkt interakcji z blokiem dokładnie na środku
 }
