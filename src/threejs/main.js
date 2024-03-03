@@ -11,6 +11,7 @@ import Block from "./example/block.js";
 import Ball from "./example/ball.js";
 import Floor from "./example/floor.js";
 import Player from "./player.js";
+import Npc from "./npc.js";
 import Stats from "stats.js";
 import Environment from "./environnment.js";
 import GameMap from "./gameMap.js";
@@ -18,6 +19,7 @@ import GameMap from "./gameMap.js";
 //#setting scene camera renderer
 export default class GameScene {
   constructor(changeUiVisibility) {
+    this.changeUiVisibility = changeUiVisibility;
     this._init();
   }
 
@@ -71,6 +73,8 @@ export default class GameScene {
     this.completeFrame();
 
     this.stats.end();
+
+    this.isNearNpc();
   }
   completeFrame() {
     // update world
@@ -91,11 +95,12 @@ export default class GameScene {
     this.setupLights();
 
     this.world = new CANNON.World();
-    this.world.gravity = new CANNON.Vec3(0, -9.81 * 3, 0); // Set gravity
+    this.world.gravity = new CANNON.Vec3(0, -9.81 * 100, 0); // Set gravity
 
     // Create a ground plane
 
     this.setupPlayer();
+    this.setupNpc();
     this.setupCamera();
 
     document.body.appendChild(this.renderer.domElement);
@@ -155,6 +160,10 @@ export default class GameScene {
     this.player = new Player({ width: 20, height: 20, depth: 20 }, this);
     this.keyHl = new KeyHandler(window);
   }
+
+  setupNpc() {
+    this.npc = new Npc({ width: 20, height: 20, depth: 20 }, this);
+  }
   onWindowResize() {
     this.sizes = {
       width: window.innerWidth,
@@ -186,13 +195,13 @@ export default class GameScene {
   // const keyHl = new KeyHandler(window);
 
   isNearNpc() {
-    const DISTANCE_TRIGGER = 1;
-    const distance = player.position.distanceTo(box.position);
+    const DISTANCE_TRIGGER = 20;
+    const distance = this.player.mesh.position.distanceTo(this.npc.mesh.position);
     if (distance < DISTANCE_TRIGGER) {
       console.log("WORKS");
-      changeUiVisibility(true);
+      this.changeUiVisibility(true);
     } else {
-      changeUiVisibility(false);
+      this.changeUiVisibility(false);
     }
   }
 
