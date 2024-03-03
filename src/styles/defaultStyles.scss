@@ -1,26 +1,17 @@
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-a {
-  text-decoration: none;
-  color: inherit;
-  &:hover {
-    color: inherit;
-  }
-}
-
 #root {
-  height: 100%;
-  overflow-x: hidden;
-  overflow-y: hidden;
-  &::-webkit-scrollbar {
-    display: none;
-  }
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
 }
 
-#webgl {
+canvas{
+  height: 100vh;
+}
+
+
+
+#webgl{
   width: 100vw;
   height: 100vh;
   position: absolute;

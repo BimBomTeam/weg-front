@@ -7,7 +7,7 @@ const Game = () => {
     const game = new GameScene(changeUiVisibility);
   }, []);
 
-  const [isUi, setUi] = useState(true);
+  const [isUi, setUi] = useState(false);
 
   const changeUiVisibility = (isVis) => {
     setUi(isVis);
@@ -16,7 +16,7 @@ const Game = () => {
   return (
     <>
       <canvas id="webgl"></canvas>
-      <UiMenu> </UiMenu>
+      {isUi && <UiMenu/>}
     </>
   );
 };
