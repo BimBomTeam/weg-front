@@ -6,7 +6,6 @@ function App() {
   return (
     <>
       <Game></Game>
-      <UiMenu></UiMenu> 
     </>
   );
 }
