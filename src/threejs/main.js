@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import * as OIMO from "oimo";
+import * as CANNON from "cannon"
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { KeyHandler } from "./keyListener";
 import { Platform } from "./scene";
@@ -10,37 +11,50 @@ import Block from "./example/block.js";
 import Ball from "./example/ball.js";
 import Floor from "./example/floor.js";
 import Player from "./player.js";
+import Npc from "./npc.js";
+import Stats from "stats.js";
+import Environment from "./environnment.js";
+import GameMap from "./gameMap.js";
 
 //#setting scene camera renderer
 export default class GameScene {
   constructor(changeUiVisibility) {
-    // do all the boilerplate setup for ThreeJS
+    this.changeUiVisibility = changeUiVisibility;
+    this._init();
+  }
+
+  async _init() {
+    await this.loadEnv();
+
     this.setup();
+    this.statsInint();
 
-    // SKETCH VARIABLES
-    // the width of one of our blocks
-    this.blockWidth = 20;
-    // how many blocks we want around each level of the tower
-    this.count = 6;
-    // how many levels we want in the tower
-    this.levels = 6;
-    // the size of the gap we want between each block
-    this.mitreGap = 1.2;
-    // the circumference of the tower
-    this.circumference = this.blockWidth * this.count * this.mitreGap;
-    // the radius of the tower
-    this.radius = this.circumference / (Math.PI * 2);
-
-    // instantiate components
-    this.floor = new Floor(this);
-    // this.ball = new Ball(this);
-
+    this.map = new GameMap(
+      this.environment.mapMesh,
+      { x: 0, y: 0, z: 0 },
+      this
+    );
     // kick off our animation!
     this.animate();
+    this.player.mesh.geometry.width;
+  }
+
+  async loadEnv() {
+    this.environment = new Environment();
+    await this.environment.loadAssets();
+  }
+
+  //STATS
+  statsInint() {
+    this.stats = new Stats();
+    this.stats.showPanel(0);
+    document.body.appendChild(this.stats.dom);
   }
 
   // ANIMATION
   animate() {
+    this.stats.begin();
+
     this.player.velocity.x = 0;
     this.player.velocity.z = 0;
 
@@ -52,16 +66,19 @@ export default class GameScene {
     else if (this.keyHl.key.s.pressed)
       this.player.velocity.z = this.player.speed;
 
-    this.floor.update();
     this.player.update();
 
     this.camera.cameraUpdate(this.player.mesh.position);
 
     this.completeFrame();
+
+    this.stats.end();
+
+    this.isNearNpc();
   }
   completeFrame() {
     // update world
-    this.world.step();
+    this.world.step(1/144);
     // render this frame of our animation
     this.renderer.render(this.scene, this.camera);
     // line up our next frame
@@ -77,17 +94,13 @@ export default class GameScene {
     this.setupRenderer();
     this.setupLights();
 
-    this.world = new OIMO.World({
-      timestep: 1 / 60,
-      iterations: 8,
-      broadphase: 2, // 1 brute force, 2 sweep and prune, 3 volume tree
-      worldscale: 1, // scale full world
-      random: true, // randomize sample
-      info: false, // calculate statistic or not
-      gravity: [0, -98, 0],
-    });
+    this.world = new CANNON.World();
+    this.world.gravity = new CANNON.Vec3(0, -9.81 * 100, 0); // Set gravity
+
+    // Create a ground plane
 
     this.setupPlayer();
+    this.setupNpc();
     this.setupCamera();
 
     document.body.appendChild(this.renderer.domElement);
@@ -134,6 +147,7 @@ export default class GameScene {
 
     let dirLight = new THREE.DirectionalLight(0xffffff, 1, 100);
     dirLight.position.set(-3, 5, -3);
+    dirLight.castShadow = true;
     this.scene.add(dirLight);
   }
   setupCameraControl() {
@@ -145,6 +159,10 @@ export default class GameScene {
   setupPlayer() {
     this.player = new Player({ width: 20, height: 20, depth: 20 }, this);
     this.keyHl = new KeyHandler(window);
+  }
+
+  setupNpc() {
+    this.npc = new Npc({ width: 20, height: 20, depth: 20 }, this);
   }
   onWindowResize() {
     this.sizes = {
@@ -177,13 +195,13 @@ export default class GameScene {
   // const keyHl = new KeyHandler(window);
 
   isNearNpc() {
-    const DISTANCE_TRIGGER = 1;
-    const distance = player.position.distanceTo(box.position);
+    const DISTANCE_TRIGGER = 20;
+    const distance = this.player.mesh.position.distanceTo(this.npc.mesh.position);
     if (distance < DISTANCE_TRIGGER) {
       console.log("WORKS");
-      changeUiVisibility(true);
+      this.changeUiVisibility(true);
     } else {
-      changeUiVisibility(false);
+      this.changeUiVisibility(false);
     }
   }
 

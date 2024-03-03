@@ -3,7 +3,7 @@ import * as OIMO from "oimo";
 import * as CANNON from "cannon"
 import CannonUtils from './cannonUtils'
 
-export default class Player {
+export default class Npc {
   constructor(sizeProperties, sketch) {
     // setup
     this.material = new THREE.MeshStandardMaterial({ color: "#FDA006" });
@@ -21,7 +21,7 @@ export default class Player {
 
     this.velocity = { x: 0, y: 0, z: 0 };
 
-    this.position = { x: 0, y: 50, z: 0 };
+    this.position = { x: 0, y: 10, z: 50 };
 
     this.mesh.position.set(this.position.x, this.position.y, this.position.z);
     const material = new CANNON.Material();
@@ -34,7 +34,7 @@ export default class Player {
       material: material
     })
     this.body.addShape(sphereShape);
-    this.body.position = new CANNON.Vec3(0, 50, 0);
+    this.body.position = new CANNON.Vec3(this.position.x, this.position.y, this.position.z);
     sketch.world.addBody(this.body);
 
 
@@ -49,7 +49,7 @@ export default class Player {
     // if(this.velocity.x!=0){
     //   this.body.applyImpulse(center, force);
     // }
-
+    /*
     const sin45 = Math.sin(Math.PI / 4)
     //#movement implementation
     if(Math.abs(this.body.velocity.x)+Math.abs(this.body.velocity.z)<=this.maxSpeed){
@@ -57,7 +57,7 @@ export default class Player {
     }
     else {
       this.body.velocity = new CANNON.Vec3(this.velocity.x * sin45, this.body.velocity.y, this.velocity.z * sin45);
-    }
+    }*/
     
 
     this.mesh.position.copy(this.body.position);
