@@ -1,0 +1,41 @@
+$text-input-border-radius: 8px;
+$text-input-border: 1px solid #404040;
+$text-input-padding: 10px;
+$text-input-font-size: 16px;
+$text-input-width: 80%;
+$text-input-height: 10%;
+$text-input-padding-right: 15%;
+
+$input-background-color: rgba(222, 226, 230, 0.5);
+$input-placeholder-color: #343a40;
+
+input[type="text"],
+textarea {
+  border-radius: $text-input-border-radius;
+  border: $text-input-border;
+  padding: $text-input-padding;
+  font-size: $text-input-font-size;
+  font-family: inherit;
+  color: black;
+  width: $text-input-width;
+  height: $text-input-height;
+  padding-right: $text-input-padding-right;
+  overflow-y: auto; 
+  scrollbar-width: thin; 
+  background-color: $input-background-color;
+  resize: none;
+  backdrop-filter: blur(5px);
+
+  &::placeholder {
+    color: $input-placeholder-color;
+  }
+}
+
+p {
+  position: absolute;
+  bottom: 7px;
+  right: 6%;
+  font-family: inherit;
+  font-size: 14px;
+  color: black;
+}
