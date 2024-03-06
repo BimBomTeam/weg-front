@@ -39,3 +39,50 @@ p {
   font-size: 14px;
   color: black;
 }
+
+label[for="email"] {
+	top: 0px;
+	left: 20%;
+	width: 351.6px;
+	height: 53.6px;
+	overflow: hidden;
+	font-family: Roboto;
+	font-size: 36px;
+	text-align: left;
+	color:#185E85;
+}
+
+#email, #password {
+  top: 43px;
+	left: 0px;
+	width: 456px;
+	height: 74px;
+	-ms-border-radius: 5px;
+	-o-border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	-ms-box-shadow:inset 0px 4px 4px 1px rgba(0,0,0,0.25);
+	-o-box-shadow:inset 0px 4px 4px 1px rgba(0,0,0,0.25);
+	-webkit-box-shadow:inset 0px 4px 4px 1px rgba(0,0,0,0.25);
+	-moz-box-shadow:inset 0px 4px 4px 1px rgba(0,0,0,0.25);
+	box-shadow:inset 0px 4px 4px 1px rgba(0,0,0,0.25);
+	background:rgba(255,255,255,0);
+	background: -webkit-linear-gradient(-224.90398121603deg , rgba(132.33,191.39,224.61,0.5) 0%, rgba(23.22,73.75,95.41,0.15) 100%);
+	background: -o-linear-gradient(-224.90398121603deg , rgba(132.33,191.39,224.61,0.5) 0%, rgba(23.22,73.75,95.41,0.15) 100%);
+	background: -moz-linear-gradient(-224.90398121603deg , rgba(132.33,191.39,224.61,0.5) 0%, rgba(23.22,73.75,95.41,0.15) 100%);
+	background: -ms-linear-gradient(-224.90398121603deg , rgba(132.33,191.39,224.61,0.5) 0%, rgba(23.22,73.75,95.41,0.15) 100%);
+	background: linear-gradient(-224.90398121603deg , rgba(132.33,191.39,224.61,0.5) 0%, rgba(23.22,73.75,95.41,0.15) 100%);
+}
+
+label[for="password"] {
+  top: 0px;
+	left: 0px;
+	width: 351.6px;
+	height: 53.6px;
+	overflow: hidden;
+	font-family: Roboto;
+	font-size: 36px;
+	text-align: left;
+	color:#185E85;
+}
