@@ -7,16 +7,35 @@ body {
 }
 
 .login-container {
-    top: 0px;
-    left: 0px;
-    width: 1055px;
-    height: 711px;
-    border-radius: 20px;
-    box-shadow: 0px 4px 4px 1px rgba(0,0,0,0.25);
-    background: rgba(255,255,255,0);
-    background: -webkit-linear-gradient(-221.37689684848deg , rgba(255,255,255,1) 0%, rgba(255,255,255,0.7) 100%);
-    background: -o-linear-gradient(-221.37689684848deg , rgba(255,255,255,1) 0%, rgba(255,255,255,0.7) 100%);
-    background: -moz-linear-gradient(-221.37689684848deg , rgba(255,255,255,1) 0%, rgba(255,255,255,0.7) 100%);
-    background: -ms-linear-gradient(-221.37689684848deg , rgba(255,255,255,1) 0%, rgba(255,255,255,0.7) 100%);
-    background: linear-gradient(-221.37689684848deg , rgba(255,255,255,1) 0%, rgba(255,255,255,0.7) 100%);
+    width: 1200px;
+    height: 900px;
+    position: relative;
+    padding: 20px;
+    border-radius: 30px;
+    box-sizing: border-box;
+  }
+  
+  .login-container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.5); 
+    backdrop-filter: blur(18px); 
+    border-radius: inherit; 
+  }
+
+  .login-content {
+    position: relative; 
+    z-index: 1; 
+    padding: 20px;
+
+    label {
+        display: block;
+        margin-bottom: 5px;
+        padding-left: 15%;
+    }
 }
+  

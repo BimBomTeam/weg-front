@@ -13,14 +13,17 @@ const Login = () => {
   };
 
   return (
-      <div className="login-container">
-        <label htmlFor="email">E-mail</label><br />
-        <input type="text" id="email" /><br />
-        <label htmlFor="password">Hasło</label><br />
-        <input type="password" id="password" /><br />
-        <button onClick={handleLogin}>Login</button><br />
-        <button onClick={handleRegister}>Rejestracja</button><br />
+    <div className="login-container"> {}
+      <div className="login-content"> {}
+        <label htmlFor="login">Zaloguj się</label><br />
+        <label htmlFor="email-label">E-mail</label>
+        <input type="text" id="email" /><br /> <br/>
+        <label htmlFor="password-label">Hasło</label>
+        <input type="password" id="password" /><br /> <br/> <br/>
+        <button onClick={handleLogin} className="login-button">Zaloguj się</button><br /> <br/>
+        <button onClick={handleRegister} className="register-button">Zarejestruj się</button><br />
       </div>
+    </div>
   );
 };
 

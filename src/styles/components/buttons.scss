@@ -51,3 +51,24 @@
 	background: -ms-linear-gradient(-225.11807074516deg , rgba(24.76,94.18,133.22,0.8) 0%, rgba(24.76,94.18,133.22,0.4) 100%);
 	background: linear-gradient(-225.11807074516deg , rgba(24.76,94.18,133.22,0.8) 0%, rgba(24.76,94.18,133.22,0.4) 100%);
 }
+
+.login-button, .register-button {
+  position: relative;
+  height: 100px;
+  width: 55%;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.3)), #1b7ec0;
+  font-size: 32px;
+  cursor: pointer;
+  &:hover {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.3)), #0056b3;
+  }
+  &:focus {
+    outline: none;
+  }
+}
+
+
+
