@@ -1,3 +1,5 @@
+$button-login-shadow: rgba(0, 0, 0, 0.25);
+
 #send {
   position: absolute;
   top: 37.5%;
@@ -20,7 +22,7 @@
   transition: border-color 0.25s;
 
   &:hover {
-      border-color: #646cff;
+      border-color: $button-hover-color;
   }
 
   &:focus,
@@ -35,13 +37,13 @@
   width: 341px;
   height: 97px;
   border-radius: 15px;
-  box-shadow: 0px 4px 4px 1px rgba(0, 0, 0, 0.25);
-  background: rgba(255, 255, 255, 0);
-  background: -webkit-linear-gradient(-225.11807074516deg, rgba(24.76, 94.18, 133.22, 0.8) 0%, rgba(24.76, 94.18, 133.22, 0.4) 100%);
-  background: -o-linear-gradient(-225.11807074516deg, rgba(24.76, 94.18, 133.22, 0.8) 0%, rgba(24.76, 94.18, 133.22, 0.4) 100%);
-  background: -moz-linear-gradient(-225.11807074516deg, rgba(24.76, 94.18, 133.22, 0.8) 0%, rgba(24.76, 94.18, 133.22, 0.4) 100%);
-  background: -ms-linear-gradient(-225.11807074516deg, rgba(24.76, 94.18, 133.22, 0.8) 0%, rgba(24.76, 94.18, 133.22, 0.4) 100%);
-  background: linear-gradient(-225.11807074516deg, rgba(24.76, 94.18, 133.22, 0.8) 0%, rgba(24.76, 94.18, 133.22, 0.4) 100%);
+  box-shadow: 0px 4px 4px 1px $button-login-shadow;
+  background: $password-input-background;
+  background: -webkit-linear-gradient(-225.11807074516deg, $password-input-gradient-start, 0.8 0%, $password-input-gradient-start, 0.4 100%);
+  background: -o-linear-gradient(-225.11807074516deg, $password-input-gradient-start, 0.8 0%, $password-input-gradient-start, 0.4 100%);
+  background: -moz-linear-gradient(-225.11807074516deg, $password-input-gradient-start, 0.8 0%, $password-input-gradient-start, 0.4 100%);
+  background: -ms-linear-gradient(-225.11807074516deg, $password-input-gradient-start, 0.8 0%, $password-input-gradient-start, 0.4 100%);
+  background: linear-gradient(-225.11807074516deg, $password-input-gradient-start, 0.8 0%, $password-input-gradient-start, 0.4 100%);
 }
 
 .login-button, .register-button {
@@ -51,18 +53,21 @@
   padding: 10px 20px;
   border: none;
   border-radius: 15px;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.3)), #1b7ec0;
+  background: linear-gradient(135deg, $button-gradient-start, $button-gradient-end), $button-default-color;
   font-size: 26px;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 
-  &:hover {
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.3)), #0056b3;
-  }
-
-  &:focus {
-      outline: none;
-  }
 }
+
+.login-button:hover, .register-button:hover {
+  background: linear-gradient(135deg, $button-gradient-start, $button-gradient-end), $button-hover-color-alt;
+}
+
+.login-button:focus, .register-button:focus {
+  outline: none;
+}
+
 
 .back-button {
   position: absolute;
@@ -74,4 +79,9 @@
   background-color: transparent;
   background-image: url('back.png');
   background-size: cover;
+  transition: transform 0.3s ease; 
+}
+
+.back-button:hover {
+  transform: scale(1.3); 
 }

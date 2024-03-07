@@ -1,13 +1,11 @@
 $text-input-border-radius: 8px;
-$text-input-border: 1px solid #404040;
+$text-input-border: 1px solid $border-one;
 $text-input-padding: 10px;
 $text-input-font-size: 16px;
 $text-input-width: 80%;
 $text-input-height: 10%;
 $text-input-padding-right: 15%;
 
-$input-background-color: rgba(222, 226, 230, 0.5);
-$input-placeholder-color: #343a40;
 
 input[type="text"],
 textarea {
@@ -47,7 +45,7 @@ label[for="login"] {
     overflow: hidden;
     font-family: Roboto;
     font-size: 45px;
-    color: #185E85;
+    color: $label-color;
     font-weight: bold;
 }
 
@@ -58,7 +56,7 @@ label[for="register"] {
     overflow: hidden;
     font-family: Roboto;
     font-size: 45px;
-    color: #185E85;
+    color: $label-color;
     font-weight: bold;
 }
 
@@ -73,7 +71,7 @@ label[for="password-repeat-label"] {
     font-family: Roboto;
     font-size: 32px;
     text-align: left;
-    color: #185E85;
+    color: $label-color;
 }
 
 #password,
@@ -85,16 +83,16 @@ label[for="password-repeat-label"] {
     height: 85px;
     padding-right: 10px;
     font-size: 32px;
-    color: black;
-    border-width: 2px;
+    color: $black;
+    border-width: 1px;
     border-radius: 10px;
-    box-shadow: inset 0px 4px 4px 1px rgba(0, 0, 0, 0.25);
-    background: rgba(255, 255, 255, 0);
-    background: -webkit-linear-gradient(-224.90398121603deg, rgba(132.33, 191.39, 224.61, 0.5) 0%, rgba(23.22, 73.75, 95.41, 0.15) 100%);
-    background: -o-linear-gradient(-224.90398121603deg, rgba(132.33, 191.39, 224.61, 0.5) 0%, rgba(23.22, 73.75, 95.41, 0.15) 100%);
-    background: -moz-linear-gradient(-224.90398121603deg, rgba(132.33, 191.39, 224.61, 0.5) 0%, rgba(23.22, 73.75, 95.41, 0.15) 100%);
-    background: -ms-linear-gradient(-224.90398121603deg, rgba(132.33, 191.39, 224.61, 0.5) 0%, rgba(23.22, 73.75, 95.41, 0.15) 100%);
-    background: linear-gradient(-224.90398121603deg, rgba(132.33, 191.39, 224.61, 0.5) 0%, rgba(23.22, 73.75, 95.41, 0.15) 100%);
+    box-shadow: inset 0px 4px 4px 1px $button-login-shadow;
+    background: $password-input-background;
+    background: -webkit-linear-gradient(-224.90398121603deg, $password-input-gradient-start 0%, $password-input-gradient-end 100%);
+    background: -o-linear-gradient(-224.90398121603deg, $password-input-gradient-start 0%, $password-input-gradient-end 100%);
+    background: -moz-linear-gradient(-224.90398121603deg, $password-input-gradient-start 0%, $password-input-gradient-end 100%);
+    background: -ms-linear-gradient(-224.90398121603deg, $password-input-gradient-start 0%, $password-input-gradient-end 100%);
+    background: linear-gradient(-224.90398121603deg, $password-input-gradient-start 0%, $password-input-gradient-end 100%);
 }
 
 #password,
