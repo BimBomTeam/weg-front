@@ -7,12 +7,10 @@ body {
 }
 
 .login-container {
-    width: 1200px;
-    height: 900px;
+    width: 700px;
+    height: 600px;
     position: relative;
-    padding: 20px;
     border-radius: 30px;
-    box-sizing: border-box;
   }
   
   .login-container::before {
@@ -35,7 +33,7 @@ body {
     label {
         display: block;
         margin-bottom: 5px;
-        padding-left: 15%;
+        padding-left: 5%;
     }
 }
   
