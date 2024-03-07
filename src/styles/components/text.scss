@@ -11,96 +11,96 @@ $input-placeholder-color: #343a40;
 
 input[type="text"],
 textarea {
-  border-radius: $text-input-border-radius;
-  border: $text-input-border;
-  padding: $text-input-padding;
-  font-size: $text-input-font-size;
-  font-family: inherit;
-  color: black;
-  width: $text-input-width;
-  height: $text-input-height;
-  padding-right: $text-input-padding-right;
-  overflow-y: auto; 
-  scrollbar-width: thin; 
-  background-color: $input-background-color;
-  resize: none;
-  backdrop-filter: blur(5px);
+    border-radius: $text-input-border-radius;
+    border: $text-input-border;
+    padding: $text-input-padding;
+    font-size: $text-input-font-size;
+    font-family: inherit;
+    color: black;
+    width: $text-input-width;
+    height: $text-input-height;
+    padding-right: $text-input-padding-right;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    background-color: $input-background-color;
+    resize: none;
+    backdrop-filter: blur(5px);
 
-  &::placeholder {
-    color: $input-placeholder-color;
-  }
+    &::placeholder {
+        color: $input-placeholder-color;
+    }
 }
 
 p {
-  position: absolute;
-  bottom: 7px;
-  right: 6%;
-  font-family: inherit;
-  font-size: 14px;
-  color: black;
+    position: absolute;
+    bottom: 7px;
+    right: 6%;
+    font-family: inherit;
+    font-size: 14px;
+    color: black;
 }
 
-label[for="login"]{
-	padding-left: 33%;
-	width: 220px;
-	height: 60px;
-	overflow: hidden;
-	font-family: Roboto;
-	font-size: 45px;
-	color: #185E85;
-	font-weight: bold;
+label[for="login"] {
+    padding-left: 35%;
+    width: 220px;
+    height: 60px;
+    overflow: hidden;
+    font-family: Roboto;
+    font-size: 45px;
+    color: #185E85;
+    font-weight: bold;
 }
 
-label[for="email-label"] {
-	width: 100px;
-	height: 40px;
-	overflow: hidden;
-	font-family: Roboto;
-	font-size: 32px;
-	text-align: left;
-	color:#185E85;
+label[for="register"] {
+    padding-left: 17%;
+    width: 500px;
+    height: 60px;
+    overflow: hidden;
+    font-family: Roboto;
+    font-size: 45px;
+    color: #185E85;
+    font-weight: bold;
 }
 
-label[for="password-label"] {
-	  width: 100px;
-	  height: 40px;
-	  overflow: hidden;
-	  font-family: Roboto;
-	  font-size: 32px;
-	  text-align: left;
-	  color:#185E85;
-  }
-
-#email, #password {
-  top: 40px;
-	left: 0px;
-	width: 600px;
-	height: 85px;
-	padding-right: 20px;
-	font-size: 32px;
-	color: black;
-	border-width: 2px;
-	-ms-border-radius: 5px;
-	-o-border-radius: 5px;
-	-moz-border-radius: 5px;
-	-webkit-border-radius: 5px;
-	border-radius: 10px;
-	-ms-box-shadow:inset 0px 4px 4px 1px rgba(0,0,0,0.25);
-	-o-box-shadow:inset 0px 4px 4px 1px rgba(0,0,0,0.25);
-	-webkit-box-shadow:inset 0px 4px 4px 1px rgba(0,0,0,0.25);
-	-moz-box-shadow:inset 0px 4px 4px 1px rgba(0,0,0,0.25);
-	box-shadow:inset 0px 4px 4px 1px rgba(0,0,0,0.25);
-	background:rgba(255,255,255,0);
-	background: -webkit-linear-gradient(-224.90398121603deg , rgba(132.33,191.39,224.61,0.5) 0%, rgba(23.22,73.75,95.41,0.15) 100%);
-	background: -o-linear-gradient(-224.90398121603deg , rgba(132.33,191.39,224.61,0.5) 0%, rgba(23.22,73.75,95.41,0.15) 100%);
-	background: -moz-linear-gradient(-224.90398121603deg , rgba(132.33,191.39,224.61,0.5) 0%, rgba(23.22,73.75,95.41,0.15) 100%);
-	background: -ms-linear-gradient(-224.90398121603deg , rgba(132.33,191.39,224.61,0.5) 0%, rgba(23.22,73.75,95.41,0.15) 100%);
-	background: linear-gradient(-224.90398121603deg , rgba(132.33,191.39,224.61,0.5) 0%, rgba(23.22,73.75,95.41,0.15) 100%);
+label[for="email-label"],
+label[for="email-register-label"],
+label[for="password-label"],
+label[for="password-register-label"],
+label[for="password-repeat-label"] {
+    width: 300px;
+    height: 40px;
+    overflow: hidden;
+    font-family: Roboto;
+    font-size: 32px;
+    text-align: left;
+    color: #185E85;
 }
 
-#password {
-	width: 610px;
-	height: 100px;
-	border-bottom-color: black;
+#password,
+#repeat-password,
+#email {
+    top: 40px;
+    left: 0px;
+    width: 600px;
+    height: 85px;
+    padding-right: 10px;
+    font-size: 32px;
+    color: black;
+    border-width: 2px;
+    border-radius: 10px;
+    box-shadow: inset 0px 4px 4px 1px rgba(0, 0, 0, 0.25);
+    background: rgba(255, 255, 255, 0);
+    background: -webkit-linear-gradient(-224.90398121603deg, rgba(132.33, 191.39, 224.61, 0.5) 0%, rgba(23.22, 73.75, 95.41, 0.15) 100%);
+    background: -o-linear-gradient(-224.90398121603deg, rgba(132.33, 191.39, 224.61, 0.5) 0%, rgba(23.22, 73.75, 95.41, 0.15) 100%);
+    background: -moz-linear-gradient(-224.90398121603deg, rgba(132.33, 191.39, 224.61, 0.5) 0%, rgba(23.22, 73.75, 95.41, 0.15) 100%);
+    background: -ms-linear-gradient(-224.90398121603deg, rgba(132.33, 191.39, 224.61, 0.5) 0%, rgba(23.22, 73.75, 95.41, 0.15) 100%);
+    background: linear-gradient(-224.90398121603deg, rgba(132.33, 191.39, 224.61, 0.5) 0%, rgba(23.22, 73.75, 95.41, 0.15) 100%);
 }
 
+#password,
+#repeat-password {
+    width: 610px;
+    height: 100px;
+    border-bottom-color: black;
+    padding-left: 10px;
+}

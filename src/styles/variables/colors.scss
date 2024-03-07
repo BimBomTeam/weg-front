@@ -1,3 +1,17 @@
-$primary: #ffffff;
+$button-hover-color: #646cff;
+$button-gradient-start: rgba(255, 255, 255, 0.5);
+$button-gradient-end: rgba(255, 255, 255, 0.3);
+$button-default-color: #1b7ec0;
+$button-hover-color-alt: #0056b3;
 
-$secondary: #aa12aa;
+$back-button-background: transparent;
+
+$login-label-color: #185E85;
+$email-label-color: #185E85;
+$password-label-color: #185E85;
+
+$password-input-color: black;
+$password-input-border-color: black;
+$password-input-background: rgba(255, 255, 255, 0);
+$password-input-gradient-start: rgba(132.33, 191.39, 224.61, 0.5);
+$password-input-gradient-end: rgba(23.22, 73.75, 95.41, 0.15);

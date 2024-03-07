@@ -20,36 +20,28 @@
   transition: border-color 0.25s;
 
   &:hover {
-    border-color: #646cff;
+      border-color: #646cff;
   }
 
   &:focus,
   &:focus-visible {
-    outline: 4px auto -webkit-focus-ring-color;
+      outline: 4px auto -webkit-focus-ring-color;
   }
 }
 
 #Login {
   top: 0px;
-	left: 0px;
-	width: 341px;
-	height: 97px;
-	-ms-border-radius: 15px;
-	-o-border-radius: 15px;
-	-moz-border-radius: 15px;
-	-webkit-border-radius: 15px;
-	border-radius: 15px;
-	-ms-box-shadow:0px 4px 4px 1px rgba(0,0,0,0.25);
-	-o-box-shadow:0px 4px 4px 1px rgba(0,0,0,0.25);
-	-webkit-box-shadow:0px 4px 4px 1px rgba(0,0,0,0.25);
-	-moz-box-shadow:0px 4px 4px 1px rgba(0,0,0,0.25);
-	box-shadow:0px 4px 4px 1px rgba(0,0,0,0.25);
-	background:rgba(255,255,255,0);
-	background: -webkit-linear-gradient(-225.11807074516deg , rgba(24.76,94.18,133.22,0.8) 0%, rgba(24.76,94.18,133.22,0.4) 100%);
-	background: -o-linear-gradient(-225.11807074516deg , rgba(24.76,94.18,133.22,0.8) 0%, rgba(24.76,94.18,133.22,0.4) 100%);
-	background: -moz-linear-gradient(-225.11807074516deg , rgba(24.76,94.18,133.22,0.8) 0%, rgba(24.76,94.18,133.22,0.4) 100%);
-	background: -ms-linear-gradient(-225.11807074516deg , rgba(24.76,94.18,133.22,0.8) 0%, rgba(24.76,94.18,133.22,0.4) 100%);
-	background: linear-gradient(-225.11807074516deg , rgba(24.76,94.18,133.22,0.8) 0%, rgba(24.76,94.18,133.22,0.4) 100%);
+  left: 0px;
+  width: 341px;
+  height: 97px;
+  border-radius: 15px;
+  box-shadow: 0px 4px 4px 1px rgba(0, 0, 0, 0.25);
+  background: rgba(255, 255, 255, 0);
+  background: -webkit-linear-gradient(-225.11807074516deg, rgba(24.76, 94.18, 133.22, 0.8) 0%, rgba(24.76, 94.18, 133.22, 0.4) 100%);
+  background: -o-linear-gradient(-225.11807074516deg, rgba(24.76, 94.18, 133.22, 0.8) 0%, rgba(24.76, 94.18, 133.22, 0.4) 100%);
+  background: -moz-linear-gradient(-225.11807074516deg, rgba(24.76, 94.18, 133.22, 0.8) 0%, rgba(24.76, 94.18, 133.22, 0.4) 100%);
+  background: -ms-linear-gradient(-225.11807074516deg, rgba(24.76, 94.18, 133.22, 0.8) 0%, rgba(24.76, 94.18, 133.22, 0.4) 100%);
+  background: linear-gradient(-225.11807074516deg, rgba(24.76, 94.18, 133.22, 0.8) 0%, rgba(24.76, 94.18, 133.22, 0.4) 100%);
 }
 
 .login-button, .register-button {
@@ -62,13 +54,24 @@
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.3)), #1b7ec0;
   font-size: 26px;
   cursor: pointer;
+
   &:hover {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.3)), #0056b3;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.3)), #0056b3;
   }
+
   &:focus {
-    outline: none;
+      outline: none;
   }
 }
 
-
-
+.back-button {
+  position: absolute;
+  top: 40px;
+  left: 40px;
+  width: 30px;
+  height: 30px;
+  border: 0;
+  background-color: transparent;
+  background-image: url('back.png');
+  background-size: cover;
+}
