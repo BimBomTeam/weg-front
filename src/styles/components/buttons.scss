@@ -46,8 +46,9 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
   background: linear-gradient(-225.11807074516deg, $password-input-gradient-start, 0.8 0%, $password-input-gradient-start, 0.4 100%);
 }
 
-.login-button, .register-button {
+.login-button, .to-register-button, .register-button {
   position: relative;
+  display: block;
   height: 75px;
   width: 50%;
   padding: 10px 20px;
@@ -57,8 +58,21 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
   font-size: 26px;
   cursor: pointer;
   transition: background-color 0.3s ease;
-
+  margin: 0 auto;
 }
+
+.login-button {
+  margin-top: 5%;
+}
+
+.to-register-button {
+  margin-top: 2%;
+}
+
+.register-button {
+  margin-top: 6%;
+}
+
 
 .login-button:hover, .register-button:hover {
   background: linear-gradient(135deg, $button-gradient-start, $button-gradient-end), $button-hover-color-alt;
