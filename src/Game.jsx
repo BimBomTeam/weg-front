@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import UiMenu from "./UI/UIiMenu";
-import GameScene from "./threejs/main";
+import UiMenu from "./components/UI/UIiMenu";
+import GameScene from "./threejs/ammoTest/main";
 
 const Game = () => {
   useEffect(() => {
@@ -16,7 +16,7 @@ const Game = () => {
   return (
     <>
       <canvas id="webgl"></canvas>
-      {isUi && <UiMenu> </UiMenu>}
+      {isUi && <UiMenu/>}
     </>
   );
 };

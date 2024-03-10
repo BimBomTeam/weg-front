@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import * as OIMO from "oimo";
+import * as CANNON from "cannon"
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { KeyHandler } from "./keyListener";
 import { Platform } from "./scene";
@@ -10,6 +11,7 @@ import Block from "./example/block.js";
 import Ball from "./example/ball.js";
 import Floor from "./example/floor.js";
 import Player from "./player.js";
+import Npc from "./npc.js";
 import Stats from "stats.js";
 import Environment from "./environnment.js";
 import GameMap from "./gameMap.js";
@@ -17,6 +19,7 @@ import GameMap from "./gameMap.js";
 //#setting scene camera renderer
 export default class GameScene {
   constructor(changeUiVisibility) {
+    this.changeUiVisibility = changeUiVisibility;
     this._init();
   }
 
@@ -70,10 +73,12 @@ export default class GameScene {
     this.completeFrame();
 
     this.stats.end();
+
+    this.isNearNpc();
   }
   completeFrame() {
     // update world
-    this.world.step();
+    this.world.step(1/144);
     // render this frame of our animation
     this.renderer.render(this.scene, this.camera);
     // line up our next frame
@@ -89,17 +94,13 @@ export default class GameScene {
     this.setupRenderer();
     this.setupLights();
 
-    this.world = new OIMO.World({
-      timestep: 1 / 60,
-      iterations: 8,
-      broadphase: 2, // 1 brute force, 2 sweep and prune, 3 volume tree
-      worldscale: 1, // scale full world
-      random: true, // randomize sample
-      info: false, // calculate statistic or not
-      gravity: [0, -98, 0],
-    });
+    this.world = new CANNON.World();
+    this.world.gravity = new CANNON.Vec3(0, -9.81 * 100, 0); // Set gravity
+
+    // Create a ground plane
 
     this.setupPlayer();
+    this.setupNpc();
     this.setupCamera();
 
     document.body.appendChild(this.renderer.domElement);
@@ -159,6 +160,10 @@ export default class GameScene {
     this.player = new Player({ width: 20, height: 20, depth: 20 }, this);
     this.keyHl = new KeyHandler(window);
   }
+
+  setupNpc() {
+    this.npc = new Npc({ width: 20, height: 20, depth: 20 }, this);
+  }
   onWindowResize() {
     this.sizes = {
       width: window.innerWidth,
@@ -190,13 +195,13 @@ export default class GameScene {
   // const keyHl = new KeyHandler(window);
 
   isNearNpc() {
-    const DISTANCE_TRIGGER = 1;
-    const distance = player.position.distanceTo(box.position);
+    const DISTANCE_TRIGGER = 20;
+    const distance = this.player.mesh.position.distanceTo(this.npc.mesh.position);
     if (distance < DISTANCE_TRIGGER) {
       console.log("WORKS");
-      changeUiVisibility(true);
+      this.changeUiVisibility(true);
     } else {
-      changeUiVisibility(false);
+      this.changeUiVisibility(false);
     }
   }
 
