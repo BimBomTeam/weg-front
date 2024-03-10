@@ -8,6 +8,8 @@ import {
 import Stats from "stats.js";
 import { KeyHandler } from "./keyHandler";
 
+import { MyCamera } from "./myCamera";
+
 class MainScene extends Scene3D {
   constructor() {
     super({ key: "MainScene" });
@@ -45,7 +47,7 @@ class MainScene extends Scene3D {
   preload() {}
 
   async create() {
-    const { lights, orbitControls } = await this.warpSpeed("-ground");
+    const { lights, orbitControls } = await this.warpSpeed("-ground, -sky");
     this.orbitControls = orbitControls;
     orbitControls.update();
 
@@ -53,14 +55,16 @@ class MainScene extends Scene3D {
     dirLight.position.set(-3, 5, -3);
     dirLight.castShadow = true;
 
-    this.camera.position.set(0, 5, 20);
-    this.camera.lookAt(0, 0, 0);
+    // this.camera.position.set(0, 5, 20);
+    // this.camera.lookAt(0, 0, 0);
 
     // enable physics debugging
     // this.physics.debug.enable();
 
     this.setupMap();
     this.setupPlayer(3);
+
+    this.camera = new MyCamera(this.box.position);
 
     this.physics.add.box(
       {
@@ -78,9 +82,9 @@ class MainScene extends Scene3D {
   }
 
   setupMap() {
-    this.load.gltf("/src/assets/models/map1/map3.glb").then((gltf) => {
+    this.load.gltf("/src/assets/models/map1/world.glb").then((gltf) => {
       this.floor = new ExtendedObject3D();
-      gltf.scene.children[0].children[0].children[0].geometry.center();
+      // gltf.scene.children[0].children[0].children[0].geometry.center();
       this.floor.add(gltf.scene);
       this.floor.position.setZ(5);
       this.floor.position.setX(-5);
@@ -116,29 +120,43 @@ class MainScene extends Scene3D {
         phong: { color: 0xff0000 },
       }
     );
+    this.onGround = true;
+    this.speed = 6;
   }
 
   update(time, delta) {
     this.stats.update();
     if (this.box && this.box.body) {
-      let adjustPosition = new THREE.Vector3(
-        this.box.position.x,
-        8,
-        this.box.position.z + 20
-      );
+      this.camera.cameraUpdate(this.box.position);
+
+      this.box.body.on.collision((otherObject, event) => {
+        this.onGround = true;
+      });
+      // let adjustPosition = new THREE.Vector3(
+      //   this.box.position.x,
+      //   50,
+      //   this.box.position.z + 20
+      // );
+      // this.camera.lookAt(this.box.position);
       if (this.KeyHandler.key.a.pressed) {
-        this.camera.position.lerp(adjustPosition, 0.01);
-        this.box.body.setVelocityX(-4);
+        // this.camera.position.lerp(adjustPosition, 0.01);
+        this.box.body.setVelocityX(-this.speed);
       } else if (this.KeyHandler.key.d.pressed) {
-        this.camera.position.lerp(adjustPosition, 0.01);
-        this.box.body.setVelocityX(4);
+        // this.camera.position.lerp(adjustPosition, 0.01);
+        this.box.body.setVelocityX(this.speed);
       }
       if (this.KeyHandler.key.w.pressed) {
-        this.camera.position.lerp(adjustPosition, 0.01);
-        this.box.body.setVelocityZ(-4);
+        // this.camera.position.lerp(adjustPosition, 0.01);
+        this.box.body.setVelocityZ(-this.speed);
       } else if (this.KeyHandler.key.s.pressed) {
-        this.camera.position.lerp(adjustPosition, 0.01);
-        this.box.body.setVelocityZ(4);
+        // this.camera.position.lerp(adjustPosition, 0.01);
+        this.box.body.setVelocityZ(this.speed);
+      }
+
+      if (this.KeyHandler.key.space.pressed && this.onGround == true) {
+        console.log("penis");
+        this.box.body.applyForceY(8);
+        this.onGround = false;
       }
     }
   }

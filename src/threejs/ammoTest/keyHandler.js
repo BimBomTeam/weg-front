@@ -13,6 +13,9 @@ export class KeyHandler {
       s: {
         pressed: false,
       },
+      space: {
+        pressed: false,
+      },
     };
     this.moveDirections = {
       moveLeft: 0,
@@ -39,6 +42,9 @@ export class KeyHandler {
           this.key.s.pressed = true;
           this.moveDirections.moveBackward = 1;
           break;
+        case "Space":
+          this.key.space.pressed = true;
+          break;
       }
     });
     window.addEventListener("keyup", (event) => {
@@ -58,6 +64,9 @@ export class KeyHandler {
         case "KeyS":
           this.key.s.pressed = false;
           this.moveDirections.moveBackward = 0;
+          break;
+        case "Space":
+          this.key.space.pressed = false;
           break;
       }
     });
