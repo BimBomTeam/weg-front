@@ -1,3 +1,6 @@
+import { Vector3 } from "three";
+import PlayerParticleSystem from "./playerParticleSystem";
+
 export class Player {
   constructor({
     sizes = { width: 3, height: 3, depth: 3 },
@@ -24,6 +27,9 @@ export class Player {
       }
     );
     this.object.body.setAngularFactor(0, 0, 0);
+
+    //Player ParticleSystem
+    this.playerParticleSystem = new PlayerParticleSystem(sketch)
   }
 
   update(KeyHandler) {
@@ -31,20 +37,39 @@ export class Player {
       this.onGround = true;
     });
 
+    let showParticles = false
+    let accrossVel = 0;
+    let straightVel = 0;
+
     if (KeyHandler.key.a.pressed) {
       this.object.body.setVelocityX(-this.speed);
+      accrossVel = -1;
+      showParticles = true
     } else if (KeyHandler.key.d.pressed) {
       this.object.body.setVelocityX(this.speed);
+      accrossVel = 1;
+      showParticles = true
     }
     if (KeyHandler.key.w.pressed) {
       this.object.body.setVelocityZ(-this.speed);
+      straightVel = -1;
+      showParticles = true
     } else if (KeyHandler.key.s.pressed) {
       this.object.body.setVelocityZ(this.speed);
+      straightVel = 1;
+      showParticles = true
     }
+
+    if (!this.onGround) {
+      showParticles = false;
+    }
+
+    this.playerParticleSystem.active = showParticles;
 
     if (KeyHandler.key.space.pressed && this.onGround == true) {
       this.object.body.applyForceY(this.jumpForce);
       this.onGround = false;
     }
+    this.playerParticleSystem.update( this.object.position , new Vector3(accrossVel, 0, straightVel))
   }
 }

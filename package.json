@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@babel/runtime": "^7.24.0",
     "cannon": "^0.6.2",
     "enable3d": "^0.25.4",
     "oimo": "^1.0.9",
@@ -18,7 +19,8 @@
     "react-toastify": "^10.0.4",
     "sass": "^1.71.1",
     "stats.js": "^0.17.0",
-    "three": "^0.161.0"
+    "three": "^0.161.0",
+    "three-nebula": "^10.0.3"
   },
   "devDependencies": {
     "@types/react": "^18.2.56",

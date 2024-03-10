@@ -106,6 +106,7 @@ class MainScene extends Scene3D {
 
   setupPlayer() {
     this.player = new Player({ sketch: this });
+    console.log(this.scene)
   }
 
   update(time, delta) {
