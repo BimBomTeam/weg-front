@@ -27,6 +27,7 @@ export class Player {
       }
     );
     this.object.body.setAngularFactor(0, 0, 0);
+    this.object.body.setFriction(2);
 
     //Player ParticleSystem
     this.playerParticleSystem = new PlayerParticleSystem(sketch)
