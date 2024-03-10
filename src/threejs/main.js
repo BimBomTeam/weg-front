@@ -63,7 +63,7 @@ class MainScene extends Scene3D {
     // this.physics.debug.enable();
 
     this.setupMap();
-    this.setupPlayer(3);
+    this.setupPlayer();
 
     this.camera = new MyCamera(this.player.object.position);
 
@@ -101,6 +101,7 @@ class MainScene extends Scene3D {
         mass: 0,
         margin: 0.2,
       });
+      this.floor.body.setFriction(1);
     });
   }
 
@@ -114,7 +115,7 @@ class MainScene extends Scene3D {
     if (this.player.object && this.player.object.body) {
       this.player.update(this.KeyHandler);
 
-      this.camera.update(this.player.object.position);
+      this.camera.update(this.player.object.position, delta);
     }
   }
 }
