@@ -1,228 +1,141 @@
-import * as THREE from "three";
-import * as OIMO from "oimo";
-import * as CANNON from "cannon"
-import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { KeyHandler } from "./keyListener";
-import { Platform } from "./scene";
-import { TestPlayer } from "./scene";
-import MyCamera from "./myCamera.js";
-
-import Block from "./example/block.js";
-import Ball from "./example/ball.js";
-import Floor from "./example/floor.js";
-import Player from "./player.js";
-import Npc from "./npc.js";
+import {
+  Scene3D,
+  ExtendedObject3D,
+  THREE,
+  Project,
+  PhysicsLoader,
+} from "enable3d";
 import Stats from "stats.js";
-import Environment from "./environnment.js";
-import GameMap from "./gameMap.js";
+import { KeyHandler } from "./keyHandler";
 
-//#setting scene camera renderer
-export default class GameScene {
-  constructor(changeUiVisibility) {
-    this.changeUiVisibility = changeUiVisibility;
-    this._init();
+import { MyCamera } from "./myCamera";
+import { Player } from "./player";
+
+class MainScene extends Scene3D {
+  constructor() {
+    super({ key: "MainScene" });
   }
 
-  async _init() {
-    await this.loadEnv();
-
-    this.setup();
-    this.statsInint();
-
-    this.map = new GameMap(
-      this.environment.mapMesh,
-      { x: 0, y: 0, z: 0 },
-      this
-    );
-    // kick off our animation!
-    this.animate();
-    this.player.mesh.geometry.width;
+  init() {
+    this.initRender();
+    this.initStats();
   }
 
-  async loadEnv() {
-    this.environment = new Environment();
-    await this.environment.loadAssets();
-  }
+  initRender() {
+    const oldRenderer = document.querySelector('[data-engine="three.js r156"]');
 
-  //STATS
-  statsInint() {
-    this.stats = new Stats();
-    this.stats.showPanel(0);
-    document.body.appendChild(this.stats.dom);
-  }
+    oldRenderer.remove();
 
-  // ANIMATION
-  animate() {
-    this.stats.begin();
-
-    this.player.velocity.x = 0;
-    this.player.velocity.z = 0;
-
-    if (this.keyHl.key.a.pressed) this.player.velocity.x = -this.player.speed;
-    else if (this.keyHl.key.d.pressed)
-      this.player.velocity.x = this.player.speed;
-
-    if (this.keyHl.key.w.pressed) this.player.velocity.z = -this.player.speed;
-    else if (this.keyHl.key.s.pressed)
-      this.player.velocity.z = this.player.speed;
-
-    this.player.update();
-
-    this.camera.cameraUpdate(this.player.mesh.position);
-
-    this.completeFrame();
-
-    this.stats.end();
-
-    this.isNearNpc();
-  }
-  completeFrame() {
-    // update world
-    this.world.step(1/144);
-    // render this frame of our animation
-    this.renderer.render(this.scene, this.camera);
-    // line up our next frame
-    requestAnimationFrame(this.animate.bind(this));
-  }
-
-  setup() {
-    this.sizes = {
-      width: window.innerWidth,
-      height: window.innerHeight,
-    };
-    this.setupScene();
-    this.setupRenderer();
-    this.setupLights();
-
-    this.world = new CANNON.World();
-    this.world.gravity = new CANNON.Vec3(0, -9.81 * 100, 0); // Set gravity
-
-    // Create a ground plane
-
-    this.setupPlayer();
-    this.setupNpc();
-    this.setupCamera();
-
-    document.body.appendChild(this.renderer.domElement);
-    window.addEventListener("resize", this.onWindowResize.bind(this), false);
-  }
-  setupScene() {
-    this.scene = new THREE.Scene();
-    this.scene.background = new THREE.Color(0xffffff);
-  }
-  setupRenderer() {
     const canvas = document.querySelector("#webgl");
-
     this.renderer = new THREE.WebGLRenderer({
       antialias: true,
       canvas: canvas,
       alpha: true,
     });
-    this.renderer.setSize(this.sizes.width, this.sizes.height);
+    this.renderer.setSize(window.innerWidth, window.innerHeight);
     this.renderer.setPixelRatio(Math.min(2, window.devicePixelRatio));
     this.renderer.shadowMap.enabled = true;
-    this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-    this.renderer.physicallyCorrectLights = true;
-    this.renderer.outputEncoding = THREE.sRGBEncoding;
-    this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
+
+    document.body.appendChild(this.renderer.domElement);
   }
-  setupCamera() {
-    this.camera = new MyCamera(this.player.mesh.position);
 
-    this.camera.position.x = 0;
-    this.camera.position.y = 100;
-    this.camera.position.z = 100;
-
-    this.orbitControls = new OrbitControls(
-      this.camera,
-      this.renderer.domElement
-    );
-    this.orbitControls.enabled = false;
-
-    this.scene.add(this.camera);
+  initStats() {
+    this.stats = new Stats();
+    document.body.appendChild(this.stats.dom);
+    this.KeyHandler = new KeyHandler();
   }
-  setupLights() {
-    let ambLight = new THREE.AmbientLight(0xffffff, 0.7, 100);
-    this.scene.add(ambLight);
 
-    let dirLight = new THREE.DirectionalLight(0xffffff, 1, 100);
+  preload() {}
+
+  async create() {
+    const { lights, orbitControls } = await this.warpSpeed("-ground, -sky");
+    this.orbitControls = orbitControls;
+    orbitControls.update();
+
+    const dirLight = new THREE.DirectionalLight(0xffffff, 1, 100);
     dirLight.position.set(-3, 5, -3);
     dirLight.castShadow = true;
-    this.scene.add(dirLight);
+
+    // this.camera.position.set(0, 5, 20);
+    // this.camera.lookAt(0, 0, 0);
+
+    // enable physics debugging
+    // this.physics.debug.enable();
+
+    this.setupMap();
+    this.setupPlayer(3);
+
+    this.camera = new MyCamera(this.player.object.position);
+
+    this.physics.add.box(
+      {
+        name: "box",
+        y: 10,
+        width: 3,
+        depth: 3,
+        height: 3,
+        mass: 1,
+        x: 4,
+      },
+      { phong: { color: 0x00ff00 } }
+    );
   }
-  setupCameraControl() {
-    this.controls = new OrbitControls(this.camera, this.renderer.domElement);
-    this.controls.target.set(0, 0.5, 0);
-    this.controls.update();
-    this.controls.enabled = false;
+
+  setupMap() {
+    this.load.gltf("/src/assets/models/map1/world.glb").then((gltf) => {
+      this.floor = new ExtendedObject3D();
+      this.floor.add(gltf.scene);
+      this.floor.position.setZ(5);
+      this.floor.position.setX(-5);
+      const scale = 5;
+      this.floor.scale.set(scale, scale, scale);
+
+      this.floor.traverse((child) => {
+        if (child.isMesh) {
+          child.castShadow = child.receiveShadow = true;
+        }
+      });
+      this.add.existing(this.floor);
+      this.physics.add.existing(this.floor, {
+        shape: "concave",
+        mass: 0,
+        margin: 0.2,
+      });
+    });
   }
+
   setupPlayer() {
-    this.player = new Player({ width: 20, height: 20, depth: 20 }, this);
-    this.keyHl = new KeyHandler(window);
+    this.player = new Player({ sketch: this });
   }
 
-  setupNpc() {
-    this.npc = new Npc({ width: 20, height: 20, depth: 20 }, this);
-  }
-  onWindowResize() {
-    this.sizes = {
-      width: window.innerWidth,
-      height: window.innerHeight,
-    };
+  update(time, delta) {
+    this.stats.update();
 
-    this.camera.aspect = this.sizes.width / this.sizes.height;
-    this.camera.updateProjectionMatrix();
-    this.renderer.setSize(this.sizes.width, this.sizes.height);
-    this.renderer.setPixelRatio(Math.min(2, window.devicePixelRatio));
-  }
+    if (this.player.object && this.player.object.body) {
+      this.player.update(this.KeyHandler);
 
-  // const player = new TestPlayer({
-  //   sizeProperties: { width: 1, height: 1, depth: 1 },
-  //   position: { x: 0, y: 0, z: 0 },
-  // });
-  // player.castShadow = true;
-  // scene.add(player);
-
-  // const box = new TestPlayer({
-  //   sizeProperties: { width: 1, height: 1, depth: 1 },
-  //   position: { x: -3, y: 0, z: -3 },
-  // });
-  // scene.add(box);
-
-  // camera.position.set(2, 2, 10);
-
-  //movement
-  // const keyHl = new KeyHandler(window);
-
-  isNearNpc() {
-    const DISTANCE_TRIGGER = 20;
-    const distance = this.player.mesh.position.distanceTo(this.npc.mesh.position);
-    if (distance < DISTANCE_TRIGGER) {
-      console.log("WORKS");
-      this.changeUiVisibility(true);
-    } else {
-      this.changeUiVisibility(false);
+      this.camera.update(this.player.object.position);
     }
   }
+}
 
-  //rendering animation
-  // animate() {
-  //   requestAnimationFrame(animate);
+const config = {
+  gravity: { x: 0, y: -30, z: 0 },
+  transparent: true,
+  antialias: true,
+  maxSubSteps: 6,
+  fixedTimeStep: 1 / 60,
+  scale: {
+    width: window.innerWidth * Math.max(1, window.devicePixelRatio / 2),
+    height: window.innerHeight * Math.max(1, window.devicePixelRatio / 2),
+  },
+  scenes: [MainScene],
+};
 
-  //   player.velocity.x = 0;
-  //   player.velocity.z = 0;
-
-  //   if (keyHl.key.a.pressed) player.velocity.x = -player.speed;
-  //   else if (keyHl.key.d.pressed) player.velocity.x = player.speed;
-
-  //   if (keyHl.key.w.pressed) player.velocity.z = -player.speed;
-  //   else if (keyHl.key.s.pressed) player.velocity.z = player.speed;
-
-  //   player.update();
-
-  //   camera.cameraUpdate(player.position);
-  //   renderer.render(scene, camera);
-
-  //   isNearNpc();
-  // }
+export default class GameScene {
+  constructor(changeUIVisibility) {
+    window.addEventListener("load", () => {
+      PhysicsLoader("/src/threejs/lib/ammo/kripken", () => new Project(config));
+    });
+  }
 }

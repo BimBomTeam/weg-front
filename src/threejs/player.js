@@ -1,83 +1,50 @@
-import * as THREE from "three";
-import * as OIMO from "oimo";
-import * as CANNON from "cannon"
-import CannonUtils from './cannonUtils'
+export class Player {
+  constructor({
+    sizes = { width: 3, height: 3, depth: 3 },
+    pos = { x: 0, y: 5, z: 0 },
+    sketch,
+  }) {
+    //Player properties
+    this.objName = "player";
+    this.onGround = true;
+    this.jumpForce = 8;
+    this.speed = 6;
 
-export default class Player {
-  constructor(sizeProperties, sketch) {
-    // setup
-    this.material = new THREE.MeshStandardMaterial({ color: "#FDA006" });
-    this.geometry = new THREE.BoxGeometry(
-      sizeProperties.width,
-      sizeProperties.height,
-      sizeProperties.depth
+    //Initializing Player in physics world
+    this.object = sketch.physics.add.box(
+      {
+        ...pos,
+        ...sizes,
+        name: this.objName,
+        mass: 1,
+        offset: { y: -0.2, x: 0.2, z: -0.2 },
+      },
+      {
+        phong: { color: 0x0000ff },
+      }
     );
-    this.mesh = new THREE.Mesh(this.geometry, this.material);
-    this.mesh.castShadow = true;
-    sketch.scene.add(this.mesh);
-
-    this.speed = 50;
-    this.maxSpeed=50;
-
-    this.velocity = { x: 0, y: 0, z: 0 };
-
-    this.position = { x: 0, y: 50, z: 0 };
-
-    this.mesh.position.set(this.position.x, this.position.y, this.position.z);
-    const material = new CANNON.Material();
-    material.friction = 0;
-    const sphereShape = new CANNON.Sphere(sizeProperties.width / 2)
-    this.body = new CANNON.Body({
-      mass: 50,
-      type: CANNON.Body.DYNAMIC,
-      fixedRotation: true,
-      material: material
-    })
-    this.body.addShape(sphereShape);
-    this.body.position = new CANNON.Vec3(0, 50, 0);
-    sketch.world.addBody(this.body);
-
-
-
-    return this;
+    this.object.body.setAngularFactor(0, 0, 0);
   }
-  update() {
 
-    //#COMMENTED SECTION is a test to implement movement with immpulse
-    // var force = this.mesh.position.clone().negate().normalize().multiplyScalar(10000);
-    // var center=new THREE.Vector3(0, 0, 0);
-    // if(this.velocity.x!=0){
-    //   this.body.applyImpulse(center, force);
-    // }
+  update(KeyHandler) {
+    this.object.body.on.collision((otherObject, event) => {
+      this.onGround = true;
+    });
 
-    const sin45 = Math.sin(Math.PI / 4)
-    //#movement implementation
-    if(Math.abs(this.body.velocity.x)+Math.abs(this.body.velocity.z)<=this.maxSpeed){
-      this.body.velocity = new CANNON.Vec3(this.velocity.x, this.body.velocity.y, this.velocity.z);
+    if (KeyHandler.key.a.pressed) {
+      this.object.body.setVelocityX(-this.speed);
+    } else if (KeyHandler.key.d.pressed) {
+      this.object.body.setVelocityX(this.speed);
     }
-    else {
-      this.body.velocity = new CANNON.Vec3(this.velocity.x * sin45, this.body.velocity.y, this.velocity.z * sin45);
+    if (KeyHandler.key.w.pressed) {
+      this.object.body.setVelocityZ(-this.speed);
+    } else if (KeyHandler.key.s.pressed) {
+      this.object.body.setVelocityZ(this.speed);
     }
-    
 
-    this.mesh.position.copy(this.body.position);
-    this.mesh.quaternion.copy(this.body.quaternion);
+    if (KeyHandler.key.space.pressed && this.onGround == true) {
+      this.object.body.applyForceY(this.jumpForce);
+      this.onGround = false;
+    }
   }
-  // const player = new TestPlayer({
-  //   sizeProperties: { width: 1, height: 1, depth: 1 },
-  //   position: { x: 0, y: 0, z: 0 },
-  // });
-  // player.castShadow = true;
-  // scene.add(player);
-
-  // const box = new TestPlayer({
-  //   sizeProperties: { width: 1, height: 1, depth: 1 },
-  //   position: { x: -3, y: 0, z: -3 },
-  // });
-  // scene.add(box);
-
-  // camera.position.set(2, 2, 10);
-
-  //movement
-  //
 }

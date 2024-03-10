@@ -1,23 +1,22 @@
 import * as THREE from "three";
-
-export default class MyCamera extends THREE.PerspectiveCamera {
-  camera = null;
+export class MyCamera extends THREE.PerspectiveCamera {
   constructor(playerPosition) {
     super(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    this.cameraHeight = 50;
-    this.cameraDistance = 120;
-    this.smoothness = 0.02;
 
-    this.lookAt(playerPosition);
-    this.position.set(0, this.cameraHeight, this.cameraDistance);
+    this.cameraHeight = 40;
+    this.cameraDistance = 20;
+    this.smoothness = 0.005;
+
+    this.position.set(
+      playerPosition.x,
+      playerPosition.y + this.cameraHeight,
+      playerPosition.z + this.cameraDistance
+    );
 
     this.deadZone = {
-      minX: -2,
-      maxX: 2,
-      minY: -1,
-      maxY: 1,
-      minZ: 0, //far from you. more is longer
-      maxZ: 80,
+      x: 4,
+      y: 4,
+      z: 4,
     };
   }
 
@@ -25,46 +24,36 @@ export default class MyCamera extends THREE.PerspectiveCamera {
     return start * (1 - t) + end * t;
   }
 
-  cameraUpdate(playerPosition) {
-    const desiredPosition = {
+  update(playerPosition) {
+    this.lookAt(playerPosition);
+    let targetPosition = {
       x: playerPosition.x,
       y: playerPosition.y + this.cameraHeight,
       z: playerPosition.z + this.cameraDistance,
     };
 
-    let moveX = desiredPosition.x - this.position.x;
-    let moveY = desiredPosition.y - this.position.y;
-    let moveZ = desiredPosition.z - this.position.z;
+    let moveX = targetPosition.x - this.position.x;
+    let moveY = targetPosition.y - this.position.y;
+    let moveZ = targetPosition.z - this.position.z;
 
-    if (
-      Math.abs(moveX) > this.deadZone.maxX ||
-      Math.abs(moveX) < this.deadZone.minX
-    ) {
+    if (moveX > this.deadZone.x || moveX < -this.deadZone.x) {
       this.position.x = this.lerp(
         this.position.x,
-        desiredPosition.x,
+        targetPosition.x,
         this.smoothness
       );
     }
-
-    if (
-      Math.abs(moveY) > this.deadZone.maxY ||
-      Math.abs(moveY) < this.deadZone.minY
-    ) {
+    if (moveY > this.deadZone.y || moveY < -this.deadZone.y) {
       this.position.y = this.lerp(
         this.position.y,
-        desiredPosition.y,
+        targetPosition.y,
         this.smoothness
       );
     }
-
-    if (
-      Math.abs(moveZ) > this.deadZone.maxZ ||
-      Math.abs(moveZ) < this.deadZone.minZ
-    ) {
+    if (moveZ > this.deadZone.z || moveZ < -this.deadZone.z) {
       this.position.z = this.lerp(
         this.position.z,
-        desiredPosition.z,
+        targetPosition.z,
         this.smoothness
       );
     }
