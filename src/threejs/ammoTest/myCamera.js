@@ -24,7 +24,7 @@ export class MyCamera extends THREE.PerspectiveCamera {
     return start * (1 - t) + end * t;
   }
 
-  cameraUpdate(playerPosition) {
+  update(playerPosition) {
     this.lookAt(playerPosition);
     let targetPosition = {
       x: playerPosition.x,
