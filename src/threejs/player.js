@@ -1,4 +1,6 @@
 import { ExtendedObject3D } from "enable3d";
+import { Vector3 } from "three";
+import PlayerParticleSystem from "./playerParticleSystem";
 
 export class Player {
   constructor({
@@ -30,6 +32,8 @@ export class Player {
     this.object.body.setFriction(0.5);
 
     this.initSensor(sketch);
+    //Player ParticleSystem
+    this.playerParticleSystem = new PlayerParticleSystem(sketch)
   }
 
   initSensor(sketch) {
@@ -54,19 +58,31 @@ export class Player {
       else this.onGround = false;
     });
 
+    let showParticles = false
+    let accrossVel = 0;
+    let straightVel = 0;
+
     if (KeyHandler.key.a.pressed) {
       this.object.body.setVelocityX(-this.speed);
       this.isWalking = true;
+      accrossVel = -1;
+      showParticles = true
     } else if (KeyHandler.key.d.pressed) {
       this.object.body.setVelocityX(this.speed);
       this.isWalking = true;
+      accrossVel = 1;
+      showParticles = true
     }
     if (KeyHandler.key.w.pressed) {
       this.object.body.setVelocityZ(-this.speed);
       this.isWalking = true;
+      straightVel = -1;
+      showParticles = true
     } else if (KeyHandler.key.s.pressed) {
       this.object.body.setVelocityZ(this.speed);
       this.isWalking = true;
+      straightVel = 1;
+      showParticles = true
     }
     if (
       KeyHandler.key.space.pressed &&
@@ -78,7 +94,12 @@ export class Player {
     }
 
     this.animateWalk();
-    console.log(this.onGround);
+    
+    if (!this.onGround) {
+      showParticles = false;
+    }
+    this.playerParticleSystem.active = showParticles;
+    this.playerParticleSystem.update( this.object.position , new Vector3(accrossVel, 0, straightVel))
   }
 
   animateWalk() {
