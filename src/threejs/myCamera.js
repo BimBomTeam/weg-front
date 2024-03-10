@@ -49,7 +49,6 @@ export class MyCamera extends THREE.PerspectiveCamera {
     }
 
     if (adjustVector.x != 0 || adjustVector.y != 0 || adjustVector.z != 0) {
-      console.log(deltaTime);
       adjustVector.add(this.position);
       this.position.lerp(adjustVector, deltaTime * 0.0001 * this.cameraSpeed);
       // this.lookAt(playerPosition);
