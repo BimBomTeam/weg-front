@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import UiMenu from "./components/UI/UIiMenu";
+import UiMenu from "./components/interactive-game-ui/UIiMenu";
+import UserInterface from "./components/user-interface/UserInterface";
 import GameScene from "./threejs/main";
 
 const Game = () => {

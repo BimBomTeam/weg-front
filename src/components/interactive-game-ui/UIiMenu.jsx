@@ -43,13 +43,13 @@ const UiMenu = () => {
             rows={5}
           />
           <p>{text.length}/255</p>
-          <button onClick={onButtonClick}></button>
-          
+          <button id="send" onClick={onButtonClick}></button>
         </div>
       </div>
       <ToastContainer position="top-center" closeOnClick={true} />
     </div>
   );
 };
+
 
 export default UiMenu;
