@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import { useSpring, animated } from "react-spring";
 import DialogForm from "../../server/DialogForm";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -6,6 +7,18 @@ import "react-toastify/dist/ReactToastify.css";
 const UiMenu = () => {
   const [text, setText] = useState("");
   const textareaRef = useRef(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    setIsVisible(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isVisible) {
+      // Jeśli kontener jest niewidoczny, zresetuj tekst
+      setText("");
+    }
+  }, [isVisible]);
 
   useEffect(() => {
     if (!text && textareaRef.current) {
@@ -31,10 +44,14 @@ const UiMenu = () => {
     }
   };
 
+  const animationProps = useSpring({
+    transform: isVisible ? "translateY(0%)" : "translateY(100%)",
+  });
+
   return (
     <div>
       <div className="main-ui">
-        <div className="input-container">
+        <animated.div className="input-container" style={animationProps}>
           <textarea
             ref={textareaRef}
             placeholder="Write something.."
@@ -44,12 +61,11 @@ const UiMenu = () => {
           />
           <p>{text.length}/255</p>
           <button id="send" onClick={onButtonClick}></button>
-        </div>
+        </animated.div>
       </div>
       <ToastContainer position="top-center" closeOnClick={true} />
     </div>
   );
 };
-
 
 export default UiMenu;
