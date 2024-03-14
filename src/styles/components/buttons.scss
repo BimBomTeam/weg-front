@@ -2,11 +2,12 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
 
 #send {
   position: absolute;
-  top: 37.5%;
-  right: 6%;
-  height: 50px;
-  width: 50px;
-  transform: translate(0, -50%);
+  top: 55%;
+  right: 19%;
+  height: 45px;
+  width: 45px;
+  margin-right: -5px;
+  transform: translate(5px, -50%);
   border-radius: 8px;
   border: 1px solid transparent;
   font-size: 16px;
@@ -19,17 +20,33 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
   background-repeat: no-repeat;
   outline: none;
   cursor: pointer;
-  transition: border-color 0.25s;
+  transition: transform 0.3s ease, margin-right 0.3s;
 
   &:hover {
-      border-color: $button-hover-color;
-  }
-
-  &:focus,
-  &:focus-visible {
-      outline: 4px auto -webkit-focus-ring-color;
+    transform: scale(1.2) translate(2px, -45%); 
+    margin-right: 0;
   }
 }
+
+.voice_button {
+  position: fixed;
+  height: 70px; /* Stała wysokość */
+  width: 70px; /* Stała szerokość */
+  top: 40%;
+  left: 88.6%;
+  background-image: url('voice.png');
+  background-size: cover;
+  background-color: transparent;
+  border: 0;
+  transition: transform 0.3s ease, margin-right 0.3s;
+
+  &:hover {
+    transform: scale(1.1) translate(2px, -45%);
+    margin-right: 0;
+  }
+}
+
+
 
 #Login {
   top: 0px;

@@ -2,7 +2,19 @@
   z-index: 2;
   display: block;
   position: fixed;
-  width: 600px;
-  top: 86%;
-  transform: translate(-40%, -50%);
+  width: 1000px;
+  height: 250px;
+  border-radius: 30px;
+  background-color: $button-gradient-start; 
+  backdrop-filter: blur(18px);
+  top: 76%;
+  left: 25%
+}
+
+.animated-gif {
+  position: relative;
+  width: 150px;
+  height: 75px;
+  top: 30%;
+  right: 43%;
 }

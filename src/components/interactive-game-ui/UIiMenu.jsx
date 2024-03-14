@@ -7,7 +7,10 @@ import "react-toastify/dist/ReactToastify.css";
 const UiMenu = () => {
   const [text, setText] = useState("");
   const textareaRef = useRef(null);
+  const buttonRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
+  const [isButtonClicked, setIsButtonClicked] = useState(false);
+  const [isGifVisible, setIsGifVisible] = useState(false);
 
   useEffect(() => {
     setIsVisible(true);
@@ -15,7 +18,6 @@ const UiMenu = () => {
 
   useEffect(() => {
     if (!isVisible) {
-      // Jeśli kontener jest niewidoczny, zresetuj tekst
       setText("");
     }
   }, [isVisible]);
@@ -36,6 +38,10 @@ const UiMenu = () => {
   };
 
   const onButtonClick = async () => {
+    setIsButtonClicked(true);
+    setTimeout(() => {
+      setIsGifVisible(true);
+    }, 300);
     try {
       const data = await DialogForm(text);
       console.log(data);
@@ -45,24 +51,47 @@ const UiMenu = () => {
   };
 
   const animationProps = useSpring({
+    height: isButtonClicked ? "350px" : "200px",
     transform: isVisible ? "translateY(0%)" : "translateY(100%)",
+    top: isButtonClicked ? "60%" : "76%",
+  });
+
+  const textareaAnimationProps = useSpring({
+    marginTop: isButtonClicked ? "130px" : "0px",
+  });
+
+  const buttonAnimationProps = useSpring({
+    marginTop: isButtonClicked ? "70px" : "0px",
+  });
+
+  const buttonVoiceProps = useSpring({
+    marginTop: isButtonClicked ? "90px" : "0px",
   });
 
   return (
     <div>
-      <div className="main-ui">
-        <animated.div className="input-container" style={animationProps}>
-          <textarea
-            ref={textareaRef}
-            placeholder="Write something.."
-            value={text}
-            onChange={onTextChange}
-            rows={5}
-          />
-          <p>{text.length}/255</p>
-          <button id="send" onClick={onButtonClick}></button>
-        </animated.div>
-      </div>
+      <animated.div className="main-ui" style={animationProps}>
+        {isGifVisible && (
+          <img src="writing_dots.gif" alt="Animated GIF" className="animated-gif" />
+        )}
+        <animated.textarea
+          ref={textareaRef}
+          placeholder="Write something.."
+          value={text}
+          onChange={onTextChange}
+          rows={5}
+          style={textareaAnimationProps}
+        />
+        <p>{text.length}/255</p>
+        <animated.button className="voice_button"
+        style={buttonVoiceProps}>
+        </animated.button>
+        <animated.button
+          id="send"
+          onClick={onButtonClick}
+          style={buttonAnimationProps}
+        ></animated.button>
+      </animated.div>
       <ToastContainer position="top-center" closeOnClick={true} />
     </div>
   );
