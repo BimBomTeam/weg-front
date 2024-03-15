@@ -67,7 +67,7 @@ class MainScene extends Scene3D {
 
     this.camera = new MyCamera(this.player.object.position);
 
-    this.physics.add.box(
+    this.box = this.physics.add.box(
       {
         name: "box",
         y: 10,
@@ -102,12 +102,13 @@ class MainScene extends Scene3D {
         margin: 0.2,
       });
       this.floor.body.setFriction(1);
+      this.floor.body.checkCollisions = true;
+      this.floor.name = "floor";
     });
   }
 
   setupPlayer() {
     this.player = new Player({ sketch: this });
-    console.log(this.scene)
   }
 
   update(time, delta) {
