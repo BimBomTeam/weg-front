@@ -46,6 +46,24 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
   }
 }
 
+#expand_field_button {
+  position: fixed;
+  height: 50px;
+  width: 93px;
+  top: -15%;
+  left: 45%;
+  background-image: url('expand.png');
+  background-size: cover;
+  background-color: transparent;
+  border: 0;
+  transition: transform 0.3s ease, margin-right 0.3s;
+
+  &:hover {
+    transform: scale(1.1) translate(2px, 10%);
+    margin-right: 0;
+  }
+}
+
 
 
 #Login {

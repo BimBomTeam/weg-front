@@ -10,6 +10,9 @@ const UiMenu = () => {
   const buttonRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
   const [isButtonClicked, setIsButtonClicked] = useState(false);
+  const [isExpandButtonClicked, setIsExpandButtonClicked] = useState(false);
+  const [isExpandButtonVisible, setIsExpandButtonVisible] = useState(false);
+  const [isButtonRotated, setIsButtonRotated] = useState(false);
   const [isGifVisible, setIsGifVisible] = useState(false);
 
   useEffect(() => {
@@ -37,10 +40,17 @@ const UiMenu = () => {
     }
   };
 
+  const onButtonClickExpand = () => {
+    setIsExpandButtonClicked(!isExpandButtonClicked); // Przełącz stan isExpandButtonClicked
+    setIsGifVisible(false); // Ukryj animację GIF-a
+    setIsButtonRotated(!isButtonRotated);
+  };
+
   const onButtonClick = async () => {
     setIsButtonClicked(true);
     setTimeout(() => {
       setIsGifVisible(true);
+      setIsExpandButtonVisible(true);
     }, 300);
     try {
       const data = await DialogForm(text);
@@ -51,29 +61,44 @@ const UiMenu = () => {
   };
 
   const animationProps = useSpring({
-    height: isButtonClicked ? "350px" : "200px",
-    transform: isVisible ? "translateY(0%)" : "translateY(100%)",
-    top: isButtonClicked ? "60%" : "76%",
+    height: isExpandButtonClicked ? (isButtonClicked ? "850px" : "50px") : (isButtonClicked ? "350px" : "200px"),
+    transform: isVisible ? (isExpandButtonClicked ? "translateY(0%)" : "translateY(0%)") : "translateY(100%)",
+    top: isExpandButtonClicked ? (isButtonClicked ? "5%" : "60%") : (isButtonClicked ? "50%" : "76%"),
   });
 
   const textareaAnimationProps = useSpring({
-    marginTop: isButtonClicked ? "130px" : "0px",
+    marginTop: isExpandButtonClicked ? (isButtonClicked ? "550px" : "0px") : (isButtonClicked ? "130px" : "0px"),
   });
 
   const buttonAnimationProps = useSpring({
-    marginTop: isButtonClicked ? "70px" : "0px",
+    marginTop: isExpandButtonClicked ? (isButtonClicked ? "300px" : "0px") : (isButtonClicked ? "70px" : "0px"),
   });
 
   const buttonVoiceProps = useSpring({
-    marginTop: isButtonClicked ? "90px" : "0px",
+    marginTop: isExpandButtonClicked ? (isButtonClicked ? "390px" : "0px") : (isButtonClicked ? "90px" : "0px"),
   });
+
+  const buttonExpandProps = useSpring({
+    marginTop: isExpandButtonClicked ? (isButtonClicked ? "150px" : "0px") : (isButtonClicked ? "70px" : "0px"),
+    transform: `rotate(${isButtonRotated ? 180 : 0}deg)`,
+    config: { duration: 50 },
+  })
 
   return (
     <div>
       <animated.div className="main-ui" style={animationProps}>
-        {isGifVisible && (
+      {isGifVisible && (
           <img src="writing_dots.gif" alt="Animated GIF" className="animated-gif" />
         )}
+
+        {isExpandButtonVisible && (
+          <animated.button
+            id="expand_field_button"
+            onClick={onButtonClickExpand}
+            style={buttonExpandProps}
+          ></animated.button>
+        )}
+
         <animated.textarea
           ref={textareaRef}
           placeholder="Write something.."
@@ -84,7 +109,7 @@ const UiMenu = () => {
         />
         <p>{text.length}/255</p>
         <animated.button className="voice_button"
-        style={buttonVoiceProps}>
+          style={buttonVoiceProps}>
         </animated.button>
         <animated.button
           id="send"
