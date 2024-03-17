@@ -3,11 +3,10 @@ import { Vector3 } from "three";
 import * as THREE from "three";
 import PlayerParticleSystem from "./playerParticleSystem";
 
-
 export class Player {
   constructor({
     sizes = { width: 3, height: 3, depth: 3 },
-    pos = { x: 30, y: 15, z: 0 },
+    pos = { x: 40, y: 20, z: 0 },
     sketch,
   }) {
     this.sketch = sketch;
@@ -17,8 +16,8 @@ export class Player {
     this.jumpForce = 15;
     this.speed = 7;
     this.isWalking = false;
-    this.scale = 3;
-    this.deadLevel = 2.5;
+    this.scale = 2;
+    this.deadLevel = 1.6;
     this.lastSafePosition = new Vector3();
     this.lastFallTime = 0;
 
@@ -28,21 +27,28 @@ export class Player {
   async initPlayer(pos, sketch) {
     await this.initPlayerObject(pos, sketch);
     this.object.name = "player";
+    this.playAnimation("idle");
 
     //Attaching the collision sensor to player body
     this.initSensor(sketch);
-    
+
     const processColision = (otherObject, event) => {
-      if (event !== "end") {
+      if (event !== "end" && this.object.body.velocity.y < 1) {
         this.onGround = true;
-        if (this.object.position.y > this.deadLevel && this.currentTime() - this.lastFallTime > 5) {
-            this.lastSafePosition = { ...this.object.position };
-        } else if (!(this.object.position.y > this.deadLevel && this.currentTime())) {
-          this.setPosition(this.lastSafePosition)
+        if (
+          this.object.position.y > this.deadLevel &&
+          this.currentTime() - this.lastFallTime > 2
+        ) {
+          this.lastSafePosition = { ...this.object.position };
+        } else if (this.object.position.y < this.deadLevel) {
+          let tmpPosition = { ...this.lastSafePosition };
+          tmpPosition.y += 3;
+          this.setPosition(tmpPosition);
           this.lastFallTime = this.currentTime();
         }
       } else {
-          this.onGround = false;
+        this.onGround = false;
+        this.playAnimation("idle");
       }
     };
 
@@ -74,13 +80,6 @@ export class Player {
         //Setting Player glb object scale
         this.object.scale.set(this.scale, this.scale, this.scale);
 
-        //Updating the initial Player position
-        //!!!Not Working Now!!!
-        //Needed to be replaced by Teleport method
-        this.object.position.setX(pos.x);
-        this.object.position.setY(pos.y);
-        this.object.position.setY(pos.z);
-
         //Physics enabling
         sketch.physics.add.existing(this.object, {
           shape: "box",
@@ -98,6 +97,9 @@ export class Player {
         this.object.body.setAngularFactor(0, 0, 0);
         this.object.body.setFriction(0.5);
 
+        //Updating player initial position
+        this.setPosition(pos);
+
         //Animation setup
         sketch.animationMixers.add(this.object.anims.mixer);
         gltf.animations.forEach((animation) => {
@@ -108,28 +110,27 @@ export class Player {
 
   setPosition(newPos) {
     // set body to be kinematic
-    this.object.body.setCollisionFlags(2)
-    
+    this.object.body.setCollisionFlags(2);
 
     // set the new position
-    this.object.position.set(newPos.x, newPos.y, newPos.z)
-    this.object.body.needUpdate = true
+    this.object.position.set(newPos.x, newPos.y, newPos.z);
+    this.object.body.needUpdate = true;
 
     // this will run only on the next update if body.needUpdate = true
     this.object.body.once.update(() => {
       // set body back to dynamic
-      this.object.body.setCollisionFlags(0)
+      this.object.body.setCollisionFlags(0);
 
       // if you do not reset the velocity and angularVelocity, the object will keep it
-      this.object.body.setVelocity(0, 0, 0)
-      this.object.body.setAngularVelocity(0, 0, 0)
-    })
+      this.object.body.setVelocity(0, 0, 0);
+      this.object.body.setAngularVelocity(0, 0, 0);
+    });
   }
 
   initSensor(sketch) {
     this.sensor = new ExtendedObject3D();
-    this.sensor.position.set(this.object.position.x, this.object.position.y - (this.size.y * this.scale) / 2 + 0.1, this.object.position.z);
-    
+    this.sensor.position.set(0, 0 - (this.size.y * this.scale) / 2 + 0.1, 0);
+
     sketch.physics.add.existing(this.sensor, {
       mass: 1e-8,
       shape: "box",
@@ -145,7 +146,7 @@ export class Player {
 
   update(KeyHandler) {
     this.isWalking = false;
-    let showParticles = false
+    let showParticles = false;
     let accrossVel = 0;
     let straightVel = 0;
     if (!this.onGround) {

@@ -65,8 +65,8 @@ class MainScene extends Scene3D {
     // enable physics debugging
     // this.physics.debug.enable();
 
-    this.setupMap();
     this.setupPlayer();
+    this.setupMap();
 
     this.camera = new MyCamera(new Vector3(0, 0, 0));
 
