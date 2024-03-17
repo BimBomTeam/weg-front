@@ -3,12 +3,14 @@ import { Vector3 } from "three";
 import * as THREE from "three";
 import PlayerParticleSystem from "./playerParticleSystem";
 
+
 export class Player {
   constructor({
     sizes = { width: 3, height: 3, depth: 3 },
-    pos = { x: 0, y: 5, z: 0 },
+    pos = { x: 30, y: 15, z: 0 },
     sketch,
   }) {
+    this.sketch = sketch;
     //Player properties
     this.objName = "player";
     this.onGround = false;
@@ -16,27 +18,11 @@ export class Player {
     this.speed = 7;
     this.isWalking = false;
     this.scale = 3;
+    this.deadLevel = 2.5;
+    this.lastSafePosition = new Vector3();
+    this.lastFallTime = 0;
 
     this.initPlayer(pos, sketch);
-
-    //Initializing Player in physics world
-    // this.object = sketch.physics.add.box(
-    //   {
-    //     ...pos,
-    //     ...sizes,
-    //     name: this.objName,
-    //     // mass: 1,
-    //     offset: { y: -0.2, x: 0.2, z: -0.2 },
-    //   },
-    //   {
-    //     phong: { color: 0x0000ff },
-    //   }
-    // );
-    // this.initPlayer(pos, 5, sketch);
-
-    // this.initSensor(sketch);
-    //Player ParticleSystem
-    // this.playerParticleSystem = new PlayerParticleSystem(sketch);
   }
 
   async initPlayer(pos, sketch) {
@@ -45,6 +31,22 @@ export class Player {
 
     //Attaching the collision sensor to player body
     this.initSensor(sketch);
+    
+    const processColision = (otherObject, event) => {
+      if (event !== "end") {
+        this.onGround = true;
+        if (this.object.position.y > this.deadLevel && this.currentTime() - this.lastFallTime > 5) {
+            this.lastSafePosition = { ...this.object.position };
+        } else if (!(this.object.position.y > this.deadLevel && this.currentTime())) {
+          this.setPosition(this.lastSafePosition)
+          this.lastFallTime = this.currentTime();
+        }
+      } else {
+          this.onGround = false;
+      }
+    };
+
+    this.sensor.body.on.collision(processColision);
 
     this.playerParticleSystem = new PlayerParticleSystem(sketch);
   }
@@ -104,11 +106,30 @@ export class Player {
       });
   }
 
+  setPosition(newPos) {
+    // set body to be kinematic
+    this.object.body.setCollisionFlags(2)
+    
+
+    // set the new position
+    this.object.position.set(newPos.x, newPos.y, newPos.z)
+    this.object.body.needUpdate = true
+
+    // this will run only on the next update if body.needUpdate = true
+    this.object.body.once.update(() => {
+      // set body back to dynamic
+      this.object.body.setCollisionFlags(0)
+
+      // if you do not reset the velocity and angularVelocity, the object will keep it
+      this.object.body.setVelocity(0, 0, 0)
+      this.object.body.setAngularVelocity(0, 0, 0)
+    })
+  }
+
   initSensor(sketch) {
     this.sensor = new ExtendedObject3D();
-    this.sensor.position.setY(
-      this.object.position.y - (this.size.y * this.scale) / 2 + 0.1
-    );
+    this.sensor.position.set(this.object.position.x, this.object.position.y - (this.size.y * this.scale) / 2 + 0.1, this.object.position.z);
+    
     sketch.physics.add.existing(this.sensor, {
       mass: 1e-8,
       shape: "box",
@@ -118,22 +139,13 @@ export class Player {
     });
     this.sensor.body.setCollisionFlags(4);
 
-    // connect sensor to player
+    //connect sensor to player
     sketch.physics.add.constraints.lock(this.object.body, this.sensor.body);
   }
 
   update(KeyHandler) {
-    this.sensor.body.on.collision((otherObject, event) => {
-      if (event !== "end" && this.object.body.velocity.y < 1) {
-        this.onGround = true;
-        this.playAnimation("idle");
-      } else {
-        this.onGround = false;
-      }
-    });
     this.isWalking = false;
-
-    let showParticles = true;
+    let showParticles = false
     let accrossVel = 0;
     let straightVel = 0;
     if (!this.onGround) {
@@ -170,10 +182,17 @@ export class Player {
     this.animateWalk();
 
     this.playerParticleSystem.active = showParticles;
+
     this.playerParticleSystem.update(
       this.object.position,
       new Vector3(accrossVel, 0, straightVel)
     );
+  }
+
+  currentTime() {
+    var currentDate = new Date();
+
+    return Math.floor(currentDate.getTime() / 1000);
   }
 
   animateWalk() {
