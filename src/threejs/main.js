@@ -10,6 +10,7 @@ import { KeyHandler } from "./keyHandler";
 
 import { MyCamera } from "./myCamera";
 import { Player } from "./player";
+import { Vector3 } from "three";
 
 class MainScene extends Scene3D {
   constructor() {
@@ -19,6 +20,8 @@ class MainScene extends Scene3D {
   init() {
     this.initRender();
     this.initStats();
+    //World margin that safes objects from being stucked in wireware (objects physic body.y needed to be rised to this value)
+    this.worldMargin = 0.2;
   }
 
   initRender() {
@@ -65,9 +68,9 @@ class MainScene extends Scene3D {
     this.setupMap();
     this.setupPlayer();
 
-    this.camera = new MyCamera(this.player.object.position);
+    this.camera = new MyCamera(new Vector3(0, 0, 0));
 
-    this.physics.add.box(
+    this.box = this.physics.add.box(
       {
         name: "box",
         y: 10,
@@ -99,15 +102,16 @@ class MainScene extends Scene3D {
       this.physics.add.existing(this.floor, {
         shape: "concave",
         mass: 0,
-        margin: 0.2,
+        margin: this.worldMargin,
       });
       this.floor.body.setFriction(1);
+      this.floor.body.checkCollisions = true;
+      this.floor.name = "floor";
     });
   }
 
   setupPlayer() {
     this.player = new Player({ sketch: this });
-    console.log(this.scene)
   }
 
   update(time, delta) {
