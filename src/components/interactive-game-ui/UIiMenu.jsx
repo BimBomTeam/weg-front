@@ -63,7 +63,7 @@ const UiMenu = () => {
   const animationProps = useSpring({
     height: isExpandButtonClicked ? (isButtonClicked ? "850px" : "50px") : (isButtonClicked ? "350px" : "200px"),
     transform: isVisible ? (isExpandButtonClicked ? "translateY(0%)" : "translateY(0%)") : "translateY(100%)",
-    top: isExpandButtonClicked ? (isButtonClicked ? "5%" : "60%") : (isButtonClicked ? "50%" : "76%"),
+    top: isExpandButtonClicked ? (isButtonClicked ? "8.5%" : "60%") : (isButtonClicked ? "60%" : "76%"),
   });
 
   const textareaAnimationProps = useSpring({
