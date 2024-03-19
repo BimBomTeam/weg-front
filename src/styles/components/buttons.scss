@@ -15,7 +15,7 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
   font-family: inherit;
   line-height: 0;
   background-color: transparent;
-  background-image: url('send.png');
+  background-image: url('/images/send.png');
   background-size: cover;
   background-repeat: no-repeat;
   outline: none;
@@ -30,11 +30,11 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
 
 .voice_button {
   position: fixed;
-  height: 70px; /* Stała wysokość */
-  width: 70px; /* Stała szerokość */
+  height: 70px;
+  width: 70px;
   top: 40%;
   left: 88.6%;
-  background-image: url('voice.png');
+  background-image: url('/images/voice.png');
   background-size: cover;
   background-color: transparent;
   border: 0;
@@ -52,7 +52,7 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
   width: 93px;
   top: -15%;
   left: 45%;
-  background-image: url('expand.png');
+  background-image: url('/images/expand.png');
   background-size: cover;
   background-color: transparent;
   border: 0;
@@ -127,7 +127,7 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
   height: 30px;
   border: 0;
   background-color: transparent;
-  background-image: url('back.png');
+  background-image: url('/images/back.png');
   background-size: cover;
   transition: transform 0.3s ease; 
 }

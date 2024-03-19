@@ -41,8 +41,8 @@ const UiMenu = () => {
   };
 
   const onButtonClickExpand = () => {
-    setIsExpandButtonClicked(!isExpandButtonClicked); // Przełącz stan isExpandButtonClicked
-    setIsGifVisible(false); // Ukryj animację GIF-a
+    setIsExpandButtonClicked(!isExpandButtonClicked);
+    setIsGifVisible(false); 
     setIsButtonRotated(!isButtonRotated);
   };
 
@@ -88,7 +88,7 @@ const UiMenu = () => {
     <div>
       <animated.div className="main-ui" style={animationProps}>
       {isGifVisible && (
-          <img src="writing_dots.gif" alt="Animated GIF" className="animated-gif" />
+          <img src="/images/writing_dots.gif" alt="Animated GIF" className="animated-gif" />
         )}
 
         {isExpandButtonVisible && (
