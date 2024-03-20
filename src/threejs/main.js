@@ -12,6 +12,8 @@ import { MyCamera } from "./myCamera";
 import { Player } from "./player";
 import { Vector3 } from "three";
 
+import { CSS2DRenderer } from "three/addons/renderers/CSS2DRenderer.js";
+
 class MainScene extends Scene3D {
   constructor() {
     super({ key: "MainScene" });
@@ -38,8 +40,15 @@ class MainScene extends Scene3D {
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     this.renderer.setPixelRatio(Math.min(2, window.devicePixelRatio));
     this.renderer.shadowMap.enabled = true;
+    this.renderer.shadowMap.type = THREE.PCFShadowMap;
 
     document.body.appendChild(this.renderer.domElement);
+
+    this.labelRenderer = new CSS2DRenderer();
+    this.labelRenderer.setSize(window.innerWidth, window.innerHeight);
+    this.labelRenderer.domElement.style.position = "absolute";
+    this.labelRenderer.domElement.style.top = "0px";
+    document.body.appendChild(this.labelRenderer.domElement);
   }
 
   initStats() {
@@ -50,15 +59,32 @@ class MainScene extends Scene3D {
 
   preload() {}
 
+  lightsSetup(lights) {
+    lights.directionalLight.intensity = 4;
+    lights.directionalLight.color.set(0xffbe54);
+    lights.directionalLight.shadow.bias = -0.002;
+    lights.directionalLight.shadow.mapSize.width = 2048; // default
+    lights.directionalLight.shadow.mapSize.height = 2048; // default
+    lights.directionalLight.shadow.camera.near = 0.01; // default
+    lights.directionalLight.shadow.camera.far = 300; // default
+    lights.directionalLight.shadow.camera.top = -100; // default
+    lights.directionalLight.shadow.camera.right = 100; // default
+    lights.directionalLight.shadow.camera.left = -100; // default
+    lights.directionalLight.shadow.camera.bottom = 100; // default
+  }
+
   async create() {
     const { lights, orbitControls } = await this.warpSpeed("-ground, -sky");
     this.orbitControls = orbitControls;
     orbitControls.update();
 
-    const dirLight = new THREE.DirectionalLight(0xffffff, 1, 100);
-    dirLight.position.set(-3, 5, -3);
-    dirLight.castShadow = true;
+    // const dirLight = new THREE.DirectionalLight(0xffffff, 1, 100);
+    // lights.position.set(-3, 5, -3);
+    // lights.castShadow = true;
+    // console.log(lights);
+    // lights.directionalLight.position.set(-1, 5, -2);
 
+    this.lightsSetup(lights);
     // this.camera.position.set(0, 5, 20);
     // this.camera.lookAt(0, 0, 0);
 
@@ -115,6 +141,7 @@ class MainScene extends Scene3D {
   }
 
   update(time, delta) {
+    this.labelRenderer.render(this.scene, this.camera);
     this.stats.update();
 
     if (this.player.object && this.player.object.body) {
