@@ -78,6 +78,19 @@ class MainScene extends Scene3D {
     this.orbitControls = orbitControls;
     orbitControls.update();
 
+    var geom = new THREE.PlaneGeometry(1000, 1000);
+    var mat = new THREE.MeshPhongMaterial({ color: 0x20b7e6 });
+
+    var plane = new THREE.Mesh(geom, mat);
+    plane.rotation.x = -Math.PI / 2;
+    plane.position.y = 0.1;
+    plane.receiveShadow = true;
+    // this.scene.add(plane);
+    this.add.existing(plane);
+    this.physics.add.existing(plane, { shape: "convexMesh", mass: 0 });
+    this.scene.fog = new THREE.FogExp2(0xffffff, 0.01);
+    // this.plane= this.physics.add.plane(
+
     // const dirLight = new THREE.DirectionalLight(0xffffff, 1, 100);
     // lights.position.set(-3, 5, -3);
     // lights.castShadow = true;
@@ -111,7 +124,7 @@ class MainScene extends Scene3D {
   }
 
   setupMap() {
-    this.load.gltf("/src/assets/models/map1/world.glb").then((gltf) => {
+    this.load.gltf("/src/assets/models/map1/world2.glb").then((gltf) => {
       this.floor = new ExtendedObject3D();
       this.floor.add(gltf.scene);
       this.floor.position.setZ(5);
