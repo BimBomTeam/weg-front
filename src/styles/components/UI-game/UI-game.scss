@@ -5,10 +5,11 @@
   width: 1000px;
   height: 250px;
   border-radius: 30px;
-  background-color: $button-gradient-start; 
+  background-color: $button-gradient-start;
   backdrop-filter: blur(18px);
   top: 76%;
-  left: 25%
+  left: 50%;
+  transform: translate(-50%) !important;
 }
 
 .animated-gif {

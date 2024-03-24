@@ -7,7 +7,6 @@ import "react-toastify/dist/ReactToastify.css";
 const UiMenu = () => {
   const [text, setText] = useState("");
   const textareaRef = useRef(null);
-  const buttonRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
   const [isButtonClicked, setIsButtonClicked] = useState(false);
   const [isExpandButtonClicked, setIsExpandButtonClicked] = useState(false);
