@@ -2,13 +2,10 @@ import { ExtendedObject3D } from "enable3d";
 import { Vector3 } from "three";
 import * as THREE from "three";
 import PlayerParticleSystem from "./playerParticleSystem";
+import { TextObject } from "./textObject";
 
 export class Player {
-  constructor({
-    sizes = { width: 3, height: 3, depth: 3 },
-    pos = { x: 40, y: 20, z: 0 },
-    sketch,
-  }) {
+  constructor({ pos = { x: 40, y: 20, z: 0 }, sketch }) {
     this.sketch = sketch;
     //Player properties
     this.objName = "player";
@@ -31,6 +28,11 @@ export class Player {
 
     //Attaching the collision sensor to player body
     this.initSensor(sketch);
+
+    this.textObject = new TextObject({
+      textContent: "dimasikhdashdjs",
+      targetObject: this.object,
+    });
 
     const processColision = (otherObject, event) => {
       if (event !== "end" && this.object.body.velocity.y < 1) {
@@ -134,9 +136,9 @@ export class Player {
     sketch.physics.add.existing(this.sensor, {
       mass: 1e-8,
       shape: "box",
-      width: 3 - 0.5,
+      width: this.scale - 0.5,
       height: 0.2,
-      depth: 3 - 0.5,
+      depth: this.scale - 0.5,
     });
     this.sensor.body.setCollisionFlags(4);
 
