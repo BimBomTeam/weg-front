@@ -14,6 +14,7 @@ import { Vector3 } from "three";
 
 import { CSS2DRenderer } from "three/addons/renderers/CSS2DRenderer.js";
 import { Water } from "three/examples/jsm/objects/Water.js";
+import { Sky } from "three/examples/jsm/objects/Sky";
 
 class MainScene extends Scene3D {
   constructor() {
@@ -141,12 +142,27 @@ class MainScene extends Scene3D {
     // });
   }
 
+  initSky() {
+    const sky = new Sky();
+    sky.scale.setScalar(10000);
+    this.scene.add(sky);
+
+    const skyUniforms = sky.material.uniforms;
+
+    skyUniforms["turbidity"].value = 10;
+    skyUniforms["rayleigh"].value = 2;
+    skyUniforms["mieCoefficient"].value = 0.005;
+    skyUniforms["mieDirectionalG"].value = 0.8;
+    skyUniforms["sunPosition"].value = new THREE.Vector3(2, 1, 0);
+  }
+
   async create() {
     const { lights, orbitControls } = await this.warpSpeed("-ground, -sky");
     this.orbitControls = orbitControls;
     orbitControls.update();
 
     this.scene.fog = new THREE.Fog(0xffffff, 50, 300);
+    this.initSky();
     await this.initWater();
 
     this.lightsSetup(lights);
