@@ -7,6 +7,20 @@ export class MyCamera extends THREE.PerspectiveCamera {
     this.cameraDistance = 20;
     this.smoothness = 0.02;
     this.cameraSpeed = 10;
+    this.changeModeCooldown = 1
+    this.lastChangeModeTime = Math.floor((new Date()).getTime() / 1000);
+
+    this.cameraSettings = {
+      fallowPlayer: {
+        cameraHeight: 40,
+        cameraPosZ: 20
+      },
+      focusOnNpc: {
+        cameraHeight: 10,
+        cameraPosZ: 5
+      }
+    };
+    this.inNpcFocusMod = false;
 
     this.position.set(
       playerPosition.x,
@@ -26,12 +40,27 @@ export class MyCamera extends THREE.PerspectiveCamera {
     return start * (1 - t) + end * t;
   }
 
-  update(playerPosition, deltaTime) {
+  update(objectPosition, deltaTime, KeyHandler, switchModeCondition = true) {
+
+    let currentTime = Math.floor((new Date()).getTime() / 1000);
+    if (KeyHandler.key.e.pressed 
+        && switchModeCondition 
+        && currentTime - this.lastChangeModeTime > this.changeModeCooldown) {
+      this.inNpcFocusMod = ! this.inNpcFocusMod;
+      this.lastChangeModeTime = currentTime;
+    }
+
+    let cameraData = this.cameraSettings.fallowPlayer;
+
+    if (this.inNpcFocusMod) {
+      cameraData = this.cameraSettings.focusOnNpc;
+    }
+
     let adjustVector = new THREE.Vector3(0, 0, 0);
     let targetPosition = {
-      x: playerPosition.x,
-      y: playerPosition.y + this.cameraHeight,
-      z: playerPosition.z + this.cameraDistance,
+      x: objectPosition.x,
+      y: objectPosition.y + cameraData.cameraHeight,
+      z: objectPosition.z + cameraData.cameraPosZ,
     };
 
     let moveX = targetPosition.x - this.position.x;
