@@ -183,10 +183,11 @@ class MainScene extends Scene3D {
         depth: 3,
         height: 3,
         mass: 1,
-        x: 4,
+        x: 30,
       },
       { phong: { color: 0x00ff00 } }
     );
+    this.box.body.setAngularFactor(0, 0, 0);
   }
 
   setupMap() {
@@ -225,9 +226,16 @@ class MainScene extends Scene3D {
     this.stats.update();
 
     if (this.player.object && this.player.object.body) {
+      
+      
       this.player.update(this.KeyHandler);
 
-      this.camera.update(this.player.object.position, delta);
+      this.playerNpcDist = this.player.object.position.distanceTo(this.box.position)
+      let npcNearBy = this.playerNpcDist < 8
+      if (!npcNearBy) {
+        this.camera.inNpcFocusMod = false;
+      }
+      this.camera.update(this.player.object.position, delta, this.KeyHandler, npcNearBy);
     }
   }
 }
