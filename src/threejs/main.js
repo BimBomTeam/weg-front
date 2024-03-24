@@ -13,6 +13,7 @@ import { Player } from "./player";
 import { Vector3 } from "three";
 
 import { CSS2DRenderer } from "three/addons/renderers/CSS2DRenderer.js";
+import { Water } from "three/examples/jsm/objects/Water.js";
 
 class MainScene extends Scene3D {
   constructor() {
@@ -73,33 +74,82 @@ class MainScene extends Scene3D {
     lights.directionalLight.shadow.camera.bottom = 100; // default
   }
 
+  async initWater() {
+    const waterGeometry = new THREE.PlaneGeometry(1000, 1000);
+
+    this.water = new Water(waterGeometry, {
+      textureWidth: 512,
+      textureHeight: 512,
+      waterNormals: new THREE.TextureLoader().load(
+        "src/assets/water/waternormals.jpg",
+        function (texture) {
+          texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+          texture.needsUpdate = true;
+        }
+      ),
+      sunDirection: new THREE.Vector3(2, 0, 0),
+      sunColor: 0xffbe54,
+      waterColor: 0x20b7e6,
+      distortionScale: 3.5,
+      fog: this.scene.fog !== undefined,
+    });
+
+    this.water.rotation.x = -Math.PI / 2;
+    this.water.position.y = 0.1;
+    this.water.position.x = -5;
+    // this.water.receiveShadow = true;
+
+    this.scene.add(this.water);
+    //water physics object
+    // this.physics.add.existing(this.water, {
+    //   mass: 0,
+    //   shape: "convexMesh",
+    // });
+
+    //example1
+    // const params = {
+    //   color: "#ffffff",
+    //   scale: 1,
+    //   flowX: 10,
+    //   flowY: 10,
+    // };
+    // const waterGeometry = new THREE.PlaneGeometry(1000, 1000);
+    // let water = new Water(waterGeometry, {
+    //   color: params.color,
+    //   scale: params.scale,
+    //   flowDirection: new THREE.Vector2(params.flowX, params.flowY),
+    //   textureWidth: 1024,
+    //   textureHeight: 1024,
+    // });
+    // water.position.y = 0.2;
+    // water.rotation.x = Math.PI * -0.5;
+    // this.scene.add(water);
+
+    //example enable
+    // const textures = await Promise.all([
+    //   this.load.texture("/src/assets/water/Water_1_M_Normal.jpg"),
+    //   this.load.texture("/src/assets/water/Water_2_M_Normal.jpg"),
+    // ]);
+    // textures[0].needsUpdate = true;
+    // textures[1].needsUpdate = true;
+    // this.misc.water({
+    //   y: 1,
+    //   width: 1000,
+    //   height: 1000,
+    //   normalMap0: textures[0],
+    //   normalMap1: textures[1],
+    // });
+  }
+
   async create() {
     const { lights, orbitControls } = await this.warpSpeed("-ground, -sky");
     this.orbitControls = orbitControls;
     orbitControls.update();
 
-    var geom = new THREE.PlaneGeometry(1000, 1000);
-    var mat = new THREE.MeshPhongMaterial({ color: 0x20b7e6 });
-
-    var plane = new THREE.Mesh(geom, mat);
-    plane.rotation.x = -Math.PI / 2;
-    plane.position.y = 0.1;
-    plane.receiveShadow = true;
-    // this.scene.add(plane);
-    this.add.existing(plane);
-    this.physics.add.existing(plane, { shape: "convexMesh", mass: 0 });
-    this.scene.fog = new THREE.FogExp2(0xffffff, 0.01);
-    // this.plane= this.physics.add.plane(
-
-    // const dirLight = new THREE.DirectionalLight(0xffffff, 1, 100);
-    // lights.position.set(-3, 5, -3);
-    // lights.castShadow = true;
-    // console.log(lights);
-    // lights.directionalLight.position.set(-1, 5, -2);
+    this.scene.fog = new THREE.Fog(0xffffff, 50, 300);
+    await this.initWater();
 
     this.lightsSetup(lights);
-    // this.camera.position.set(0, 5, 20);
-    // this.camera.lookAt(0, 0, 0);
 
     // enable physics debugging
     // this.physics.debug.enable();
@@ -155,6 +205,7 @@ class MainScene extends Scene3D {
 
   update(time, delta) {
     this.labelRenderer.render(this.scene, this.camera);
+    this.water.material.uniforms["time"].value += 1.0 / 120.0;
     this.stats.update();
 
     if (this.player.object && this.player.object.body) {
