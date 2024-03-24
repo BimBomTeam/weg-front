@@ -22,11 +22,7 @@ const Login = () => {
 
   return (
     <div className="login-container">
-      {" "}
-      {}
       <div className="login-content">
-        {" "}
-        {}
         <label htmlFor="login">Zaloguj się</label>
         <label htmlFor="email-label">E-mail</label>
         <input
