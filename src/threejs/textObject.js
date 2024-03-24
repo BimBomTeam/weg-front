@@ -10,10 +10,7 @@ export class TextObject {
     const textObjectLabel = new CSS2DObject(textObjectDiv);
     let box = new THREE.Box3().setFromObject(textObjectLabel);
     this.size = box.getSize(new THREE.Vector3());
-    console.log(this.size);
     textObjectLabel.position.set(posX, posY, posZ);
-    console.log(textObjectLabel);
-    // textObjectLabel.center.set(0, 0);
     targetObject.add(textObjectLabel);
   }
 }
