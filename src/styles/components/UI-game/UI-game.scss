@@ -1,3 +1,4 @@
+
 .main-ui {
   z-index: 2;
   display: block;
@@ -7,9 +8,7 @@
   border-radius: 30px;
   background-color: $button-gradient-start;
   backdrop-filter: blur(18px);
-  left: calc(50% - 500px);
 }
-
 
 .animated-gif {
   position: relative;

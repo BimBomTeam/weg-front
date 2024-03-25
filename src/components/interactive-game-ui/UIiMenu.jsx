@@ -84,7 +84,7 @@ const UiMenu = () => {
   })
 
   return (
-    <div>
+    <div style={{ display: "flex", justifyContent: "center" }}>
       <animated.div className="main-ui" style={animationProps}>
       {isGifVisible && (
           <img src="/images/writing_dots.gif" alt="Animated GIF" className="animated-gif" />
