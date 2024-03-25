@@ -7,10 +7,9 @@
   border-radius: 30px;
   background-color: $button-gradient-start;
   backdrop-filter: blur(18px);
-  top: 76%;
-  left: 50%;
-  transform: translate(-50%) !important;
+  left: calc(50% - 500px);
 }
+
 
 .animated-gif {
   position: relative;
