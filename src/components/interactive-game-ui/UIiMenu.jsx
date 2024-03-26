@@ -1,6 +1,7 @@
+import "regenerator-runtime/runtime";
 import React, { useState, useRef, useEffect } from "react";
+import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import { useSpring, animated } from "react-spring";
-import DialogForm from "../../server/DialogForm";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -13,6 +14,7 @@ const UiMenu = () => {
   const [isExpandButtonVisible, setIsExpandButtonVisible] = useState(false);
   const [isButtonRotated, setIsButtonRotated] = useState(false);
   const [isGifVisible, setIsGifVisible] = useState(false);
+  const { transcript } = useSpeechRecognition({continuous: true, language: 'en-US'});
 
   useEffect(() => {
     setIsVisible(true);
@@ -29,6 +31,12 @@ const UiMenu = () => {
       textareaRef.current.style.height = "auto";
     }
   }, [text]);
+
+  useEffect(() => {
+    if (transcript) {
+      setText(transcript);
+    }
+  }, [transcript]);
 
   const onTextChange = (event) => {
     const inputText = event.target.value;
@@ -108,7 +116,8 @@ const UiMenu = () => {
         />
         <p>{text.length}/255</p>
         <animated.button className="voice_button"
-          style={buttonVoiceProps}>
+          style={buttonVoiceProps}
+          onClick={SpeechRecognition.startListening}>
         </animated.button>
         <animated.button
           id="send"
