@@ -16,7 +16,7 @@ export default function RefreshToken() {
         navigate("/login");
       }
       if (!response.ok) {
-        throw new Error("Response is not OK");
+        throw new Error("RefreshToken - Response is not OK");
       }
       if (response.ok) {
         return response.json().then(data => {

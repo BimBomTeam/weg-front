@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { checkToken } from "../actions/checkToken";
+import { checkToken } from "../../actions/checkToken";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import POST_tokenAuth from "./server/POST_tokenAuth";
+import POST_tokenAuth from "../server/POST_tokenAuth";
 
 export default function ValidateToken() {
   const navigate = useNavigate();

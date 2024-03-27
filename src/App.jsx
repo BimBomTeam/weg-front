@@ -2,14 +2,16 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Game from "./Game";
 import Login from "./components/user-interface/login/Login";
 import Register from "./components/user-interface/register/Register";
-import ValidateToken from "./logic/ValidateToken";
+import ValidateToken from "./logic/token/ValidateToken";
 import { Provider } from "react-redux";
 import store from "./store/store";
+import TokenDecoding from "./logic/token/TokenDecoding";
 
 function App() {
   return (
     <Provider store={store}>
       <Router>
+        <TokenDecoding />
         <ValidateToken />
         <Routes>
           <Route path="/" element={<ValidateToken />} />
