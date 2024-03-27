@@ -14,9 +14,11 @@ const loginApi = async (formData) => {
       return { success: false };
     }
 
-    const data = await response.json();
-    const testToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
-    localStorage.setItem("token", testToken);
+    // const data = await response.json();
+    const refreshToken = "CI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaW"
+    const token = "G4gRIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36Ok6yJV_adQssw5c"
+    localStorage.setItem("token", token);
+    localStorage.setItem("refreshToken", refreshToken)
     //localStorage.setItem("token", data.token);
     return { success: true };
   } catch (error) {

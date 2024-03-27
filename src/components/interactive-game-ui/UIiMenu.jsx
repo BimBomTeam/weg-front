@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import DialogForm from "../../logic/DialogForm";
+import DialogForm from "../../logic/Dialog";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
