@@ -99,8 +99,10 @@ const UiMenu = () => {
   });
 
   const isListeningProps = useSpring({
-    marginTop: isExpandButtonClicked ? (isButtonClicked ? "175px" : "0px") : (isButtonClicked ? "40px" : "0px"),
+    marginTop: isExpandButtonClicked ? (isButtonClicked ? "170px" : "0px") : (isButtonClicked ? "40px" : "0px"),
+    width: isListening ? (isButtonClicked ? "45px" : "45px") : isExpandButtonClicked ? "45px" : "0px",
   });
+
 
   const buttonExpandProps = useSpring({
     marginTop: isExpandButtonClicked ? (isButtonClicked ? "150px" : "0px") : (isButtonClicked ? "70px" : "0px"),
@@ -125,10 +127,7 @@ const UiMenu = () => {
 
         <animated.div
           className="isListening"
-          style={{
-            ...isListeningProps,
-            display: isListening ? 'block' : 'none'
-          }}
+          style={isListeningProps}
         />
 
         <animated.textarea
