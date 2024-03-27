@@ -100,7 +100,7 @@ const UiMenu = () => {
 
   const isListeningProps = useSpring({
     marginTop: isExpandButtonClicked ? (isButtonClicked ? "170px" : "0px") : (isButtonClicked ? "40px" : "0px"),
-    width: isListening ? (isButtonClicked ? "45px" : "45px") : isExpandButtonClicked ? "45px" : "0px",
+    width: isListening ? (isButtonClicked ? "45px" : "45px") : isListening ? "45px" : "0px",
   });
 
 
