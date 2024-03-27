@@ -33,11 +33,13 @@ const UiMenu = () => {
   }, [text]);
 
   useEffect(() => {
-    if (transcript) {
+    if (transcript && transcript.length <= 255) {
       setText(transcript);
+    } else if (transcript && transcript.length > 255) {
+      toast.error("Maximum character limit reached (255 characters)");
     }
   }, [transcript]);
-
+  
   const onTextChange = (event) => {
     const inputText = event.target.value;
     if (inputText.length <= 255) {
