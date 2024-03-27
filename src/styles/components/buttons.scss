@@ -32,7 +32,7 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
   position: fixed;
   height: 80px;
   width: 80px;
-  top: 30%;
+  top: 28%;
   left: 88.2%;
   background-image: url('/images/voice.png');
   background-size: cover;
@@ -42,7 +42,7 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
 }
 
 .voice_button:hover {
-  transform: scale(1.3);  
+  transform: scale(1.2);  
   margin-right: 0;
 }
 

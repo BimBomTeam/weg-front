@@ -14,7 +14,9 @@ const UiMenu = () => {
   const [isExpandButtonVisible, setIsExpandButtonVisible] = useState(false);
   const [isButtonRotated, setIsButtonRotated] = useState(false);
   const [isGifVisible, setIsGifVisible] = useState(false);
-  const { transcript } = useSpeechRecognition({continuous: true, language: 'en-US'});
+  const [isListening, setIsListening] = useState(false);
+
+  const { transcript } = useSpeechRecognition({ continuous: true, language: 'en-US' });
 
   useEffect(() => {
     setIsVisible(true);
@@ -39,7 +41,7 @@ const UiMenu = () => {
       toast.error("Maximum character limit reached (255 characters)");
     }
   }, [transcript]);
-  
+
   const onTextChange = (event) => {
     const inputText = event.target.value;
     if (inputText.length <= 255) {
@@ -51,7 +53,7 @@ const UiMenu = () => {
 
   const onButtonClickExpand = () => {
     setIsExpandButtonClicked(!isExpandButtonClicked);
-    setIsGifVisible(false); 
+    setIsGifVisible(false);
     setIsButtonRotated(!isButtonRotated);
   };
 
@@ -69,6 +71,15 @@ const UiMenu = () => {
     }
   };
 
+  const toggleListening = () => {
+    if (!isListening) {
+      SpeechRecognition.startListening({ continuous: true });
+    } else {
+      SpeechRecognition.stopListening();
+    }
+    setIsListening(!isListening);
+  };
+
   const animationProps = useSpring({
     height: isExpandButtonClicked ? (isButtonClicked ? "850px" : "50px") : (isButtonClicked ? "350px" : "200px"),
     transform: isVisible ? (isExpandButtonClicked ? "translateY(0%)" : "translateY(0%)") : "translateY(100%)",
@@ -84,19 +95,23 @@ const UiMenu = () => {
   });
 
   const buttonVoiceProps = useSpring({
-    marginTop: isExpandButtonClicked ? (isButtonClicked ? "390px" : "0px") : (isButtonClicked ? "90px" : "0px"),
+    marginTop: isExpandButtonClicked ? (isButtonClicked ? "472px" : "0px") : (isButtonClicked ? "110px" : "0px"),
+  });
+
+  const isListeningProps = useSpring({
+    marginTop: isExpandButtonClicked ? (isButtonClicked ? "175px" : "0px") : (isButtonClicked ? "40px" : "0px"),
   });
 
   const buttonExpandProps = useSpring({
     marginTop: isExpandButtonClicked ? (isButtonClicked ? "150px" : "0px") : (isButtonClicked ? "70px" : "0px"),
     transform: `rotate(${isButtonRotated ? 180 : 0}deg)`,
     config: { duration: 50 },
-  })
+  });
 
   return (
     <div style={{ display: "flex", justifyContent: "center" }}>
       <animated.div className="main-ui" style={animationProps}>
-      {isGifVisible && (
+        {isGifVisible && (
           <img src="/images/writing_dots.gif" alt="Animated GIF" className="animated-gif" />
         )}
 
@@ -107,6 +122,14 @@ const UiMenu = () => {
             style={buttonExpandProps}
           ></animated.button>
         )}
+
+        <animated.div
+          className="isListening"
+          style={{
+            ...isListeningProps,
+            display: isListening ? 'block' : 'none'
+          }}
+        />
 
         <animated.textarea
           ref={textareaRef}
@@ -119,7 +142,8 @@ const UiMenu = () => {
         <p>{text.length}/255</p>
         <animated.button className="voice_button"
           style={buttonVoiceProps}
-          onClick={SpeechRecognition.startListening}>
+          onClick={toggleListening}>
+          {isListening ? "" : ""}
         </animated.button>
         <animated.button
           id="send"
