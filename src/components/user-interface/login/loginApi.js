@@ -17,8 +17,8 @@ const loginApi = async (formData) => {
     // const data = await response.json();
     const refreshToken = "CI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaW"
     const token = "G4gRIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36Ok6yJV_adQssw5c"
-    localStorage.setItem("token", token);
-    localStorage.setItem("refreshToken", refreshToken)
+    localStorage.setItem("access_token", token);
+    localStorage.setItem("refresh_token", refreshToken)
     //localStorage.setItem("token", data.token);
     return { success: true };
   } catch (error) {

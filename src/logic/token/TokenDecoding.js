@@ -2,8 +2,8 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function TokenDecoding() {
-  const token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwicm9sZSI6ImFkbWluIn0.3T1PJUDBpncV7lPhtqZCKuxWpAb07zMMcQ6VsgEPOfw";
+  //вероятно вызвать при ValidateToken.js
+  const token = localStorage.getItem("access_token");
 
   if (!token) {
     toast.error("Token not found in localStorage");
@@ -13,7 +13,9 @@ export default function TokenDecoding() {
   const tokenParts = token.split(".");
 
   if (tokenParts.length !== 3) {
-    toast.error(`Invalid token format`);
+    //---Right now it's not working !!!
+
+    // toast.error(`Invalid token format`);
     return null;
   }
 
@@ -21,5 +23,5 @@ export default function TokenDecoding() {
   const decodedPayload = atob(payloadBase64);
   const userData = JSON.parse(decodedPayload);
 
-  console.log(userData);
+  return userData;
 }

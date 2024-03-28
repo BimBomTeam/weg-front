@@ -13,7 +13,6 @@ export default function ValidateToken() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    console.log("DISPATCH (REDUX)");
     dispatch(checkToken());
   }, [dispatch]);
 

@@ -9,7 +9,7 @@ export default function RefreshToken() {
     headers: {
       "Content-Type": "application/json; charset=UTF-8",
     },
-    body: JSON.stringify(localStorage.getItem("refreshToken")),
+    body: JSON.stringify(localStorage.getItem("refresh_token")),
   })
     .then((response) => {
       if (response.status === 401) {
@@ -19,8 +19,8 @@ export default function RefreshToken() {
         throw new Error("RefreshToken - Response is not OK");
       }
       if (response.ok) {
-        return response.json().then(data => {
-            return data;
+        return response.json().then((data) => {
+          return data;
         });
       }
     })

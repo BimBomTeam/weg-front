@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect } from "react";
-import DialogForm from "../../logic/Dialog";
+import { useState, useRef, useEffect } from "react";
+import Dialog from "../../logic/Dialog";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -24,7 +24,8 @@ const UiMenu = () => {
 
   const onButtonClick = async () => {
     try {
-      const data = await DialogForm(text);
+      const data = await Dialog(text);
+      //работа с ответом dialog (logic)
       console.log(data);
     } catch (error) {
       console.error("Error fetching data:", error);
