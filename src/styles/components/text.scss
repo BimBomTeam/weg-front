@@ -133,3 +133,13 @@ label[for="password-repeat-label"] {
     border-bottom-color: black;
     padding-left: 10px;
 }
+
+.isListening {
+    top: 74%;
+    left: 90%;
+    position:absolute;
+    background-color: red;
+    border-radius: 25px;
+    height: 5px;
+    width: 100%;
+  }

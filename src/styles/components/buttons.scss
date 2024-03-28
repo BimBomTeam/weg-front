@@ -30,21 +30,22 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
 
 .voice_button {
   position: fixed;
-  height: 70px;
-  width: 70px;
-  top: 40%;
-  left: 88.6%;
+  height: 80px;
+  width: 80px;
+  top: 28%;
+  left: 88.2%;
   background-image: url('/images/voice.png');
   background-size: cover;
   background-color: transparent;
   border: 0;
   transition: transform 0.3s ease, margin-right 0.3s;
-
-  &:hover {
-    transform: scale(1.1) translate(2px, -45%);
-    margin-right: 0;
-  }
 }
+
+.voice_button:hover {
+  transform: scale(1.2);  
+  margin-right: 0;
+}
+
 
 #expand_field_button {
   position: fixed;
