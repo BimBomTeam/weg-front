@@ -1,7 +1,12 @@
 .user-interface {
-    z-index: 2;
-    display: block;
-    position: fixed;
-    top: 20px;
-    right: 20px;
-  }
+  z-index: 2;
+  display: block;
+  position: fixed;
+  top: 5%;
+  left: 1%;
+  width: 120px;
+  height: 120px;
+  border-radius: 50px;
+  background-color: $button-gradient-start;
+  backdrop-filter: blur(18px);
+}
