@@ -1,7 +1,8 @@
+import { useState, useRef, useEffect } from "react";
 import "regenerator-runtime/runtime";
-import React, { useState, useRef, useEffect } from "react";
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import { useSpring, animated } from "react-spring";
+import Dialog from "../../logic/Dialog";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -64,7 +65,8 @@ const UiMenu = () => {
       setIsExpandButtonVisible(true);
     }, 300);
     try {
-      const data = await DialogForm(text);
+      const data = await Dialog(text);
+      //работа с ответом dialog (logic)
       console.log(data);
     } catch (error) {
       console.error("Error fetching data:", error);

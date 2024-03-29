@@ -1,19 +1,26 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Game from './Game'
-import Login from './components/user-interface/Login';
-import Register from './components/user-interface/Register';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Game from "./Game";
+import Login from "./components/user-interface/login/Login";
+import Register from "./components/user-interface/register/Register";
+import ValidateToken from "./logic/token/ValidateToken";
+import { Provider } from "react-redux";
+import store from "./store/store";
+import TokenDecoding from "./logic/token/TokenDecoding";
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/game" element={<Game />} />
-      </Routes>
-    </Router> 
+    <Provider store={store}>
+      <Router>
+        <TokenDecoding />
+        <ValidateToken />
+        <Routes>
+          <Route path="/" element={<ValidateToken />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/game" element={<Game />} />
+        </Routes>
+      </Router>
+    </Provider>
   );
 }
 
