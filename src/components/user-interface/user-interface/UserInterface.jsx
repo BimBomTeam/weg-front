@@ -1,10 +1,20 @@
 import React, { useState } from "react";
 import { useSpring, animated } from "react-spring";
+import AccountModal from './modals/AccountModal';
+import DifficultyModal from './modals/DifficultyModal';
+import ShopModal from './modals/ShopModal';
+import InstructionModal from './modals/InstructionModal';
+import SettingsModal from './modals/SettingsModal';
+
 
 const UserInterface = () => {
   const [expanded, setExpanded] = useState(false);
-  const [showModal, setShowModal] = useState(false);
-  const [modalTitle, setModalTitle] = useState("");
+  const [openAccountModal, setOpenAccountModal] = useState(false);
+  const [openDifficultyModal, setOpenDifficultyModal] = useState(false);
+  const [openShopModal, setOpenShopModal] = useState(false);
+  const [openInstructionModal, setOpenInstructionModal] = useState(false);
+  const [openSettingsModal, setOpenSettingsModal] = useState(false);
+
 
   const animationProps = useSpring({
     height: expanded ? "520px" : "120px",
@@ -17,11 +27,6 @@ const UserInterface = () => {
     config: { tension: 400, friction: 20 },
   });
 
-  const toggleModal = (title) => {
-    setShowModal(!showModal);
-    setModalTitle(title);
-  };
-
   return (
     <div>
       <animated.div className="user-interface" style={animationProps}>
@@ -33,42 +38,41 @@ const UserInterface = () => {
         <animated.button
           className="account"
           style={buttonAnimationProps}
-          onClick={() => toggleModal("Account")} >
+          onClick={() => setOpenAccountModal(true)} >
         </animated.button>
 
         <animated.button
           className="difficulty"
           style={buttonAnimationProps}
-          onClick={() => toggleModal("Difficulty")} >
+          onClick={() => setOpenDifficultyModal(true)} >
         </animated.button>
 
         <animated.button
           className="shop"
           style={buttonAnimationProps}
-          onClick={() => toggleModal("Shop")}>
+          onClick={() => setOpenShopModal(true)} >
         </animated.button>
 
         <animated.button
           className="instruction"
           style={buttonAnimationProps}
-          onClick={() => toggleModal("Instruction")}>
+          onClick={() => setOpenInstructionModal(true)} >
         </animated.button>
 
         <animated.button
           className="settings"
           style={buttonAnimationProps}
-          onClick={() => toggleModal("Settings")} >
+          onClick={() => setOpenSettingsModal(true)} >
         </animated.button>
       </animated.div>
 
-      {showModal && (
-        <div className="modal-background">
-          <animated.div className="modal">
-            <h1>{modalTitle}</h1>
-            <button className="back-button" onClick={toggleModal}></button>
-          </animated.div>
-        </div>
-      )}
+      {openAccountModal && <AccountModal closeModal={setOpenAccountModal} />}
+      {openDifficultyModal && <DifficultyModal closeModal={setOpenDifficultyModal} />}
+      {openShopModal && <ShopModal closeModal={setOpenShopModal} />}
+      {openInstructionModal && <InstructionModal closeModal={setOpenInstructionModal} />}
+      {openSettingsModal && <SettingsModal closeModal={setOpenSettingsModal} />}
+
+
     </div>
   );
 };
