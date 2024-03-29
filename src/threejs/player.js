@@ -14,7 +14,7 @@ export class Player {
     this.speed = 7;
     this.isWalking = false;
     this.scale = 2;
-    this.deadLevel = 1.6;
+    this.deadLevel = -20;
     this.lastSafePosition = new Vector3();
     this.lastFallTime = 0;
 
@@ -42,11 +42,6 @@ export class Player {
           this.currentTime() - this.lastFallTime > 2
         ) {
           this.lastSafePosition = { ...this.object.position };
-        } else if (this.object.position.y < this.deadLevel) {
-          let tmpPosition = { ...this.lastSafePosition };
-          tmpPosition.y += 3;
-          this.setPosition(tmpPosition);
-          this.lastFallTime = this.currentTime();
         }
       } else {
         this.onGround = false;
@@ -151,8 +146,12 @@ export class Player {
     let showParticles = false;
     let accrossVel = 0;
     let straightVel = 0;
-    if (!this.onGround) {
-      showParticles = false;
+    
+    if (this.object.position.y < this.deadLevel) {
+      let tmpPosition = { ...this.lastSafePosition };
+      tmpPosition.y += 3;
+      this.setPosition(tmpPosition);
+      this.lastFallTime = this.currentTime();
     }
 
     if (KeyHandler.key.a.pressed) {
