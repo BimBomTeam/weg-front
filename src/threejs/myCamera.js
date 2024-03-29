@@ -1,4 +1,5 @@
 import * as THREE from "three";
+
 export class MyCamera extends THREE.PerspectiveCamera {
   constructor(playerPosition) {
     super(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -7,17 +8,20 @@ export class MyCamera extends THREE.PerspectiveCamera {
     this.cameraDistance = 20;
     this.smoothness = 0.02;
     this.cameraSpeed = 10;
+    this.cameraRotationSpeed = 10;
     this.changeModeCooldown = 1
     this.lastChangeModeTime = Math.floor((new Date()).getTime() / 1000);
 
     this.cameraSettings = {
       fallowPlayer: {
         cameraHeight: 40,
-        cameraPosZ: 20
+        cameraPosZ: 20,
+        cameraRotation: new THREE.Vector3(-1.107, 0, 0)
       },
       focusOnNpc: {
-        cameraHeight: 10,
-        cameraPosZ: 5
+        cameraHeight: 2,
+        cameraPosZ: 5,
+        cameraRotation: new THREE.Vector3(-0.5, 0, 0)
       }
     };
     this.inNpcFocusMod = false;
@@ -41,7 +45,7 @@ export class MyCamera extends THREE.PerspectiveCamera {
   }
 
   update(objectPosition, deltaTime, KeyHandler, switchModeCondition = true) {
-
+    console.log(this.rotation)
     let currentTime = Math.floor((new Date()).getTime() / 1000);
     if (KeyHandler.key.e.pressed 
         && switchModeCondition 
@@ -80,7 +84,26 @@ export class MyCamera extends THREE.PerspectiveCamera {
     if (adjustVector.x != 0 || adjustVector.y != 0 || adjustVector.z != 0) {
       adjustVector.add(this.position);
       this.position.lerp(adjustVector, deltaTime * 0.0001 * this.cameraSpeed);
-      // this.lookAt(playerPosition);
+      
+    }
+
+    let targetRotation = cameraData.cameraRotation;
+
+    if (this.rotation.x != targetRotation.x 
+        || this.rotation.y != targetRotation.y 
+        || this.rotation.z != targetRotation.z)
+    {
+      let newRotation = (new THREE.Vector3(
+        this.rotation.x,
+        this.rotation.y,
+        this.rotation.z
+      )).lerp(targetRotation, deltaTime * 0.0001 * this.cameraRotationSpeed);
+
+      this.setRotationFromEuler(new THREE.Euler(
+          newRotation.x,
+          newRotation.y,
+          newRotation.z
+        ));
     }
   }
 }
