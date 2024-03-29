@@ -45,7 +45,6 @@ export class MyCamera extends THREE.PerspectiveCamera {
   }
 
   update(objectPosition, deltaTime, KeyHandler, switchModeCondition = true) {
-    console.log(this.rotation)
     let currentTime = Math.floor((new Date()).getTime() / 1000);
     if (KeyHandler.key.e.pressed 
         && switchModeCondition 

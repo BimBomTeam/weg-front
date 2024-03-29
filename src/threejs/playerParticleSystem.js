@@ -21,7 +21,7 @@ import ParticleSystem, {
 
 export default class PlayerParticleSystem {
   constructor(sketch) {
-    this.fromPlayerDist = 2;
+    this.fromPlayerDist = 1.5;
     this.fromPlayerVerticalOffset = -1;
     this.active = true;
     this.initialRate = new Rate(new Span(5, 10), new Span(0.1, 0.25));
@@ -39,10 +39,10 @@ export default class PlayerParticleSystem {
         .addInitializers([
           new Mass(1),
           new Radius(1),
-          new Life(0.5, 0.5),
+          new Life(1, 1),
           new Body(body),
           new Position(new BoxZone(1)),
-          new RadialVelocity(10, new Vector3D(0, 1, 0), 3),
+          new RadialVelocity(30, new Vector3D(0, 1, 0), 10),
         ])
         .addBehaviours([
           new Rotate("random", "random"),
@@ -61,7 +61,7 @@ export default class PlayerParticleSystem {
       },
       body: createMesh({
         geometry: new THREE.BoxGeometry(0.3, 0.3, 0.3),
-        material: new THREE.MeshLambertMaterial({ color: "#00ffcc" }),
+        material: new THREE.MeshLambertMaterial({ color: "#b3b33e" }),
       }),
     });
 

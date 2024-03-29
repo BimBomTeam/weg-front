@@ -10,6 +10,7 @@ export class Player {
     //Player properties
     this.objName = "player";
     this.onGround = false;
+    this.particlesPermisionDuration = 0.15;
     this.jumpForce = 15;
     this.speed = 7;
     this.isWalking = false;
@@ -37,6 +38,7 @@ export class Player {
     const processColision = (otherObject, event) => {
       if (event !== "end" && this.object.body.velocity.y < 1) {
         this.onGround = true;
+        this.particlesPermision = this.currentTime();
         if (
           this.object.position.y > this.deadLevel &&
           this.currentTime() - this.lastFallTime > 2
@@ -158,29 +160,33 @@ export class Player {
       this.object.body.setVelocityX(-this.speed);
       this.isWalking = true;
       accrossVel = -1;
-      // showParticles = true;
+      showParticles = true;
     } else if (KeyHandler.key.d.pressed) {
       this.object.body.setVelocityX(this.speed);
       this.isWalking = true;
       accrossVel = 1;
-      // showParticles = true;
+      showParticles = true;
     }
     if (KeyHandler.key.w.pressed) {
       this.object.body.setVelocityZ(-this.speed);
       this.isWalking = true;
       straightVel = -1;
-      // showParticles = true;
+      showParticles = true;
     } else if (KeyHandler.key.s.pressed) {
       this.object.body.setVelocityZ(this.speed);
       this.isWalking = true;
       straightVel = 1;
-      // showParticles = true;
+      showParticles = true;
     }
     if (KeyHandler.key.space.pressed && this.onGround == true) {
       this.object.body.applyForceY(this.jumpForce);
       this.onGround = false;
     }
 
+    if (this.currentTime() - this.particlesPermision > this.particlesPermisionDuration ) {
+      showParticles = false;
+    }
+    
     this.animateWalk();
 
     this.playerParticleSystem.active = showParticles;
@@ -194,7 +200,7 @@ export class Player {
   currentTime() {
     var currentDate = new Date();
 
-    return Math.floor(currentDate.getTime() / 1000);
+    return currentDate.getTime() / 1000;
   }
 
   animateWalk() {
