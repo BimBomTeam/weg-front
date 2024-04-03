@@ -150,3 +150,26 @@ label[for="password-repeat-label"] {
     padding-left: 5%;
     padding-right: 5%;
   }
+
+  .NPCname {
+    position: absolute;
+    width: 150px;
+    height: 75px;
+    top: 15%;
+    left: -1%;
+    font-size: 20px;
+    font-family: 'Roboto-Bold';
+    color: $label-color;
+  }
+  
+  .response {
+    position: absolute;
+    width: 90%;
+    height: 75px;
+    top: calc(15% + 30px);
+    left: 4%;
+    font-size: 20px;
+    text-align: left;
+    font-family: 'Roboto-Bold';
+    color: $label-color;
+  }

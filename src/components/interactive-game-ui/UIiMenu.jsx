@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "regenerator-runtime/runtime";
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import { useSpring, animated } from "react-spring";
@@ -8,6 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 const UiMenu = () => {
   const [text, setText] = useState("");
+  const [responseData, setResponseData] = useState({ text: "" });
   const textareaRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
   const [isButtonClicked, setIsButtonClicked] = useState(false);
@@ -16,6 +17,7 @@ const UiMenu = () => {
   const [isButtonRotated, setIsButtonRotated] = useState(false);
   const [isGifVisible, setIsGifVisible] = useState(false);
   const [isListening, setIsListening] = useState(false);
+  const [isLabelsVisible, setIsLabelsVisible] = useState(false);
 
   const { transcript } = useSpeechRecognition({ continuous: true, language: 'en-US' });
 
@@ -60,19 +62,25 @@ const UiMenu = () => {
 
   const onButtonClick = async () => {
     setIsButtonClicked(true);
+    setIsLabelsVisible(false);
     setTimeout(() => {
       setIsGifVisible(true);
       setIsExpandButtonVisible(true);
+      setTimeout(() => {
+        setIsGifVisible(false);
+        setIsLabelsVisible(true);
+      }, 3000);
     }, 300);
     try {
       const data = await Dialog(text);
-      //работа с ответом dialog (logic)
+      setResponseData(data);
       console.log(data);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
+    setText('');
   };
-
+  
   const toggleListening = () => {
     if (!isListening) {
       SpeechRecognition.startListening({ continuous: true });
@@ -83,28 +91,27 @@ const UiMenu = () => {
   };
 
   const animationProps = useSpring({
-    height: isExpandButtonClicked ? (isButtonClicked ? "850px" : "50px") : (isButtonClicked ? "350px" : "200px"),
+    height: isExpandButtonClicked ? (isButtonClicked ? "850px" : "50px") : (isButtonClicked ? "400px" : "200px"),
     transform: isVisible ? (isExpandButtonClicked ? "translateY(0%)" : "translateY(0%)") : "translateY(100%)",
     top: isExpandButtonClicked ? (isButtonClicked ? "8.5%" : "60%") : (isButtonClicked ? "60%" : "76%"),
   });
 
   const textareaAnimationProps = useSpring({
-    marginTop: isExpandButtonClicked ? (isButtonClicked ? "550px" : "0px") : (isButtonClicked ? "130px" : "0px"),
+    marginTop: isExpandButtonClicked ? (isButtonClicked ? "550px" : "0px") : (isButtonClicked ? "170px" : "0px"),
   });
 
   const buttonAnimationProps = useSpring({
-    marginTop: isExpandButtonClicked ? (isButtonClicked ? "300px" : "0px") : (isButtonClicked ? "70px" : "0px"),
+    marginTop: isExpandButtonClicked ? (isButtonClicked ? "290px" : "0px") : (isButtonClicked ? "90px" : "0px"),
   });
 
   const buttonVoiceProps = useSpring({
-    marginTop: isExpandButtonClicked ? (isButtonClicked ? "472px" : "0px") : (isButtonClicked ? "110px" : "0px"),
+    marginTop: isExpandButtonClicked ? (isButtonClicked ? "472px" : "0px") : (isButtonClicked ? "150px" : "0px"),
   });
 
   const isListeningProps = useSpring({
-    marginTop: isExpandButtonClicked ? (isButtonClicked ? "170px" : "0px") : (isButtonClicked ? "40px" : "0px"),
+    marginTop: isExpandButtonClicked ? (isButtonClicked ? "170px" : "0px") : (isButtonClicked ? "52px" : "0px"),
     width: isListening ? (isButtonClicked ? "45px" : "45px") : isListening ? "45px" : "0px",
   });
-
 
   const buttonExpandProps = useSpring({
     marginTop: isExpandButtonClicked ? (isButtonClicked ? "150px" : "0px") : (isButtonClicked ? "70px" : "0px"),
@@ -151,6 +158,12 @@ const UiMenu = () => {
           onClick={onButtonClick}
           style={buttonAnimationProps}
         ></animated.button>
+        {isLabelsVisible && (
+          <animated.div className="response-container">
+            <label className="NPCname">NPC:</label>
+            <label className="response">{responseData.text}</label>
+          </animated.div>
+        )}
       </animated.div>
       <ToastContainer position="top-center" closeOnClick={true} />
     </div>

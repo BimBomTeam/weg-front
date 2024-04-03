@@ -1,4 +1,3 @@
-
 .main-ui {
   z-index: 2;
   display: block;
@@ -11,9 +10,16 @@
 }
 
 .animated-gif {
-  position: relative;
+  position: absolute;
   width: 150px;
   height: 75px;
-  top: 30%;
-  right: 43%;
+  top: 35%;
+  right: 85%;
+}
+
+.response-container {
+  position: relative;
+  top: 25%;
+  height: auto;
+  width: 100%;
 }
