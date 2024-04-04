@@ -8,8 +8,6 @@ import "react-toastify/dist/ReactToastify.css";
 
 const UiMenu = () => {
   const [text, setText] = useState("");
-  const [responseData, setResponseData] = useState({ text: "" });
-  const [promptData, setPromptData] = useState({ text: "" });
   const textareaRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
   const [isButtonClicked, setIsButtonClicked] = useState(false);
@@ -18,10 +16,21 @@ const UiMenu = () => {
   const [isButtonRotated, setIsButtonRotated] = useState(false);
   const [isGifVisible, setIsGifVisible] = useState(false);
   const [isListening, setIsListening] = useState(false);
-  const [isLabelsVisible, setIsLabelsVisible] = useState(false);
-  const [isPromptVisible, setIsPromptVisible] = useState(false);
+
 
   const { transcript } = useSpeechRecognition({ continuous: true, language: 'en-US' });
+
+  const [messages, setMessages] = useState([]);
+
+  
+  const handleSendMessage = (message) => {
+    const newMessages = [...messages, message];
+    setMessages(newMessages);
+    const response = "Dzięki za wiadomość!";
+    setTimeout(() => {
+      setMessages([...newMessages, response]);
+    }, 1000);
+  };
 
   useEffect(() => {
     setIsVisible(true);
@@ -40,7 +49,6 @@ const UiMenu = () => {
   }, [text]);
 
   useEffect(() => {
-    setIsPromptVisible(isExpandButtonClicked);
   }, [isExpandButtonClicked]);
 
   useEffect(() => {
@@ -64,29 +72,25 @@ const UiMenu = () => {
     setIsExpandButtonClicked(!isExpandButtonClicked);
     setIsGifVisible(false);
     setIsButtonRotated(!isButtonRotated);
-    setIsPromptVisible(true);
   };
 
   const onButtonClick = async () => {
     setIsButtonClicked(true);
-    setIsLabelsVisible(false);
     setTimeout(() => {
       setIsGifVisible(true);
       setIsExpandButtonVisible(true);
       setTimeout(() => {
         setIsGifVisible(false);
-        setIsLabelsVisible(true);
       }, 3000);
     }, 300);
     try {
       const data = await Dialog(text);
-      setResponseData(data);
+      handleSendMessage(text);
       console.log(data);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
     setText('');
-    setPromptData({ text }); // Zaktualizuj stan promptData
   };
   
   const toggleListening = () => {
@@ -155,29 +159,31 @@ const UiMenu = () => {
           rows={5}
           style={textareaAnimationProps}
         />
+
         <p>{text.length}/255</p>
+
         <animated.button className="voice_button"
           style={buttonVoiceProps}
           onClick={toggleListening}>
           {isListening ? "" : ""}
         </animated.button>
+
         <animated.button
           id="send"
           onClick={onButtonClick}
           style={buttonAnimationProps}
         ></animated.button>
-        {isLabelsVisible && (
-          <animated.div className="response-container">
-            <label className="NPCname">NPC:</label>
-            <label className="response">{responseData.text}</label>
-          </animated.div>
+
+        {isExpandButtonClicked && (
+              <div className="message-container">
+                {messages.map((message, index) => (
+                  <div key={index} className="message">
+                    {message}
+                  </div>
+                ))}
+              </div>
         )}
-        {isPromptVisible && (
-          <animated.div className="prompt-container">
-            <label className="UserName">User:</label>
-            <label className="prompt">{promptData.text}</label>
-          </animated.div>
-        )}
+
       </animated.div>
       <ToastContainer position="top-center" closeOnClick={true} />
     </div>

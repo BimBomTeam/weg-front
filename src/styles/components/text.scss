@@ -161,15 +161,18 @@ label[for="password-repeat-label"] {
     font-family: 'Roboto-Bold';
     color: $label-color;
   }
+
+  .message-container {
+    position: relative;
+    margin-top: 10%;
+    padding: 10px;
+  }
   
-  .response, .prompt {
-    position: absolute;
-    width: 90%;
-    height: 75px;
-    top: calc(15% + 30px);
-    left: 4%;
-    font-size: 20px;
-    text-align: left;
+  .message {
     font-family: 'Roboto-Bold';
+    font-size: 20px;
     color: $label-color;
+    text-align: left;
+    margin-left: 1%;
+    padding: 1%;
   }
