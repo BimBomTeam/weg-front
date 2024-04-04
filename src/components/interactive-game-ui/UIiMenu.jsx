@@ -9,6 +9,7 @@ import "react-toastify/dist/ReactToastify.css";
 const UiMenu = () => {
   const [text, setText] = useState("");
   const [responseData, setResponseData] = useState({ text: "" });
+  const [promptData, setPromptData] = useState({ text: "" });
   const textareaRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
   const [isButtonClicked, setIsButtonClicked] = useState(false);
@@ -18,6 +19,7 @@ const UiMenu = () => {
   const [isGifVisible, setIsGifVisible] = useState(false);
   const [isListening, setIsListening] = useState(false);
   const [isLabelsVisible, setIsLabelsVisible] = useState(false);
+  const [isPromptVisible, setIsPromptVisible] = useState(false);
 
   const { transcript } = useSpeechRecognition({ continuous: true, language: 'en-US' });
 
@@ -36,6 +38,10 @@ const UiMenu = () => {
       textareaRef.current.style.height = "auto";
     }
   }, [text]);
+
+  useEffect(() => {
+    setIsPromptVisible(isExpandButtonClicked);
+  }, [isExpandButtonClicked]);
 
   useEffect(() => {
     if (transcript && transcript.length <= 255) {
@@ -58,6 +64,7 @@ const UiMenu = () => {
     setIsExpandButtonClicked(!isExpandButtonClicked);
     setIsGifVisible(false);
     setIsButtonRotated(!isButtonRotated);
+    setIsPromptVisible(true);
   };
 
   const onButtonClick = async () => {
@@ -79,6 +86,7 @@ const UiMenu = () => {
       console.error("Error fetching data:", error);
     }
     setText('');
+    setPromptData({ text }); // Zaktualizuj stan promptData
   };
   
   const toggleListening = () => {
@@ -93,7 +101,7 @@ const UiMenu = () => {
   const animationProps = useSpring({
     height: isExpandButtonClicked ? (isButtonClicked ? "850px" : "50px") : (isButtonClicked ? "400px" : "200px"),
     transform: isVisible ? (isExpandButtonClicked ? "translateY(0%)" : "translateY(0%)") : "translateY(100%)",
-    top: isExpandButtonClicked ? (isButtonClicked ? "8.5%" : "60%") : (isButtonClicked ? "60%" : "76%"),
+    top: isExpandButtonClicked ? (isButtonClicked ? "8.5%" : "60%") : (isButtonClicked ? "55%" : "76%"),
   });
 
   const textareaAnimationProps = useSpring({
@@ -162,6 +170,12 @@ const UiMenu = () => {
           <animated.div className="response-container">
             <label className="NPCname">NPC:</label>
             <label className="response">{responseData.text}</label>
+          </animated.div>
+        )}
+        {isPromptVisible && (
+          <animated.div className="prompt-container">
+            <label className="UserName">User:</label>
+            <label className="prompt">{promptData.text}</label>
           </animated.div>
         )}
       </animated.div>

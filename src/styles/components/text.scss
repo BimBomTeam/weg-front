@@ -151,7 +151,7 @@ label[for="password-repeat-label"] {
     padding-right: 5%;
   }
 
-  .NPCname {
+  .NPCname, .UserName {
     position: absolute;
     width: 150px;
     height: 75px;
@@ -162,7 +162,7 @@ label[for="password-repeat-label"] {
     color: $label-color;
   }
   
-  .response {
+  .response, .prompt {
     position: absolute;
     width: 90%;
     height: 75px;
