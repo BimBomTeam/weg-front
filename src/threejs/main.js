@@ -15,6 +15,8 @@ import { Vector3 } from "three";
 import { CSS2DRenderer } from "three/addons/renderers/CSS2DRenderer.js";
 import { Water } from "three/examples/jsm/objects/Water.js";
 import { Sky } from "three/examples/jsm/objects/Sky";
+import { TestCamera } from "./testCamera";
+import { CameraOperator } from "./cameraOperator";
 
 class MainScene extends Scene3D {
   constructor() {
@@ -101,45 +103,6 @@ class MainScene extends Scene3D {
     // this.water.receiveShadow = true;
 
     this.scene.add(this.water);
-    //water physics object
-    // this.physics.add.existing(this.water, {
-    //   mass: 0,
-    //   shape: "convexMesh",
-    // });
-
-    //example1
-    // const params = {
-    //   color: "#ffffff",
-    //   scale: 1,
-    //   flowX: 10,
-    //   flowY: 10,
-    // };
-    // const waterGeometry = new THREE.PlaneGeometry(1000, 1000);
-    // let water = new Water(waterGeometry, {
-    //   color: params.color,
-    //   scale: params.scale,
-    //   flowDirection: new THREE.Vector2(params.flowX, params.flowY),
-    //   textureWidth: 1024,
-    //   textureHeight: 1024,
-    // });
-    // water.position.y = 0.2;
-    // water.rotation.x = Math.PI * -0.5;
-    // this.scene.add(water);
-
-    //example enable
-    // const textures = await Promise.all([
-    //   this.load.texture("/src/assets/water/Water_1_M_Normal.jpg"),
-    //   this.load.texture("/src/assets/water/Water_2_M_Normal.jpg"),
-    // ]);
-    // textures[0].needsUpdate = true;
-    // textures[1].needsUpdate = true;
-    // this.misc.water({
-    //   y: 1,
-    //   width: 1000,
-    //   height: 1000,
-    //   normalMap0: textures[0],
-    //   normalMap1: textures[1],
-    // });
   }
 
   initSky() {
@@ -169,11 +132,12 @@ class MainScene extends Scene3D {
 
     // enable physics debugging
     // this.physics.debug.enable();
+    // this.camera = new MyCamera(new Vector3(0, 0, 0));
+    this.camera = new TestCamera();
+    this.camOperator = new CameraOperator({ camera: this.camera });
 
     this.setupPlayer();
     this.setupMap();
-
-    this.camera = new MyCamera(new Vector3(0, 0, 0));
 
     this.box = this.physics.add.box(
       {
@@ -222,20 +186,44 @@ class MainScene extends Scene3D {
 
   update(time, delta) {
     this.labelRenderer.render(this.scene, this.camera);
-    this.water.material.uniforms["time"].value += 1.0 / 120.0;
+    this.water.material.uniforms["time"].value += 1.0 / 240.0;
     this.stats.update();
 
     if (this.player.object && this.player.object.body) {
-      
-      
       this.player.update(this.KeyHandler);
 
-      this.playerNpcDist = this.player.object.position.distanceTo(this.box.position)
-      let npcNearBy = this.playerNpcDist < 8
-      if (!npcNearBy) {
-        this.camera.inNpcFocusMod = false;
+      // this.camOperator.removeEvent("lerpToAngle");
+
+      this.playerNpcDist = this.player.object.position.distanceTo(
+        this.box.position
+      );
+      let npcNearBy = this.playerNpcDist < 8;
+      if (npcNearBy) {
+        if (this.KeyHandler.key.e.click) {
+          if (
+            this.camOperator.eternalUpate.state == 1 ||
+            this.camOperator.eventIsPlayed("NPCzoomOut")
+          )
+            this.camOperator.addNPCzoomIn({
+              targetPos: this.box.position,
+              adjustPosition: new Vector3(3, 1, 8),
+            });
+          else if (this.camOperator.eternalUpate.state == 0) {
+            this.camOperator.addNPCzoomOut();
+          }
+        }
+        // console.log(this.box.position);
+      } else if (this.camOperator.eternalUpate.state == 0) {
+        this.camOperator.addNPCzoomOut();
       }
-      this.camera.update(this.player.object.position, delta, this.KeyHandler, npcNearBy);
+      // this.camera.update(
+      //   this.player.object.position,
+      //   delta,
+      //   this.KeyHandler,
+      //   npcNearBy
+      // );
+      this.camOperator.update(delta, this.KeyHandler);
+      this.KeyHandler.update();
     }
   }
 }

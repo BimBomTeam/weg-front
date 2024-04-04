@@ -23,6 +23,12 @@ export class Player {
 
   async initPlayer(pos, sketch) {
     await this.initPlayerObject(pos, sketch);
+
+    sketch.camOperator.setTargetObject(this.object);
+    sketch.camOperator.addEvent("lerpToAngle", {
+      targetPos: this.object.position,
+    });
+
     this.object.name = "player";
     this.playAnimation("idle");
 
