@@ -17,16 +17,24 @@
   right: 85%;
 }
 
-.response-container {
-  position: relative;
-  top: 25%;
-  height: auto;
-  width: 100%;
+.message-scroll {
+  height: 500px;
+  width: 93%;
+  max-height: 500px;
+  overflow-y: scroll;
 }
 
-.prompt-container {
-  position: relative;
-  top: 10%;
-  height: auto;
-  width: 100%;
+.message-scroll::-webkit-scrollbar {
+  padding-right: 10%;
+  width: 10px;
+}
+
+.message-scroll::-webkit-scrollbar-track {
+  background: #A1B7D9;
+  border-radius: 10px;
+}
+
+.message-scroll::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background: #195E85; 
 }

@@ -16,21 +16,15 @@ const UiMenu = () => {
   const [isButtonRotated, setIsButtonRotated] = useState(false);
   const [isGifVisible, setIsGifVisible] = useState(false);
   const [isListening, setIsListening] = useState(false);
-
-
   const { transcript } = useSpeechRecognition({ continuous: true, language: 'en-US' });
-
   const [messages, setMessages] = useState([]);
 
-  
-  const handleSendMessage = (message) => {
-    const newMessages = [...messages, message];
-    setMessages(newMessages);
-    const response = "Dzięki za wiadomość!";
-    setTimeout(() => {
-      setMessages([...newMessages, response]);
-    }, 1000);
-  };
+  const handleSendMessage = (message, response) => {
+    if (response && response.text) {
+      const newMessages = [...messages, { text: "User: " + message, id: Date.now() }, { text: "NPC: " + response.text, id: Date.now() + 1 }];
+      setMessages(newMessages);
+    }
+  };  
 
   useEffect(() => {
     setIsVisible(true);
@@ -85,7 +79,7 @@ const UiMenu = () => {
     }, 300);
     try {
       const data = await Dialog(text);
-      handleSendMessage(text);
+      handleSendMessage(text, data);
       console.log(data);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -173,15 +167,29 @@ const UiMenu = () => {
           onClick={onButtonClick}
           style={buttonAnimationProps}
         ></animated.button>
-
+        
         {isExpandButtonClicked && (
-              <div className="message-container">
-                {messages.map((message, index) => (
-                  <div key={index} className="message">
-                    {message}
-                  </div>
-                ))}
-              </div>
+          <div className="message-container">
+            <div className="message-scroll">
+              {messages.map((message, index) => (
+                <div key={index} className="message">
+                  {message.text.startsWith("User: ") ? (
+                    <div>
+                      <label className="user-label">User: </label>
+                      <span className="user-message">{message.text.substring(6)}</span>
+                    </div>
+                  ) : message.text.startsWith("NPC: ") ? (
+                    <div>
+                      <label className="npc-label">NPC: </label>
+                      <span className="npc-message">{message.text.substring(5)}</span>
+                    </div>
+                  ) : (
+                    <span>{message.text}</span>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
         )}
 
       </animated.div>
