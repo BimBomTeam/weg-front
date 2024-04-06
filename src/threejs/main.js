@@ -17,6 +17,7 @@ import { Water } from "three/examples/jsm/objects/Water.js";
 import { Sky } from "three/examples/jsm/objects/Sky";
 import { TestCamera } from "./testCamera";
 import { CameraOperator } from "./cameraOperator";
+import { StandartNPC } from "./standartNPC";
 
 class MainScene extends Scene3D {
   constructor() {
@@ -138,6 +139,10 @@ class MainScene extends Scene3D {
 
     this.setupPlayer();
     this.setupMap();
+    this.standNPC = new StandartNPC({
+      pos: { x: 38, y: 10, z: 10 },
+      sketch: this,
+    });
 
     this.box = this.physics.add.box(
       {
@@ -191,21 +196,19 @@ class MainScene extends Scene3D {
 
     if (this.player.object && this.player.object.body) {
       this.player.update(this.KeyHandler);
+      this.standNPC.update();
+      this.standNPC.checkInteraction(this.player.object.position);
 
       // this.camOperator.removeEvent("lerpToAngle");
 
-      this.playerNpcDist = this.player.object.position.distanceTo(
-        this.box.position
-      );
-      let npcNearBy = this.playerNpcDist < 8;
-      if (npcNearBy) {
+      if (this.standNPC.mode == "prepToInteract") {
         if (this.KeyHandler.key.e.click) {
           if (
             this.camOperator.eternalUpate.state == 1 ||
             this.camOperator.eventIsPlayed("NPCzoomOut")
           )
             this.camOperator.addNPCzoomIn({
-              targetPos: this.box.position,
+              targetPos: this.standNPC.object.position,
               adjustPosition: new Vector3(3, 1, 8),
             });
           else if (this.camOperator.eternalUpate.state == 0) {
