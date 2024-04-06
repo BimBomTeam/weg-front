@@ -14,7 +14,7 @@ export class Player {
     this.speed = 7;
     this.isWalking = false;
     this.scale = 2;
-    this.deadLevel = 1.6;
+    this.deadLevel = -2;
     this.lastSafePosition = new Vector3();
     this.lastFallTime = 0;
 
@@ -23,11 +23,17 @@ export class Player {
 
   async initPlayer(pos, sketch) {
     await this.initPlayerObject(pos, sketch);
+
+    sketch.camOperator.setTargetObject(this.object);
+    sketch.camOperator.addEvent("lerpToAngle", {
+      targetPos: this.object.position,
+    });
+
     this.object.name = "player";
     this.playAnimation("idle");
 
     //Attaching the collision sensor to player body
-    this.initSensor(sketch);
+    this.initSensor(sketch, pos);
 
     this.textObject = new TextObject({
       textContent: "dimasikhdashdjs",
@@ -73,6 +79,9 @@ export class Player {
         //Render setup
         this.object.add(gltf.scene);
         sketch.add.existing(this.object);
+
+        this.object.position.set(pos.x, pos.y, pos.z);
+
         this.object.traverse((child) => {
           if (child.isMesh) {
             child.castShadow = child.receiveShadow = true;
@@ -100,7 +109,7 @@ export class Player {
         this.object.body.setFriction(0.5);
 
         //Updating player initial position
-        this.setPosition(pos);
+        // this.setPosition(pos);
 
         //Animation setup
         sketch.animationMixers.add(this.object.anims.mixer);
@@ -129,9 +138,13 @@ export class Player {
     });
   }
 
-  initSensor(sketch) {
+  initSensor(sketch, pos) {
     this.sensor = new ExtendedObject3D();
-    this.sensor.position.set(0, 0 - (this.size.y * this.scale) / 2 + 0.1, 0);
+    this.sensor.position.set(
+      0 + pos.x,
+      0 - (this.size.y * this.scale) / 2 + 0.1 + pos.y,
+      0 + pos.z
+    );
 
     sketch.physics.add.existing(this.sensor, {
       mass: 1e-8,
@@ -151,30 +164,48 @@ export class Player {
     let showParticles = false;
     let accrossVel = 0;
     let straightVel = 0;
+
+    let moveVec = new THREE.Vector3();
+
+    if (this.object.position.y < this.deadLevel) {
+      let tmpPosition = { ...this.lastSafePosition };
+      tmpPosition.y += 3;
+      this.setPosition(tmpPosition);
+      this.lastFallTime = this.currentTime();
+    }
     if (!this.onGround) {
       showParticles = false;
     }
+    console.log(this.onGround);
 
     if (KeyHandler.key.a.pressed) {
       this.object.body.setVelocityX(-this.speed);
       this.isWalking = true;
       accrossVel = -1;
+
+      moveVec.x = -1;
       // showParticles = true;
     } else if (KeyHandler.key.d.pressed) {
       this.object.body.setVelocityX(this.speed);
       this.isWalking = true;
       accrossVel = 1;
+
+      moveVec.x = 1;
       // showParticles = true;
     }
     if (KeyHandler.key.w.pressed) {
       this.object.body.setVelocityZ(-this.speed);
       this.isWalking = true;
       straightVel = -1;
+
+      moveVec.z = -1;
       // showParticles = true;
     } else if (KeyHandler.key.s.pressed) {
       this.object.body.setVelocityZ(this.speed);
       this.isWalking = true;
       straightVel = 1;
+
+      moveVec.z = 1;
       // showParticles = true;
     }
     if (KeyHandler.key.space.pressed && this.onGround == true) {
@@ -182,7 +213,9 @@ export class Player {
       this.onGround = false;
     }
 
-    this.animateWalk();
+    this.object.body.setAngularVelocityY(0);
+    moveVec = moveVec.length() == 0 ? undefined : moveVec;
+    this.animateWalk(moveVec);
 
     this.playerParticleSystem.active = showParticles;
 
@@ -198,18 +231,70 @@ export class Player {
     return Math.floor(currentDate.getTime() / 1000);
   }
 
-  animateWalk() {
+  animateWalk(moveVec) {
     if (this.isWalking && this.onGround == true) {
       this.object.body.applyForceY(5.8);
       this.onGround = false;
       this.playAnimation("jumping");
       // this.isWalking = false;
     }
+    if (moveVec != undefined) {
+      let rotateAngle = Math.atan(moveVec.x / moveVec.z);
+      rotateAngle = moveVec.z < 0 ? rotateAngle + Math.PI : rotateAngle;
+      let rotateSpeed =
+        this.calcShortestRot(
+          this.radToDeg(this.object.world.theta),
+          this.radToDeg(rotateAngle)
+        ) / 10;
+      this.object.body.setAngularVelocityY(rotateSpeed);
+    }
+  }
+
+  radToDeg(radVal) {
+    return (radVal * 180) / Math.PI;
   }
 
   playAnimation(animName) {
     if (this.object.anims.current !== animName) {
       this.object.anims.play(animName);
     }
+  }
+
+  calcShortestRot(from, to) {
+    if (from < 0) {
+      from += 360;
+    }
+
+    if (to < 0) {
+      to += 360;
+    }
+
+    if (from == to || (from == 0 && to == 360) || (from == 360 && to == 0)) {
+      return 0;
+    }
+
+    let left = 360 - from + to;
+    let right = from - to;
+
+    if (from < to) {
+      if (to > 0) {
+        left = to - from;
+        right = 360 - to + from;
+      } else {
+        left = 360 - to + from;
+        right = to - from;
+      }
+    }
+
+    // Determine the shortest direction.
+    return left <= right ? left : right * -1;
+  }
+
+  calcShortestRotDirection(from, to) {
+    // If the value is positive, return true (left).
+    if (this.calcShortestRot(from, to) >= 0) {
+      return true;
+    }
+    return false; // right
   }
 }

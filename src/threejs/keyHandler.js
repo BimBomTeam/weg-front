@@ -18,6 +18,7 @@ export class KeyHandler {
       },
       e: {
         pressed: false,
+        click: false,
       },
     };
     this.moveDirections = {
@@ -75,9 +76,18 @@ export class KeyHandler {
           this.key.space.pressed = false;
           break;
         case "KeyE":
+          this.key.e.click = true;
           this.key.e.pressed = false;
           break;
       }
     });
+  }
+
+  update() {
+    for (let element in this.key) {
+      if (this.key[element].click !== undefined) {
+        this.key[element].click = false;
+      }
+    }
   }
 }
