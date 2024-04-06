@@ -28,7 +28,6 @@ const UiMenu = () => {
   useEffect(() => {
     setIsVisible(true);
     setIsButtonClicked(false);
-    setIsExpandButtonClicked(false); 
   }, []);
 
   useEffect(() => {
@@ -36,6 +35,7 @@ const UiMenu = () => {
       setText("");
     }
   }, [isVisible]);
+  
 
   useEffect(() => {
     if (!text && textareaRef.current) {
@@ -64,18 +64,17 @@ const UiMenu = () => {
   };
 
   const onButtonClickExpand = () => {
-    setIsExpandButtonClicked(!isExpandButtonClicked);
-    setIsButtonClicked(false);
     setIsGifVisible(false);
     setIsButtonRotated(!isButtonRotated);
+    setIsButtonClicked(!isButtonClicked);
+
   };
   
   const onButtonClick = async () => {
     setIsButtonClicked(true);
-    setIsExpandButtonClicked(false);
     setTimeout(() => {
       setIsGifVisible(true);
-      setIsButtonRotated(!isButtonRotated);
+      setIsButtonRotated(true);
       setTimeout(() => {
         setIsGifVisible(false);
       }, 3000);
@@ -170,28 +169,28 @@ const UiMenu = () => {
         ></animated.button>
         
         {(isButtonClicked || isExpandButtonClicked) && (
-  <div className="message-container">
-    <div className="message-scroll">
-      {messages.map((message, index) => (
-        <div key={index} className="message">
-          {message.text.startsWith("User: ") ? (
-            <div>
-              <label className="user-label">User: </label>
-              <span className="user-message">{message.text.substring(6)}</span>
+          <div className="message-container">
+            <div className="message-scroll">
+              {messages.map((message, index) => (
+                <div key={index} className="message">
+                  {message.text.startsWith("User: ") ? (
+                    <div>
+                      <label className="user-label">User: </label>
+                      <span className="user-message">{message.text.substring(6)}</span>
+                    </div>
+                  ) : message.text.startsWith("NPC: ") ? (
+                    <div>
+                      <label className="npc-label">NPC: </label>
+                      <span className="npc-message">{message.text.substring(5)}</span>
+                    </div>
+                  ) : (
+                    <span>{message.text}</span>
+                  )}
+                </div>
+              ))}
             </div>
-          ) : message.text.startsWith("NPC: ") ? (
-            <div>
-              <label className="npc-label">NPC: </label>
-              <span className="npc-message">{message.text.substring(5)}</span>
-            </div>
-          ) : (
-            <span>{message.text}</span>
-          )}
-        </div>
-      ))}
-    </div>
-  </div>
-)}
+          </div>
+        )}
 
       </animated.div>
       <ToastContainer position="top-center" closeOnClick={true} />
