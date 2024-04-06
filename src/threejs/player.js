@@ -165,7 +165,7 @@ export class Player {
     let accrossVel = 0;
     let straightVel = 0;
 
-    let rotateAngle = [];
+    let moveVec = new THREE.Vector3();
 
     if (this.object.position.y < this.deadLevel) {
       let tmpPosition = { ...this.lastSafePosition };
@@ -182,27 +182,30 @@ export class Player {
       this.object.body.setVelocityX(-this.speed);
       this.isWalking = true;
       accrossVel = -1;
-      rotateAngle.push(270);
+
+      moveVec.x = -1;
       // showParticles = true;
     } else if (KeyHandler.key.d.pressed) {
       this.object.body.setVelocityX(this.speed);
       this.isWalking = true;
       accrossVel = 1;
-      rotateAngle.push(90);
+
+      moveVec.x = 1;
       // showParticles = true;
     }
     if (KeyHandler.key.w.pressed) {
       this.object.body.setVelocityZ(-this.speed);
       this.isWalking = true;
       straightVel = -1;
-      rotateAngle.push(180);
+
+      moveVec.z = -1;
       // showParticles = true;
     } else if (KeyHandler.key.s.pressed) {
       this.object.body.setVelocityZ(this.speed);
       this.isWalking = true;
       straightVel = 1;
-      if (KeyHandler.key.a.pressed) rotateAngle.push(360);
-      else rotateAngle.push(0);
+
+      moveVec.z = 1;
       // showParticles = true;
     }
     if (KeyHandler.key.space.pressed && this.onGround == true) {
@@ -211,14 +214,8 @@ export class Player {
     }
 
     this.object.body.setAngularVelocityY(0);
-    if (rotateAngle.length != 0) {
-      let sumAngle = 0;
-      rotateAngle.forEach((element) => {
-        sumAngle += element;
-      });
-      sumAngle /= rotateAngle.length;
-      this.animateWalk(sumAngle);
-    } else this.animateWalk();
+    moveVec = moveVec.length() == 0 ? undefined : moveVec;
+    this.animateWalk(moveVec);
 
     this.playerParticleSystem.active = showParticles;
 
@@ -234,33 +231,27 @@ export class Player {
     return Math.floor(currentDate.getTime() / 1000);
   }
 
-  animateWalk(rotateAngle) {
+  animateWalk(moveVec) {
     if (this.isWalking && this.onGround == true) {
       this.object.body.applyForceY(5.8);
       this.onGround = false;
       this.playAnimation("jumping");
       // this.isWalking = false;
     }
-    if (rotateAngle !== undefined) {
-      if (rotateAngle >= 180) {
-        rotateAngle -= 360;
-      }
-      let rotSpeed =
+    if (moveVec != undefined) {
+      let rotateAngle = Math.atan(moveVec.x / moveVec.z);
+      rotateAngle = moveVec.z < 0 ? rotateAngle + Math.PI : rotateAngle;
+      let rotateSpeed =
         this.calcShortestRot(
-          (this.object.world.theta * 180) / Math.PI,
-          rotateAngle
+          this.radToDeg(this.object.world.theta),
+          this.radToDeg(rotateAngle)
         ) / 10;
-      if (
-        this.calcShortestRotDirection(
-          (this.object.world.theta * 180) / Math.PI,
-          rotateAngle
-        )
-      ) {
-        this.object.body.setAngularVelocityY(rotSpeed);
-      } else {
-        this.object.body.setAngularVelocityY(rotSpeed);
-      }
+      this.object.body.setAngularVelocityY(rotateSpeed);
     }
+  }
+
+  radToDeg(radVal) {
+    return (radVal * 180) / Math.PI;
   }
 
   playAnimation(animName) {
