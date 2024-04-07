@@ -20,6 +20,7 @@ export class Player {
     this.lastFallTime = 0;
 
     this.mode = "freeWalk";
+    this.moveEvent = [];
 
     this.initPlayer(pos, sketch);
   }
@@ -234,6 +235,13 @@ export class Player {
       this.lastFallTime = this.currentTime();
     }
 
+    this.object.body.setAngularVelocityY(0);
+    if (this.moveEvent.length > 0) {
+      this.moveEvent.forEach((element) => {
+        element.func(element.params);
+      });
+    }
+
     if (this.mode == "freeWalk") {
       if (KeyHandler.key.a.pressed) {
         this.object.body.setVelocityX(-this.speed);
@@ -277,7 +285,6 @@ export class Player {
       showParticles = false;
     }
 
-    this.object.body.setAngularVelocityY(0);
     moveVec = moveVec.length() == 0 ? undefined : moveVec;
     this.animateWalk(moveVec);
 
@@ -287,6 +294,31 @@ export class Player {
       this.object.position,
       new Vector3(accrossVel, 0, straightVel)
     );
+  }
+
+  addRotateEvent(objPos) {
+    this.moveEvent.push({
+      func: (objPos = new Vector3()) => {
+        let lookVec = objPos.clone().sub(this.object.position);
+        let targAng = Math.atan(lookVec.x / lookVec.z);
+        if (lookVec.z < 0) {
+          targAng += Math.PI;
+        }
+        let rotAngle = this.calcShortestRot(
+          (this.object.world.theta * 180) / Math.PI,
+          (targAng * 180) / Math.PI
+        );
+
+        // console.log((rotAngle * Math.PI) / 180);
+        this.object.body.setAngularVelocityY(rotAngle / 10);
+        if (Math.abs(rotAngle) <= 4) return true;
+      },
+      params: objPos,
+    });
+  }
+
+  rotateToObject(objPos = new Vector3()) {
+    // this.object.body.rotation.y = (rotAngle * Math.PI) / 180;
   }
 
   currentTime() {

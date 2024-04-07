@@ -205,6 +205,7 @@ class MainScene extends Scene3D {
       if (this.standNPC.mode == "prepToInteract") {
         if (this.KeyHandler.key.e.click && this.player.mode == "freeWalk") {
           this.player.mode = "interact";
+          this.player.addRotateEvent(this.standNPC.object.position);
           this.camOperator.addNPCzoomIn({
             targetPos: this.standNPC.object.position,
             adjustPosition: new Vector3(3, 1, 8),
@@ -212,6 +213,7 @@ class MainScene extends Scene3D {
         }
         if (this.KeyHandler.key.esc.click && this.player.mode == "interact") {
           this.player.mode = "freeWalk";
+          this.player.moveEvent = [];
           this.camOperator.addNPCzoomOut();
         }
       }
