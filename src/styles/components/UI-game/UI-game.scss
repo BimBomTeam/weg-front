@@ -9,19 +9,11 @@
   backdrop-filter: blur(18px);
 }
 
-.animated-gif {
-  position: absolute;
-  width: 150px;
-  height: 75px;
-  top: 35%;
-  right: 85%;
-}
-
 .message-scroll {
   height: 500px;
   width: 93%;
   max-height: 500px;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .message-scroll::-webkit-scrollbar {
@@ -38,3 +30,40 @@
   border-radius: 10px;
   background: #195E85; 
 }
+
+.bouncing-dots {
+  margin-left: 7%;
+  margin-top: -2%;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+}
+
+.dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: $label-color;
+  margin: 0 5px;
+  animation: bounce 0.5s infinite alternate;
+}
+
+.dot:nth-child(2) {
+  animation-delay: 0.25s;
+}
+
+.dot:nth-child(3) {
+  animation-delay: 0.5s;
+}
+
+@keyframes bounce {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-10px);
+  }
+}
+
+
+

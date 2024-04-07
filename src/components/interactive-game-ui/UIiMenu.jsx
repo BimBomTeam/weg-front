@@ -11,19 +11,41 @@ const UiMenu = () => {
   const textareaRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
   const [isButtonClicked, setIsButtonClicked] = useState(false);
-  const [isExpandButtonClicked, setIsExpandButtonClicked] = useState(false);
+  const [isExpandButtonClicked] = useState(false);
   const [isButtonRotated, setIsButtonRotated] = useState(false);
-  const [isGifVisible, setIsGifVisible] = useState(false);
   const [isListening, setIsListening] = useState(false);
-  const { transcript } = useSpeechRecognition({ continuous: true, language: 'en-US' });
+  const {transcript} = useSpeechRecognition({ continuous: true, language: 'en-US' });
   const [messages, setMessages] = useState([]);
+  const [showAnimation] = useState(false);
 
-  const handleSendMessage = (message, response) => {
-    if (response && response.text) {
-      const newMessages = [...messages, { text: "User: " + message, id: Date.now() }, { text: "NPC: " + response.text, id: Date.now() + 1 }];
-      setMessages(newMessages);
+  const handleSendMessage = async () => {
+    try {
+      const data = await Dialog(text);
+  
+      const newUserMessage = { text: "User: " + text, id: Date.now() };
+      const npcMessage = { text: "NPC: ", animation: true, id: Date.now() + 1 };
+      
+      setMessages(prevMessages => [...prevMessages, newUserMessage, npcMessage]);
+  
+      setTimeout(() => {
+        npcMessage.text = "NPC: " + data.text;
+        npcMessage.animation = false;
+        setMessages(prevMessages => [...prevMessages]);
+      }, 3000);
+  
+      console.log(data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
     }
-  };  
+  };
+  
+  const onButtonClick = async () => {
+    setIsButtonClicked(true);
+    setIsButtonRotated(true);
+  
+    await handleSendMessage();
+    setText('');
+  };
 
   useEffect(() => {
     setIsVisible(true);
@@ -64,31 +86,10 @@ const UiMenu = () => {
   };
 
   const onButtonClickExpand = () => {
-    setIsGifVisible(false);
     setIsButtonRotated(!isButtonRotated);
     setIsButtonClicked(!isButtonClicked);
 
-  };
-  
-  const onButtonClick = async () => {
-    setIsButtonClicked(true);
-    setTimeout(() => {
-      setIsGifVisible(true);
-      setIsButtonRotated(true);
-      setTimeout(() => {
-        setIsGifVisible(false);
-      }, 3000);
-    }, 300);
-    try {
-      const data = await Dialog(text);
-      handleSendMessage(text, data);
-      console.log(data);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-    setText('');
-  };
-  
+  };  
   
   const toggleListening = () => {
     if (!isListening) {
@@ -130,9 +131,6 @@ const UiMenu = () => {
   return (
     <div style={{ display: "flex", justifyContent: "center" }}>
       <animated.div className="main-ui" style={animationProps}>
-        {isGifVisible && (
-          <img src="/images/writing_dots.gif" alt="Animated GIF" className="animated-gif" />
-        )}
 
           <animated.button
             id="expand_field_button"
@@ -171,23 +169,26 @@ const UiMenu = () => {
         {(isButtonClicked || isExpandButtonClicked) && (
           <div className="message-container">
             <div className="message-scroll">
-              {messages.map((message, index) => (
-                <div key={index} className="message">
-                  {message.text.startsWith("User: ") ? (
-                    <div>
-                      <label className="user-label">User: </label>
-                      <span className="user-message">{message.text.substring(6)}</span>
-                    </div>
-                  ) : message.text.startsWith("NPC: ") ? (
-                    <div>
-                      <label className="npc-label">NPC: </label>
-                      <span className="npc-message">{message.text.substring(5)}</span>
-                    </div>
-                  ) : (
-                    <span>{message.text}</span>
-                  )}
-                </div>
-              ))}
+            {messages.map((message, index) => (
+              <div key={index} className="message">
+                {message.text.startsWith("User: ") ? (
+                  <div>
+                    <label className="user-label">User: </label>
+                    <span className="user-message">{message.text.substring(6)}</span>
+                  </div>
+                ) : message.text.startsWith("NPC: ") ? (
+                  <div>
+                    <label className="npc-label">NPC: </label>
+                    <span className="npc-message">{message.text.substring(5)}</span>
+                    {message.animation && <BouncingDotsAnimation />}
+                  </div>
+                ) : (
+                  <span>{message.text}</span>
+                )}
+              </div>
+            ))}
+
+              {showAnimation && <BouncingDotsAnimation />}
             </div>
           </div>
         )}
@@ -197,5 +198,13 @@ const UiMenu = () => {
     </div>
   );
 };
+
+const BouncingDotsAnimation = () => (
+  <div className="bouncing-dots">
+    <div className="dot"></div>
+    <div className="dot"></div>
+    <div className="dot"></div>
+  </div>
+);
 
 export default UiMenu;
