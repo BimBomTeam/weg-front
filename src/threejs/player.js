@@ -224,13 +224,13 @@ export class Player {
     let accrossVel = 0;
     let straightVel = 0;
 
-
     let moveVec = new THREE.Vector3();
     if (this.object.position.y < this.deadLevel) {
       let tmpPosition = { ...this.lastSafePosition };
       tmpPosition.y += 3;
       this.setPosition(tmpPosition);
       this.lastFallTime = this.currentTime();
+    }
 
     if (KeyHandler.key.a.pressed) {
       this.object.body.setVelocityX(-this.speed);
@@ -251,7 +251,6 @@ export class Player {
       straightVel = -1;
       showParticles = true;
       moveVec.z = -1;
-
     } else if (KeyHandler.key.s.pressed) {
       this.object.body.setVelocityZ(this.speed);
       this.isWalking = true;
@@ -267,15 +266,16 @@ export class Player {
       this.playAnimation("Jump");
     }
 
-
-    if (this.currentTime() - this.particlesPermision > this.particlesPermisionDuration ) {
+    if (
+      this.currentTime() - this.particlesPermision >
+      this.particlesPermisionDuration
+    ) {
       showParticles = false;
     }
 
     this.object.body.setAngularVelocityY(0);
     moveVec = moveVec.length() == 0 ? undefined : moveVec;
     this.animateWalk(moveVec);
-
 
     this.playerParticleSystem.active = showParticles;
 
@@ -294,9 +294,7 @@ export class Player {
   animateWalk(moveVec) {
     if (this.isWalking && this.onGround == true) {
       this.playAnimation("Walk");
-      console.log(this.autoJump.isNear, " ", this.autoJump.canJump);
       if (this.autoJump.isNear && this.autoJump.canJump) {
-        console.log("jump");
         this.object.body.applyForceY(6);
         this.onGround = false;
       }
