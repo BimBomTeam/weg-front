@@ -19,6 +19,8 @@ import { TestCamera } from "./testCamera";
 import { CameraOperator } from "./cameraOperator";
 import { StandartNPC } from "./standartNPC";
 
+let changeUiVisibilityTest;
+
 class MainScene extends Scene3D {
   constructor() {
     super({ key: "MainScene" });
@@ -204,6 +206,7 @@ class MainScene extends Scene3D {
 
       if (this.standNPC.mode == "prepToInteract") {
         if (this.KeyHandler.key.e.click && this.player.mode == "freeWalk") {
+          changeUiVisibilityTest(true);
           this.player.mode = "interact";
           this.player.addRotateEvent(this.standNPC.object.position);
           this.camOperator.addNPCzoomIn({
@@ -212,6 +215,7 @@ class MainScene extends Scene3D {
           });
         }
         if (this.KeyHandler.key.esc.click && this.player.mode == "interact") {
+          changeUiVisibilityTest(false);
           this.player.mode = "freeWalk";
           this.player.moveEvent = [];
           this.camOperator.addNPCzoomOut();
@@ -244,6 +248,8 @@ const config = {
 
 export default class GameScene {
   constructor(changeUIVisibility) {
+    changeUiVisibilityTest = changeUIVisibility;
+
     window.addEventListener("load", () => {
       PhysicsLoader("/src/threejs/lib/ammo/kripken", () => new Project(config));
     });
