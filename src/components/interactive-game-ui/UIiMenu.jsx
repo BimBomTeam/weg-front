@@ -128,6 +128,18 @@ const UiMenu = () => {
     config: { duration: 200 },
   });
 
+  const messageContainerAnimationProps = useSpring({
+    opacity: isButtonClicked || isExpandButtonClicked ? 1 : 0,
+    pointerEvents: isButtonClicked || isExpandButtonClicked ? "auto" : "none",
+    config: { tension: 20, friction: 10 },
+  });
+
+  const messageScrollAnimationProps = useSpring({
+    opacity: isButtonClicked || isExpandButtonClicked ? 1 : 0,
+    pointerEvents: isButtonClicked || isExpandButtonClicked ? "auto" : "none",
+    config: { tension: 40, friction: 10 },
+  });
+
   return (
     <div style={{ display: "flex", justifyContent: "center" }}>
       <animated.div className="main-ui" style={animationProps}>
@@ -167,8 +179,8 @@ const UiMenu = () => {
         ></animated.button>
         
         {(isButtonClicked || isExpandButtonClicked) && (
-          <div className="message-container">
-            <div className="message-scroll">
+          <animated.div className="message-container" style={messageContainerAnimationProps}>
+            <animated.div className="message-scroll" style={messageScrollAnimationProps}>
             {messages.map((message, index) => (
               <div key={index} className="message">
                 {message.text.startsWith("User: ") ? (
@@ -189,8 +201,8 @@ const UiMenu = () => {
             ))}
 
               {showAnimation && <BouncingDotsAnimation />}
-            </div>
-          </div>
+            </animated.div>
+          </animated.div>
         )}
 
       </animated.div>
