@@ -28,7 +28,7 @@
     "redux": "^5.0.1",
     "redux-thunk": "^3.1.0",
     "sass": "^1.71.1",
-    "three-nebula": "^10.0.3"
+    "three-nebula": "^10.0.3",
     "three": "^0.161.0"
   },
   "devDependencies": {
