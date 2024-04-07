@@ -1,0 +1,38 @@
+body {
+  background-image: url('/images/bg.png');
+  background-size: cover;
+  background-position: center;
+  margin: 0;
+  padding: 0;
+}
+
+.register-container {
+  width: 800px;
+  height: 700px;
+  position: relative;
+  border-radius: 30px;
+
+  &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: $button-gradient-start; 
+      backdrop-filter: blur(18px); 
+      border-radius: inherit; 
+  }
+}
+
+.register-content {
+  position: relative; 
+  z-index: 1; 
+  padding: 20px;
+
+  label {
+      display: block;
+      margin-bottom: 5px;
+      padding-left: 10%;
+  }
+}

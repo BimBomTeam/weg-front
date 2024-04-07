@@ -9,12 +9,15 @@ canvas{
   height: 100vh;
 }
 
-
-
 #webgl{
   width: 100vw;
   height: 100vh;
   position: absolute;
   top: 0;
   left: 0;
+}
+
+@font-face {
+  font-family: Roboto;
+  src: url('/fonts/Roboto-Regular.ttf') format('truetype');
 }
