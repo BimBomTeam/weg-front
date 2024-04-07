@@ -20,6 +20,10 @@ export class KeyHandler {
         pressed: false,
         click: false,
       },
+      esc: {
+        pressed: false,
+        click: false,
+      },
     };
     this.moveDirections = {
       moveLeft: 0,
@@ -52,6 +56,9 @@ export class KeyHandler {
         case "KeyE":
           this.key.e.pressed = true;
           break;
+        case "Escape":
+          this.key.esc.pressed = true;
+          break;
       }
     });
     window.addEventListener("keyup", (event) => {
@@ -79,6 +86,9 @@ export class KeyHandler {
           this.key.e.click = true;
           this.key.e.pressed = false;
           break;
+        case "Escape":
+          this.key.esc.click = true;
+          this.key.esc.pressed = false;
       }
     });
   }

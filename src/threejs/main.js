@@ -203,22 +203,17 @@ class MainScene extends Scene3D {
       // this.camOperator.removeEvent("lerpToAngle");
 
       if (this.standNPC.mode == "prepToInteract") {
-        if (this.KeyHandler.key.e.click) {
-          if (
-            this.camOperator.eternalUpate.state == 1 ||
-            this.camOperator.eventIsPlayed("NPCzoomOut")
-          )
-            this.camOperator.addNPCzoomIn({
-              targetPos: this.standNPC.object.position,
-              adjustPosition: new Vector3(3, 1, 8),
-            });
-          else if (this.camOperator.eternalUpate.state == 0) {
-            this.camOperator.addNPCzoomOut();
-          }
+        if (this.KeyHandler.key.e.click && this.player.mode == "freeWalk") {
+          this.player.mode = "interact";
+          this.camOperator.addNPCzoomIn({
+            targetPos: this.standNPC.object.position,
+            adjustPosition: new Vector3(3, 1, 8),
+          });
         }
-        // console.log(this.box.position);
-      } else if (this.camOperator.eternalUpate.state == 0) {
-        this.camOperator.addNPCzoomOut();
+        if (this.KeyHandler.key.esc.click && this.player.mode == "interact") {
+          this.player.mode = "freeWalk";
+          this.camOperator.addNPCzoomOut();
+        }
       }
       // this.camera.update(
       //   this.player.object.position,

@@ -19,6 +19,8 @@ export class Player {
     this.lastSafePosition = new Vector3();
     this.lastFallTime = 0;
 
+    this.mode = "freeWalk";
+
     this.initPlayer(pos, sketch);
   }
 
@@ -232,38 +234,40 @@ export class Player {
       this.lastFallTime = this.currentTime();
     }
 
-    if (KeyHandler.key.a.pressed) {
-      this.object.body.setVelocityX(-this.speed);
-      this.isWalking = true;
-      accrossVel = -1;
-      showParticles = true;
-      moveVec.x = -1;
-    } else if (KeyHandler.key.d.pressed) {
-      this.object.body.setVelocityX(this.speed);
-      this.isWalking = true;
-      accrossVel = 1;
-      showParticles = true;
-      moveVec.x = 1;
-    }
-    if (KeyHandler.key.w.pressed) {
-      this.object.body.setVelocityZ(-this.speed);
-      this.isWalking = true;
-      straightVel = -1;
-      showParticles = true;
-      moveVec.z = -1;
-    } else if (KeyHandler.key.s.pressed) {
-      this.object.body.setVelocityZ(this.speed);
-      this.isWalking = true;
-      straightVel = 1;
-      showParticles = true;
-      moveVec.z = 1;
-    }
-    if (KeyHandler.key.space.pressed && this.onGround == true) {
-      this.object.body.applyForceY(this.jumpForce);
-      this.onGround = false;
-      //Needed to add aditional velocity in order to end event on collision sensor worked
-      this.object.body.setVelocityZ(0.1);
-      this.playAnimation("Jump");
+    if (this.mode == "freeWalk") {
+      if (KeyHandler.key.a.pressed) {
+        this.object.body.setVelocityX(-this.speed);
+        this.isWalking = true;
+        accrossVel = -1;
+        showParticles = true;
+        moveVec.x = -1;
+      } else if (KeyHandler.key.d.pressed) {
+        this.object.body.setVelocityX(this.speed);
+        this.isWalking = true;
+        accrossVel = 1;
+        showParticles = true;
+        moveVec.x = 1;
+      }
+      if (KeyHandler.key.w.pressed) {
+        this.object.body.setVelocityZ(-this.speed);
+        this.isWalking = true;
+        straightVel = -1;
+        showParticles = true;
+        moveVec.z = -1;
+      } else if (KeyHandler.key.s.pressed) {
+        this.object.body.setVelocityZ(this.speed);
+        this.isWalking = true;
+        straightVel = 1;
+        showParticles = true;
+        moveVec.z = 1;
+      }
+      if (KeyHandler.key.space.pressed && this.onGround == true) {
+        this.object.body.applyForceY(this.jumpForce);
+        this.onGround = false;
+        //Needed to add aditional velocity in order to end event on collision sensor worked
+        this.object.body.setVelocityZ(0.1);
+        this.playAnimation("Jump");
+      }
     }
 
     if (
