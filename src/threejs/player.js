@@ -10,11 +10,12 @@ export class Player {
     //Player properties
     this.objName = "player";
     this.onGround = false;
+    this.particlesPermisionDuration = 0.15;
     this.jumpForce = 15;
     this.speed = 7;
     this.isWalking = false;
     this.scale = 2;
-    this.deadLevel = -2;
+    this.deadLevel = -20;
     this.lastSafePosition = new Vector3();
     this.lastFallTime = 0;
 
@@ -44,16 +45,12 @@ export class Player {
     const processColision = (otherObject, event) => {
       if (event !== "end" && this.object.body.velocity.y < 1) {
         this.onGround = true;
+        this.particlesPermision = this.currentTime();
         if (
           this.object.position.y > this.deadLevel &&
           this.currentTime() - this.lastFallTime > 2
         ) {
           this.lastSafePosition = { ...this.object.position };
-        } else if (this.object.position.y < this.deadLevel) {
-          let tmpPosition = { ...this.lastSafePosition };
-          tmpPosition.y += 3;
-          this.setPosition(tmpPosition);
-          this.lastFallTime = this.currentTime();
         }
       } else if (event === "end") {
         this.onGround = false;
@@ -227,48 +224,40 @@ export class Player {
     let accrossVel = 0;
     let straightVel = 0;
 
-    let moveVec = new THREE.Vector3();
 
+    let moveVec = new THREE.Vector3();
     if (this.object.position.y < this.deadLevel) {
       let tmpPosition = { ...this.lastSafePosition };
       tmpPosition.y += 3;
       this.setPosition(tmpPosition);
       this.lastFallTime = this.currentTime();
-    }
-    if (!this.onGround) {
-      showParticles = false;
-    }
-    console.log(this.onGround);
 
     if (KeyHandler.key.a.pressed) {
       this.object.body.setVelocityX(-this.speed);
       this.isWalking = true;
       accrossVel = -1;
-
+      showParticles = true;
       moveVec.x = -1;
-      // showParticles = true;
     } else if (KeyHandler.key.d.pressed) {
       this.object.body.setVelocityX(this.speed);
       this.isWalking = true;
       accrossVel = 1;
-
+      showParticles = true;
       moveVec.x = 1;
-      // showParticles = true;
     }
     if (KeyHandler.key.w.pressed) {
       this.object.body.setVelocityZ(-this.speed);
       this.isWalking = true;
       straightVel = -1;
-
+      showParticles = true;
       moveVec.z = -1;
-      // showParticles = true;
+
     } else if (KeyHandler.key.s.pressed) {
       this.object.body.setVelocityZ(this.speed);
       this.isWalking = true;
       straightVel = 1;
-
+      showParticles = true;
       moveVec.z = 1;
-      // showParticles = true;
     }
     if (KeyHandler.key.space.pressed && this.onGround == true) {
       this.object.body.applyForceY(this.jumpForce);
@@ -278,9 +267,15 @@ export class Player {
       this.playAnimation("Jump");
     }
 
+
+    if (this.currentTime() - this.particlesPermision > this.particlesPermisionDuration ) {
+      showParticles = false;
+    }
+
     this.object.body.setAngularVelocityY(0);
     moveVec = moveVec.length() == 0 ? undefined : moveVec;
     this.animateWalk(moveVec);
+
 
     this.playerParticleSystem.active = showParticles;
 
@@ -293,7 +288,7 @@ export class Player {
   currentTime() {
     var currentDate = new Date();
 
-    return Math.floor(currentDate.getTime() / 1000);
+    return currentDate.getTime() / 1000;
   }
 
   animateWalk(moveVec) {
