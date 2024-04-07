@@ -186,6 +186,7 @@ class MainScene extends Scene3D {
   }
 
   setupPlayer() {
+    let testPos = { x: 40, y: 30, z: 75 };
     this.player = new Player({ sketch: this });
   }
 

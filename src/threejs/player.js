@@ -30,10 +30,11 @@ export class Player {
     });
 
     this.object.name = "player";
-    this.playAnimation("idle");
+    this.playAnimation("Idle");
 
     //Attaching the collision sensor to player body
     this.initSensor(sketch, pos);
+    this.initAutoJumpSensors(sketch, pos);
 
     this.textObject = new TextObject({
       textContent: "dimasikhdashdjs",
@@ -54,9 +55,8 @@ export class Player {
           this.setPosition(tmpPosition);
           this.lastFallTime = this.currentTime();
         }
-      } else {
+      } else if (event === "end") {
         this.onGround = false;
-        this.playAnimation("idle");
       }
     };
 
@@ -67,10 +67,11 @@ export class Player {
 
   async initPlayerObject(pos, sketch) {
     await sketch.load
-      .gltf("/src/assets/models/player/player7.glb")
+      .gltf("/src/assets/models/player/playerRework.glb")
       .then((gltf) => {
         this.object = new ExtendedObject3D();
         // gltf.scene.children[0].geometry.center();
+        gltf.scene.rotateY(Math.PI);
 
         //Getting the size of Player glb object
         let box = new THREE.Box3().setFromObject(gltf.scene);
@@ -106,7 +107,10 @@ export class Player {
         });
         this.object.body.checkCollisions = true;
         this.object.body.setAngularFactor(0, 0, 0);
-        this.object.body.setFriction(0.5);
+        this.object.body.setFriction(0.8);
+
+        this.object.body.setCcdMotionThreshold(1);
+        this.object.body.setCcdSweptSphereRadius(0.25);
 
         //Updating player initial position
         // this.setPosition(pos);
@@ -138,11 +142,69 @@ export class Player {
     });
   }
 
+  initAutoJumpSensors(sketch, pos) {
+    let downSensor = new ExtendedObject3D();
+    downSensor.position.set(
+      0 + pos.x,
+      0 - (this.size.y * this.scale) / 2 + 0.3 + pos.y,
+      0 + pos.z + 2
+    );
+
+    sketch.physics.add.existing(downSensor, {
+      mass: 1e-8,
+      shape: "box",
+      width: this.scale - 0.5,
+      height: 0.2,
+      depth: this.scale - 0.5,
+    });
+    downSensor.body.setCollisionFlags(4);
+
+    sketch.physics.add.constraints.lock(this.object.body, downSensor.body);
+
+    let upSensor = new ExtendedObject3D();
+    upSensor.position.set(
+      0 + pos.x,
+      0 - (this.size.y * this.scale) / 2 + 2 + pos.y,
+      0 + pos.z + 2
+    );
+
+    sketch.physics.add.existing(upSensor, {
+      mass: 1e-8,
+      shape: "box",
+      width: this.scale - 0.5,
+      height: 0.2,
+      depth: this.scale - 0.5,
+    });
+    upSensor.body.setCollisionFlags(4);
+
+    sketch.physics.add.constraints.lock(this.object.body, upSensor.body);
+
+    this.autoJump = {
+      canJump: true,
+      isNear: false,
+    };
+
+    downSensor.body.on.collision((otherObject, event) => {
+      if (event !== "end") {
+        this.autoJump.isNear = true;
+      } else {
+        this.autoJump.isNear = false;
+      }
+    });
+    upSensor.body.on.collision((otherObject, event) => {
+      if (event !== "end") {
+        this.autoJump.canJump = false;
+      } else {
+        this.autoJump.canJump = true;
+      }
+    });
+  }
+
   initSensor(sketch, pos) {
     this.sensor = new ExtendedObject3D();
     this.sensor.position.set(
       0 + pos.x,
-      0 - (this.size.y * this.scale) / 2 + 0.1 + pos.y,
+      0 - (this.size.y * this.scale) / 2 + 0.1 + pos.y - 0.2,
       0 + pos.z
     );
 
@@ -211,6 +273,9 @@ export class Player {
     if (KeyHandler.key.space.pressed && this.onGround == true) {
       this.object.body.applyForceY(this.jumpForce);
       this.onGround = false;
+      //Needed to add aditional velocity in order to end event on collision sensor worked
+      this.object.body.setVelocityZ(0.1);
+      this.playAnimation("Jump");
     }
 
     this.object.body.setAngularVelocityY(0);
@@ -233,10 +298,15 @@ export class Player {
 
   animateWalk(moveVec) {
     if (this.isWalking && this.onGround == true) {
-      this.object.body.applyForceY(5.8);
-      this.onGround = false;
-      this.playAnimation("jumping");
-      // this.isWalking = false;
+      this.playAnimation("Walk");
+      console.log(this.autoJump.isNear, " ", this.autoJump.canJump);
+      if (this.autoJump.isNear && this.autoJump.canJump) {
+        console.log("jump");
+        this.object.body.applyForceY(6);
+        this.onGround = false;
+      }
+    } else if (!this.isWalking && this.onGround == true) {
+      this.playAnimation("Idle");
     }
     if (moveVec != undefined) {
       let rotateAngle = Math.atan(moveVec.x / moveVec.z);
