@@ -6,9 +6,10 @@ import SpeechRecognition, {
 import { useSpring, animated } from "react-spring";
 import Dialog from "../../logic/Dialog";
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+
 
 const UiMenu = (isVisible) => {
+
   const [text, setText] = useState("");
   const textareaRef = useRef(null);
   // const [isVisible, setIsVisible] = useState(false);
@@ -87,6 +88,11 @@ const UiMenu = (isVisible) => {
     setIsListening(!isListening);
   };
 
+  function getStyles(name) {
+    return getComputedStyle(document.documentElement).getPropertyValue(name);
+  }
+
+
   const animationProps = useSpring({
     height: isExpandButtonClicked
       ? isButtonClicked
@@ -105,8 +111,8 @@ const UiMenu = (isVisible) => {
         ? "8.5%"
         : "60%"
       : isButtonClicked
-      ? "60%"
-      : "76%",
+      ? `${getStyles("--animationProps_top_true")}`
+      : `${getStyles("--animationProps_top_false")}`,
   });
 
   const textareaAnimationProps = useSpring({
