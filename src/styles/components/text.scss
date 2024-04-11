@@ -28,7 +28,7 @@ textarea {
     position: fixed;
     width: 700px;
     height: 11px;
-    top: 15%;
+    top: 32%;
     left: 2%;
     margin-bottom: 20px;
     border-radius: 20px;
@@ -135,11 +135,55 @@ label[for="password-repeat-label"] {
 }
 
 .isListening {
-    top: 74%;
+    top: 78%;
     left: 90%;
     position:absolute;
     background-color: red;
     border-radius: 25px;
     height: 5px;
     width: 100%;
+  }
+
+  .instruction_content {
+    font-size: 20px;
+    list-style-type: none;
+    padding-left: 5%;
+    padding-right: 5%;
+  }
+
+  .NPCname, .UserName {
+    position: absolute;
+    width: 150px;
+    height: 75px;
+    top: 15%;
+    left: -1%;
+    font-size: 20px;
+    font-family: 'Roboto-Bold';
+    color: $label-color;
+  }
+
+  .message-container {
+    position: relative;
+    margin-top: 10%;
+    padding: 10px;
+  }
+  
+  .message {
+    font-family: 'Roboto-Bold';
+    font-size: 20px;
+    color: $label-color;
+    text-align: left;
+    margin-left: 1%;
+    padding: 1%;
+    padding-right: 20%;
+  }
+
+  .user-label {
+    font-family: 'Roboto-Black';
+    color: #0e3246;
+  }
+
+  .npc-label {
+    font-family: 'Roboto-Black';
+    color: #0e3246;
   }

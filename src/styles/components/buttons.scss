@@ -2,7 +2,7 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
 
 #send {
   position: absolute;
-  top: 55%;
+  top: 65%;
   right: 19%;
   height: 45px;
   width: 45px;
@@ -32,7 +32,7 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
   position: fixed;
   height: 80px;
   width: 80px;
-  top: 28%;
+  top: 42%;
   left: 88.2%;
   background-image: url('/images/voice.png');
   background-size: cover;
@@ -51,7 +51,7 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
   position: fixed;
   height: 50px;
   width: 93px;
-  top: -15%;
+  top: 5%;
   left: 45%;
   background-image: url('/images/expand.png');
   background-size: cover;
@@ -135,4 +135,65 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
 
 .back-button:hover {
   transform: scale(1.3); 
+}
+
+.expandMenu, .account, .difficulty, .shop, .instruction, .settings {
+  position: fixed;
+  background-size: cover;
+  background-color: transparent;
+  border: 0;
+  transition: transform 0.3s ease, margin-right 0.3s;
+
+  &:hover {
+    transform: scale(1.1);
+    margin-right: 0;
+  }
+}
+
+.expandMenu {
+  background-image: url('/images/menu.png');
+  margin-top: 30%;
+  height: 50px;
+  width: 50px;
+  left: 27.5%;
+}
+
+.account {
+  background-image: url('/images/account.png');
+  margin-top: 90%;
+  height: 50px;
+  width: 50px;
+  left: 27.5%;
+}
+
+.difficulty {
+  background-image: url('/images/difficulty.png');
+  margin-top: 160%;
+  height: 50px;
+  width: 70px;
+  left: 20%;
+}
+
+.shop {
+  background-image: url('/images/shop.png');
+  margin-top: 220%;
+  height: 55px;
+  width: 60px;
+  left: 25%;
+}
+
+.instruction {
+  background-image: url('/images/instruction.png');
+  margin-top: 285%;
+  height: 60px;
+  width: 60px;
+  left: 25%;
+}
+
+.settings {
+  background-image: url('/images/settings.png');
+  margin-top: 350%;
+  height: 60px;
+  width: 60px;
+  left: 25%;
 }

@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "regenerator-runtime/runtime";
 import SpeechRecognition, {
   useSpeechRecognition,
@@ -13,32 +13,61 @@ const UiMenu = (isVisible) => {
   const textareaRef = useRef(null);
   // const [isVisible, setIsVisible] = useState(false);
   const [isButtonClicked, setIsButtonClicked] = useState(false);
-  const [isExpandButtonClicked, setIsExpandButtonClicked] = useState(false);
-  const [isExpandButtonVisible, setIsExpandButtonVisible] = useState(false);
+  const [isExpandButtonClicked] = useState(false);
   const [isButtonRotated, setIsButtonRotated] = useState(false);
-  const [isGifVisible, setIsGifVisible] = useState(false);
   const [isListening, setIsListening] = useState(false);
+  const {transcript} = useSpeechRecognition({ continuous: true, language: 'en-US' });
+  const [messages, setMessages] = useState([]);
+  const [showAnimation] = useState(false);
 
-  const { transcript } = useSpeechRecognition({
-    continuous: true,
-    language: "en-US",
-  });
+  const handleSendMessage = async () => {
+    try {
+      const data = await Dialog(text);
+  
+      const newUserMessage = { text: "User: " + text, id: Date.now() };
+      const npcMessage = { text: "NPC: ", animation: true, id: Date.now() + 1 };
+      
+      setMessages(prevMessages => [...prevMessages, newUserMessage, npcMessage]);
+  
+      setTimeout(() => {
+        npcMessage.text = "NPC: " + data.text;
+        npcMessage.animation = false;
+        setMessages(prevMessages => [...prevMessages]);
+      }, 3000);
+  
+      console.log(data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+  
+  const onButtonClick = async () => {
+    setIsButtonClicked(true);
+    setIsButtonRotated(true);
+  
+    await handleSendMessage();
+    setText('');
+  };
 
-  // useEffect(() => {
-  //   setIsVisible(true);
-  // }, []);
+  useEffect(() => {
+    setIsVisible(true);
+  }, []);
 
   useEffect(() => {
     if (!isVisible) {
       setText("");
     }
   }, [isVisible]);
+  
 
   useEffect(() => {
     if (!text && textareaRef.current) {
       textareaRef.current.style.height = "auto";
     }
   }, [text]);
+
+  useEffect(() => {
+  }, [isExpandButtonClicked]);
 
   useEffect(() => {
     if (transcript && transcript.length <= 255) {
@@ -58,26 +87,11 @@ const UiMenu = (isVisible) => {
   };
 
   const onButtonClickExpand = () => {
-    setIsExpandButtonClicked(!isExpandButtonClicked);
-    setIsGifVisible(false);
     setIsButtonRotated(!isButtonRotated);
-  };
+    setIsButtonClicked(!isButtonClicked);
 
-  const onButtonClick = async () => {
-    setIsButtonClicked(true);
-    setTimeout(() => {
-      setIsGifVisible(true);
-      setIsExpandButtonVisible(true);
-    }, 300);
-    try {
-      const data = await Dialog(text);
-      //работа с ответом dialog (logic)
-      console.log(data);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
-
+  };  
+  
   const toggleListening = () => {
     if (!isListening) {
       SpeechRecognition.startListening({ continuous: true });
@@ -88,104 +102,58 @@ const UiMenu = (isVisible) => {
   };
 
   const animationProps = useSpring({
-    height: isExpandButtonClicked
-      ? isButtonClicked
-        ? "850px"
-        : "50px"
-      : isButtonClicked
-      ? "350px"
-      : "200px",
-    transform: isVisible
-      ? isExpandButtonClicked
-        ? "translateY(0%)"
-        : "translateY(0%)"
-      : "translateY(100%)",
-    top: isExpandButtonClicked
-      ? isButtonClicked
-        ? "8.5%"
-        : "60%"
-      : isButtonClicked
-      ? "60%"
-      : "76%",
+    height: isExpandButtonClicked ? (isButtonClicked ? "850px" : "50px") : (isButtonClicked ? "350px" : "200px"),
+    transform: isVisible ? (isExpandButtonClicked ? "translateY(0%)" : "translateY(0%)") : "translateY(100%)",
+    top: isExpandButtonClicked ? (isButtonClicked ? "8.5%" : "60%") : (isButtonClicked ? "60%" : "76%"),
   });
 
   const textareaAnimationProps = useSpring({
-    marginTop: isExpandButtonClicked
-      ? isButtonClicked
-        ? "550px"
-        : "0px"
-      : isButtonClicked
-      ? "130px"
-      : "0px",
+    marginTop: isExpandButtonClicked ? (isButtonClicked ? "550px" : "0px") : (isButtonClicked ? "130px" : "0px"),
   });
 
   const buttonAnimationProps = useSpring({
-    marginTop: isExpandButtonClicked
-      ? isButtonClicked
-        ? "300px"
-        : "0px"
-      : isButtonClicked
-      ? "70px"
-      : "0px",
+    marginTop: isExpandButtonClicked ? (isButtonClicked ? "300px" : "0px") : (isButtonClicked ? "70px" : "0px"),
   });
 
   const buttonVoiceProps = useSpring({
-    marginTop: isExpandButtonClicked
-      ? isButtonClicked
-        ? "472px"
-        : "0px"
-      : isButtonClicked
-      ? "110px"
-      : "0px",
+    marginTop: isExpandButtonClicked ? (isButtonClicked ? "472px" : "0px") : (isButtonClicked ? "110px" : "0px"),
   });
 
   const isListeningProps = useSpring({
-    marginTop: isExpandButtonClicked
-      ? isButtonClicked
-        ? "170px"
-        : "0px"
-      : isButtonClicked
-      ? "40px"
-      : "0px",
-    width: isListening
-      ? isButtonClicked
-        ? "45px"
-        : "45px"
-      : isListening
-      ? "45px"
-      : "0px",
+    marginTop: isExpandButtonClicked ? (isButtonClicked ? "170px" : "0px") : (isButtonClicked ? "40px" : "0px"),
+    width: isListening ? (isButtonClicked ? "45px" : "45px") : isListening ? "45px" : "0px",
   });
 
   const buttonExpandProps = useSpring({
-    marginTop: isExpandButtonClicked
-      ? isButtonClicked
-        ? "150px"
-        : "0px"
-      : isButtonClicked
-      ? "70px"
-      : "0px",
+    marginTop: isExpandButtonClicked ? (isButtonClicked ? "150px" : "0px") : (isButtonClicked ? "70px" : "0px"),
     transform: `rotate(${isButtonRotated ? 180 : 0}deg)`,
-    config: { duration: 50 },
+    config: { duration: 200 },
+  });
+
+  const messageContainerAnimationProps = useSpring({
+    opacity: isButtonClicked || isExpandButtonClicked ? 1 : 0,
+    pointerEvents: isButtonClicked || isExpandButtonClicked ? "auto" : "none",
+    config: { tension: 20, friction: 10 },
+  });
+
+  const messageScrollAnimationProps = useSpring({
+    opacity: isButtonClicked || isExpandButtonClicked ? 1 : 0,
+    pointerEvents: isButtonClicked || isExpandButtonClicked ? "auto" : "none",
+    config: { tension: 40, friction: 10 },
   });
 
   return (
     <div style={{ display: "flex", justifyContent: "center" }}>
       <animated.div className="main-ui" style={animationProps}>
         {isGifVisible && (
-          <img
-            src="/images/writing_dots.gif"
-            alt="Animated GIF"
-            className="animated-gif"
-          />
+          <img src="/images/writing_dots.gif" alt="Animated GIF" className="animated-gif" />
         )}
 
-        {isExpandButtonVisible && (
           <animated.button
             id="expand_field_button"
             onClick={onButtonClickExpand}
             style={buttonExpandProps}
           ></animated.button>
-        )}
 
         <animated.div className="isListening" style={isListeningProps} />
 
@@ -197,23 +165,60 @@ const UiMenu = (isVisible) => {
           rows={5}
           style={textareaAnimationProps}
         />
+
         <p>{text.length}/255</p>
-        <animated.button
-          className="voice_button"
+        <animated.button className="voice_button"
           style={buttonVoiceProps}
           onClick={toggleListening}
         >
           {isListening ? "" : ""}
         </animated.button>
+
         <animated.button
           id="send"
           onClick={onButtonClick}
           style={buttonAnimationProps}
         ></animated.button>
+        
+        {(isButtonClicked || isExpandButtonClicked) && (
+          <animated.div className="message-container" style={messageContainerAnimationProps}>
+            <animated.div className="message-scroll" style={messageScrollAnimationProps}>
+            {messages.map((message, index) => (
+              <div key={index} className="message">
+                {message.text.startsWith("User: ") ? (
+                  <div>
+                    <label className="user-label">User: </label>
+                    <span className="user-message">{message.text.substring(6)}</span>
+                  </div>
+                ) : message.text.startsWith("NPC: ") ? (
+                  <div>
+                    <label className="npc-label">NPC: </label>
+                    <span className="npc-message">{message.text.substring(5)}</span>
+                    {message.animation && <BouncingDotsAnimation />}
+                  </div>
+                ) : (
+                  <span>{message.text}</span>
+                )}
+              </div>
+            ))}
+
+              {showAnimation && <BouncingDotsAnimation />}
+            </animated.div>
+          </animated.div>
+        )}
+
       </animated.div>
       <ToastContainer position="top-center" closeOnClick={true} />
     </div>
   );
 };
+
+const BouncingDotsAnimation = () => (
+  <div className="bouncing-dots">
+    <div className="dot"></div>
+    <div className="dot"></div>
+    <div className="dot"></div>
+  </div>
+);
 
 export default UiMenu;
