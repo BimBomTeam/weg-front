@@ -244,9 +244,9 @@ const UiMenu = () => {
                         {message.text.substring(6)}
                       </span>
                     </div>
-                  ) : message.text.startsWith("NPC: ") ? (
+                  ) : message.text.startsWith("NPC:") ? (
                     <div>
-                      <label className="npc-label">NPC: </label>
+                      <label className="npc-label">NPC:</label>
                       <span className="npc-message">
                         {message.text.substring(5)}
                       </span>
