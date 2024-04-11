@@ -76,19 +76,21 @@ const UiMenu = () => {
   useEffect(() => {}, [isExpandButtonClicked]);
 
   useEffect(() => {
-    if (transcript && transcript.length <= 255) {
+    const wordCount = transcript.trim().split(/\s+/).length;
+    if (transcript && wordCount <= 100) {
       setText(transcript);
-    } else if (transcript && transcript.length > 255) {
-      toast.error("Maximum character limit reached (255 characters)");
+    } else if (transcript && wordCount > 100) {
+      toast.error("Maximum word limit reached (100 words)");
     }
   }, [transcript]);
 
   const onTextChange = (event) => {
     const inputText = event.target.value;
-    if (inputText.length <= 255) {
+    const wordCount = inputText.trim().split(/\s+/).length;
+    if (wordCount <= 100) {
       setText(inputText);
     } else {
-      toast.error("Maximum character limit reached (255 characters)");
+      toast.error("Maximum word limit reached (100 words)");
     }
   };
 
@@ -211,7 +213,6 @@ const UiMenu = () => {
           style={textareaAnimationProps}
         />
 
-        <p>{text.length}/255</p>
         <animated.button
           className="voice_button"
           style={buttonVoiceProps}
@@ -244,9 +245,9 @@ const UiMenu = () => {
                         {message.text.substring(6)}
                       </span>
                     </div>
-                  ) : message.text.startsWith("NPC:") ? (
+                  ) : message.text.startsWith("NPC: ") ? (
                     <div>
-                      <label className="npc-label">NPC:</label>
+                      <label className="npc-label">NPC: </label>
                       <span className="npc-message">
                         {message.text.substring(5)}
                       </span>

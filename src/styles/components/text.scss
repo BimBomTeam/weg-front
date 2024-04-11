@@ -18,12 +18,11 @@ input[type="text"] {
     width: $text-input-width;
     height: $text-input-height;
     padding-right: $text-input-padding-right;
-    overflow-y: auto;
-    scrollbar-width: thin;
     background-color: $input-background-color;
     resize: none;
     backdrop-filter: blur(5px);
 }
+
 textarea {
     position: fixed;
     width: 700px;
@@ -31,13 +30,13 @@ textarea {
     top: 32%;
     left: 2%;
     margin-bottom: 20px;
-    border-radius: 20px;
+    border-radius: 10px;
     resize: none;
-    scrollbar-width: thin;
     padding: 2%;
     padding-right: 10%;
     font-family: 'Roboto';
     font-size: 18px;
+    overflow: auto;
     color: $input-placeholder-color;
     -ms-box-shadow: inset 0px 4px 4px 1px rgba(0,0,0,0.25);
     -o-box-shadow: inset 0px 4px 4px 1px rgba(0,0,0,0.25);
@@ -58,15 +57,19 @@ textarea {
     &:focus {
         outline: none;
     }
-}
 
-p {
-    position: absolute;
-    bottom: 7px;
-    right: 6%;
-    font-family: inherit;
-    font-size: 14px;
-    color: black;
+    &::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: #195E85;
+      border-radius: 20px;
+    }
 }
 
 label[for="login"] {
@@ -164,7 +167,7 @@ label[for="password-repeat-label"] {
 
   .message-container {
     position: relative;
-    margin-top: 10%;
+    margin-top: 15%;
     padding: 10px;
   }
   
@@ -186,5 +189,4 @@ label[for="password-repeat-label"] {
   .npc-label {
     font-family: 'Roboto-Black';
     color: #0e3246;
-    margin-right: 10px;
   }
