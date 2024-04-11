@@ -17,8 +17,7 @@ const Game = () => {
   return (
     <>
       <canvas id="webgl"></canvas>
-      {isUi && <UiMenu/>}
-      <UserInterface />
+      {isUi && <UiMenu />}
     </>
   );
 };
