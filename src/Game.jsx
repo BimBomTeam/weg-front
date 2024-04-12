@@ -11,13 +11,19 @@ const Game = () => {
   const [isUi, setUi] = useState(false);
 
   const changeUiVisibility = (isVis) => {
-    setUi(isVis);
+    if (!isVis) {
+      setTimeout(() => {
+        setUi(false);
+      }, 500);
+    } else {
+      setUi(isVis);
+    }
   };
 
   return (
     <>
       <canvas id="webgl"></canvas>
-      {isUi && <UiMenu/>}
+      {isUi && <UiMenu />}
       <UserInterface />
     </>
   );

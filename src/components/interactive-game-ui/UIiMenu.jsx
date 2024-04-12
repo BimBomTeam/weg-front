@@ -13,7 +13,7 @@ const UiMenu = () => {
   const textareaRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
   const [isButtonClicked, setIsButtonClicked] = useState(false);
-  const [isExpandButtonClicked] = useState(false);
+  const [isExpandButtonClicked, setIsExpandButtonClicked] = useState(false);
   const [isButtonRotated, setIsButtonRotated] = useState(false);
   const [isListening, setIsListening] = useState(false);
   const { transcript } = useSpeechRecognition({
@@ -65,6 +65,22 @@ const UiMenu = () => {
     if (!isVisible) {
       setText("");
     }
+  }, [isVisible]);
+
+  useEffect(() => {
+    const handleEsc = (event) => {
+      if (event.keyCode === 27 && isVisible) {
+        setIsVisible(false);
+        setIsButtonClicked(false);
+        setIsExpandButtonClicked(false);
+      }
+    };
+
+    window.addEventListener("keydown", handleEsc);
+
+    return () => {
+      window.removeEventListener("keydown", handleEsc);
+    };
   }, [isVisible]);
 
   useEffect(() => {
@@ -120,7 +136,7 @@ const UiMenu = () => {
       ? isExpandButtonClicked
         ? "translateY(0%)"
         : "translateY(0%)"
-      : "translateY(100%)",
+      : "translateY(120%)",
     top: isExpandButtonClicked
       ? isButtonClicked
         ? "70%"
