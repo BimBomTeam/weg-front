@@ -17,6 +17,7 @@ import { Sky } from "three/examples/jsm/objects/Sky";
 import { TestCamera } from "./testCamera";
 import { CameraOperator } from "./cameraOperator";
 import { StandartNPC } from "./standartNPC";
+import { BossNPC } from "./bossNPC";
 
 class MainScene extends Scene3D {
   constructor() {
@@ -150,6 +151,7 @@ class MainScene extends Scene3D {
       pos: { x: 38, y: 10, z: 10 },
       sketch: this,
     });
+    this.bossNPC = new BossNPC({ pos: { x: 80, y: 10, z: 85 }, sketch: this });
 
     this.box = this.physics.add.box(
       {
@@ -192,9 +194,81 @@ class MainScene extends Scene3D {
     });
   }
 
+  startBattle(NPC = BossNPC) {
+    this.player.mode = "battle";
+    this.player.standPos = this.player.object.position
+      .clone()
+      .sub(NPC.object.position)
+      .normalize()
+      .multiplyScalar(7)
+      .add(this.player.object.position);
+    console.log(this.player.standPos, " ", this.player.object.position);
+    NPC.standPos = NPC.object.position.clone();
+    NPC.mode = "battle";
+    let adjustVec = this.player.object.position
+      .clone()
+      .sub(NPC.object.position)
+      .normalize()
+      .multiplyScalar(17);
+    let adjustVec2 = new Vector2(adjustVec.x, adjustVec.z);
+    adjustVec2.rotateAround(new Vector2(), Math.PI / 10);
+    console.log("inBattle");
+    this.camOperator.removeEvent("NPCzoomIn");
+    this.camOperator.addNPCzoomIn({
+      targetPos: NPC.object.position,
+      adjustPosition: new Vector3(adjustVec2.x, 3, adjustVec2.y),
+    });
+    setTimeout(() => NPC.hitPlayer(this.player.object.position), 2000);
+  }
+
+  processInteraction(NPC = StandartNPC) {
+    if (NPC.mode == "prepToInteract") {
+      if (this.KeyHandler.key.e.click && this.player.mode == "freeWalk") {
+        this.player.mode = "interact";
+        this.player.addRotateEvent(NPC.object.position);
+        let NpcToPlayerVec = this.player.object.position
+          .clone()
+          .sub(NPC.object.position);
+        let x1 = this.camOperator.getDistancedVector2Fixed(
+          NpcToPlayerVec,
+          5,
+          Math.PI / 3.4
+        );
+        this.camOperator.addNPCzoomIn({
+          targetPos: NPC.object.position,
+          adjustPosition: new Vector3(x1.x, 3, x1.y),
+        });
+      }
+      if (this.KeyHandler.key.esc.click && this.player.mode == "interact") {
+        this.player.mode = "freeWalk";
+        this.player.moveEvent = [];
+
+        this.camOperator.addNPCzoomOut();
+      }
+    }
+  }
+
+  processBattle(NPC = BossNPC) {
+    if (NPC.mode == "prepToInteract") {
+      if (this.KeyHandler.key.e.click && this.player.mode == "interact") {
+        this.startBattle(NPC);
+      }
+    } else if (NPC.mode == "battle") {
+      NPC.updateBattle();
+      if (this.KeyHandler.key.esc.click && this.player.mode == "battle") {
+        this.player.mode = "interact";
+        // this.player.moveEvent = [];
+        // this.camOperator.addNPCzoomOut();
+        NPC.addEvents = [];
+        NPC.actionEvents = [];
+        NPC.mode = "prepToInteract";
+      }
+    }
+  }
+
   setupPlayer() {
     let testPos = { x: 80, y: 30, z: 85 };
-    this.player = new Player({ sketch: this });
+    this.player = new Player({ pos: testPos, sketch: this });
   }
 
   update(time, delta) {
@@ -206,32 +280,15 @@ class MainScene extends Scene3D {
       this.player.update(this.KeyHandler);
       this.standNPC.update();
       this.standNPC.checkInteraction(this.player.object.position);
+      this.bossNPC.update();
+      if (this.bossNPC.mode != "battle")
+        this.bossNPC.checkInteraction(this.player.object.position);
 
       // this.camOperator.removeEvent("lerpToAngle");
 
-      if (this.standNPC.mode == "prepToInteract") {
-        if (this.KeyHandler.key.e.click && this.player.mode == "freeWalk") {
-          this.player.mode = "interact";
-          this.player.addRotateEvent(this.standNPC.object.position);
-          let NpcToPlayerVec = this.player.object.position
-            .clone()
-            .sub(NPC.object.position);
-          let x1 = this.camOperator.getDistancedVector2Fixed(
-            NpcToPlayerVec,
-            5,
-            Math.PI / 3.4
-          );
-          this.camOperator.addNPCzoomIn({
-            targetPos: this.standNPC.object.position,
-            adjustPosition: new Vector3(x1.x, 3, x1.y),
-          });
-        }
-        if (this.KeyHandler.key.esc.click && this.player.mode == "interact") {
-          this.player.mode = "freeWalk";
-          this.player.moveEvent = [];
-          this.camOperator.addNPCzoomOut();
-        }
-      }
+      this.processBattle(this.bossNPC);
+      this.processInteraction(this.standNPC);
+      this.processInteraction(this.bossNPC);
       // this.camera.update(
       //   this.player.object.position,
       //   delta,

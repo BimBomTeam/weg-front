@@ -21,6 +21,7 @@ export class Player {
 
     this.mode = "freeWalk";
     this.moveEvent = [];
+    this.particleChange = true;
 
     this.initPlayer(pos, sketch);
   }
@@ -48,7 +49,6 @@ export class Player {
     const processColision = (otherObject, event) => {
       if (event !== "end" && this.object.body.velocity.y < 1) {
         this.onGround = true;
-        this.particlesPermision = this.currentTime();
         if (
           this.object.position.y > this.deadLevel &&
           this.currentTime() - this.lastFallTime > 2
@@ -63,6 +63,7 @@ export class Player {
     this.sensor.body.on.collision(processColision);
 
     this.playerParticleSystem = new PlayerParticleSystem(sketch);
+    this.playerParticleSystem.active = false;
   }
 
   async initPlayerObject(pos, sketch) {
@@ -227,7 +228,7 @@ export class Player {
     let accrossVel = 0;
     let straightVel = 0;
 
-    let moveVec = new THREE.Vector3();
+    this.moveVec = new THREE.Vector3();
     if (this.object.position.y < this.deadLevel) {
       let tmpPosition = { ...this.lastSafePosition };
       tmpPosition.y += 3;
@@ -242,32 +243,48 @@ export class Player {
       });
     }
 
+    if (this.mode == "battle") {
+      let moveX = this.standPos.x - this.object.position.x;
+      let moveZ = this.standPos.z - this.object.position.z;
+      if (Math.abs(moveX) + Math.abs(moveZ) >= 1) {
+        let destination = this.standPos
+          .clone()
+          .sub(this.object.position)
+          .normalize()
+          .multiplyScalar(this.speed);
+        this.moveVec.x = destination.x;
+        this.moveVec.z = destination.z;
+        this.object.body.setVelocityX(destination.x);
+        this.object.body.setVelocityZ(destination.z);
+      }
+    }
+
     if (this.mode == "freeWalk") {
       if (KeyHandler.key.a.pressed) {
         this.object.body.setVelocityX(-this.speed);
         this.isWalking = true;
         accrossVel = -1;
         showParticles = true;
-        moveVec.x = -1;
+        this.moveVec.x = -1;
       } else if (KeyHandler.key.d.pressed) {
         this.object.body.setVelocityX(this.speed);
         this.isWalking = true;
         accrossVel = 1;
         showParticles = true;
-        moveVec.x = 1;
+        this.moveVec.x = 1;
       }
       if (KeyHandler.key.w.pressed) {
         this.object.body.setVelocityZ(-this.speed);
         this.isWalking = true;
         straightVel = -1;
         showParticles = true;
-        moveVec.z = -1;
+        this.moveVec.z = -1;
       } else if (KeyHandler.key.s.pressed) {
         this.object.body.setVelocityZ(this.speed);
         this.isWalking = true;
         straightVel = 1;
         showParticles = true;
-        moveVec.z = 1;
+        this.moveVec.z = 1;
       }
       if (KeyHandler.key.space.pressed && this.onGround == true) {
         this.object.body.applyForceY(this.jumpForce);
@@ -285,33 +302,35 @@ export class Player {
       showParticles = false;
     }
 
-    moveVec = moveVec.length() == 0 ? undefined : moveVec;
-    this.animateWalk(moveVec);
+    this.moveVec = this.moveVec.length() == 0 ? undefined : this.moveVec;
+    this.animateWalk(this.moveVec);
 
-    this.playerParticleSystem.active = showParticles;
+    // this.playerParticleSystem.active = showParticles;
 
     this.playerParticleSystem.update(
       this.object.position,
       new Vector3(accrossVel, 0, straightVel)
     );
+    // this.playerParticleSystem.active = false;
   }
 
   addRotateEvent(objPos) {
     this.moveEvent.push({
       func: (objPos = new Vector3()) => {
         let lookVec = objPos.clone().sub(this.object.position);
-        let targAng = Math.atan(lookVec.x / lookVec.z);
-        if (lookVec.z < 0) {
-          targAng += Math.PI;
-        }
-        let rotAngle = this.calcShortestRot(
-          (this.object.world.theta * 180) / Math.PI,
-          (targAng * 180) / Math.PI
-        );
+        this.moveVec = lookVec;
+        // let targAng = Math.atan(lookVec.x / lookVec.z);
+        // if (lookVec.z < 0) {
+        //   targAng += Math.PI;
+        // }
+        // let rotAngle = this.calcShortestRot(
+        //   (this.object.world.theta * 180) / Math.PI,
+        //   (targAng * 180) / Math.PI
+        // );
 
-        // console.log((rotAngle * Math.PI) / 180);
-        this.object.body.setAngularVelocityY(rotAngle / 10);
-        if (Math.abs(rotAngle) <= 4) return true;
+        // // console.log((rotAngle * Math.PI) / 180);
+        // this.object.body.setAngularVelocityY(rotAngle / 10);
+        // if (Math.abs(rotAngle) <= 4) return true;
       },
       params: objPos,
     });
@@ -327,15 +346,34 @@ export class Player {
     return currentDate.getTime() / 1000;
   }
 
+  showParticles() {
+    this.playerParticleSystem.active = true;
+    this.particleChange = true;
+    setTimeout(() => {
+      this.unShowParticles();
+    }, 100);
+  }
+
+  unShowParticles() {
+    this.playerParticleSystem.active = false;
+  }
+
   animateWalk(moveVec) {
     if (this.isWalking && this.onGround == true) {
       this.playAnimation("Walk");
+      if (this.particleChange) {
+        setTimeout(() => {
+          this.showParticles();
+        }, 1000);
+        this.particleChange = false;
+      }
       if (this.autoJump.isNear && this.autoJump.canJump) {
-        this.object.body.applyForceY(6);
+        this.object.body.applyForceY(10);
         this.onGround = false;
       }
     } else if (!this.isWalking && this.onGround == true) {
       this.playAnimation("Idle");
+      this.playerParticleSystem.active = false;
     }
     if (moveVec != undefined) {
       let rotateAngle = Math.atan(moveVec.x / moveVec.z);
