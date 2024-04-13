@@ -10,20 +10,21 @@
   left: 1%;
   top: 10%;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-end;
   z-index: 9;
   gap: 20px;
   width: 90px;
   border-radius: 50px;
   background-color: $button-gradient-start;
   backdrop-filter: blur(18px);
+
 }
 
 
 
 @media only screen and (max-width: 1800px) {
   :root {
-    --animationProps_height_true: 520px;
+    --animationProps_height_true: 480px;
     --animationProps_height_false: 90px;
   }
 }
