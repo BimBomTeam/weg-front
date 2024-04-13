@@ -98,6 +98,7 @@ export class KeyHandler {
       if (this.key[element].click !== undefined) {
         this.key[element].click = false;
       }
+      this.key.pressed = false;
     }
   }
 }

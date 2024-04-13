@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import { TestCamera } from "./testCamera";
-import { KeyHandler } from "./keyHandler";
+import { ExtendedObject3D } from "enable3d";
 
 export class CameraOperator {
   constructor({ targetPos = new THREE.Vector3(), camera = new TestCamera() }) {
@@ -43,7 +43,7 @@ export class CameraOperator {
           targetPos.add(new THREE.Vector3(0, 1, 0)),
           { cameraSpeed: 30 }
         );
-
+        // console.log(first, " ", second);
         return first && second;
       },
       NPCzoomOut: (deltaTime, config) => {
@@ -66,7 +66,33 @@ export class CameraOperator {
     // this.camera.lookAt(new THREE.Vector3(0, 0, 0));
   }
 
-  update(deltaTime, keyHandler = new KeyHandler()) {
+  getDistancedVector2Fixed(
+    objectToObjectVector = new THREE.Vector3(),
+    distance,
+    angle
+  ) {
+    let v1 = objectToObjectVector.clone().normalize().multiplyScalar(distance);
+    v1 = new THREE.Vector2(v1.x, v1.z);
+    let x1 = v1.clone().divideScalar(Math.cos(angle));
+    x1.rotateAround(new THREE.Vector2(), angle);
+    return x1;
+  }
+
+  getDistancedVector(object = new ExtendedObject3D(), distance) {
+    let v1 = new THREE.Vector2(0, -distance);
+    v1.rotateAround(new THREE.Vector2(), object.world.theta - Math.PI);
+    return v1;
+  }
+
+  rotateVector2(v1 = new THREE.Vector2(), angle) {
+    v1.set(
+      Math.cos(angle) * v1.x - Math.sin(angle) * v1.y,
+      Math.sin(angle) * v1.x + Math.cos(angle) * v1.y
+    );
+    return v1;
+  }
+
+  update(deltaTime) {
     this.eventList = this.eventList.filter(
       (element) =>
         !this.eventUpdates[element.name](deltaTime, { ...element.config })

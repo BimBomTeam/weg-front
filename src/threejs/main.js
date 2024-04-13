@@ -8,9 +8,8 @@ import {
 import Stats from "stats.js";
 import { KeyHandler } from "./keyHandler";
 
-import { MyCamera } from "./myCamera";
 import { Player } from "./player";
-import { Vector3 } from "three";
+import { Vector2, Vector3 } from "three";
 
 import { CSS2DRenderer } from "three/addons/renderers/CSS2DRenderer.js";
 import { Water } from "three/examples/jsm/objects/Water.js";
@@ -54,6 +53,14 @@ class MainScene extends Scene3D {
     this.labelRenderer.domElement.style.position = "absolute";
     this.labelRenderer.domElement.style.top = "0px";
     document.body.appendChild(this.labelRenderer.domElement);
+
+    window.addEventListener("resize", (event) => {
+      this.renderer.setPixelRatio(window.devicePixelRatio);
+      this.renderer.setSize(window.innerWidth, window.innerHeight);
+      this.labelRenderer.setSize(window.innerWidth, window.innerHeight);
+      this.camOperator.camera.aspect = window.innerWidth / window.innerHeight;
+      this.camOperator.camera.updateProjectionMatrix();
+    });
   }
 
   initStats() {
@@ -186,13 +193,13 @@ class MainScene extends Scene3D {
   }
 
   setupPlayer() {
-    let testPos = { x: 40, y: 30, z: 75 };
+    let testPos = { x: 80, y: 30, z: 85 };
     this.player = new Player({ sketch: this });
   }
 
   update(time, delta) {
     this.labelRenderer.render(this.scene, this.camera);
-    this.water.material.uniforms["time"].value += 1.0 / 240.0;
+    this.water.material.uniforms["time"].value += delta / 1000 / 2;
     this.stats.update();
 
     if (this.player.object && this.player.object.body) {
@@ -206,9 +213,17 @@ class MainScene extends Scene3D {
         if (this.KeyHandler.key.e.click && this.player.mode == "freeWalk") {
           this.player.mode = "interact";
           this.player.addRotateEvent(this.standNPC.object.position);
+          let NpcToPlayerVec = this.player.object.position
+            .clone()
+            .sub(NPC.object.position);
+          let x1 = this.camOperator.getDistancedVector2Fixed(
+            NpcToPlayerVec,
+            5,
+            Math.PI / 3.4
+          );
           this.camOperator.addNPCzoomIn({
             targetPos: this.standNPC.object.position,
-            adjustPosition: new Vector3(3, 1, 8),
+            adjustPosition: new Vector3(x1.x, 3, x1.y),
           });
         }
         if (this.KeyHandler.key.esc.click && this.player.mode == "interact") {
@@ -223,7 +238,7 @@ class MainScene extends Scene3D {
       //   this.KeyHandler,
       //   npcNearBy
       // );
-      this.camOperator.update(delta, this.KeyHandler);
+      this.camOperator.update(delta);
       this.KeyHandler.update();
     }
   }
