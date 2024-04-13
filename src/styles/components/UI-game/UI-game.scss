@@ -1,4 +1,42 @@
+:root {
+  --animationProps_height_expanded_clicked_true: 250px;
+  --animationProps_height_expanded_unclicked_false: 100px;
+
+  --animationProps_height_unexpanded_clicked_false: 850px;
+  --animationProps_height_unexpanded_unclicked_true: 250px;
+
+  --animationProps_transform_visible_expanded_clicked_true: translateY(0%);
+  --animationProps_transform_visible_expanded_unclicked_false: translateY(0%);
+  --animationProps_transform_invisible_true: translateY(100%);
+
+  --animationProps_top_expanded_clicked_true: 70%;
+  --animationProps_top_expanded_unclicked_false: 0%;
+
+  --animationProps_top_unexpanded_clicked_false: 0%;
+  --animationProps_top_unexpanded_unclicked_true: 65%; //общий блок относительно экрана
+
+  --textareaAnimationProps_marginTop_true: 0px;
+  --textareaAnimationProps_marginTop_false: 410px;
+
+  --buttonAnimationProps_marginTop_true: 0px;
+  --buttonAnimationProps_marginTop_false: 210px;
+
+  --buttonVoiceProps_marginTop_true: 0px;
+  --buttonVoiceProps_marginTop_false: 350px;
+
+  --isListeningProps_marginTop_true: 0px;
+  --isListeningProps_marginTop_false: 133px;
+
+  --isListeningProps_width_true_true: 45px;
+  --isListeningProps_width_true_false: 45px;
+
+  --isListeningProps_width_false_true: 45px;
+  --isListeningProps_width_false_false: 0px;
+}
+
 .main-ui {
+  display: flex;
+
   z-index: 2;
   display: block;
   position: fixed;
@@ -22,13 +60,13 @@
 }
 
 .message-scroll::-webkit-scrollbar-track {
-  background: #A1B7D9;
+  background: #a1b7d9;
   border-radius: 10px;
 }
 
 .message-scroll::-webkit-scrollbar-thumb {
   border-radius: 10px;
-  background: #195E85; 
+  background: #195e85;
 }
 
 .bouncing-dots {
@@ -65,5 +103,22 @@
   }
 }
 
-
-
+@media only screen and (max-width: 1800px) {
+  :root {
+    --animationProps_top_unexpanded_unclicked_true: 60%;
+    --animationProps_height_unexpanded_clicked_false: 600px;
+    --textareaAnimationProps_marginTop_false: 250px;
+    --buttonVoiceProps_marginTop_false: 210px;
+    --buttonAnimationProps_marginTop_false: 120px;
+    --animationProps_top_unexpanded_clicked_false: 10%;
+  }
+  .main-ui {
+    width: 700px;
+    textarea {
+      width: calc(100% - 29%);
+    }
+  }
+  .message-scroll {
+    height: 350px;
+  }
+}

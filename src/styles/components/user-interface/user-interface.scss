@@ -1,13 +1,29 @@
+:root {
+  --animationProps_height_true: 50px;
+  --animationProps_height_false: 120px;
+}
+
 .user-interface {
-  z-index: 2;
-  display: block;
-  position: fixed;
-  top: 5%;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
   left: 1%;
-  width: 120px;
-  height: 120px;
+  top: 10%;
+  align-items: center;
+  justify-content: center;
+  z-index: 9;
+  gap: 20px;
+  width: 90px;
   border-radius: 50px;
   background-color: $button-gradient-start;
   backdrop-filter: blur(18px);
 }
 
+
+
+@media only screen and (max-width: 1800px) {
+  :root {
+    --animationProps_height_true: 520px;
+    --animationProps_height_false: 90px;
+  }
+}
