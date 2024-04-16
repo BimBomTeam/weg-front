@@ -17,7 +17,7 @@ const Game = () => {
   return (
     <>
       <canvas id="webgl"></canvas>
-      {isUi && <UiBossFight />} { zamiana UiMenu na UiBoss */}
+      {isUi && <UiBossFight />} {/* zamiana UiMenu na UiBoss */}
       {isUi || <UserInterface />}
     </>
   );
