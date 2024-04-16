@@ -41,6 +41,11 @@
     border-radius: 30px;
     background-color: $button-gradient-start;
     backdrop-filter: blur(18px);
+    transition: transform 0.3s ease;
+}
+
+.Answers button:hover {
+    transform: scale(1.1);
 }
 
 .clock-bg {

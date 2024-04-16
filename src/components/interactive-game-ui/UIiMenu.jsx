@@ -69,7 +69,7 @@ const UiMenu = () => {
 
   useEffect(() => {
     const handleEsc = (event) => {
-      if (event.keyCode === 27 && isVisible) {
+      if (event.keyCode === 27) {
         setIsVisible(false);
         setIsButtonClicked(false);
         setIsExpandButtonClicked(false);

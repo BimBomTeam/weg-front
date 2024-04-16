@@ -17,6 +17,20 @@ const UiBossFight = () => {
     transform: isVisible ? "translateY(0%)" : "translateY(-120%)",
   });
 
+  useEffect(() => {
+    const handleKeyPress = (event) => {
+      if (event.keyCode === 27) {
+        setIsVisible(false);
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyPress);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyPress);
+    };
+  }, []);
+
   return (
     <div className="BossFightContainer" style={{ justifyContent: "center" }}>
       <animated.button className="Question" style={questionAnimationProps}>Question</animated.button>
@@ -27,22 +41,22 @@ const UiBossFight = () => {
         <button className="Answer4">Answer4</button>
       </animated.div>
       <animated.div className="clock-bg" style={questionAnimationProps}>
-      <div className="clock-container">
-      <CountdownCircleTimer
-        isPlaying
-        duration={60}
-        colors={[
-          '#004777',
-        ]}
-      >
-        {({ remainingTime }) => (
-          <div className="time">
-            {remainingTime}
-          </div>
-        )}
-      </CountdownCircleTimer>
-    </div>
-    </animated.div>
+        <div className="clock-container">
+          <CountdownCircleTimer
+            isPlaying
+            duration={60}
+            colors={[
+              '#004777',
+            ]}
+          >
+            {({ remainingTime }) => (
+              <div className="time">
+                {remainingTime}
+              </div>
+            )}
+          </CountdownCircleTimer>
+        </div>
+      </animated.div>
     </div>
   );
 };
