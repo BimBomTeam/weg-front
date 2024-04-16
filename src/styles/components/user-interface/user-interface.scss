@@ -1,6 +1,6 @@
 :root {
-  --animationProps_height_true: 50px;
-  --animationProps_height_false: 120px;
+  --animationProps_height_true: 480px;
+  --animationProps_height_false: 90px;
 }
 
 .user-interface {
@@ -20,11 +20,9 @@
 
 }
 
-
-
-@media only screen and (max-width: 1800px) {
-  :root {
-    --animationProps_height_true: 480px;
-    --animationProps_height_false: 90px;
-  }
-}
+// @media only screen and (max-width: 1800px) {
+//   :root {
+//     --animationProps_height_true: 480px;
+//     --animationProps_height_false: 90px;
+//   }
+// }

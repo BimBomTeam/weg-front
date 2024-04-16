@@ -1,4 +1,3 @@
-
 $text-input-border-radius: 8px;
 $text-input-border: 1px solid $border-one;
 $text-input-padding: 10px;
@@ -7,88 +6,107 @@ $text-input-width: 80%;
 $text-input-height: 10%;
 $text-input-padding-right: 15%;
 
-
 input[type="text"] {
-    border-radius: $text-input-border-radius;
-    border: $text-input-border;
-    padding: $text-input-padding;
-    font-size: $text-input-font-size;
-    font-family: inherit;
-    color: black;
-    width: $text-input-width;
-    height: $text-input-height;
-    padding-right: $text-input-padding-right;
-    overflow-y: auto;
-    scrollbar-width: thin;
-    background-color: $input-background-color;
-    resize: none;
-    backdrop-filter: blur(5px);
+  border-radius: $text-input-border-radius;
+  border: $text-input-border;
+  padding: $text-input-padding;
+  font-size: $text-input-font-size;
+  font-family: inherit;
+  color: black;
+  width: $text-input-width;
+  height: $text-input-height;
+  padding-right: $text-input-padding-right;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  background-color: $input-background-color;
+  resize: none;
+  backdrop-filter: blur(5px);
 }
 textarea {
-    position: fixed;
-    width: 700px;
-    height: 11px;
-    top: 32%;
-    left: 2%;
-    margin-bottom: 20px;
-    border-radius: 20px;
-    resize: none;
-    scrollbar-width: thin;
-    padding: 2%;
-    padding-right: 10%;
-    font-family: 'Roboto';
-    font-size: 18px;
+  position: fixed;
+  width: 700px;
+  height: 11px;
+  top: 32%;
+  left: 2%;
+  margin-bottom: 20px;
+  border-radius: 20px;
+  resize: none;
+  scrollbar-width: thin;
+  padding: 2%;
+  padding-right: 10%;
+  font-family: "Roboto";
+  font-size: 18px;
+  color: $input-placeholder-color;
+  -ms-box-shadow: inset 0px 4px 4px 1px rgba(0, 0, 0, 0.25);
+  -o-box-shadow: inset 0px 4px 4px 1px rgba(0, 0, 0, 0.25);
+  -webkit-box-shadow: inset 0px 4px 4px 1px rgba(0, 0, 0, 0.25);
+  -moz-box-shadow: inset 0px 4px 4px 1px rgba(0, 0, 0, 0.25);
+  box-shadow: inset 0px 4px 4px 1px rgba(0, 0, 0, 0.25);
+  background: rgba(255, 255, 255, 0);
+  background: -webkit-linear-gradient(
+    -224.90398121603deg,
+    rgba(132.33, 191.39, 224.61, 0.5) 0%,
+    rgba(23.22, 73.75, 95.41, 0.15) 100%
+  );
+  background: -o-linear-gradient(
+    -224.90398121603deg,
+    rgba(132.33, 191.39, 224.61, 0.5) 0%,
+    rgba(23.22, 73.75, 95.41, 0.15) 100%
+  );
+  background: -moz-linear-gradient(
+    -224.90398121603deg,
+    rgba(132.33, 191.39, 224.61, 0.5) 0%,
+    rgba(23.22, 73.75, 95.41, 0.15) 100%
+  );
+  background: -ms-linear-gradient(
+    -224.90398121603deg,
+    rgba(132.33, 191.39, 224.61, 0.5) 0%,
+    rgba(23.22, 73.75, 95.41, 0.15) 100%
+  );
+  background: linear-gradient(
+    -224.90398121603deg,
+    rgba(132.33, 191.39, 224.61, 0.5) 0%,
+    rgba(23.22, 73.75, 95.41, 0.15) 100%
+  );
+
+  &::placeholder {
     color: $input-placeholder-color;
-    -ms-box-shadow: inset 0px 4px 4px 1px rgba(0,0,0,0.25);
-    -o-box-shadow: inset 0px 4px 4px 1px rgba(0,0,0,0.25);
-    -webkit-box-shadow: inset 0px 4px 4px 1px rgba(0,0,0,0.25);
-    -moz-box-shadow: inset 0px 4px 4px 1px rgba(0,0,0,0.25);
-    box-shadow: inset 0px 4px 4px 1px rgba(0,0,0,0.25);
-    background: rgba(255,255,255,0);
-    background: -webkit-linear-gradient(-224.90398121603deg , rgba(132.33,191.39,224.61,0.5) 0%, rgba(23.22,73.75,95.41,0.15) 100%);
-    background: -o-linear-gradient(-224.90398121603deg , rgba(132.33,191.39,224.61,0.5) 0%, rgba(23.22,73.75,95.41,0.15) 100%);
-    background: -moz-linear-gradient(-224.90398121603deg , rgba(132.33,191.39,224.61,0.5) 0%, rgba(23.22,73.75,95.41,0.15) 100%);
-    background: -ms-linear-gradient(-224.90398121603deg , rgba(132.33,191.39,224.61,0.5) 0%, rgba(23.22,73.75,95.41,0.15) 100%);
-    background: linear-gradient(-224.90398121603deg , rgba(132.33,191.39,224.61,0.5) 0%, rgba(23.22,73.75,95.41,0.15) 100%);
+  }
 
-    &::placeholder {
-        color: $input-placeholder-color;
-    }
-
-    &:focus {
-        outline: none;
-    }
+  &:focus {
+    outline: none;
+  }
 }
 
 p {
-    position: absolute;
-    bottom: 7px;
-    right: 6%;
-    font-family: inherit;
-    font-size: 14px;
-    color: black;
+  position: absolute;
+  bottom: 7px;
+  right: 6%;
+  font-family: inherit;
+  font-size: 14px;
+  color: black;
 }
 
 label[for="login"] {
-    padding-left: 35%;
-    width: 220px;
-    height: 60px;
-    overflow: hidden;
-    font-family: 'Roboto';
-    font-size: 45px;
-    color: $label-color;
-    font-weight: bold;
+  padding-left: 35%;
+  width: 220px;
+  height: 60px;
+  overflow: hidden;
+  font-family: "Roboto";
+  font-size: 45px;
+  color: $label-color;
+  font-weight: bold;
 }
 
 label[for="register"] {
-    padding-left: 17%;
-    width: 500px;
-    height: 60px;
-    overflow: hidden;
-    font-family: 'Roboto';
-    font-size: 45px;
-    color: $label-color;
-    font-weight: bold;
+  padding-left: 17%;
+  width: 500px;
+  height: 60px;
+  overflow: hidden;
+  font-family: "Roboto";
+  font-size: 45px;
+  color: $label-color;
+  font-weight: bold;
 }
 
 label[for="email-label"],
@@ -96,94 +114,142 @@ label[for="email-register-label"],
 label[for="password-label"],
 label[for="password-register-label"],
 label[for="password-repeat-label"] {
-    width: 300px;
-    height: 40px;
-    overflow: hidden;
-    font-family: 'Roboto';
-    font-size: 32px;
-    text-align: left;
-    color: $label-color;
+  width: 300px;
+  height: 40px;
+  overflow: hidden;
+  font-family: "Roboto";
+  font-size: 32px;
+  text-align: left;
+  color: $label-color;
 }
 
 #password,
 #repeat-password,
 #email {
-    top: 40px;
-    left: 0px;
-    width: 600px;
-    height: 85px;
-    padding-right: 10px;
-    font-size: 32px;
-    color: $black;
-    border-width: 1px;
-    border-radius: 10px;
-    box-shadow: inset 0px 4px 4px 1px $button-login-shadow;
-    background: $password-input-background;
-    background: -webkit-linear-gradient(-224.90398121603deg, $password-input-gradient-start 0%, $password-input-gradient-end 100%);
-    background: -o-linear-gradient(-224.90398121603deg, $password-input-gradient-start 0%, $password-input-gradient-end 100%);
-    background: -moz-linear-gradient(-224.90398121603deg, $password-input-gradient-start 0%, $password-input-gradient-end 100%);
-    background: -ms-linear-gradient(-224.90398121603deg, $password-input-gradient-start 0%, $password-input-gradient-end 100%);
-    background: linear-gradient(-224.90398121603deg, $password-input-gradient-start 0%, $password-input-gradient-end 100%);
+  top: 40px;
+  left: 0px;
+  width: 600px;
+  height: 85px;
+  padding-right: 10px;
+  font-size: 32px;
+  color: $black;
+  border-width: 1px;
+  border-radius: 10px;
+  box-shadow: inset 0px 4px 4px 1px $button-login-shadow;
+  background: $password-input-background;
+  background: -webkit-linear-gradient(
+    -224.90398121603deg,
+    $password-input-gradient-start 0%,
+    $password-input-gradient-end 100%
+  );
+  background: -o-linear-gradient(
+    -224.90398121603deg,
+    $password-input-gradient-start 0%,
+    $password-input-gradient-end 100%
+  );
+  background: -moz-linear-gradient(
+    -224.90398121603deg,
+    $password-input-gradient-start 0%,
+    $password-input-gradient-end 100%
+  );
+  background: -ms-linear-gradient(
+    -224.90398121603deg,
+    $password-input-gradient-start 0%,
+    $password-input-gradient-end 100%
+  );
+  background: linear-gradient(
+    -224.90398121603deg,
+    $password-input-gradient-start 0%,
+    $password-input-gradient-end 100%
+  );
 }
 
 #password,
 #repeat-password {
-    width: 610px;
-    height: 100px;
-    border-bottom-color: black;
-    padding-left: 10px;
+  width: 610px;
+  height: 100px;
+  border-bottom-color: black;
+  padding-left: 10px;
 }
 
 .isListening {
-    top: 78%;
-    left: 90%;
-    position:absolute;
-    background-color: red;
-    border-radius: 25px;
-    height: 5px;
-    width: 100%;
-  }
+  top: 78%;
+  left: 90%;
+  position: absolute;
+  background-color: red;
+  border-radius: 25px;
+  height: 5px;
+  width: 100%;
+}
 
-  .instruction_content {
-    font-size: 20px;
-    list-style-type: none;
-    padding-left: 5%;
-    padding-right: 5%;
-  }
+.instruction_content {
+  font-size: 20px;
+  list-style-type: none;
+  padding-left: 5%;
+  padding-right: 5%;
+}
 
-  .NPCname, .UserName {
-    position: absolute;
-    width: 150px;
-    height: 75px;
-    top: 15%;
-    left: -1%;
-    font-size: 20px;
-    font-family: 'Roboto-Bold';
-    color: $label-color;
-  }
+.NPCname,
+.UserName {
+  position: absolute;
+  width: 150px;
+  height: 75px;
+  top: 15%;
+  left: -1%;
+  font-size: 20px;
+  font-family: "Roboto-Bold";
+  color: $label-color;
+}
 
-  .message-container {
-    position: relative;
-    margin-top: 10%;
-    padding: 10px;
-  }
-  
-  .message {
-    font-family: 'Roboto-Bold';
-    font-size: 20px;
-    color: $label-color;
-    text-align: left;
-    margin-left: 1%;
-    padding: 1%;
-    padding-right: 20%;
-  }
+.message-container {
+  position: relative;
+  margin-top: 10%;
+  padding: 10px;
+}
 
+.message {
+  font-family: "Roboto-Bold";
+  font-size: 20px;
+  color: $label-color;
+  text-align: left;
+  margin-left: 1%;
+  padding: 1%;
+  padding-right: 20%;
+}
+
+.user-label {
+  font-family: "Roboto-Black";
+  color: #0e3246;
+}
+
+.npc-label {
+  font-family: "Roboto-Black";
+  color: #0e3246;
+}
+
+@media only screen and (min-width: 2561px) {
   .user-label {
-    font-family: 'Roboto-Black';
-    color: #0e3246;
+    font-size: 35px;
+  }
+
+  .user-message {
+    font-size: 35px;
+  }
+  .npc-message {
+    font-size: 35px;
   }
 
   .npc-label {
-    font-family: 'Roboto-Black';
-    color: #0e3246;
+    font-size: 35px;
   }
+}
+@media only screen and (min-width: 2561px) {
+  .instruction_content {
+    font-size: 17px;
+  }
+  // TO-DO --->
+  .isListening {
+    top: 72%;
+    left: 89.5%;
+  }
+}
