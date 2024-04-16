@@ -42,3 +42,17 @@
     background-color: $button-gradient-start;
     backdrop-filter: blur(18px);
 }
+
+.clock-bg {
+    position: fixed;
+    top: 3%;
+    left: 5%;
+    width: 170px;
+    height: 170px;
+    border-radius: 55% 50% 50% 50%;
+    background-color: $button-gradient-start ;
+}
+.time {
+    font-size: 50px;
+    color: $input-placeholder-color;
+}
