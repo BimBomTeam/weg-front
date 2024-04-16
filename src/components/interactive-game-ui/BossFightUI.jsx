@@ -26,7 +26,7 @@ const UiBossFight = () => {
         <button className="Answer3">Answer3</button>
         <button className="Answer4">Answer4</button>
       </animated.div>
-      <animated.div className="clock-bg">
+      <animated.div className="clock-bg" style={questionAnimationProps}>
       <div className="clock-container">
       <CountdownCircleTimer
         isPlaying
