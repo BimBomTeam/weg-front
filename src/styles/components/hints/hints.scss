@@ -1,0 +1,37 @@
+.container {
+    z-index: 3;
+    position: absolute;
+    width: 30%;
+    height: 10%;
+    background-color: $button-gradient-start;
+    backdrop-filter: blur(18px);
+    bottom: 0;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 30px;
+}
+
+.dupa {
+    width: 100%;
+    height: 100%;
+}
+
+.container p {
+    font-size: 35px;
+    color: $input-placeholder-color;;
+}
+
+.container #paragraphLeft {
+
+}
+
+.container #paragraphCenter {
+  margin-left: 5%;
+  margin-right: 5%;  
+}
+
+.container #paragraphRight {
+    
+}
