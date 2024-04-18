@@ -195,13 +195,13 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
   margin-bottom: 30px;
 }
 
-@media only screen and (max-width: 1800px) {
+@media only screen and (min-width: 1920px) and (max-width: 2561px) {
   #expand_field_button {
-    width: 60px;
+    width: 80px;
   }
   .voice_button {
     width: 70px;
-    left: 86.5%;
+    left: 89%;
   }
 }
 @media only screen and (min-width: 2561px) {
@@ -211,13 +211,39 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
   }
 }
 
-
-@media only screen and (max-width: 1400px) {
+@media only screen and (min-width: 1600px) and (max-width: 2561px) {
   #expand_field_button {
-    width: 50px;
+    width: 60px;
   }
   .voice_button {
     width: 60px;
-    left: 87%;
+    left: 88%;
+  }
+}
+
+@media only screen and (max-width: 1600px) {
+  #expand_field_button {
+    width: 60px;
+  }
+  .voice_button {
+    width: 60px;
+    left: 88%;
+  }
+}
+
+@media only screen and (max-width: 1400px) {
+  #expand_field_button {
+    width: 55px;
+  }
+  .voice_button {
+    width: 60px;
+    left: 88.5%;
+  }
+}
+
+@media only screen and (max-width: 1280px) {
+  .voice_button {
+    width: 60px;
+    left: 88%;
   }
 }

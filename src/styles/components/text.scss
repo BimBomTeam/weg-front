@@ -242,14 +242,51 @@ label[for="password-repeat-label"] {
   .npc-label {
     font-size: 35px;
   }
-}
-@media only screen and (min-width: 2561px) {
   .instruction_content {
-    font-size: 17px;
+    font-size: 30px;
   }
   // TO-DO --->
   .isListening {
-    top: 72%;
+    top: 75%;
     left: 89.5%;
+  }
+}
+@media only screen and (min-width: 1600px) and (max-width: 2561px) {
+  .isListening {
+    top: 72%;
+    left: 90%;
+  }
+  .user-label {
+    font-size: 25px;
+  }
+
+  .user-message {
+    font-size: 25px;
+  }
+  .npc-message {
+    font-size: 25px;
+  }
+
+  .npc-label {
+    font-size: 25px;
+  }
+  .instruction_content {
+    font-size: 28px;
+  }
+  textarea {
+    font-size: 25px;
+  }
+}
+
+@media only screen and (max-width: 1280px) {
+  .isListening {
+    top: 70%;
+    left: 89%;
+  }
+}
+@media only screen and (min-width: 1600px) and (max-width: 2561px) {
+  .isListening {
+    top: 74%;
+    left: 89%;
   }
 }
