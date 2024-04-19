@@ -15,7 +15,7 @@ const PressE = () => {
   return (
     <div className="container">
         <p id="paragraphLeft">Press</p>
-        <img src="/images/pressE.png" class="pressE"/>
+        <img src="/images/pressE.png" className="pressE"/>
         <p id="paragraphRight">to talk</p>
     </div>
   );

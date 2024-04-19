@@ -49,6 +49,10 @@ const UiMenu = () => {
   };
 
   const onButtonClick = async () => {
+    if (!text) {
+      toast.error("Please enter text to send a message")
+      return;
+    }
     setIsButtonClicked(true);
     setIsButtonRotated(true);
 
