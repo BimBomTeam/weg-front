@@ -11,27 +11,25 @@ const Game = () => {
   }, []);
 
   const [isUi, setUi] = useState(false);
-  const [isEVisible, setIsEVisible] = useState(false);
+  const [isEVisible, setIsEVisible] = useState(true);
 
   const changeUiVisibility = (isVis) => {
     if (!isVis) {
       setTimeout(() => {
         setUi(false);
+        setIsEVisible(true);
       }, 500);
     } else {
       setUi(isVis);
+      setIsEVisible(false);
     }
   };
 
-  useEffect(() => {
-    setIsEVisible(true);
-  }, []);
-
-  return (
+  return (  
     <>
       <canvas id="webgl"></canvas>
       {isEVisible && <PressE/>}
-      {isUi && <UiBossFight />} {/*Zmieniono z UiMenu na UiBossFight DLA TESTU DONT DELETE*/}
+      {isUi && <UiMenu/>}
       {isUi || <UserInterface />}
     </>
   );
