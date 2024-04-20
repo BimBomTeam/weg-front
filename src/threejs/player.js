@@ -3,6 +3,7 @@ import { Vector3 } from "three";
 import * as THREE from "three";
 import PlayerParticleSystem from "./playerParticleSystem";
 import { TextObject } from "./textObject";
+import { element } from "three/examples/jsm/nodes/Nodes.js";
 
 export class Player {
   constructor({ pos = { x: 40, y: 20, z: 0 }, sketch }) {
@@ -222,6 +223,63 @@ export class Player {
     sketch.physics.add.constraints.lock(this.object.body, this.sensor.body);
   }
 
+  hitBoss(bossPos = THREE.Vector2) {
+    let directVec = bossPos
+      .clone()
+      .sub(this.object.position)
+      .normalize()
+      .multiplyScalar(30);
+    this.object.body.applyForceY(7);
+    this.object.body.setVelocityZ(directVec.z);
+    this.object.body.setVelocityX(directVec.x);
+    this.onGround = false;
+    let DoJump = (params) => {
+      return this.jumpAtack(params.direction);
+    };
+    this.moveEvent.push({
+      func: (params) => {
+        return DoJump(params);
+      },
+      params: { direction: directVec },
+    });
+  }
+
+  jumpAtack(empty) {
+    if (
+      Math.abs(this.object.body.velocity.x) +
+        Math.abs(this.object.body.velocity.z) <=
+      1
+    ) {
+      return true;
+    }
+  }
+
+  addReturnEvent(standPos = Vector3) {
+    this.moveEvent.push({
+      func: (standPos) => {
+        if (this.moveEvent.length <= 2) {
+          let moveX = standPos.x - this.object.position.x;
+          let moveZ = standPos.z - this.object.position.z;
+          let distance = new THREE.Vector2(moveX, moveZ);
+          if (distance.length() >= 1) {
+            let destination = standPos
+              .clone()
+              .sub(this.object.position)
+              .normalize()
+              .multiplyScalar((this.speed / 5) * distance.length());
+            if (distance.length() >= 2) {
+              this.moveVec.x = destination.x;
+              this.moveVec.z = destination.z;
+            }
+            this.object.body.setVelocityX(destination.x);
+            this.object.body.setVelocityZ(destination.z);
+          }
+        }
+      },
+      params: standPos,
+    });
+  }
+
   update(KeyHandler) {
     this.isWalking = false;
     let showParticles = false;
@@ -237,27 +295,9 @@ export class Player {
     }
 
     this.object.body.setAngularVelocityY(0);
-    if (this.moveEvent.length > 0) {
-      this.moveEvent.forEach((element) => {
-        element.func(element.params);
-      });
-    }
-
-    if (this.mode == "battle") {
-      let moveX = this.standPos.x - this.object.position.x;
-      let moveZ = this.standPos.z - this.object.position.z;
-      if (Math.abs(moveX) + Math.abs(moveZ) >= 1) {
-        let destination = this.standPos
-          .clone()
-          .sub(this.object.position)
-          .normalize()
-          .multiplyScalar(this.speed);
-        this.moveVec.x = destination.x;
-        this.moveVec.z = destination.z;
-        this.object.body.setVelocityX(destination.x);
-        this.object.body.setVelocityZ(destination.z);
-      }
-    }
+    this.moveEvent = this.moveEvent.filter(
+      (element) => !element.func(element.params)
+    );
 
     if (this.mode == "freeWalk") {
       if (KeyHandler.key.a.pressed) {
@@ -318,7 +358,8 @@ export class Player {
     this.moveEvent.push({
       func: (objPos = new Vector3()) => {
         let lookVec = objPos.clone().sub(this.object.position);
-        this.moveVec = lookVec;
+        this.moveVec.x = lookVec.x;
+        this.moveVec.z = lookVec.z;
         // let targAng = Math.atan(lookVec.x / lookVec.z);
         // if (lookVec.z < 0) {
         //   targAng += Math.PI;

@@ -196,12 +196,13 @@ class MainScene extends Scene3D {
 
   startBattle(NPC = BossNPC) {
     this.player.mode = "battle";
-    this.player.standPos = this.player.object.position
+    let playerReturnPos = this.player.object.position
       .clone()
       .sub(NPC.object.position)
       .normalize()
       .multiplyScalar(7)
       .add(this.player.object.position);
+    this.player.addReturnEvent(playerReturnPos);
     console.log(this.player.standPos, " ", this.player.object.position);
     NPC.standPos = NPC.object.position.clone();
     NPC.mode = "battle";
@@ -218,7 +219,8 @@ class MainScene extends Scene3D {
       targetPos: NPC.object.position,
       adjustPosition: new Vector3(adjustVec2.x, 3, adjustVec2.y),
     });
-    setTimeout(() => NPC.hitPlayer(this.player.object.position), 2000);
+    setTimeout(() => this.player.hitBoss(NPC.object.position), 5000);
+    setTimeout(() => NPC.hitPlayer(this.player.object.position), 10000);
   }
 
   processInteraction(NPC = StandartNPC) {

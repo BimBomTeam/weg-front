@@ -13,12 +13,15 @@ export class BossNPC extends StandartNPC {
     this.initColission();
   }
 
+  update() {
+    this.object.body.setAngularVelocityY(0);
+  }
+
   initColission() {
     this.object.body.on.collision((otherObject, event) => {
       if (otherObject.name == "floo") {
         if (event !== "end" && this.object.body.velocity.y < 1) {
           this.onGround = true;
-          console.log(event);
         } else if (event === "end") {
           this.onGround = false;
         }
@@ -45,7 +48,6 @@ export class BossNPC extends StandartNPC {
   }
 
   updateBattle() {
-    console.log(this.actionEvents);
     this.actionEvents = this.actionEvents.filter(
       (element) => !element.func(element.params)
     );
@@ -53,6 +55,19 @@ export class BossNPC extends StandartNPC {
       this.actionEvents.push(element);
     });
     this.addEvents = [];
+    if (this.actionEvents.length <= 0) {
+      let moveX = this.standPos.x - this.object.position.x;
+      let moveZ = this.standPos.z - this.object.position.z;
+      if (Math.abs(moveX) + Math.abs(moveZ) >= 1) {
+        let destination = this.standPos
+          .clone()
+          .sub(this.object.position)
+          .normalize()
+          .multiplyScalar(this.speed);
+        this.object.body.setVelocityX(destination.x);
+        this.object.body.setVelocityZ(destination.z);
+      }
+    }
   }
 
   jumpAtack(direction = new Vector3(10, 4, 8)) {
@@ -67,14 +82,7 @@ export class BossNPC extends StandartNPC {
         Math.abs(this.object.body.velocity.z) <=
       1
     ) {
-      console.log("shit");
       this.onGround = true;
-      this.addEvents.push({
-        func: (params) => {
-          return this.returnToStandPos();
-        },
-        params: {},
-      });
       return true;
     }
   }
@@ -90,10 +98,6 @@ export class BossNPC extends StandartNPC {
     let moveX = this.standPos.x - this.object.position.x;
     let moveZ = this.standPos.z - this.object.position.z;
     if (Math.abs(moveX) + Math.abs(moveZ) <= 3) {
-      console.log("SHIT2");
-      setTimeout(() => {
-        this.hitPlayer(this.playerPos);
-      }, 1000);
       return true;
     }
   }
