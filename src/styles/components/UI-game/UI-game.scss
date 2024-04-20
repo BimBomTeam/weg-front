@@ -152,17 +152,19 @@
 
 //----------------1920 x 1080 (Full HD)----------------
 @media only screen and (min-width: 1600px) and (max-width: 1800px) {
-  :root {
-    --animationProps_top_unexpanded_unclicked_true: 50%;
-    --animationProps_height_unexpanded_clicked_false: 600px;
+  :root {  
+    --animationProps_top_unexpanded_unclicked_true: 70%;
+    --animationProps_top_unexpanded_clicked_false: 35%;  
+    --animationProps_height_unexpanded_clicked_false: 720px;
     --animationProps_height_unexpanded_unclicked_true: 320px;
-    --textareaAnimationProps_marginTop_false: 200px;
+    --textareaAnimationProps_marginTop_false: 270px;
     --textareaAnimationProps_marginTop_true: 20px;
-    --buttonVoiceProps_marginTop_false: 200px;
-    --buttonVoiceProps_marginTop_true: 50px;
-    --buttonAnimationProps_marginTop_false: 100px;
+    --buttonVoiceProps_marginTop_false: 260px;
+    --buttonVoiceProps_marginTop_true: 28px;
+    --buttonAnimationProps_marginTop_false: 130px; 
     --buttonAnimationProps_marginTop_true: 10px;
-    --animationProps_top_unexpanded_clicked_false: 15%;
+    --isListeningProps_marginTop_true: 0px;
+    --isListeningProps_marginTop_false: 100px;
   }
   .main-ui {
     width: 800px;
@@ -178,15 +180,18 @@
 @media only screen and (min-width: 1280px) and (max-width: 1600px) {
   :root {
     --animationProps_height_expanded_clicked_true: 200px;
+    --animationProps_height_unexpanded_clicked_false: 650px; // 880
     // --animationProps_height_expanded_unclicked_false: 100px;
-    --animationProps_top_unexpanded_unclicked_true: 55%;
-    --animationProps_height_unexpanded_clicked_false: 600px;
-    --textareaAnimationProps_marginTop_false: 260px;
-    --buttonVoiceProps_marginTop_false: 220px;
-    --buttonVoiceProps_marginTop_true: 10px;
-    --buttonAnimationProps_marginTop_false: 140px;
-    --buttonAnimationProps_marginTop_true: -15px;
-    --animationProps_top_unexpanded_clicked_false: 5%;
+    --animationProps_top_unexpanded_unclicked_true: 70%;
+    --animationProps_top_unexpanded_clicked_false: 27%;
+    --textareaAnimationProps_marginTop_false: 290px; 
+    --textareaAnimationProps_marginTop_true: 20px; 
+    --buttonVoiceProps_marginTop_false: 260px;
+    --buttonVoiceProps_marginTop_true: 30px;
+    --buttonAnimationProps_marginTop_false: 150px;
+    --buttonAnimationProps_marginTop_true: 15px;
+    --isListeningProps_marginTop_true: 0px;
+    --isListeningProps_marginTop_false: 85px;
   }
   .main-ui {
     width: 700px;
