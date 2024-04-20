@@ -72,6 +72,15 @@ textarea {
     }
 }
 
+.word-counter {
+  position: absolute;
+  bottom: 7px;
+  right: 6%;
+  font-family: inherit;
+  font-size: 14px;
+  color: black;
+}
+
 label[for="login"] {
     padding-left: 35%;
     width: 220px;
