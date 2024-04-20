@@ -80,10 +80,10 @@ class MainScene extends Scene3D {
     lights.directionalLight.shadow.mapSize.height = 2048; // default
     lights.directionalLight.shadow.camera.near = 0.01; // default
     lights.directionalLight.shadow.camera.far = 300; // default
-    lights.directionalLight.shadow.camera.top = -100; // default
-    lights.directionalLight.shadow.camera.right = 100; // default
-    lights.directionalLight.shadow.camera.left = -100; // default
-    lights.directionalLight.shadow.camera.bottom = 100; // default
+    lights.directionalLight.shadow.camera.top = -200; // default
+    lights.directionalLight.shadow.camera.right = 200; // default
+    lights.directionalLight.shadow.camera.left = -200; // default
+    lights.directionalLight.shadow.camera.bottom = 200; // default
   }
 
   async initWater() {
@@ -147,12 +147,17 @@ class MainScene extends Scene3D {
 
     this.setupPlayer();
     this.setupMap();
-    this.standNPC = new StandartNPC({
-      pos: { x: 38, y: 10, z: 10 },
+    this.bossNPC = new BossNPC({
+      pos: { x: 80, y: 10, z: 85 },
       sketch: this,
+      path: "/src/assets/models/Npcs/Npc1.glb",
     });
-    this.bossNPC = new BossNPC({ pos: { x: 80, y: 10, z: 85 }, sketch: this });
-
+    this.standNPC = new StandartNPC({
+      pos: { x: 20, y: 10, z: 0 },
+      sketch: this,
+      path: "/src/assets/models/Npcs/Npc5.glb",
+    });
+    await this.sleep(500);
     this.box = this.physics.add.box(
       {
         name: "box",
@@ -167,9 +172,10 @@ class MainScene extends Scene3D {
     );
     this.box.body.setAngularFactor(0, 0, 0);
   }
+  sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay));
 
   setupMap() {
-    this.load.gltf("/src/assets/models/map1/world2.glb").then((gltf) => {
+    this.load.gltf("/src/assets/models/map1/BigWorld.glb").then((gltf) => {
       this.floor = new ExtendedObject3D();
       this.floor.add(gltf.scene);
       this.floor.position.setZ(5);
@@ -221,6 +227,8 @@ class MainScene extends Scene3D {
     });
     setTimeout(() => this.player.hitBoss(NPC.object.position), 5000);
     setTimeout(() => NPC.hitPlayer(this.player.object.position), 10000);
+    setTimeout(() => this.player.hitBoss(NPC.object.position), 15000);
+    setTimeout(() => this.player.hitBoss(NPC.object.position), 20000);
   }
 
   processInteraction(NPC = StandartNPC) {

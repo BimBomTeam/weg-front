@@ -1,33 +1,32 @@
 import { Vector3 } from "three";
 import { StandartNPC } from "./standartNPC";
-import { element } from "three/examples/jsm/nodes/Nodes.js";
 
 export class BossNPC extends StandartNPC {
-  constructor({ pos = { x: 10, y: 20, z: 10 }, sketch }) {
-    super({ pos: pos, sketch: sketch });
+  constructor({ pos = { x: 10, y: 20, z: 10 }, sketch, path }) {
+    super({ pos: pos, sketch: sketch, path: path });
     this.actionEvents = [];
     this.addEvents = [];
     this.standPos = null;
     this.onGround = true;
     this.playerPos;
-    this.initColission();
+    // this.initColission();
   }
 
   update() {
     this.object.body.setAngularVelocityY(0);
   }
 
-  initColission() {
-    this.object.body.on.collision((otherObject, event) => {
-      if (otherObject.name == "floo") {
-        if (event !== "end" && this.object.body.velocity.y < 1) {
-          this.onGround = true;
-        } else if (event === "end") {
-          this.onGround = false;
-        }
-      }
-    });
-  }
+  // initColission() {
+  //   this.object.body.on.collision((otherObject, event) => {
+  //     if (otherObject.name == "floo") {
+  //       if (event !== "end" && this.object.body.velocity.y < 1) {
+  //         this.onGround = true;
+  //       } else if (event === "end") {
+  //         this.onGround = false;
+  //       }
+  //     }
+  //   });
+  // }
 
   hitPlayer(playerPos = new Vector3()) {
     this.playerPos = playerPos;
@@ -36,6 +35,7 @@ export class BossNPC extends StandartNPC {
       .sub(this.object.position)
       .normalize()
       .multiplyScalar(30);
+    this.onGround = true;
     let DoJump = (params) => {
       return this.jumpAtack(params.direction);
     };

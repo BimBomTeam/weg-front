@@ -1,11 +1,14 @@
 import { Vector3 } from "three";
+import { ExtendedObject3D } from "enable3d";
+import * as THREE from "three";
 
 export class StandartNPC {
-  constructor({ pos = { x: 10, y: 20, z: 10 }, sketch }) {
+  constructor({ pos = { x: 10, y: 20, z: 10 }, sketch, path }) {
     this.zoneRadius = 7;
     this.innitPos = pos;
     this.speed = 5;
     this.moveState = "stand";
+    this.scale = 2;
 
     this.interactionRadius = 7;
 
@@ -13,7 +16,8 @@ export class StandartNPC {
 
     this.moveCooldown = 1500;
     this.moveCooldownDelta = 300;
-    this.initObject(sketch, pos);
+    // this.initObject(sketch, pos, path)
+    this.initObject(sketch, pos, path);
     this.updateCooldowns();
   }
 
@@ -25,21 +29,61 @@ export class StandartNPC {
         : this.moveCooldown - Math.random() * this.moveCooldownDelta;
   }
 
-  initObject(sketch, pos) {
-    this.object = sketch.physics.add.box(
-      {
-        x: pos.x,
-        y: pos.y,
-        z: pos.z,
-        name: "NPC",
-        width: 3,
-        depth: 3,
-        height: 3,
+  async initObject(sketch, pos, path) {
+    await sketch.load.gltf(path).then((gltf) => {
+      this.object = new ExtendedObject3D();
+      // gltf.scene.children[0].geometry.center();
+      gltf.scene.rotateY(Math.PI);
+
+      //Getting the size of Player glb object
+      let box = new THREE.Box3().setFromObject(gltf.scene);
+      this.size = box.getSize(new THREE.Vector3());
+
+      //Render setup
+      this.object.add(gltf.scene);
+      sketch.add.existing(this.object);
+
+      this.object.position.set(pos.x, pos.y, pos.z);
+
+      this.object.traverse((child) => {
+        if (child.isMesh) {
+          child.castShadow = child.receiveShadow = true;
+        }
+      });
+
+      //Setting Player glb object scale
+      this.object.scale.set(this.scale, this.scale, this.scale);
+
+      //Physics enabling
+      sketch.physics.add.existing(this.object, {
+        shape: "box",
         mass: 1,
-      },
-      { phong: { color: 0x00ff00 } }
-    );
-    this.object.body.setAngularFactor(0, 0, 0);
+        width: 1,
+        height: this.size.y,
+        depth: 1,
+        offset: {
+          x: 0,
+          y: (-this.size.y * this.scale) / 2 - sketch.worldMargin,
+          z: 0,
+        },
+      });
+      this.object.body.checkCollisions = true;
+      this.object.body.setAngularFactor(0, 0, 0);
+      this.object.body.setFriction(0.8);
+
+      this.object.body.setCcdMotionThreshold(1);
+      this.object.body.setCcdSweptSphereRadius(0.25);
+
+      //Updating player initial position
+      // this.setPosition(pos);
+
+      //Animation setup
+      sketch.animationMixers.add(this.object.anims.mixer);
+      gltf.animations.forEach((animation) => {
+        this.object.anims.add(animation.name, animation);
+      });
+      console.log(path, " ", "inited");
+    });
   }
 
   update() {
@@ -68,6 +112,7 @@ export class StandartNPC {
   }
 
   checkInteraction(playerPos = new Vector3()) {
+    // console.log(this.object);
     if (playerPos.distanceTo(this.object.position) <= this.interactionRadius) {
       this.mode = "prepToInteract";
       this.object.body.setVelocityX(0);
