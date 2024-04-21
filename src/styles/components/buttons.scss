@@ -221,7 +221,7 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
   }
 
   #send {
-    bottom: 50px;
+    bottom: 60px;
   }
 }
 
@@ -233,7 +233,7 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
   .voice_button {
     width: 50px;
     bottom: 80px;
-    right: 43px;
+    right: 41px;
     transform: scale(1.6);
   }
 
@@ -242,7 +242,7 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
   }
 
   #send {
-    bottom: 50px;
+    bottom: 35px;
   }
 }
 
@@ -253,7 +253,7 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
   .voice_button {
     width: 50px;
     bottom: 70px;
-    right: 43px;
+    right: 41px;
     transform: scale(1.4);
   }
   .voice_button:hover {
@@ -274,6 +274,6 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
 @media only screen and (max-width: 1280px) {
   .voice_button {
     width: 60px;
-    left: 88%;
+    
   }
 }

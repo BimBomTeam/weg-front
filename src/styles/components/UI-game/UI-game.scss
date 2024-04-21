@@ -183,7 +183,7 @@
     --animationProps_top_unexpanded_clicked_false: 5%;
     --animationProps_height_unexpanded_clicked_false: 90%;
     --animationProps_height_unexpanded_unclicked_true: 30%;
-    --buttonExpandProps_marginTop_true: -80px;
+    --buttonExpandProps_marginTop_true: -60px;
     --buttonExpandProps_marginTop_false: 5px;
   }
   .main-ui {
@@ -202,11 +202,11 @@
   :root {
     --animationProps_height_expanded_clicked_true: 100px;
     --animationProps_height_expanded_unclicked_false: 100px;
-    --animationProps_top_unexpanded_unclicked_true: 65%;
+    --animationProps_top_unexpanded_unclicked_true: 55%;
     --animationProps_top_unexpanded_clicked_false: 5%;
     --animationProps_height_unexpanded_clicked_false: 90%;
-    --animationProps_height_unexpanded_unclicked_true: 30%;
-    --buttonExpandProps_marginTop_true: -60px;
+    --animationProps_height_unexpanded_unclicked_true: 40%;
+    --buttonExpandProps_marginTop_true: -50px;
     --buttonExpandProps_marginTop_false: 5px;
   }
   .main-ui {
