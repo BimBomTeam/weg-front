@@ -49,10 +49,15 @@
   backdrop-filter: blur(18px);
 }
 
+.message-container {
+  position: absolute;
+  width: 95%;
+  height: 70%;
+}
+
 .message-scroll {
-  height: 500px;
-  width: 93%;
-  max-height: 500px;
+  height: 100%;
+  width: 100%;
   overflow-y: auto;
 }
 
@@ -121,7 +126,7 @@
     }
   }
   .message-scroll {
-    height: 350px;
+    height: 100%;
   }
 }
 
@@ -143,7 +148,7 @@
     }
   }
   .message-scroll {
-    height: 350px;
+    height: 100%;
   }
 }
 
@@ -169,7 +174,7 @@
     }
   }
   .message-scroll {
-    height: 350px;
+    height: 100%;
   }
 }
 //----------------1600 x 900 (HD+)----------------
@@ -192,11 +197,11 @@
     }
   }
   .message-scroll {
-    height: 350px;
+    height: 95%;
   }
 }
 //----------------1280 x 800 (WXGA)----------------
-@media only screen and (max-width: 1280px) {
+@media only screen and (min-width: 900px) and (max-width: 1280px) {
   :root {
     --animationProps_height_expanded_clicked_true: 100px;
     --animationProps_height_expanded_unclicked_false: 100px;
@@ -212,10 +217,32 @@
     textarea {
       width: calc(100% - 29%);
       height: 50px;
-
     }
   }
   .message-scroll {
-    height: 350px;
+    height: 90%;
+  }
+}
+
+@media only screen and (max-width: 900px) {
+  :root {
+    --animationProps_height_expanded_clicked_true: 100px;
+    --animationProps_height_expanded_unclicked_false: 100px;
+    --animationProps_top_unexpanded_unclicked_true: 55%;
+    --animationProps_top_unexpanded_clicked_false: 5%;
+    --animationProps_height_unexpanded_clicked_false: 90%;
+    --animationProps_height_unexpanded_unclicked_true: 40%;
+    --buttonExpandProps_marginTop_true: -15px;
+    --buttonExpandProps_marginTop_false: 5px;
+  }
+  .main-ui {
+    width: 600px;
+    textarea {
+      width: calc(100% - 29%);
+      height: 50px;
+    }
+  }
+  .message-scroll {
+    height: 70%;
   }
 }
