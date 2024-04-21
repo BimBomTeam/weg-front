@@ -48,6 +48,7 @@ const UiMenu = () => {
   };
 
   const onButtonClick = async () => {
+    event.preventDefault();
     if (!text) {
       toast.error("Please enter text to send a message")
       return;
@@ -242,6 +243,12 @@ useEffect(() => {
           onChange={onTextChange}
           rows={5}
           style={textareaAnimationProps}
+          onKeyPress={(event) => {
+            if (event.key === 'Enter' && !event.shiftKey) {
+              event.preventDefault();
+              onButtonClick();
+            }
+          }}
         />
 
         <animated.button
