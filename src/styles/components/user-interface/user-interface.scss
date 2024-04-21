@@ -11,18 +11,35 @@
   top: 10%;
   align-items: center;
   justify-content: flex-end;
-  z-index: 9;
-  gap: 20px;
-  width: 90px;
+  z-index: 1;
+  gap: 5%;
+  width: 100px;
   border-radius: 50px;
   background-color: $button-gradient-start;
   backdrop-filter: blur(18px);
 
 }
 
-// @media only screen and (max-width: 1800px) {
-//   :root {
-//     --animationProps_height_true: 480px;
-//     --animationProps_height_false: 90px;
-//   }
-// }
+@media only screen and (min-width: 2562px) {
+
+}
+
+ @media only screen and (min-width: 2101px) and (max-width: 2561px) {
+ 
+}
+
+@media only screen and (min-width: 1801px) and (max-width: 2100px) {
+
+}
+
+@media only screen and (min-width: 1281px) and (max-width: 1800px) {
+
+}
+
+@media only screen and (min-width: 900px) and (max-width: 1280px) {
+
+}
+
+@media only screen and (max-width: 900px) {
+
+}

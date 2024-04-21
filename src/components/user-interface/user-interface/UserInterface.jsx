@@ -22,14 +22,15 @@ const UserInterface = () => {
     height: expanded
       ? `${getStyles("--animationProps_height_true")}`
       : `${getStyles("--animationProps_height_false")}`,
-    config: { duration: 150 },
+    config: { duration: 250 },
   });
 
   const buttonAnimationProps = useSpring({
     opacity: expanded ? 1 : 0,
     pointerEvents: expanded ? "auto" : "none",
-
-    config: { tension: 400, friction: 20 },
+  
+    config: { tension: 700, friction: 30 },
+    delay: expanded ? 200 : 0,
   });
 
   return (
