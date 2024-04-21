@@ -1,8 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import "regenerator-runtime/runtime";
-import SpeechRecognition, {
-  useSpeechRecognition,
-} from "react-speech-recognition";
+import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognition";
 import { useSpring, animated } from "react-spring";
 import Dialog from "../../logic/Dialog";
 import { ToastContainer, toast } from "react-toastify";
@@ -10,6 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 const UiMenu = () => {
   const [text, setText] = useState("");
+  const [isWordCounterVisible, setIsWordCounterVisible] = useState(false);
   const textareaRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
   const [isButtonClicked, setIsButtonClicked] = useState(false);
@@ -49,11 +48,23 @@ const UiMenu = () => {
   };
 
   const onButtonClick = async () => {
+    event.preventDefault();
+    if (!text) {
+      toast.error("Please enter text to send a message")
+      return;
+    }
+
+    if (text.split(/\s+/).length > 100) {
+      toast.error("Maximum word limit reached (100 words)");
+      return;
+    }
     setIsButtonClicked(true);
     setIsButtonRotated(true);
 
     await handleSendMessage();
     setText("");
+    SpeechRecognition.stopListening();
+    setIsWordCounterVisible(false);
   };
 
   useEffect(() => {
@@ -90,25 +101,28 @@ const UiMenu = () => {
   }, [text]);
 
   useEffect(() => {}, [isExpandButtonClicked]);
-
-  useEffect(() => {
-    const wordCount = transcript.trim().split(/\s+/).length;
-    if (transcript && wordCount <= 100) {
-      setText(transcript);
-    } else if (transcript && wordCount > 100) {
-      toast.error("Maximum word limit reached (100 words)");
+  
+useEffect(() => {
+  if (transcript) {
+    setText(transcript);
+    if (transcript.split(/\s+/).length >= 100) {
+      setIsWordCounterVisible(true);
+    } else {
+      setIsWordCounterVisible(false);
     }
-  }, [transcript]);
-
+  }
+}, [transcript]);
+  
   const onTextChange = (event) => {
     const inputText = event.target.value;
-    const wordCount = inputText.trim().split(/\s+/).length;
-    if (wordCount <= 100) {
-      setText(inputText);
+    setText(inputText);
+
+    if (inputText.split(/\s+/).length >= 100) {
+      setIsWordCounterVisible(true);
     } else {
-      toast.error("Maximum word limit reached (100 words)");
+      setIsWordCounterVisible(false);
     }
-  };
+  };  
 
   const onButtonClickExpand = () => {
     setIsButtonRotated(!isButtonRotated);
@@ -220,6 +234,8 @@ const UiMenu = () => {
 
         <animated.div className="isListening" style={isListeningProps} />
 
+        {isWordCounterVisible && <p className="word-counter">{text.split(/\s+/).length}/100</p>}
+        
         <animated.textarea
           ref={textareaRef}
           placeholder="Write something.."
@@ -227,6 +243,12 @@ const UiMenu = () => {
           onChange={onTextChange}
           rows={5}
           style={textareaAnimationProps}
+          onKeyPress={(event) => {
+            if (event.key === 'Enter' && !event.shiftKey) {
+              event.preventDefault();
+              onButtonClick();
+            }
+          }}
         />
 
         <animated.button
