@@ -178,13 +178,13 @@ const UiMenu = () => {
   const buttonExpandProps = useSpring({
     marginTop: isExpandButtonClicked
       ? isButtonClicked
-        ? "150px"
-        : "0px"
+        ? `${getStyles("--buttonExpandProps_marginTop_true")}`
+        : `${getStyles("--buttonExpandProps_marginTop_false")}`
       : isButtonClicked
-      ? "20px"
-      : "0px",
+        ? `${getStyles("--buttonExpandProps_marginTop_true")}`
+        : `${getStyles("--buttonExpandProps_marginTop_false")}`,
     transform: `rotate(${isButtonRotated ? 180 : 0}deg)`,
-    config: { duration: 200 },
+    config: { duration: 100 },
   });
 
   const messageContainerAnimationProps = useSpring({
@@ -219,7 +219,7 @@ const UiMenu = () => {
           style={textareaAnimationProps}
         />
 
-        <p>{text.length}/255</p>
+        <p id="paragraph">{text.length}/255</p>
         <animated.button
           className="voice_button"
           style={buttonVoiceProps}

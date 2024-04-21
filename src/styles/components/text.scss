@@ -13,8 +13,6 @@ input[type="text"] {
   font-size: $text-input-font-size;
   font-family: inherit;
   color: black;
-  width: $text-input-width;
-  height: $text-input-height;
   padding-right: $text-input-padding-right;
   overflow-y: auto;
   scrollbar-width: thin;
@@ -23,16 +21,15 @@ input[type="text"] {
   backdrop-filter: blur(5px);
 }
 textarea {
-  position: fixed;
-  width: 700px;
-  height: 11px;
-  top: 32%;
+  position: absolute;
   left: 2%;
-  margin-bottom: 20px;
+  bottom: 20px;
+  height: 100%;
   border-radius: 20px;
+  padding-right: 200px;
   resize: none;
   scrollbar-width: thin;
-  padding: 2%;
+  padding: 1%;
   padding-right: 10%;
   font-family: "Roboto";
   font-size: 18px;
@@ -81,7 +78,7 @@ textarea {
 p {
   position: absolute;
   bottom: 7px;
-  right: 6%;
+  right: 30px;
   font-family: inherit;
   font-size: 14px;
   color: black;
@@ -173,13 +170,12 @@ label[for="password-repeat-label"] {
 }
 
 .isListening {
-  top: 78%;
-  left: 90%;
   position: absolute;
+  bottom: 45px;
+  right: 25px;
   background-color: red;
   border-radius: 25px;
   height: 5px;
-  width: 100%;
 }
 
 .instruction_content {
@@ -247,15 +243,20 @@ label[for="password-repeat-label"] {
   }
   // TO-DO --->
   .isListening {
-    top: 75%;
-    left: 89.5%;
+    right: 0%;
   }
 }
-@media only screen and (min-width: 1600px) and (max-width: 2561px) {
+@media only screen and (min-width: 2000px) and (max-width: 2561px) {
   .isListening {
-    top: 72%;
-    left: 90%;
+    right: 45px;
   }
+
+  #paragraph {
+    font-size: 20px;
+    bottom: -5px;
+    right: 40px;
+  }
+  
   .user-label {
     font-size: 25px;
   }
@@ -278,15 +279,51 @@ label[for="password-repeat-label"] {
   }
 }
 
-@media only screen and (max-width: 1280px) {
+@media only screen and (min-width: 1801px) and (max-width: 2000px) {
   .isListening {
-    top: 70%;
-    left: 89%;
+    right: 45px;
+  }
+
+  #paragraph {
+    font-size: 20px;
+    bottom: -5px;
+    right: 40px;
+  }
+
+  .user-label {
+    font-size: 25px;
+  }
+
+  .user-message {
+    font-size: 25px;
+  }
+  .npc-message {
+    font-size: 25px;
+  }
+
+  .npc-label {
+    font-size: 25px;
+  }
+  .instruction_content {
+    font-size: 28px;
+  }
+  textarea {
+    font-size: 25px;
   }
 }
-@media only screen and (min-width: 1600px) and (max-width: 2561px) {
+
+@media only screen and (min-width: 1281px) and (max-width: 1800px) {
   .isListening {
-    top: 74%;
-    left: 89%;
+    right: 45px;
+  }
+
+  #paragraph {
+    right: 50px;
+  }
+}
+
+@media only screen and (max-width: 1280px) {
+  .isListening {
+    right: 25px;
   }
 }
