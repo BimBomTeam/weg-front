@@ -22,15 +22,47 @@ const UserInterface = () => {
     height: expanded
       ? `${getStyles("--animationProps_height_true")}`
       : `${getStyles("--animationProps_height_false")}`,
-    config: { duration: 250 },
+    config: { duration: 400 },
   });
 
-  const buttonAnimationProps = useSpring({
+  const accountButtonAnimationProps = useSpring({
     opacity: expanded ? 1 : 0,
     pointerEvents: expanded ? "auto" : "none",
   
     config: { tension: 700, friction: 30 },
-    delay: expanded ? 200 : 0,
+    delay: expanded ? 300 : 0,
+  });
+
+  const difficultyButtonAnimationProps = useSpring({
+    opacity: expanded ? 1 : 0,
+    pointerEvents: expanded ? "auto" : "none",
+  
+    config: { tension: 700, friction: 30 },
+    delay: expanded ? 400 : 10,
+  });
+
+  const shopButtonAnimationProps = useSpring({
+    opacity: expanded ? 1 : 0,
+    pointerEvents: expanded ? "auto" : "none",
+  
+    config: { tension: 700, friction: 30 },
+    delay: expanded ? 500 : 20,
+  });
+
+  const instructionButtonAnimationProps = useSpring({
+    opacity: expanded ? 1 : 0,
+    pointerEvents: expanded ? "auto" : "none",
+  
+    config: { tension: 700, friction: 30 },
+    delay: expanded ? 600 : 50,
+  });
+
+  const settingsButtonAnimationProps = useSpring({
+    opacity: expanded ? 1 : 0,
+    pointerEvents: expanded ? "auto" : "none",
+  
+    config: { tension: 700, friction: 30 },
+    delay: expanded ? 700 : 40,
   });
 
   return (
@@ -43,31 +75,31 @@ const UserInterface = () => {
 
         <animated.button
           className="account"
-          style={buttonAnimationProps}
+          style={accountButtonAnimationProps}
           onClick={() => setOpenAccountModal(true)}
         ></animated.button>
 
         <animated.button
           className="difficulty"
-          style={buttonAnimationProps}
+          style={difficultyButtonAnimationProps}
           onClick={() => setOpenDifficultyModal(true)}
         ></animated.button>
 
         <animated.button
           className="shop"
-          style={buttonAnimationProps}
+          style={shopButtonAnimationProps}
           onClick={() => setOpenShopModal(true)}
         ></animated.button>
 
         <animated.button
           className="instruction"
-          style={buttonAnimationProps}
+          style={instructionButtonAnimationProps}
           onClick={() => setOpenInstructionModal(true)}
         ></animated.button>
 
         <animated.button
           className="settings"
-          style={buttonAnimationProps}
+          style={settingsButtonAnimationProps}
           onClick={() => setOpenSettingsModal(true)}
         ></animated.button>
       </animated.div>

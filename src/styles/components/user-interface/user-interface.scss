@@ -41,5 +41,15 @@
 }
 
 @media only screen and (max-width: 900px) {
-
+:root
+{
+  --animationProps_height_true: 250px;
+  --animationProps_height_false: 65px;
+  
+}
+.user-interface
+{
+  width: 70px;
+  top: 18%;
+}
 }
