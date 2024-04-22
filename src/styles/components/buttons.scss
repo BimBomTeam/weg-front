@@ -206,6 +206,44 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
   #send:hover {
     transform: scale(1.5);
   }
+  .expandMenu
+  {  
+    top: 45px;
+    left: 45px;
+    height: 100px;
+    width: 100px;
+
+  }
+  .account
+  {
+    transform: scale(2.0);
+    height: 50px;
+  }
+  .difficulty
+  { 
+    transform: scale(2.3);
+    height: 35px;
+    width: 50px;  
+  }
+  .shop
+  {
+    transform: scale(2.3);
+    height: 45px;
+    width: 50px;
+  }
+  .instruction
+  {
+    transform: scale(2.7);
+    height: 35px;
+    width: 35px;
+  }
+  .settings
+  {
+    transform: scale(2.9);
+    height: 35px;
+    width: 35px;
+    margin-bottom: 120px;
+  }
 }
 
 @media only screen and (min-width: 2100px) and (max-width: 2561px) {
@@ -232,6 +270,44 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
 
   #send:hover {
     transform: scale(1.7);
+  }
+  .expandMenu
+  {  
+    top: 43px;
+    left: 40px;
+    height: 85px;
+    width: 85px;
+
+  }
+  .account
+  {
+    transform: scale(1.7);
+    height: 50px;
+  }
+  .difficulty
+  { 
+    transform: scale(2.0);
+    height: 35px;
+    width: 50px;  
+  }
+  .shop
+  {
+    transform: scale(2.0);
+    height: 45px;
+    width: 50px;
+  }
+  .instruction
+  {
+    transform: scale(2.4);
+    height: 35px;
+    width: 35px;
+  }
+  .settings
+  {
+    transform: scale(2.5);
+    height: 35px;
+    width: 35px;
+    margin-bottom: 85px;
   }
 }
 
@@ -261,9 +337,47 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
   #send:hover {
     transform: scale(1.4);
   }
+  .expandMenu
+  {  
+    top: 43px;
+    left: 42px;
+    height: 75px;
+    width: 75px;
+
+  }
+  .account
+  {
+    transform: scale(1.6);
+    height: 50px;
+  }
+  .difficulty
+  { 
+    transform: scale(1.9);
+    height: 35px;
+    width: 50px;  
+  }
+  .shop
+  {
+    transform: scale(1.8);
+    height: 45px;
+    width: 50px;
+  }
+  .instruction
+  {
+    transform: scale(2.1);
+    height: 35px;
+    width: 35px;
+  }
+  .settings
+  {
+    transform: scale(2.3);
+    height: 35px;
+    width: 35px;
+    margin-bottom: 80px;
+  }
 }
 
-@media only screen and (min-width: 1600px) and (max-width: 1800px) {
+@media only screen and (min-width: 1601px) and (max-width: 1800px) {
   #expand_field_button {
     width: 60px;
     top: 0;
@@ -282,6 +396,42 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
   #send {
     bottom: 35px;
   }
+  .expandMenu
+  {  
+    height: 55px;
+    width: 55px;
+
+  }
+  .account
+  {
+    transform: scale(1.3);
+    height: 50px;
+  }
+  .difficulty
+  { 
+    transform: scale(1.5);
+    height: 35px;
+    width: 50px;  
+  }
+  .shop
+  {
+    transform: scale(1.5);
+    height: 45px;
+    width: 50px;
+  }
+  .instruction
+  {
+    transform: scale(1.8);
+    height: 35px;
+    width: 35px;
+  }
+  .settings
+  {
+    transform: scale(2.0);
+    height: 35px;
+    width: 35px;
+    margin-bottom: 70px;
+  }
 }
 
 @media only screen and (max-width: 1600px) {
@@ -297,6 +447,44 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
   .voice_button:hover {
     transform: scale(1.6); 
   }
+  .expandMenu
+  {  
+    top: 22px;
+    left: 23px;
+    height: 60px;
+    width: 60px;
+
+  }
+  .account
+  {
+    transform: scale(1.2);
+    height: 50px;
+  }
+  .difficulty
+  { 
+    transform: scale(1.4);
+    height: 35px;
+    width: 50px;  
+  }
+  .shop
+  {
+    transform: scale(1.4);
+    height: 45px;
+    width: 50px;
+  }
+  .instruction
+  {
+    transform: scale(1.7);
+    height: 35px;
+    width: 35px;
+  }
+  .settings
+  {
+    transform: scale(1.8);
+    height: 35px;
+    width: 35px;
+    margin-bottom: 70px;
+  }
 }
 
 @media only screen and (max-width: 1400px) {
@@ -306,6 +494,44 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
   .voice_button {
     width: 60px;
     left: 88.5%;
+  }
+  .expandMenu
+  {  
+    top: 22px;
+    left: 24px;
+    height: 50px;
+    width: 50px;
+
+  }
+  .account
+  {
+    transform: scale(1.0);
+    height: 50px;
+  }
+  .difficulty
+  { 
+    transform: scale(1.2);
+    height: 35px;
+    width: 50px;  
+  }
+  .shop
+  {
+    transform: scale(1.2);
+    height: 45px;
+    width: 50px;
+  }
+  .instruction
+  {
+    transform: scale(1.4);
+    height: 35px;
+    width: 35px;
+  }
+  .settings
+  {
+    transform: scale(1.5);
+    height: 35px;
+    width: 35px;
+    margin-bottom: 50px;
   }
 }
 
@@ -317,42 +543,87 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
     width: 50px;
   }
   .expandMenu
-  {
+  {  
     top: 16px;
-  
+    left: 14px;
     height: 35px;
     width: 35px;
-
   }
   .account
   {
-    transform: scale(0.9);
-    height: 20px;
+    transform: scale(0.7);
+    height: 50px;
   }
   .difficulty
   { 
-    top: 16px;
+    transform: scale(0.8);
     height: 35px;
-    width: 35px;  
+    width: 50px;  
   }
   .shop
   {
-    top: 16px;
-    height: 35px;
-    width: 35px;
+    transform: scale(0.8);
+    height: 45px;
+    width: 50px;
   }
   .instruction
   {
-    top: 16px;
+    transform: scale(1.0);
     height: 35px;
     width: 35px;
   }
   .settings
   {
-    top: 16px;
+    transform: scale(1.1);
     height: 35px;
     width: 35px;
+    margin-bottom: 30px;
   }
+}
 
+@media only screen and (max-width: 900px) {
+  .voice_button {
+    width: 60px;
+  }
+  #expand_field_button {
+    width: 50px;
+  }
+  .expandMenu
+  {
+    top: 16px;
+    left: 14px;
+    height: 30px;
+    width: 30px;
 
+  }
+  .account
+  {
+    transform: scale(0.6);
+    height: 50px;
+  }
+  .difficulty
+  { 
+    transform: scale(0.8);
+    height: 35px;
+    width: 50px;  
+  }
+  .shop
+  {
+    transform: scale(0.8);
+    height: 40px;
+    width: 45px;
+  }
+  .instruction
+  {
+    transform: scale(0.8);
+    height: 40px;
+    width: 40px;
+  }
+  .settings
+  {
+    transform: scale(0.8);
+    height: 45px;
+    width: 45px;
+    margin-bottom: 25px;
+  }
 }
