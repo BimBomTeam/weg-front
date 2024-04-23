@@ -4,7 +4,7 @@ const initialState = {
 
 const rolesReducer = (state = initialState, action) => {
   switch (action.type) {
-    case "SET_ROLES":
+    case "CHECK_ROLES":
       return {
         ...state,
         roles: action.payload,

@@ -2,9 +2,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function GET_todayRoles() {
-  console.log("GET_todayRoles()");
-  // Установите флаг, который будет указывать на доступность сервера
-  const isServerAvailable = false; // Предположим, что сервер недоступен
+  const isServerAvailable = false; // Предположим, что сервер недоступен (тестовый флаг)
 
   if (isServerAvailable) {
     // Если сервер доступен, делаем реальный запрос
@@ -26,8 +24,14 @@ export default function GET_todayRoles() {
       })
       .catch((error) => {
         toast.error(`${error}`);
-        return []; // Возвращаем пустой массив в случае ошибки
+        return [];
       });
+
+      //-----------------test version-------------------
+      //-----------------test version-------------------
+      //-----------------test version-------------------
+      //------------------remove after fixing the server
+      
   } else {
     // Если сервер недоступен, возвращаем тестовые данные
     const testData = `[{"id":1,"name":"Wairtress"},{"id":2,"name":"Cooker"},{"id":3,"name":"Zoologist"},{"id":4,"name":"Buisnessman"},{"id":5,"name":"Teacher"}]`;
@@ -38,7 +42,7 @@ export default function GET_todayRoles() {
       })
       .catch((error) => {
         toast.error(`${error}`);
-        return []; // Возвращаем пустой массив в случае ошибки
+        return [];
       });
   }
 }

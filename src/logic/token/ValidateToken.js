@@ -24,20 +24,17 @@ export default function ValidateToken() {
   }, [token]);
 
   useEffect(() => {
-    dispatch(checkRoles());
-  }, [dispatch]);
-
-  useEffect(() => {
     if (!loading) {
       if (token) {
         POST_tokenAuth(); //TO-DO: наверника что-то будет возвращаться, в зависимости от чего пускаем/нет
+        dispatch(checkRoles());
         navigate("/game");
       } else {
         toast.error("Please login. Token expired");
         navigate("/login");
       }
     }
-  }, [token, navigate, loading]);
+  }, [token, navigate, loading, dispatch]);
 
   //--------TO-DO--------
   //Podczas pierwszego renderowania komponent uruchamia się 3 razy
