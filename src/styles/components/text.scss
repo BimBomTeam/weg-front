@@ -20,6 +20,7 @@ input[type="text"] {
   resize: none;
   backdrop-filter: blur(5px);
 }
+
 textarea {
   position: absolute;
   left: 2%;
@@ -75,10 +76,11 @@ textarea {
   }
 }
 
-p {
+.word-counter {
   position: absolute;
   bottom: 7px;
   right: 30px;
+
   font-family: inherit;
   font-size: 14px;
   color: black;
@@ -253,11 +255,11 @@ label[for="password-repeat-label"] {
   .isListening {
     right: 45px;
   }
-
-  #paragraph {
-    font-size: 20px;
-    bottom: -5px;
-    right: 40px;
+  .message-container {
+    position: relative;
+    margin-top: 1%;
+    padding: 10px;
+    height: 60%;
   }
   
   .user-label {

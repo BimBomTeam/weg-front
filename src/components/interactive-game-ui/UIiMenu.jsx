@@ -1,8 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import "regenerator-runtime/runtime";
-import SpeechRecognition, {
-  useSpeechRecognition,
-} from "react-speech-recognition";
+import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognition";
 import { useSpring, animated } from "react-spring";
 import Dialog from "../../logic/Dialog";
 import { ToastContainer, toast } from "react-toastify";
@@ -10,10 +8,11 @@ import "react-toastify/dist/ReactToastify.css";
 
 const UiMenu = () => {
   const [text, setText] = useState("");
+  const [isWordCounterVisible, setIsWordCounterVisible] = useState(false);
   const textareaRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
   const [isButtonClicked, setIsButtonClicked] = useState(false);
-  const [isExpandButtonClicked] = useState(false);
+  const [isExpandButtonClicked, setIsExpandButtonClicked] = useState(false);
   const [isButtonRotated, setIsButtonRotated] = useState(false);
   const [isListening, setIsListening] = useState(false);
   const { transcript } = useSpeechRecognition({
@@ -49,11 +48,23 @@ const UiMenu = () => {
   };
 
   const onButtonClick = async () => {
+    event.preventDefault();
+    if (!text) {
+      toast.error("Please enter text to send a message")
+      return;
+    }
+
+    if (text.split(/\s+/).length > 100) {
+      toast.error("Maximum word limit reached (100 words)");
+      return;
+    }
     setIsButtonClicked(true);
     setIsButtonRotated(true);
 
     await handleSendMessage();
     setText("");
+    SpeechRecognition.stopListening();
+    setIsWordCounterVisible(false);
   };
 
   useEffect(() => {
@@ -68,29 +79,50 @@ const UiMenu = () => {
   }, [isVisible]);
 
   useEffect(() => {
+    const handleEsc = (event) => {
+      if (event.keyCode === 27) {
+        setIsVisible(false);
+        setIsButtonClicked(false);
+        setIsExpandButtonClicked(false);
+      }
+    };
+
+    window.addEventListener("keydown", handleEsc);
+
+    return () => {
+      window.removeEventListener("keydown", handleEsc);
+    };
+  }, [isVisible]);
+
+  useEffect(() => {
     if (!text && textareaRef.current) {
       textareaRef.current.style.height = "auto";
     }
   }, [text]);
 
   useEffect(() => {}, [isExpandButtonClicked]);
-
-  useEffect(() => {
-    if (transcript && transcript.length <= 255) {
-      setText(transcript);
-    } else if (transcript && transcript.length > 255) {
-      toast.error("Maximum character limit reached (255 characters)");
+  
+useEffect(() => {
+  if (transcript) {
+    setText(transcript);
+    if (transcript.split(/\s+/).length >= 100) {
+      setIsWordCounterVisible(true);
+    } else {
+      setIsWordCounterVisible(false);
     }
-  }, [transcript]);
-
+  }
+}, [transcript]);
+  
   const onTextChange = (event) => {
     const inputText = event.target.value;
-    if (inputText.length <= 255) {
-      setText(inputText);
+    setText(inputText);
+
+    if (inputText.split(/\s+/).length >= 100) {
+      setIsWordCounterVisible(true);
     } else {
-      toast.error("Maximum character limit reached (255 characters)");
+      setIsWordCounterVisible(false);
     }
-  };
+  };  
 
   const onButtonClickExpand = () => {
     setIsButtonRotated(!isButtonRotated);
@@ -210,6 +242,8 @@ const UiMenu = () => {
 
         <animated.div className="isListening" style={isListeningProps} />
 
+        {isWordCounterVisible && <p className="word-counter">{text.split(/\s+/).length}/100</p>}
+        
         <animated.textarea
           ref={textareaRef}
           placeholder="Write something.."
@@ -217,9 +251,13 @@ const UiMenu = () => {
           onChange={onTextChange}
           rows={5}
           style={textareaAnimationProps}
+          onKeyPress={(event) => {
+            if (event.key === 'Enter' && !event.shiftKey) {
+              event.preventDefault();
+              onButtonClick();
+            }
+          }}
         />
-
-        <p id="paragraph">{text.length}/255</p>
         <animated.button
           className="voice_button"
           style={buttonVoiceProps}
