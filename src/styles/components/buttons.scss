@@ -219,11 +219,17 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
     transform: scale(2.0);
     height: 50px;
   }
+  .account:hover {
+    transform: scale(2.3);
+  }
   .difficulty
   { 
     transform: scale(2.3);
     height: 35px;
     width: 50px;  
+  }
+  .difficulty:hover {
+    transform: scale(2.6);
   }
   .shop
   {
@@ -231,11 +237,17 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
     height: 45px;
     width: 50px;
   }
+  .shop:hover {
+    transform: scale(2.6);
+  }
   .instruction
   {
     transform: scale(2.7);
     height: 35px;
     width: 35px;
+  }
+  .instruction:hover {
+    transform: scale(3.0);
   }
   .settings
   {
@@ -243,6 +255,9 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
     height: 35px;
     width: 35px;
     margin-bottom: 120px;
+  }
+  .settings:hover {
+    transform: scale(3.2); // kolejny nie dziala
   }
 }
 
@@ -276,13 +291,19 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
     top: 43px;
     left: 40px;
     height: 85px;
-    width: 85px;
-
+    width: 85px;   
+  }
+  .expandMenu:hover {
+    transform: scale(1.2);
+    margin-right: 0;
   }
   .account
   {
     transform: scale(1.7);
     height: 50px;
+  }
+  .account:hover {
+    transform: scale(1.9);
   }
   .difficulty
   { 
@@ -290,11 +311,17 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
     height: 35px;
     width: 50px;  
   }
+  .difficulty:hover {
+    transform: scale(2.3);
+  }
   .shop
   {
     transform: scale(2.0);
     height: 45px;
     width: 50px;
+  }
+  .shop:hover {
+    transform: scale(2.3);
   }
   .instruction
   {
@@ -302,12 +329,18 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
     height: 35px;
     width: 35px;
   }
+  .instruction:hover {
+    transform: scale(2.7);
+  }
   .settings
   {
     transform: scale(2.5);
     height: 35px;
     width: 35px;
     margin-bottom: 85px;
+  }
+  .settings:hover {
+    transform: scale(2.8);
   }
 }
 
@@ -345,10 +378,16 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
     width: 75px;
 
   }
+  .expandMenu:hover {
+    transform: scale(1.3);
+  }
   .account
   {
     transform: scale(1.6);
     height: 50px;
+  }
+  .account:hover {
+    transform: scale(1.9);
   }
   .difficulty
   { 
@@ -356,17 +395,26 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
     height: 35px;
     width: 50px;  
   }
+  .difficulty:hover {
+    transform: scale(2.2);
+  }
   .shop
   {
     transform: scale(1.8);
     height: 45px;
     width: 50px;
   }
+  .shop:hover {
+    transform: scale(2.1);
+  }
   .instruction
   {
     transform: scale(2.1);
     height: 35px;
     width: 35px;
+  }
+  .instruction:hover {
+    transform: scale(2.4);
   }
   .settings
   {
@@ -375,7 +423,11 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
     width: 35px;
     margin-bottom: 80px;
   }
+  .settings:hover {
+    transform: scale(2.6); // nie dziala
+  }
 }
+
 
 @media only screen and (min-width: 1601px) and (max-width: 1800px) {
   #expand_field_button {
@@ -400,12 +452,17 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
   {  
     height: 55px;
     width: 55px;
-
+  }
+  .expandMenu:hover {
+    transform: scale(1.3);
   }
   .account
   {
     transform: scale(1.3);
     height: 50px;
+  }
+  .account:hover {
+    transform: scale(1.5);
   }
   .difficulty
   { 
@@ -413,11 +470,17 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
     height: 35px;
     width: 50px;  
   }
+  .difficulty:hover {
+    transform: scale(1.7);
+  }
   .shop
   {
     transform: scale(1.5);
     height: 45px;
     width: 50px;
+  }
+  .shop:hover {
+    transform: scale(1.7);
   }
   .instruction
   {
@@ -425,12 +488,18 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
     height: 35px;
     width: 35px;
   }
+  .instruction:hover {
+    transform: scale(2.0);
+  }
   .settings
   {
     transform: scale(2.0);
     height: 35px;
     width: 35px;
     margin-bottom: 70px;
+  }
+  .settings:hover {
+    transform: scale(2.2);
   }
 }
 
@@ -460,11 +529,17 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
     transform: scale(1.2);
     height: 50px;
   }
+  .account:hover {
+    transform: scale(1.4);
+  }
   .difficulty
   { 
     transform: scale(1.4);
     height: 35px;
     width: 50px;  
+  }
+  .difficulty:hover {
+    transform: scale(1.6);
   }
   .shop
   {
@@ -472,11 +547,17 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
     height: 45px;
     width: 50px;
   }
+  .shop:hover {
+    transform: scale(1.6);
+  }
   .instruction
   {
     transform: scale(1.7);
     height: 35px;
     width: 35px;
+  }
+  .instruction:hover {
+    transform: scale(1.9);
   }
   .settings
   {
@@ -485,7 +566,11 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
     width: 35px;
     margin-bottom: 70px;
   }
+  .settings:hover {
+    transform: scale(2.0);
+  }
 }
+
 
 @media only screen and (max-width: 1400px) {
   #expand_field_button {
@@ -501,12 +586,17 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
     left: 24px;
     height: 50px;
     width: 50px;
-
+  }
+  .expandMenu:hover {
+    transform: scale(1.2);
   }
   .account
   {
     transform: scale(1.0);
     height: 50px;
+  }
+  .account:hover {
+    transform: scale(1.2);
   }
   .difficulty
   { 
@@ -514,11 +604,17 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
     height: 35px;
     width: 50px;  
   }
+  .difficulty:hover {
+    transform: scale(1.4);
+  }
   .shop
   {
     transform: scale(1.2);
     height: 45px;
     width: 50px;
+  }
+  .shop:hover {
+    transform: scale(1.4);
   }
   .instruction
   {
@@ -526,12 +622,18 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
     height: 35px;
     width: 35px;
   }
+  .instruction:hover {
+    transform: scale(1.6);
+  }
   .settings
   {
     transform: scale(1.5);
     height: 35px;
     width: 35px;
     margin-bottom: 50px;
+  }
+  .settings:hover {
+    transform: scale(1.7);
   }
 }
 
@@ -549,10 +651,16 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
     height: 35px;
     width: 35px;
   }
+  .expandMenu:hover {
+    transform: scale(1.2);
+  }
   .account
   {
     transform: scale(0.7);
     height: 50px;
+  }
+  .account:hover {
+    transform: scale(0.9);
   }
   .difficulty
   { 
@@ -560,11 +668,17 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
     height: 35px;
     width: 50px;  
   }
+  .difficulty:hover {
+    transform: scale(1.0);
+  }
   .shop
   {
     transform: scale(0.8);
     height: 45px;
     width: 50px;
+  }
+  .shop:hover {
+    transform: scale(1.0);
   }
   .instruction
   {
@@ -572,12 +686,18 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
     height: 35px;
     width: 35px;
   }
+  .instruction:hover {
+    transform: scale(1.2);
+  }
   .settings
   {
     transform: scale(1.1);
     height: 35px;
     width: 35px;
     margin-bottom: 30px;
+  }
+  .settings:hover {
+    transform: scale(1.3);
   }
 }
 
@@ -601,11 +721,17 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
     transform: scale(0.6);
     height: 50px;
   }
+  .account:hover {
+    transform: scale(0.7);
+  }
   .difficulty
   { 
     transform: scale(0.8);
     height: 35px;
     width: 50px;  
+  }
+  .difficulty:hover {
+    transform: scale(0.9);
   }
   .shop
   {
@@ -613,11 +739,17 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
     height: 40px;
     width: 45px;
   }
+  .shop:hover {
+    transform: scale(0.9);
+  }
   .instruction
   {
     transform: scale(0.8);
     height: 40px;
     width: 40px;
+  }
+  .instruction:hover {
+    transform: scale(0.9);
   }
   .settings
   {
@@ -625,5 +757,8 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
     height: 45px;
     width: 45px;
     margin-bottom: 25px;
+  }
+  .settings:hover {
+    transform: scale(0.9);
   }
 }
