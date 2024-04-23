@@ -15,7 +15,7 @@ const UiMenu = () => {
   const [isExpandButtonClicked, setIsExpandButtonClicked] = useState(false);
   const [isButtonRotated, setIsButtonRotated] = useState(false);
   const [isListening, setIsListening] = useState(false);
-  const { transcript } = useSpeechRecognition({
+  const { transcript, resetTranscript } = useSpeechRecognition({
     continuous: true,
     language: "en-US",
   });
@@ -63,8 +63,11 @@ const UiMenu = () => {
 
     await handleSendMessage();
     setText("");
-    SpeechRecognition.stopListening();
     setIsWordCounterVisible(false);
+  };
+
+  const resetTranscriptOnClick = () => {
+    resetTranscript();
   };
 
   useEffect(() => {
@@ -255,6 +258,7 @@ useEffect(() => {
             if (event.key === 'Enter' && !event.shiftKey) {
               event.preventDefault();
               onButtonClick();
+              resetTranscriptOnClick();
             }
           }}
         />
@@ -268,7 +272,7 @@ useEffect(() => {
 
         <animated.button
           id="send"
-          onClick={onButtonClick}
+          onClick={() => {onButtonClick(); resetTranscriptOnClick()}}
           style={buttonAnimationProps}
         ></animated.button>
 
