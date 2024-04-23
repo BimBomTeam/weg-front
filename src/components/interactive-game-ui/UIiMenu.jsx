@@ -138,77 +138,85 @@ useEffect(() => {
     setIsListening(!isListening);
   };
 
+  function getStyles(name) {
+    return getComputedStyle(document.documentElement).getPropertyValue(name);
+  }
+
   const animationProps = useSpring({
     height: isExpandButtonClicked
       ? isButtonClicked
-        ? "250px"
-        : "850px"
+        ? `${getStyles("--animationProps_height_expanded_clicked_true")}`
+        : `${getStyles("--animationProps_height_expanded_unclicked_false")}`
       : isButtonClicked
-      ? "850px"
-      : "250px",
+      ? `${getStyles("--animationProps_height_unexpanded_clicked_false")}`
+      : `${getStyles("--animationProps_height_unexpanded_unclicked_true")}`,
     transform: isVisible
       ? isExpandButtonClicked
-        ? "translateY(0%)"
-        : "translateY(0%)"
-      : "translateY(120%)",
+        ? `${getStyles(
+            "--animationProps_transform_visible_expanded_clicked_true"
+          )}`
+        : `${getStyles(
+            "--animationProps_transform_visible_expanded_unclicked_false"
+          )}`
+      : `${getStyles("--animationProps_transform_invisible_true")}`,
     top: isExpandButtonClicked
       ? isButtonClicked
-        ? "70%"
-        : "8%"
+        ? `${getStyles("--animationProps_top_expanded_clicked_true")}`
+        : `${getStyles("--animationProps_top_expanded_unclicked_false")}`
       : isButtonClicked
-      ? "8%"
-      : "70%",
+      ? `${getStyles("--animationProps_top_unexpanded_clicked_false")}`
+      : `${getStyles("--animationProps_top_unexpanded_unclicked_true")}`,
   });
 
   const textareaAnimationProps = useSpring({
     marginTop:
       (isExpandButtonClicked && isButtonClicked) ||
       (!isExpandButtonClicked && !isButtonClicked)
-        ? "0px"
-        : "410px",
+        ? `${getStyles("--textareaAnimationProps_marginTop_true")}`
+        : `${getStyles("--textareaAnimationProps_marginTop_false")}`,
   });
 
   const buttonAnimationProps = useSpring({
     marginTop:
       (isExpandButtonClicked && isButtonClicked) ||
       (!isExpandButtonClicked && !isButtonClicked)
-        ? "0px"
-        : "210px",
+        ? `${getStyles("--buttonAnimationProps_marginTop_true")}`
+        : `${getStyles("--buttonAnimationProps_marginTop_false")}`,
   });
 
   const buttonVoiceProps = useSpring({
     marginTop:
       (isExpandButtonClicked && isButtonClicked) ||
       (!isExpandButtonClicked && !isButtonClicked)
-        ? "0px"
-        : "350px",
+        ? `${getStyles("--buttonVoiceProps_marginTop_true")}`
+        : `${getStyles("--buttonVoiceProps_marginTop_false")}`,
   });
 
   const isListeningProps = useSpring({
     marginTop:
       (isExpandButtonClicked && isButtonClicked) ||
       (!isExpandButtonClicked && !isButtonClicked)
-        ? "0px"
-        : "133px",
+        ? `${getStyles("--isListeningProps_marginTop_true")}`
+        : `${getStyles("--isListeningProps_marginTop_false")}`,
     width: isListening
       ? isButtonClicked
-        ? "45px"
-        : "45px"
+        ? `${getStyles("--isListeningProps_width_true_true")}`
+        : `${getStyles("--isListeningProps_width_true_false")}`
       : isListening
-      ? "45px"
-      : "0px",
+      ? `${getStyles("--isListeningProps_width_false_true")}`
+      : `${getStyles("--isListeningProps_width_false_false")}`,
   });
 
   const buttonExpandProps = useSpring({
     marginTop: isExpandButtonClicked
       ? isButtonClicked
-        ? "150px"
-        : "0px"
+        ? `${getStyles("--buttonExpandProps_marginTop_true")}`
+        : `${getStyles("--buttonExpandProps_marginTop_false")}`
       : isButtonClicked
-      ? "20px"
-      : "0px",
+        ? `${getStyles("--buttonExpandProps_marginTop_true")}`
+        : `${getStyles("--buttonExpandProps_marginTop_false")}`,
     transform: `rotate(${isButtonRotated ? 180 : 0}deg)`,
-    config: { duration: 200 },
+    config: { duration: 100 },
   });
 
   const messageContainerAnimationProps = useSpring({
@@ -250,7 +258,6 @@ useEffect(() => {
             }
           }}
         />
-
         <animated.button
           className="voice_button"
           style={buttonVoiceProps}
