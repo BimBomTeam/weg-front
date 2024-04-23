@@ -29,7 +29,7 @@ const Game = () => {
     <>
       <canvas id="webgl"></canvas>
       {isEVisible && <PressE/>}
-      {isUi && <UiMenu/>}
+      {isUi && <UiBossFight/>}
       {isUi || <UserInterface />}
     </>
   );

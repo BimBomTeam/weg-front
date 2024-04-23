@@ -10,11 +10,11 @@ const UiBossFight = () => {
   }, []);
 
   const animationProps = useSpring({
-    transform: isVisible ? "translateY(0%)" : "translateY(120%)",
+    transform: isVisible ? "translateY(0%)" : "translateY(150%)",
   });
 
   const questionAnimationProps= useSpring({
-    transform: isVisible ? "translateY(0%)" : "translateY(-120%)",
+    transform: isVisible ? "translateY(0%)" : "translateY(-150%)",
   });
 
   useEffect(() => {
@@ -33,15 +33,15 @@ const UiBossFight = () => {
 
   return (
     <div className="BossFightContainer" style={{ justifyContent: "center" }}>
-      <animated.button className="Question" style={questionAnimationProps}>Question</animated.button>
+      <animated.button className="Question" style={questionAnimationProps}>Dokąd nocą tupta jeż, możesz wiedzieć jeśli chcesz</animated.button>
       <animated.div className="Answers" style={animationProps}>
-        <button className="Answer1">Answer1</button>
-        <button className="Answer2">Answer2</button>
-        <button className="Answer3">Answer3</button>
-        <button className="Answer4">Answer4</button>
+        <button className="Answer1">Brzęczyszczykiewicz</button>
+        <button className="Answer2">Brzęczyszczykiewicz</button>
+        <button className="Answer3">Dokąd nocą tupta jeż, możesz wiedzieć jeśli chcesz</button>
+        <button className="Answer4">Brzęczyszczykiewicz</button>
       </animated.div>
-      <animated.div className="clock-bg" style={questionAnimationProps}>
         <div className="clock-container">
+        <animated.div className="clock-bg" style={questionAnimationProps}>
           <CountdownCircleTimer
             isPlaying
             duration={60}
@@ -55,8 +55,9 @@ const UiBossFight = () => {
               </div>
             )}
           </CountdownCircleTimer>
+          </animated.div>
         </div>
-      </animated.div>
+
     </div>
   );
 };
