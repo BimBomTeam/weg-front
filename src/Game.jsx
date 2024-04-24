@@ -5,6 +5,11 @@ import GameScene from "./threejs/main";
 const Game = () => {
   useEffect(() => {
     const game = new GameScene(changeUiVisibility);
+
+    // setTimeout(() => {
+    //   console.log("game", game.test.scenes.get("MainScene"));
+    //   game.test.scenes.get("MainScene").foo();
+    // }, 3000);
   }, []);
 
   const [isUi, setUi] = useState(false);
