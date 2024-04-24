@@ -150,12 +150,17 @@ class MainScene extends Scene3D {
     this.bossNPC = new BossNPC({
       pos: { x: 80, y: 10, z: 85 },
       sketch: this,
-      path: "/src/assets/models/Npcs/Npc1.glb",
+      path: "/src/assets/models/Boss/Boss.glb",
     });
     this.standNPC = new StandartNPC({
       pos: { x: 20, y: 10, z: 0 },
       sketch: this,
       path: "/src/assets/models/Npcs/Npc5.glb",
+    });
+    this.standNPC2 = new StandartNPC({
+      pos: { x: 100, y: 10, z: 95 },
+      sketch: this,
+      path: "/src/assets/models/Npcs/Npc1.glb",
     });
     await this.sleep(500);
     this.box = this.physics.add.box(
@@ -206,8 +211,8 @@ class MainScene extends Scene3D {
       .clone()
       .sub(NPC.object.position)
       .normalize()
-      .multiplyScalar(7)
-      .add(this.player.object.position);
+      .multiplyScalar(13)
+      .add(NPC.object.position);
     this.player.addReturnEvent(playerReturnPos);
     console.log(this.player.standPos, " ", this.player.object.position);
     NPC.standPos = NPC.object.position.clone();
@@ -241,12 +246,12 @@ class MainScene extends Scene3D {
           .sub(NPC.object.position);
         let x1 = this.camOperator.getDistancedVector2Fixed(
           NpcToPlayerVec,
-          5,
+          NPC.scale + 4,
           Math.PI / 3.4
         );
         this.camOperator.addNPCzoomIn({
           targetPos: NPC.object.position,
-          adjustPosition: new Vector3(x1.x, 3, x1.y),
+          adjustPosition: new Vector3(x1.x, NPC.size.y * NPC.scale, x1.y),
         });
       }
       if (this.KeyHandler.key.esc.click && this.player.mode == "interact") {
@@ -287,24 +292,20 @@ class MainScene extends Scene3D {
     this.stats.update();
 
     if (this.player.object && this.player.object.body) {
-      this.player.update(this.KeyHandler);
+      this.player.update(this.KeyHandler, delta);
       this.standNPC.update();
       this.standNPC.checkInteraction(this.player.object.position);
+      this.standNPC2.update();
+      this.standNPC2.checkInteraction(this.player.object.position);
       this.bossNPC.update();
       if (this.bossNPC.mode != "battle")
         this.bossNPC.checkInteraction(this.player.object.position);
 
-      // this.camOperator.removeEvent("lerpToAngle");
-
       this.processBattle(this.bossNPC);
       this.processInteraction(this.standNPC);
+      this.processInteraction(this.standNPC2);
       this.processInteraction(this.bossNPC);
-      // this.camera.update(
-      //   this.player.object.position,
-      //   delta,
-      //   this.KeyHandler,
-      //   npcNearBy
-      // );
+
       this.camOperator.update(delta);
       this.KeyHandler.update();
     }

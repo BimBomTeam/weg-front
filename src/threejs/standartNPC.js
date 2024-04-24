@@ -3,12 +3,20 @@ import { ExtendedObject3D } from "enable3d";
 import * as THREE from "three";
 
 export class StandartNPC {
-  constructor({ pos = { x: 10, y: 20, z: 10 }, sketch, path }) {
+  constructor({
+    pos = { x: 10, y: 20, z: 10 },
+    sketch,
+    path,
+    scale = 2,
+    objName = "NPC",
+  }) {
+    this.objName = objName;
+
     this.zoneRadius = 7;
     this.innitPos = pos;
     this.speed = 5;
     this.moveState = "stand";
-    this.scale = 2;
+    this.scale = scale;
 
     this.interactionRadius = 7;
 
@@ -58,9 +66,9 @@ export class StandartNPC {
       sketch.physics.add.existing(this.object, {
         shape: "box",
         mass: 1,
-        width: 1,
+        width: this.size.x,
         height: this.size.y,
-        depth: 1,
+        depth: this.size.z,
         offset: {
           x: 0,
           y: (-this.size.y * this.scale) / 2 - sketch.worldMargin,

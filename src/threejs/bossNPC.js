@@ -3,12 +3,13 @@ import { StandartNPC } from "./standartNPC";
 
 export class BossNPC extends StandartNPC {
   constructor({ pos = { x: 10, y: 20, z: 10 }, sketch, path }) {
-    super({ pos: pos, sketch: sketch, path: path });
+    super({ pos: pos, sketch: sketch, path: path, scale: 4, objName: "Boss" });
     this.actionEvents = [];
     this.addEvents = [];
     this.standPos = null;
     this.onGround = true;
     this.playerPos;
+    this.interactionRadius = 16;
     // this.initColission();
   }
 

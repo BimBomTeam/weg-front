@@ -13,7 +13,7 @@ export class Player {
     this.onGround = false;
     this.particlesPermisionDuration = 0.15;
     this.jumpForce = 15;
-    this.speed = 7;
+    this.speed = 10;
     this.isWalking = false;
     this.scale = 2;
     this.deadLevel = -20;
@@ -69,7 +69,7 @@ export class Player {
 
   async initPlayerObject(pos, sketch) {
     await sketch.load
-      .gltf("/src/assets/models/player/playerRework.glb")
+      .gltf("/src/assets/models/player/Player.glb")
       .then((gltf) => {
         this.object = new ExtendedObject3D();
         // gltf.scene.children[0].geometry.center();
@@ -233,8 +233,9 @@ export class Player {
     this.object.body.setVelocityZ(directVec.z);
     this.object.body.setVelocityX(directVec.x);
     this.onGround = false;
+    this.playAnimation("Attack");
     let DoJump = (params) => {
-      return this.jumpAtack(params.direction);
+      return this.checkJumpEnd(params.direction);
     };
     this.moveEvent.push({
       func: (params) => {
@@ -244,7 +245,7 @@ export class Player {
     });
   }
 
-  jumpAtack(empty) {
+  checkJumpEnd(empty) {
     if (
       Math.abs(this.object.body.velocity.x) +
         Math.abs(this.object.body.velocity.z) <=
@@ -280,11 +281,9 @@ export class Player {
     });
   }
 
-  update(KeyHandler) {
+  update(KeyHandler, deltaTime) {
     this.isWalking = false;
     let showParticles = false;
-    let accrossVel = 0;
-    let straightVel = 0;
 
     this.moveVec = new THREE.Vector3();
     if (this.object.position.y < this.deadLevel) {
@@ -300,32 +299,18 @@ export class Player {
     );
 
     if (this.mode == "freeWalk") {
-      if (KeyHandler.key.a.pressed) {
-        this.object.body.setVelocityX(-this.speed);
+      this.moveVec = KeyHandler.moveVector;
+      let speedVec = this.moveVec
+        .clone()
+        .normalize()
+        .multiplyScalar(this.speed);
+      if (this.moveVec.length() != 0) {
+        if (this.moveVec.x != 0) this.object.body.setVelocityX(speedVec.x);
+        if (this.moveVec.z != 0) this.object.body.setVelocityZ(speedVec.z);
         this.isWalking = true;
-        accrossVel = -1;
         showParticles = true;
-        this.moveVec.x = -1;
-      } else if (KeyHandler.key.d.pressed) {
-        this.object.body.setVelocityX(this.speed);
-        this.isWalking = true;
-        accrossVel = 1;
-        showParticles = true;
-        this.moveVec.x = 1;
       }
-      if (KeyHandler.key.w.pressed) {
-        this.object.body.setVelocityZ(-this.speed);
-        this.isWalking = true;
-        straightVel = -1;
-        showParticles = true;
-        this.moveVec.z = -1;
-      } else if (KeyHandler.key.s.pressed) {
-        this.object.body.setVelocityZ(this.speed);
-        this.isWalking = true;
-        straightVel = 1;
-        showParticles = true;
-        this.moveVec.z = 1;
-      }
+
       if (KeyHandler.key.space.pressed && this.onGround == true) {
         this.object.body.applyForceY(this.jumpForce);
         this.onGround = false;
@@ -335,23 +320,12 @@ export class Player {
       }
     }
 
-    if (
-      this.currentTime() - this.particlesPermision >
-      this.particlesPermisionDuration
-    ) {
-      showParticles = false;
-    }
-
-    this.moveVec = this.moveVec.length() == 0 ? undefined : this.moveVec;
-    this.animateWalk(this.moveVec);
-
-    // this.playerParticleSystem.active = showParticles;
+    this.animateWalk(this.moveVec, deltaTime);
 
     this.playerParticleSystem.update(
       this.object.position,
-      new Vector3(accrossVel, 0, straightVel)
+      new Vector3(this.moveVec.x, 0, this.moveVec.z)
     );
-    // this.playerParticleSystem.active = false;
   }
 
   addRotateEvent(objPos) {
@@ -360,25 +334,9 @@ export class Player {
         let lookVec = objPos.clone().sub(this.object.position);
         this.moveVec.x = lookVec.x;
         this.moveVec.z = lookVec.z;
-        // let targAng = Math.atan(lookVec.x / lookVec.z);
-        // if (lookVec.z < 0) {
-        //   targAng += Math.PI;
-        // }
-        // let rotAngle = this.calcShortestRot(
-        //   (this.object.world.theta * 180) / Math.PI,
-        //   (targAng * 180) / Math.PI
-        // );
-
-        // // console.log((rotAngle * Math.PI) / 180);
-        // this.object.body.setAngularVelocityY(rotAngle / 10);
-        // if (Math.abs(rotAngle) <= 4) return true;
       },
       params: objPos,
     });
-  }
-
-  rotateToObject(objPos = new Vector3()) {
-    // this.object.body.rotation.y = (rotAngle * Math.PI) / 180;
   }
 
   currentTime() {
@@ -399,15 +357,19 @@ export class Player {
     this.playerParticleSystem.active = false;
   }
 
-  animateWalk(moveVec) {
+  animateWalk(moveVec, deltaTime) {
     if (this.isWalking && this.onGround == true) {
       this.playAnimation("Walk");
+
+      //Particles Showing logic
       if (this.particleChange) {
         setTimeout(() => {
           this.showParticles();
-        }, 1000);
+        }, 8000 / deltaTime);
         this.particleChange = false;
       }
+
+      //Auto jump logic
       if (this.autoJump.isNear && this.autoJump.canJump) {
         this.object.body.applyForceY(10);
         this.onGround = false;
@@ -416,7 +378,9 @@ export class Player {
       this.playAnimation("Idle");
       this.playerParticleSystem.active = false;
     }
-    if (moveVec != undefined) {
+
+    //Rotating Player
+    if (moveVec.length() != 0) {
       let rotateAngle = Math.atan(moveVec.x / moveVec.z);
       rotateAngle = moveVec.z < 0 ? rotateAngle + Math.PI : rotateAngle;
       let rotateSpeed =
