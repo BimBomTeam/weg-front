@@ -5,11 +5,12 @@ import { checkToken } from "../../actions/checkToken";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import POST_tokenAuth from "../server/POST_tokenAuth";
+import { checkRoles } from "../../actions/roles";
 
 export default function ValidateToken() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const token = useSelector((state) => state.isAuthenticated);
+  const token = useSelector((state) => state.auth.isAuthenticated);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -25,18 +26,18 @@ export default function ValidateToken() {
   useEffect(() => {
     if (!loading) {
       if (token) {
-        POST_tokenAuth();
+        POST_tokenAuth(); //TO-DO: наверника что-то будет возвращаться, в зависимости от чего пускаем/нет
+        dispatch(checkRoles());
         navigate("/game");
-      } else { 
+      } else {
         toast.error("Please login. Token expired");
         navigate("/login");
       }
     }
-  }, [token, navigate, loading]);
+  }, [token, navigate, loading, dispatch]);
 
   //--------TO-DO--------
   //Podczas pierwszego renderowania komponent uruchamia się 3 razy
-  
 
-  return null; 
+  return null;
 }
