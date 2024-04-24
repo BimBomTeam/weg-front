@@ -3,6 +3,7 @@ import { Vector3 } from "three";
 import * as THREE from "three";
 import PlayerParticleSystem from "./playerParticleSystem";
 import { TextObject } from "./textObject";
+import WaterSplashParticleSystem from "./waterSplashParticleSystem";
 
 export class Player {
   constructor({ pos = { x: 40, y: 20, z: 0 }, sketch }) {
@@ -18,6 +19,13 @@ export class Player {
     this.deadLevel = -20;
     this.lastSafePosition = new Vector3();
     this.lastFallTime = 0;
+
+    this.waterSplashParticlesSettings = {
+      adjustParticlesZoneStart: 0,
+      adjustParticlesZoneEnd: -2,
+      showParticlesZoneStart: -3,
+      showParticlesZoneEnd: -7
+    }
 
     this.mode = "freeWalk";
     this.moveEvent = [];
@@ -63,6 +71,7 @@ export class Player {
     this.sensor.body.on.collision(processColision);
 
     this.playerParticleSystem = new PlayerParticleSystem(sketch);
+    this.waterSplashParticleSystem = new WaterSplashParticleSystem(sketch);
   }
 
   async initPlayerObject(pos, sketch) {
@@ -234,6 +243,28 @@ export class Player {
       this.setPosition(tmpPosition);
       this.lastFallTime = this.currentTime();
     }
+
+    let adjustWaterSplashPos = false;
+    let showWaterSplash = false;
+    if (this.object.position.y < this.waterSplashParticlesSettings.adjustParticlesZoneStart 
+        && this.object.position.y > this.waterSplashParticlesSettings.adjustParticlesZoneEnd) {
+      adjustWaterSplashPos = true
+    }
+
+    if (this.object.position.y < this.waterSplashParticlesSettings.showParticlesZoneStart 
+        && this.object.position.y > this.waterSplashParticlesSettings.showParticlesZoneEnd) {
+      showWaterSplash = true;
+    }
+
+    if (this.waterSplashParticleSystem) {
+      this.waterSplashParticleSystem.active = showWaterSplash;
+      this.waterSplashParticleSystem.update(
+        this.object.position,
+        adjustWaterSplashPos
+      );
+    }
+    
+
 
     this.object.body.setAngularVelocityY(0);
     if (this.moveEvent.length > 0) {
