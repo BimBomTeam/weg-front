@@ -23,7 +23,7 @@ export default class WaterSplashParticleSystem {
   constructor(sketch) {
     this.verticalPos = 0;
     this.active = true;
-    this.initialRate = new Rate(new Span(7, 10), new Span(0.1, 0.25));
+    this.initialRate = new Rate(new Span(15, 18), new Span(0.1, 0.25));
 
     const nebulaMeshRenderer = new MeshRenderer(sketch.scene, THREE);
 
@@ -45,7 +45,7 @@ export default class WaterSplashParticleSystem {
         ])
         .addBehaviours([
           new Rotate("random", "random"),
-          new Scale(1, 0.1),
+          new Scale(1.5, 0.5),
           new Gravity(1.5),
         ])
         .setPosition(position)
