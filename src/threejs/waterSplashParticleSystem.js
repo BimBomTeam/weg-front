@@ -1,4 +1,4 @@
-import * as THREE from "three";
+import * as THREE from "three"
 import ParticleSystem, {
   Body,
   BoxZone,
@@ -17,12 +17,13 @@ import ParticleSystem, {
   Vector3D,
 } from "three-nebula";
 
-export default class PlayerParticleSystem {
+
+
+export default class WaterSplashParticleSystem {
   constructor(sketch) {
-    this.fromPlayerDist = 1.5;
-    this.fromPlayerVerticalOffset = -1;
+    this.verticalPos = 0;
     this.active = true;
-    this.initialRate = new Rate(new Span(1, 2), new Span(0.1, 0.25));
+    this.initialRate = new Rate(new Span(15, 18), new Span(0.1, 0.25));
 
     const nebulaMeshRenderer = new MeshRenderer(sketch.scene, THREE);
 
@@ -39,12 +40,12 @@ export default class PlayerParticleSystem {
           new Radius(1),
           new Life(1, 1),
           new Body(body),
-          new Position(new BoxZone(1)),
+          new Position(new BoxZone(4)),
           new RadialVelocity(30, new Vector3D(0, 1, 0), 5),
         ])
         .addBehaviours([
           new Rotate("random", "random"),
-          new Scale(1, 0.1),
+          new Scale(1.5, 0.5),
           new Gravity(1.5),
         ])
         .setPosition(position)
@@ -59,7 +60,7 @@ export default class PlayerParticleSystem {
       },
       body: createMesh({
         geometry: new THREE.BoxGeometry(0.3, 0.3, 0.3),
-        material: new THREE.MeshLambertMaterial({ color: "#b3b33e" }),
+        material: new THREE.MeshLambertMaterial({ color: "#3083ff" }),
       }),
     });
 
@@ -67,30 +68,25 @@ export default class PlayerParticleSystem {
       .addEmitter(cubeEmitter)
       .addRenderer(nebulaMeshRenderer);
 
+
     return this;
   }
 
-  update(playerPosition, playerDirection) {
-    const horizontaVel = new Vector3D(playerDirection.x, 0, playerDirection.z);
-    let moveDirection = horizontaVel.normalize();
-
+  update(playerPosition, updatePossition = false) {
     const nebulaEmiters = this.nebula.emitters;
     for (let i = 0; i < nebulaEmiters.length; i++) {
-      nebulaEmiters[i].setPosition(
-        new Vector3D(
-          playerPosition.x - moveDirection.x * this.fromPlayerDist,
-          playerPosition.y + this.fromPlayerVerticalOffset,
-          playerPosition.z - moveDirection.z * this.fromPlayerDist
-        )
-      );
+      if (updatePossition) {
+        nebulaEmiters[i].setPosition(new Vector3D(playerPosition.x, this.verticalPos, playerPosition.z))
+      }
+      
       if (this.active) {
-        nebulaEmiters[i].setRate(this.initialRate);
-      } else {
-        nebulaEmiters[i].setRate(new Rate(0));
+        nebulaEmiters[i].setRate(this.initialRate)
+      }
+      else {
+        nebulaEmiters[i].setRate(new Rate(0))
       }
     }
-
+    
     this.nebula.update();
-    // this.active = false;
   }
 }
