@@ -1,4 +1,4 @@
-import * as THREE from "three"
+import * as THREE from "three";
 import ParticleSystem, {
   Body,
   BoxZone,
@@ -16,8 +16,6 @@ import ParticleSystem, {
   Span,
   Vector3D,
 } from "three-nebula";
-
-
 
 export default class PlayerParticleSystem {
   constructor(sketch) {
@@ -69,26 +67,30 @@ export default class PlayerParticleSystem {
       .addEmitter(cubeEmitter)
       .addRenderer(nebulaMeshRenderer);
 
-
     return this;
   }
 
   update(playerPosition, playerDirection) {
-    const horizontaVel = new Vector3D(playerDirection.x, 0, playerDirection.z)
+    const horizontaVel = new Vector3D(playerDirection.x, 0, playerDirection.z);
     let moveDirection = horizontaVel.normalize();
-    
+
     const nebulaEmiters = this.nebula.emitters;
     for (let i = 0; i < nebulaEmiters.length; i++) {
-      nebulaEmiters[i].setPosition(new Vector3D(playerPosition.x - moveDirection.x * this.fromPlayerDist
-        , playerPosition.y + this.fromPlayerVerticalOffset, playerPosition.z - moveDirection.z * this.fromPlayerDist))
+      nebulaEmiters[i].setPosition(
+        new Vector3D(
+          playerPosition.x - moveDirection.x * this.fromPlayerDist,
+          playerPosition.y + this.fromPlayerVerticalOffset,
+          playerPosition.z - moveDirection.z * this.fromPlayerDist
+        )
+      );
       if (this.active) {
-        nebulaEmiters[i].setRate(this.initialRate)
-      }
-      else {
-        nebulaEmiters[i].setRate(new Rate(0))
+        nebulaEmiters[i].setRate(this.initialRate);
+      } else {
+        nebulaEmiters[i].setRate(new Rate(0));
       }
     }
-    
+
     this.nebula.update();
+    // this.active = false;
   }
 }

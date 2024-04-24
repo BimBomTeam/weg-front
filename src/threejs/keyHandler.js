@@ -1,3 +1,5 @@
+import { Vector3 } from "three";
+
 export class KeyHandler {
   constructor() {
     this.key = {
@@ -25,30 +27,25 @@ export class KeyHandler {
         click: false,
       },
     };
-    this.moveDirections = {
-      moveLeft: 0,
-      moveRight: 0,
-      moveForward: 0,
-      moveBackward: 0,
-    };
-    //   this.window = window;
+    this.moveVector = new Vector3();
+
     window.addEventListener("keydown", (event) => {
       switch (event.code) {
         case "KeyA":
           this.key.a.pressed = true;
-          this.moveDirections.moveRight = 1;
+          this.moveVector.x = -1;
           break;
         case "KeyD":
           this.key.d.pressed = true;
-          this.moveDirections.moveLeft = 1;
+          this.moveVector.x = 1;
           break;
         case "KeyW":
           this.key.w.pressed = true;
-          this.moveDirections.moveForward = 1;
+          this.moveVector.z = -1;
           break;
         case "KeyS":
           this.key.s.pressed = true;
-          this.moveDirections.moveBackward = 1;
+          this.moveVector.z = 1;
           break;
         case "Space":
           this.key.space.pressed = true;
@@ -65,19 +62,19 @@ export class KeyHandler {
       switch (event.code) {
         case "KeyA":
           this.key.a.pressed = false;
-          this.moveDirections.moveRight = 0;
+          this.moveVector.x = 0;
           break;
         case "KeyD":
           this.key.d.pressed = false;
-          this.moveDirections.moveLeft = 0;
+          this.moveVector.x = 0;
           break;
         case "KeyW":
           this.key.w.pressed = false;
-          this.moveDirections.moveForward = 0;
+          this.moveVector.z = 0;
           break;
         case "KeyS":
           this.key.s.pressed = false;
-          this.moveDirections.moveBackward = 0;
+          this.moveVector.z = 0;
           break;
         case "Space":
           this.key.space.pressed = false;
