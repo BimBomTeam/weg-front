@@ -22,8 +22,11 @@ const Login = () => {
     try {
       const { success } = await loginApi({ email, password });
       if (success) {
+        toast.success("Successfully registered");
         dispatch(checkToken());
-        navigate("/game");
+        setTimeout(() => {
+          navigate("/game");
+        }, 1200); // Задержка в 1 секунду (1000 миллисекунд)
       }
     } catch (error) {
       toast.error("Authentication Error");
@@ -61,7 +64,6 @@ const Login = () => {
           </button>
         </div>
       </div>
-      <ToastContainer position="top-center" closeOnClick={true} />
     </div>
   );
 };
