@@ -10,6 +10,7 @@ const Register = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
+
   const handleRegister = async () => {
     if (!email || !password || !username) {
       toast.error("Fields cannot be empty");
@@ -20,10 +21,11 @@ const Register = () => {
     else {
       try {
         const { success } = await registerApi({ email, username, password });
-        toast.success("Successfully registered");
         if (success) {
           toast.success("Successfully registered");
-          navigate("/login");
+          setTimeout(() => {
+            navigate("/login");
+          }, 2500);
         }
       } catch (error) {
         toast.error("Error with registration");
