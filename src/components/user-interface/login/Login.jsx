@@ -22,8 +22,11 @@ const Login = () => {
     try {
       const { success } = await loginApi({ email, password });
       if (success) {
+        toast.success("Successfully login");
         dispatch(checkToken());
-        navigate("/game");
+        setTimeout(() => {
+          navigate("/game");
+        }, 2500);
       }
     } catch (error) {
       toast.error("Authentication Error");

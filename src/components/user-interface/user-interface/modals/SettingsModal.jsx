@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useSpring, animated } from 'react-spring';
+import LogOut from '../../../../logic/LogOut';
+import { useDispatch } from 'react-redux';
+import { logout } from '../../../../actions/logout';
 
 function ModalBackground({ children, onClick, onKeyDown }) {
     const handleBackgroundClick = (event) => {
@@ -11,7 +14,6 @@ function ModalBackground({ children, onClick, onKeyDown }) {
     const handleBackgroundKeyDown = (event) => {
         onKeyDown(event);
     };
-
 
     return (
         <animated.div className="modal-background" onClick={handleBackgroundClick} onKeyDown={handleBackgroundKeyDown}>
@@ -79,7 +81,7 @@ function SettingsModal({ closeModal }) {
             <animated.div className="modal" style={modalAnimation}>
                 <h1>Settings</h1>
                 <button className="back-button" onClick={handleBackButtonClick}></button>
-                <button className='logout'>Wyloguj</button>
+                <button className="logout" onClick={() => LogOut()}>Wyloguj</button>
             </animated.div>
         </ModalBackground>
     );

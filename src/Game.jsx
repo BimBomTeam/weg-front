@@ -4,6 +4,7 @@ import GameScene from "./threejs/main";
 import UserInterface from "./components/user-interface/user-interface/UserInterface";
 import UiBossFight from "./components/interactive-game-ui/BossFightUI";
 import PressE from "./components/user-interface/user-interface/hints/pressE";
+import { ToastContainer } from "react-toastify";
 
 const Game = () => {
   useEffect(() => {
@@ -31,6 +32,7 @@ const Game = () => {
       {isEVisible && <PressE/>}
       {isUi && <UiBossFight/>}
       {isUi || <UserInterface />}
+      <ToastContainer position="top-center" closeOnClick={true} />
     </>
   );
 };

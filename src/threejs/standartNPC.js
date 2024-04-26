@@ -49,7 +49,6 @@ export class StandartNPC {
         if (this.currentTime() - this.lastMoveTime > this.curMoveCooldown) {
           this.moveState = "move";
           this.destPoint = this.generateRandPoint();
-          console.log(this.destPoint);
           this.moveVec = this.calcVecToPoint(this.destPoint);
         }
       } else if (this.moveState == "move") {

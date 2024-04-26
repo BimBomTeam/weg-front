@@ -21,7 +21,7 @@ export default function POST_tokenAuth(token) {
     })
     .then(data => {
         //УСПЕХ!
-        console.log(data);
+
         // navigate("/game");
     })
     .catch((error) => toast.error(`${error}`));
