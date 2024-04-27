@@ -2,6 +2,8 @@ import { Vector3 } from "three";
 import { ExtendedObject3D } from "enable3d";
 import * as THREE from "three";
 
+import { TextObject } from "./textObject";
+
 export class StandartNPC {
   constructor({
     pos = { x: 10, y: 20, z: 10 },
@@ -9,6 +11,7 @@ export class StandartNPC {
     path,
     scale = 2,
     objName = "NPC",
+    textObjectText,
   }) {
     this.objName = objName;
 
@@ -25,6 +28,8 @@ export class StandartNPC {
     this.moveCooldown = 1500;
     this.moveCooldownDelta = 300;
     // this.initObject(sketch, pos, path)
+
+    this.textObjectText = textObjectText;
     this.initObject(sketch, pos, path);
     this.updateCooldowns();
   }
@@ -92,6 +97,12 @@ export class StandartNPC {
       });
       console.log(path, " ", "inited");
     });
+    if (this.textObjectText) {
+      this.textObject = new TextObject({
+        textContent: this.textObjectText,
+        targetObject: this.object,
+      });
+    }
   }
 
   update() {
@@ -117,12 +128,24 @@ export class StandartNPC {
         }
       }
     }
+    if (this.textObject) {
+      if (this.mode == "freeRoam" || this.mode == "prepToInteract") {
+        this.textObject.changeVisibility(true);
+        if (this.textObjectText == "Ivan Vanovycz") {
+          console.log("jopa");
+        }
+      } else {
+        this.textObject.changeVisibility(false);
+      }
+    }
   }
 
   checkInteraction(playerPos = new Vector3()) {
     // console.log(this.object);
     if (playerPos.distanceTo(this.object.position) <= this.interactionRadius) {
-      this.mode = "prepToInteract";
+      if (this.mode == "freeRoam") {
+        this.mode = "prepToInteract";
+      }
       this.object.body.setVelocityX(0);
       this.object.body.setVelocityZ(0);
       this.rotate(playerPos.clone().sub(this.object.position));

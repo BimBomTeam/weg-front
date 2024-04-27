@@ -161,6 +161,7 @@ class MainScene extends Scene3D {
       pos: { x: 100, y: 10, z: 95 },
       sketch: this,
       path: "/src/assets/models/Npcs/Npc1.glb",
+      textObjectText: "Ivan Vanovycz",
     });
     await this.sleep(500);
     this.box = this.physics.add.box(
@@ -237,9 +238,10 @@ class MainScene extends Scene3D {
   }
 
   processInteraction(NPC = StandartNPC) {
-    if (NPC.mode == "prepToInteract") {
+    if (NPC.mode == "prepToInteract" || NPC.mode == "interact") {
       if (this.KeyHandler.key.e.click && this.player.mode == "freeWalk") {
         this.player.mode = "interact";
+        NPC.mode = "interact";
         this.player.addRotateEvent(NPC.object.position);
         let NpcToPlayerVec = this.player.object.position
           .clone()
@@ -257,6 +259,7 @@ class MainScene extends Scene3D {
       if (this.KeyHandler.key.esc.click && this.player.mode == "interact") {
         this.player.mode = "freeWalk";
         this.player.moveEvent = [];
+        NPC.mode = "prepToInteract";
 
         this.camOperator.addNPCzoomOut();
       }
@@ -264,7 +267,7 @@ class MainScene extends Scene3D {
   }
 
   processBattle(NPC = BossNPC) {
-    if (NPC.mode == "prepToInteract") {
+    if (NPC.mode == "prepToInteract" || NPC.mode == "interact") {
       if (this.KeyHandler.key.e.click && this.player.mode == "interact") {
         this.startBattle(NPC);
       }

@@ -3,7 +3,14 @@ import { StandartNPC } from "./standartNPC";
 
 export class BossNPC extends StandartNPC {
   constructor({ pos = { x: 10, y: 20, z: 10 }, sketch, path }) {
-    super({ pos: pos, sketch: sketch, path: path, scale: 4, objName: "Boss" });
+    super({
+      pos: pos,
+      sketch: sketch,
+      path: path,
+      scale: 4,
+      objName: "Boss",
+      textObjectText: "BossOfGym",
+    });
     this.actionEvents = [];
     this.addEvents = [];
     this.standPos = null;
