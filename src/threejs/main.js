@@ -215,7 +215,6 @@ class MainScene extends Scene3D {
       .multiplyScalar(13)
       .add(NPC.object.position);
     this.player.addReturnEvent(playerReturnPos);
-    console.log(this.player.standPos, " ", this.player.object.position);
     NPC.standPos = NPC.object.position.clone();
     NPC.mode = "battle";
     let adjustVec = this.player.object.position
@@ -225,7 +224,6 @@ class MainScene extends Scene3D {
       .multiplyScalar(17);
     let adjustVec2 = new Vector2(adjustVec.x, adjustVec.z);
     adjustVec2.rotateAround(new Vector2(), Math.PI / 10);
-    console.log("inBattle");
     this.camOperator.removeEvent("NPCzoomIn");
     this.camOperator.addNPCzoomIn({
       targetPos: NPC.object.position,

@@ -387,7 +387,6 @@ export class Player {
   }
 
   animateWalk(moveVec, deltaTime) {
-    console.log(this.timerWalkStarted);
     if (this.isWalking && this.onGround == true) {
       //Walk plays at least one time logic
       if (this.canChangeToIdle == true && this.timerWalkStarted == false)

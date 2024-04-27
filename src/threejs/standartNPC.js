@@ -95,7 +95,6 @@ export class StandartNPC {
       gltf.animations.forEach((animation) => {
         this.object.anims.add(animation.name, animation);
       });
-      console.log(path, " ", "inited");
     });
     if (this.textObjectText) {
       this.textObject = new TextObject({
@@ -112,7 +111,6 @@ export class StandartNPC {
         if (this.currentTime() - this.lastMoveTime > this.curMoveCooldown) {
           this.moveState = "move";
           this.destPoint = this.generateRandPoint();
-          console.log(this.destPoint);
           this.moveVec = this.calcVecToPoint(this.destPoint);
         }
       } else if (this.moveState == "move") {
@@ -121,7 +119,6 @@ export class StandartNPC {
         let moveX = this.destPoint.x - this.object.position.x;
         let moveZ = this.destPoint.z - this.object.position.z;
         this.rotate(this.moveVec);
-        //   console.log(moveX, "-", moveZ);
         if (Math.abs(moveX) + Math.abs(moveZ) <= 3) {
           this.moveState = "stand";
           this.updateCooldowns();
@@ -131,9 +128,6 @@ export class StandartNPC {
     if (this.textObject) {
       if (this.mode == "freeRoam" || this.mode == "prepToInteract") {
         this.textObject.changeVisibility(true);
-        if (this.textObjectText == "Ivan Vanovycz") {
-          console.log("jopa");
-        }
       } else {
         this.textObject.changeVisibility(false);
       }
@@ -141,7 +135,6 @@ export class StandartNPC {
   }
 
   checkInteraction(playerPos = new Vector3()) {
-    // console.log(this.object);
     if (playerPos.distanceTo(this.object.position) <= this.interactionRadius) {
       if (this.mode == "freeRoam") {
         this.mode = "prepToInteract";
