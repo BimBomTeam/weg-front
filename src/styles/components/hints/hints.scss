@@ -1,0 +1,26 @@
+.container {
+    z-index: 3;
+    position: absolute;
+    width: 30%;
+    height: 10%;
+    background-color: $button-gradient-start;
+    backdrop-filter: blur(18px);
+    bottom: 0;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 30px;
+}
+
+.pressE {
+    width: 50px;
+    height: 50px;
+    margin-left: 15px;
+    margin-right: 15px;
+}
+
+.container p {
+    font-size: 35px;
+    color: $input-placeholder-color;;
+}
