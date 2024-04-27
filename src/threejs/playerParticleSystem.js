@@ -22,7 +22,9 @@ export default class PlayerParticleSystem {
     this.fromPlayerDist = 1.5;
     this.fromPlayerVerticalOffset = -1;
     this.active = true;
-    this.initialRate = new Rate(new Span(1, 2), new Span(0.1, 0.25));
+    this.initialRate = new Rate(new Span(10, 15), new Span(0.1, 0.25));
+
+    this.particlesInTimeout = false;
 
     const nebulaMeshRenderer = new MeshRenderer(sketch.scene, THREE);
 
@@ -68,6 +70,21 @@ export default class PlayerParticleSystem {
       .addRenderer(nebulaMeshRenderer);
 
     return this;
+  }
+
+  showParticlesOnJump() {
+    this.active = true;
+    this.particlesInTimeout = false;
+    setTimeout(() => {
+      this.active = false;
+    }, 100);
+  }
+
+  animateParticlesOnJump(deltaTime) {
+    if (this.particlesInTimeout == false) {
+      setTimeout(() => this.showParticlesOnJump(), 4000 / deltaTime);
+      this.particlesInTimeout = true;
+    }
   }
 
   update(playerPosition, playerDirection) {
