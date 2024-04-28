@@ -1,49 +1,78 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import UiMenu from "./components/interactive-game-ui/UIiMenu";
 import GameScene from "./threejs/main";
 import UserInterface from "./components/user-interface/user-interface/UserInterface";
 import UiBossFight from "./components/interactive-game-ui/BossFightUI";
-import PressE from "./components/user-interface/user-interface/hints/pressE";
+import NearNpcHint from "./components/user-interface/user-interface/hints/NearNpcHint";
 import { ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { checkRoles } from "./actions/roles";
+import store from "./store/store";
+import { useSelector } from "react-redux";
 
 const Game = () => {
   const navigator = useNavigate();
+  const dispatch = useDispatch();
+  const game = useRef();
+
+  const [isDialog, setDialogUiVisibility] = useState(false);
+  // const [isBossConfirmationDialog, setBossDialogVisibility] = useState(false);
+  const [isBossFight, setBossFightVisibility] = useState(false);
+  const [isNearNpc, setNearNpc] = useState(false);
+  const [isLoadedScene, setIsLoadedScene] = useState(false);
+  const tmp = useSelector((store) => store.interact.isHintVisible);
 
   useEffect(() => {
     // navigator(0);
-    console.log("render game");
-    const game = new GameScene(changeUiVisibility);
-    console.log("after render game");
+    dispatch(checkRoles());
 
-    // setTimeout(() => {
-    //   console.log("game", game.test.scenes.get("MainScene"));
-    //   game.test.scenes.get("MainScene").foo();
-    // }, 3000);
+    game.current = new GameScene(
+      sceneLoaded,
+      changeUiVisibility,
+      changeNearNpcVisibility,
+      changeBossFightVisibility
+    );
   }, []);
 
-  const [isUi, setUi] = useState(false);
-  const [isEVisible, setIsEVisible] = useState(true);
+  // useEffect(() => {}, [isLoadedScene]);
 
+  const sceneLoaded = () => {
+    setIsLoadedScene(true);
+  };
   const changeUiVisibility = (isVis) => {
     if (!isVis) {
       setTimeout(() => {
-        setUi(false);
-        setIsEVisible(true);
+        setDialogUiVisibility(false);
+        setNearNpc(false);
       }, 500);
     } else {
-      setUi(isVis);
-      setIsEVisible(false);
+      setDialogUiVisibility(isVis);
+      setNearNpc(false);
     }
   };
+  const changeNearNpcVisibility = (isVis) => {
+    setNearNpc(isVis);
+  };
+  const changeBossFightVisibility = (isVis) => {
+    setBossFightVisibility(isVis);
+  };
+
+  console.log("is", tmp);
 
   return (
     <>
       <canvas id="webgl"></canvas>
-      {isEVisible && <PressE />}
-      {isUi && <UiBossFight />}
-      {isUi || <UserInterface />}
-      <ToastContainer position="top-center" closeOnClick={true} />
+      {isLoadedScene ? (
+        <>
+          {tmp === true && <NearNpcHint />}
+          {isBossFight && <UiBossFight />}
+          {isDialog || <UserInterface />}
+          <ToastContainer position="top-center" closeOnClick={true} />
+        </>
+      ) : (
+        <></>
+      )}
     </>
   );
 };

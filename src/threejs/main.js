@@ -19,7 +19,19 @@ import { CameraOperator } from "./cameraOperator";
 import { StandartNPC } from "./standartNPC";
 import { BossNPC } from "./bossNPC";
 
+import store from "../store/store";
+import { ModelLoader } from "./modelLoaderService";
+import {
+  setBossHit,
+  setBattleVisibility,
+  setChatVisibility,
+  setHintVisibility,
+} from "../actions/interact";
+
 let changeUiVisibilityTest;
+let changeNearNpcHintVisibility;
+let changeBossFight;
+let sceneLoaded;
 
 class MainScene extends Scene3D {
   constructor() {
@@ -130,13 +142,6 @@ class MainScene extends Scene3D {
     skyUniforms["sunPosition"].value = new THREE.Vector3(2, 1, 0);
   }
 
-  async foo() {
-    this.camOperator.addNPCzoomIn({
-      targetPos: new Vector3(),
-      adjustPosition: new Vector3(),
-    });
-  }
-
   async create() {
     const { lights, orbitControls } = await this.warpSpeed("-ground, -sky");
     this.orbitControls = orbitControls;
@@ -154,25 +159,38 @@ class MainScene extends Scene3D {
     this.camera = new TestCamera();
     this.camOperator = new CameraOperator({ camera: this.camera });
 
+    const rolesReduxArr = JSON.parse(
+      store.getState().roles.roles.roles.replaceAll("\\", "")
+    );
+
+    const modelsPath = "/src/assets/models/";
+
     this.setupPlayer();
     this.setupMap();
+    this.modelLoader = new ModelLoader();
+    await this.modelLoader.loadModelsAsync(modelsPath, this);
+
     this.bossNPC = new BossNPC({
       pos: { x: 80, y: 10, z: 85 },
       sketch: this,
       path: "/src/assets/models/Boss/Boss.glb",
+      gltf: this.modelLoader.modelsArray["boss"],
+      playerPosition: this.player.object.position,
     });
     this.standNPC = new StandartNPC({
       pos: { x: 20, y: 10, z: 0 },
       sketch: this,
       path: "/src/assets/models/Npcs/Npc5.glb",
+      gltf: this.modelLoader.modelsArray["npc5"],
     });
     this.standNPC2 = new StandartNPC({
       pos: { x: 100, y: 10, z: 95 },
       sketch: this,
       path: "/src/assets/models/Npcs/Npc1.glb",
-      textObjectText: "Ivan Vanovycz",
+      // textObjectText: rolesReduxArr[0].name,
+      gltf: this.modelLoader.modelsArray["npc1"],
     });
-    await this.sleep(500);
+    this.npcArray = [this.bossNPC, this.standNPC, this.standNPC2];
     this.box = this.physics.add.box(
       {
         name: "box",
@@ -186,7 +204,16 @@ class MainScene extends Scene3D {
       { phong: { color: 0x00ff00 } }
     );
     this.box.body.setAngularFactor(0, 0, 0);
+
+    const bossHitFunc = () => {
+      this.bossNPC.hitPlayer(this.player.object.position);
+    };
+
+    store.dispatch(setBossHit(bossHitFunc));
+
+    sceneLoaded();
   }
+
   sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay));
 
   setupMap() {
@@ -217,6 +244,7 @@ class MainScene extends Scene3D {
 
   startBattle(NPC = BossNPC) {
     this.player.mode = "battle";
+    this.player.addRotateEvent(NPC.object.position);
     let playerReturnPos = this.player.object.position
       .clone()
       .sub(NPC.object.position)
@@ -238,15 +266,19 @@ class MainScene extends Scene3D {
       targetPos: NPC.object.position,
       adjustPosition: new Vector3(adjustVec2.x, 3, adjustVec2.y),
     });
-    setTimeout(() => this.player.hitBoss(NPC.object.position), 5000);
-    setTimeout(() => NPC.hitPlayer(this.player.object.position), 10000);
-    setTimeout(() => this.player.hitBoss(NPC.object.position), 15000);
-    setTimeout(() => this.player.hitBoss(NPC.object.position), 20000);
+    // setTimeout(() => this.player.hitBoss(NPC.object.position), 5000);
+    // setTimeout(() => NPC.hitPlayer(this.player.object.position), 10000);
+    // setTimeout(() => this.player.hitBoss(NPC.object.position), 15000);
+    // setTimeout(() => this.player.hitBoss(NPC.object.position), 20000);
   }
 
   processInteraction(NPC = StandartNPC) {
     if (NPC.mode == "prepToInteract" || NPC.mode == "interact") {
       if (this.KeyHandler.key.e.click && this.player.mode == "freeWalk") {
+        store.dispatch(setChatVisibility(true));
+        store.dispatch(setHintVisibility(false));
+        //TODO: chat -true
+        //TODO: hint - false
         this.player.mode = "interact";
         NPC.mode = "interact";
         this.player.addRotateEvent(NPC.object.position);
@@ -264,6 +296,8 @@ class MainScene extends Scene3D {
         });
       }
       if (this.KeyHandler.key.esc.click && this.player.mode == "interact") {
+        setChatVisibility(false);
+        //TODO: chat - false
         this.player.mode = "freeWalk";
         this.player.moveEvent = [];
         NPC.mode = "prepToInteract";
@@ -275,18 +309,24 @@ class MainScene extends Scene3D {
 
   processBattle(NPC = BossNPC) {
     if (NPC.mode == "prepToInteract" || NPC.mode == "interact") {
-      if (this.KeyHandler.key.e.click && this.player.mode == "interact") {
+      if (this.KeyHandler.key.e.click && this.player.mode == "freeWalk") {
+        store.dispatch(setBattleVisibility(true));
+        store.dispatch(setHintVisibility(false));
+        //TODO : battleUI - true
+        //TODO : hint - false
         this.startBattle(NPC);
       }
     } else if (NPC.mode == "battle") {
       NPC.updateBattle();
       if (this.KeyHandler.key.esc.click && this.player.mode == "battle") {
-        this.player.mode = "interact";
-        // this.player.moveEvent = [];
-        // this.camOperator.addNPCzoomOut();
+        this.player.mode = "freeWalk";
+        setBattleVisibility(false);
+        //TODO : battleUI - false
+        this.player.moveEvent = [];
         NPC.addEvents = [];
         NPC.actionEvents = [];
         NPC.mode = "prepToInteract";
+        this.camOperator.addNPCzoomOut();
       }
     }
   }
@@ -314,11 +354,22 @@ class MainScene extends Scene3D {
       this.processBattle(this.bossNPC);
       this.processInteraction(this.standNPC);
       this.processInteraction(this.standNPC2);
-      this.processInteraction(this.bossNPC);
+      // this.processInteraction(this.bossNPC);
 
       this.camOperator.update(delta);
       this.KeyHandler.update();
     }
+    //TODO: hint showing logic
+    console.log(
+      this.npcArray.map((x) => x.mode).some((x) => x === "prepToInteract") &&
+        (this.player.mode !== "interact" || this.player.mode !== "battle")
+    );
+    store.dispatch(
+      setHintVisibility(
+        this.npcArray.map((x) => x.mode).some((x) => x === "prepToInteract") &&
+          (this.player.mode !== "interact" || this.player.mode !== "battle")
+      )
+    );
   }
 }
 
@@ -336,16 +387,23 @@ const config = {
 };
 
 export default class GameScene {
-  constructor(changeUIVisibility) {
+  constructor(
+    sceneLoadedProp,
+    changeUIVisibility,
+    changeNearNpcVisibility,
+    changeBossFightVisibility
+  ) {
     changeUiVisibilityTest = changeUIVisibility;
+    changeNearNpcHintVisibility = changeNearNpcVisibility;
+    changeBossFight = changeBossFightVisibility;
+    sceneLoaded = sceneLoadedProp;
+
     this.test = null;
 
-    console.log("test inside 2");
     window.addEventListener("load", () => {
       PhysicsLoader("/src/threejs/lib/ammo/kripken", () => {
         this.test = new Project(config);
-        console.log("inside", this.test);
-        console.log("test inside");
+        // sceneLoadedProp();
       });
     });
   }
