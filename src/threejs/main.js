@@ -21,9 +21,12 @@ import { BossNPC } from "./bossNPC";
 
 import store from "../store/store";
 import { ModelLoader } from "./modelLoaderService";
+import { setBossHit } from "../actions/interact";
 
 let changeUiVisibilityTest;
 let changeNearNpcHintVisibility;
+let changeBossFight;
+let sceneLoaded;
 
 class MainScene extends Scene3D {
   constructor() {
@@ -134,13 +137,6 @@ class MainScene extends Scene3D {
     skyUniforms["sunPosition"].value = new THREE.Vector3(2, 1, 0);
   }
 
-  async foo() {
-    this.camOperator.addNPCzoomIn({
-      targetPos: new Vector3(),
-      adjustPosition: new Vector3(),
-    });
-  }
-
   async create() {
     const { lights, orbitControls } = await this.warpSpeed("-ground, -sky");
     this.orbitControls = orbitControls;
@@ -174,6 +170,7 @@ class MainScene extends Scene3D {
       sketch: this,
       path: "/src/assets/models/Boss/Boss.glb",
       gltf: this.modelLoader.modelsArray["boss"],
+      playerPosition: this.player.object.position,
     });
     this.standNPC = new StandartNPC({
       pos: { x: 20, y: 10, z: 0 },
@@ -202,7 +199,16 @@ class MainScene extends Scene3D {
       { phong: { color: 0x00ff00 } }
     );
     this.box.body.setAngularFactor(0, 0, 0);
+
+    const bossHitFunc = () => {
+      this.bossNPC.hitPlayer(this.player.object.position);
+    };
+
+    store.dispatch(setBossHit(bossHitFunc));
+
+    sceneLoaded();
   }
+
   sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay));
 
   setupMap() {
@@ -254,10 +260,10 @@ class MainScene extends Scene3D {
       targetPos: NPC.object.position,
       adjustPosition: new Vector3(adjustVec2.x, 3, adjustVec2.y),
     });
-    setTimeout(() => this.player.hitBoss(NPC.object.position), 5000);
-    setTimeout(() => NPC.hitPlayer(this.player.object.position), 10000);
-    setTimeout(() => this.player.hitBoss(NPC.object.position), 15000);
-    setTimeout(() => this.player.hitBoss(NPC.object.position), 20000);
+    // setTimeout(() => this.player.hitBoss(NPC.object.position), 5000);
+    // setTimeout(() => NPC.hitPlayer(this.player.object.position), 10000);
+    // setTimeout(() => this.player.hitBoss(NPC.object.position), 15000);
+    // setTimeout(() => this.player.hitBoss(NPC.object.position), 20000);
   }
 
   processInteraction(NPC = StandartNPC) {
@@ -356,17 +362,23 @@ const config = {
 };
 
 export default class GameScene {
-  constructor(changeUIVisibility, changeNearNpcVisibility) {
+  constructor(
+    sceneLoadedProp,
+    changeUIVisibility,
+    changeNearNpcVisibility,
+    changeBossFightVisibility
+  ) {
     changeUiVisibilityTest = changeUIVisibility;
     changeNearNpcHintVisibility = changeNearNpcVisibility;
+    changeBossFight = changeBossFightVisibility;
+    sceneLoaded = sceneLoadedProp;
+
     this.test = null;
 
-    console.log("test inside 2");
     window.addEventListener("load", () => {
       PhysicsLoader("/src/threejs/lib/ammo/kripken", () => {
         this.test = new Project(config);
-        console.log("inside", this.test);
-        console.log("test inside");
+        // sceneLoadedProp();
       });
     });
   }

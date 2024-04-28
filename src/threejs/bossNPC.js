@@ -2,7 +2,13 @@ import { Vector3 } from "three";
 import { StandartNPC } from "./standartNPC";
 
 export class BossNPC extends StandartNPC {
-  constructor({ pos = { x: 10, y: 20, z: 10 }, sketch, path, gltf }) {
+  constructor({
+    pos = { x: 10, y: 20, z: 10 },
+    sketch,
+    path,
+    gltf,
+    playerPosition,
+  }) {
     super({
       pos: pos,
       sketch: sketch,
@@ -16,8 +22,10 @@ export class BossNPC extends StandartNPC {
     this.addEvents = [];
     this.standPos = null;
     this.onGround = true;
-    this.playerPos;
     this.interactionRadius = 16;
+    console.log("playerPosition", playerPosition);
+    this.playerPos = playerPosition;
+
     // this.initColission();
   }
 
@@ -37,8 +45,8 @@ export class BossNPC extends StandartNPC {
   //   });
   // }
 
-  hitPlayer(playerPos = new Vector3()) {
-    this.playerPos = playerPos;
+  hitPlayer(playerPos) {
+    console.log("HIT PLAYER", playerPos);
     let directVec = playerPos
       .clone()
       .sub(this.object.position)

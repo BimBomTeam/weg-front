@@ -27,7 +27,7 @@ export default function ValidateToken() {
     if (!loading) {
       if (token) {
         POST_tokenAuth(); //TO-DO: наверника что-то будет возвращаться, в зависимости от чего пускаем/нет
-        dispatch(checkRoles());
+        // dispatch(checkRoles());
       } else {
         toast.error("Please login. Token expired");
         navigate("/login");
