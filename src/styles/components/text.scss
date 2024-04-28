@@ -239,6 +239,51 @@ label[for="password-repeat-label"] {
   color: #0e3246;
 }
 
+.slider-container {
+  width: 50%;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.level-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.slider-wrapper {
+  position: relative;
+}
+
+.thumb {
+  width: 20px;
+  height: 20px;
+  background-color: $input-placeholder-color; 
+  border-radius: 50%;
+  cursor: pointer;
+  position: absolute;
+  top: -5px;
+}
+
+.track-container {
+  position: relative;
+}
+
+.track {
+  border-radius: 20px;
+  height: 10px;
+  background-color: #F8F0F0;
+}
+
+.new-track {
+  border-radius: 20px;
+  height: 10px;
+  background-color: $input-placeholder-color;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
 @media only screen and (min-width: 2561px) {
   .user-label {
     font-size: 25px;
@@ -345,3 +390,6 @@ label[for="password-repeat-label"] {
     right: 25px;
   }
 }
+
+
+

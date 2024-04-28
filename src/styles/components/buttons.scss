@@ -181,6 +181,21 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
   margin-bottom: 30px;
 }
 
+.confirmButton {
+  width: 200px;
+  height: 100px;
+  margin-top: 10%;
+  border-radius: 60px;
+  font-size: 25px;
+  color: $input-placeholder-color;
+  background: linear-gradient(to bottom, #F8F0F0 0%, #C2E9EE 100%);
+  transition: transform 0.3s ease;
+}
+
+.confirmButton:hover {
+  transform: scale(1.1);
+}
+
 @media only screen and (min-width: 2562px) {
   #expand_field_button {
     width: 80px;
