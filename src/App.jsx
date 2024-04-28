@@ -10,12 +10,13 @@ function App() {
   return (
     <Provider store={store}>
       <Router>
-        <ValidateToken />
         <Routes>
-          <Route path="/" element={<ValidateToken />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/game" element={<Game />} />
+          <Route path="/" element={<ValidateToken />}>
+            <Route index element={<Login />} />
+            <Route path="/game" element={<Game />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+          </Route>
         </Routes>
       </Router>
     </Provider>

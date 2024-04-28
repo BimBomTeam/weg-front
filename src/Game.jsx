@@ -5,10 +5,16 @@ import UserInterface from "./components/user-interface/user-interface/UserInterf
 import UiBossFight from "./components/interactive-game-ui/BossFightUI";
 import PressE from "./components/user-interface/user-interface/hints/pressE";
 import { ToastContainer } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const Game = () => {
+  const navigator = useNavigate();
+
   useEffect(() => {
+    // navigator(0);
+    console.log("render game");
     const game = new GameScene(changeUiVisibility);
+    console.log("after render game");
 
     // setTimeout(() => {
     //   console.log("game", game.test.scenes.get("MainScene"));
@@ -31,11 +37,11 @@ const Game = () => {
     }
   };
 
-  return (  
+  return (
     <>
       <canvas id="webgl"></canvas>
-      {isEVisible && <PressE/>}
-      {isUi && <UiBossFight/>}
+      {isEVisible && <PressE />}
+      {isUi && <UiBossFight />}
       {isUi || <UserInterface />}
       <ToastContainer position="top-center" closeOnClick={true} />
     </>

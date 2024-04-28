@@ -258,10 +258,12 @@ export default class GameScene {
     changeUiVisibilityTest = changeUIVisibility;
     this.test = null;
 
+    console.log("test inside 2");
     window.addEventListener("load", () => {
       PhysicsLoader("/src/threejs/lib/ammo/kripken", () => {
         this.test = new Project(config);
         console.log("inside", this.test);
+        console.log("test inside");
       });
     });
   }

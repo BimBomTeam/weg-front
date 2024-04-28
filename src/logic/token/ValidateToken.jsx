@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { checkToken } from "../../actions/checkToken";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -38,5 +38,5 @@ export default function ValidateToken() {
   //--------TO-DO--------
   //Podczas pierwszego renderowania komponent uruchamia się 3 razy
 
-  return null;
+  return <Outlet></Outlet>;
 }
