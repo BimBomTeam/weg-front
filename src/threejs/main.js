@@ -18,6 +18,7 @@ import { Sky } from "three/examples/jsm/objects/Sky";
 import { TestCamera } from "./testCamera";
 import { CameraOperator } from "./cameraOperator";
 import { StandartNPC } from "./standartNPC";
+import GenerateWordsById from "../logic/GenerateWordsById";
 
 let changeUiVisibilityTest;
 
@@ -213,6 +214,9 @@ class MainScene extends Scene3D {
             targetPos: this.standNPC.object.position,
             adjustPosition: new Vector3(3, 1, 8),
           });
+
+          const reduxData = GenerateWordsById(2); //вместо 2 -> вызов метода с взятием роли у NPS (return int)
+          console.log(reduxData);
         }
         if (this.KeyHandler.key.esc.click && this.player.mode == "interact") {
           changeUiVisibilityTest(false);

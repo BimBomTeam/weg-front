@@ -17,6 +17,7 @@ const Game = () => {
   const changeUiVisibility = (isVis) => {
     if (!isVis) {
       setTimeout(() => {
+        console.log("YES");
         setUi(false);
         setIsEVisible(true);
       }, 500);
