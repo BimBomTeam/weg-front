@@ -5,7 +5,6 @@ export function checkToken() {
   //тут проверка есть токен / нет токен 
   //нужно проверять его валидность
   const isAuthenticated = token ? true : false;
-  console.log("state in action-->", isAuthenticated);
   return {
     type: CHECK_TOKEN,
     isAuthenticated: isAuthenticated,

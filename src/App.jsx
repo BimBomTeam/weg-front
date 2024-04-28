@@ -5,19 +5,18 @@ import Register from "./components/user-interface/register/Register";
 import ValidateToken from "./logic/token/ValidateToken";
 import { Provider } from "react-redux";
 import store from "./store/store";
-import TokenDecoding from "./logic/token/TokenDecoding";
 
 function App() {
   return (
     <Provider store={store}>
       <Router>
-        <TokenDecoding />
-        <ValidateToken />
         <Routes>
-          <Route path="/" element={<ValidateToken />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/game" element={<Game />} />
+          <Route path="/" element={<ValidateToken />}>
+            <Route index element={<Login />} />
+            <Route path="/game" element={<Game />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+          </Route>
         </Routes>
       </Router>
     </Provider>

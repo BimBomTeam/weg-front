@@ -6,7 +6,6 @@ export class CameraOperator {
   constructor({ targetPos = new THREE.Vector3(), camera = new TestCamera() }) {
     this.targetPos = targetPos;
     this.camera = camera;
-    console.log(this.camera.rotation);
     this.cameraData = {
       playerFollow: {
         deadZone: { x: 2, y: 2, z: 2 },

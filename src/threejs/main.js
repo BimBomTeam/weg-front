@@ -19,6 +19,8 @@ import { CameraOperator } from "./cameraOperator";
 import { StandartNPC } from "./standartNPC";
 import { BossNPC } from "./bossNPC";
 
+let changeUiVisibilityTest;
+
 class MainScene extends Scene3D {
   constructor() {
     super({ key: "MainScene" });
@@ -126,6 +128,13 @@ class MainScene extends Scene3D {
     skyUniforms["mieCoefficient"].value = 0.005;
     skyUniforms["mieDirectionalG"].value = 0.8;
     skyUniforms["sunPosition"].value = new THREE.Vector3(2, 1, 0);
+  }
+
+  async foo() {
+    this.camOperator.addNPCzoomIn({
+      targetPos: new Vector3(),
+      adjustPosition: new Vector3(),
+    });
   }
 
   async create() {
@@ -328,8 +337,16 @@ const config = {
 
 export default class GameScene {
   constructor(changeUIVisibility) {
+    changeUiVisibilityTest = changeUIVisibility;
+    this.test = null;
+
+    console.log("test inside 2");
     window.addEventListener("load", () => {
-      PhysicsLoader("/src/threejs/lib/ammo/kripken", () => new Project(config));
+      PhysicsLoader("/src/threejs/lib/ammo/kripken", () => {
+        this.test = new Project(config);
+        console.log("inside", this.test);
+        console.log("test inside");
+      });
     });
   }
 }

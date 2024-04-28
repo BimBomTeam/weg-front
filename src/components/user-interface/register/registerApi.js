@@ -1,9 +1,9 @@
 import { toast } from "react-toastify";
 
-const loginApi = async (formData) => {
+const registerApi = async (formData) => {
   try {
     const response = await fetch(
-      "https://193.122.12.41/api/Authenticate/login",
+      "https://193.122.12.41/api/Authenticate/register",
       {
         method: "POST",
         headers: {
@@ -14,12 +14,11 @@ const loginApi = async (formData) => {
     );
 
     if (response.ok) {
-      const data = await response.json();
-      localStorage.setItem("access_token", data.token);
-      localStorage.setItem("refresh_token", data.refreshToken);
+
       return { success: true };
     }
     if (!response.ok) {
+      toast.error("Response is not OK");
       return { success: false };
     }
   } catch (error) {
@@ -28,4 +27,4 @@ const loginApi = async (formData) => {
   }
 };
 
-export default loginApi;
+export default registerApi;

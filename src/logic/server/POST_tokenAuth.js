@@ -2,6 +2,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function POST_tokenAuth(token) {
+  console.log("");
   const data = {
     token: token
   }
@@ -20,7 +21,7 @@ export default function POST_tokenAuth(token) {
     })
     .then(data => {
         //УСПЕХ!
-        console.log(data);
+
         // navigate("/game");
     })
     .catch((error) => toast.error(`${error}`));
