@@ -161,6 +161,7 @@ class MainScene extends Scene3D {
       pos: { x: 100, y: 10, z: 95 },
       sketch: this,
       path: "/src/assets/models/Npcs/Npc1.glb",
+      textObjectText: "Ivan Vanovycz",
     });
     await this.sleep(500);
     this.box = this.physics.add.box(
@@ -214,7 +215,6 @@ class MainScene extends Scene3D {
       .multiplyScalar(13)
       .add(NPC.object.position);
     this.player.addReturnEvent(playerReturnPos);
-    console.log(this.player.standPos, " ", this.player.object.position);
     NPC.standPos = NPC.object.position.clone();
     NPC.mode = "battle";
     let adjustVec = this.player.object.position
@@ -224,7 +224,6 @@ class MainScene extends Scene3D {
       .multiplyScalar(17);
     let adjustVec2 = new Vector2(adjustVec.x, adjustVec.z);
     adjustVec2.rotateAround(new Vector2(), Math.PI / 10);
-    console.log("inBattle");
     this.camOperator.removeEvent("NPCzoomIn");
     this.camOperator.addNPCzoomIn({
       targetPos: NPC.object.position,
@@ -237,9 +236,10 @@ class MainScene extends Scene3D {
   }
 
   processInteraction(NPC = StandartNPC) {
-    if (NPC.mode == "prepToInteract") {
+    if (NPC.mode == "prepToInteract" || NPC.mode == "interact") {
       if (this.KeyHandler.key.e.click && this.player.mode == "freeWalk") {
         this.player.mode = "interact";
+        NPC.mode = "interact";
         this.player.addRotateEvent(NPC.object.position);
         let NpcToPlayerVec = this.player.object.position
           .clone()
@@ -257,6 +257,7 @@ class MainScene extends Scene3D {
       if (this.KeyHandler.key.esc.click && this.player.mode == "interact") {
         this.player.mode = "freeWalk";
         this.player.moveEvent = [];
+        NPC.mode = "prepToInteract";
 
         this.camOperator.addNPCzoomOut();
       }
@@ -264,7 +265,7 @@ class MainScene extends Scene3D {
   }
 
   processBattle(NPC = BossNPC) {
-    if (NPC.mode == "prepToInteract") {
+    if (NPC.mode == "prepToInteract" || NPC.mode == "interact") {
       if (this.KeyHandler.key.e.click && this.player.mode == "interact") {
         this.startBattle(NPC);
       }

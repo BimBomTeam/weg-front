@@ -11,7 +11,6 @@ export class Player {
     //Player properties
     this.objName = "player";
     this.onGround = false;
-    this.particlesPermisionDuration = 0.15;
     this.jumpForce = 15;
     this.speed = 10;
     this.isWalking = false;
@@ -20,16 +19,18 @@ export class Player {
     this.lastSafePosition = new Vector3();
     this.lastFallTime = 0;
 
+    this.canChangeToIdle = false;
+    this.timerWalkStarted = false;
+
     this.waterSplashParticlesSettings = {
       adjustParticlesZoneStart: 0,
       adjustParticlesZoneEnd: -2,
       showParticlesZoneStart: -3,
-      showParticlesZoneEnd: -7
-    }
+      showParticlesZoneEnd: -7,
+    };
 
     this.mode = "freeWalk";
     this.moveEvent = [];
-    this.particleChange = true;
 
     this.initPlayer(pos, sketch);
   }
@@ -72,7 +73,7 @@ export class Player {
 
     this.playerParticleSystem = new PlayerParticleSystem(sketch);
     this.playerParticleSystem.active = false;
-    
+
     this.waterSplashParticleSystem = new WaterSplashParticleSystem(sketch);
   }
 
@@ -283,6 +284,7 @@ export class Player {
             }
             this.object.body.setVelocityX(destination.x);
             this.object.body.setVelocityZ(destination.z);
+            this.isWalking = true;
           }
         }
       },
@@ -292,7 +294,6 @@ export class Player {
 
   update(KeyHandler, deltaTime) {
     this.isWalking = false;
-    let showParticles = false;
 
     this.moveVec = new THREE.Vector3();
     if (this.object.position.y < this.deadLevel) {
@@ -304,13 +305,21 @@ export class Player {
 
     let adjustWaterSplashPos = false;
     let showWaterSplash = false;
-    if (this.object.position.y < this.waterSplashParticlesSettings.adjustParticlesZoneStart 
-        && this.object.position.y > this.waterSplashParticlesSettings.adjustParticlesZoneEnd) {
-      adjustWaterSplashPos = true
+    if (
+      this.object.position.y <
+        this.waterSplashParticlesSettings.adjustParticlesZoneStart &&
+      this.object.position.y >
+        this.waterSplashParticlesSettings.adjustParticlesZoneEnd
+    ) {
+      adjustWaterSplashPos = true;
     }
 
-    if (this.object.position.y < this.waterSplashParticlesSettings.showParticlesZoneStart 
-        && this.object.position.y > this.waterSplashParticlesSettings.showParticlesZoneEnd) {
+    if (
+      this.object.position.y <
+        this.waterSplashParticlesSettings.showParticlesZoneStart &&
+      this.object.position.y >
+        this.waterSplashParticlesSettings.showParticlesZoneEnd
+    ) {
       showWaterSplash = true;
     }
 
@@ -321,8 +330,6 @@ export class Player {
         adjustWaterSplashPos
       );
     }
-    
-
 
     this.object.body.setAngularVelocityY(0);
     this.moveEvent = this.moveEvent.filter(
@@ -339,7 +346,6 @@ export class Player {
         if (this.moveVec.x != 0) this.object.body.setVelocityX(speedVec.x);
         if (this.moveVec.z != 0) this.object.body.setVelocityZ(speedVec.z);
         this.isWalking = true;
-        showParticles = true;
       }
 
       if (KeyHandler.key.space.pressed && this.onGround == true) {
@@ -376,38 +382,38 @@ export class Player {
     return currentDate.getTime() / 1000;
   }
 
-  showParticles() {
-    this.playerParticleSystem.active = true;
-    this.particleChange = true;
-    setTimeout(() => {
-      this.unShowParticles();
-    }, 100);
-  }
-
-  unShowParticles() {
-    this.playerParticleSystem.active = false;
+  walkCanChange() {
+    this.canChangeToIdle = true;
   }
 
   animateWalk(moveVec, deltaTime) {
     if (this.isWalking && this.onGround == true) {
+      //Walk plays at least one time logic
+      if (this.canChangeToIdle == true && this.timerWalkStarted == false)
+        this.canChangeToIdle = false;
+      if (this.timerWalkStarted == false) {
+        setTimeout(() => this.walkCanChange(), 500);
+        this.timerWalkStarted = true;
+      }
+
       this.playAnimation("Walk");
 
       //Particles Showing logic
-      if (this.particleChange) {
-        setTimeout(() => {
-          this.showParticles();
-        }, 8000 / deltaTime);
-        this.particleChange = false;
-      }
+      this.playerParticleSystem.animateParticlesOnJump(deltaTime);
 
       //Auto jump logic
       if (this.autoJump.isNear && this.autoJump.canJump) {
         this.object.body.applyForceY(10);
         this.onGround = false;
       }
-    } else if (!this.isWalking && this.onGround == true) {
+    } else if (
+      !this.isWalking &&
+      this.onGround == true &&
+      this.canChangeToIdle
+    ) {
       this.playAnimation("Idle");
       this.playerParticleSystem.active = false;
+      this.timerWalkStarted = false;
     }
 
     //Rotating Player
@@ -429,6 +435,8 @@ export class Player {
 
   playAnimation(animName) {
     if (this.object.anims.current !== animName) {
+      if (animName == "Walk") this.object.animationMixer.timeScale = 2;
+      else this.object.animationMixer.timeScale = 1;
       this.object.anims.play(animName);
     }
   }
