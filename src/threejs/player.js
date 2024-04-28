@@ -3,6 +3,7 @@ import { Vector3 } from "three";
 import * as THREE from "three";
 import PlayerParticleSystem from "./playerParticleSystem";
 import { TextObject } from "./textObject";
+import WaterSplashParticleSystem from "./waterSplashParticleSystem";
 
 export class Player {
   constructor({ pos = { x: 40, y: 20, z: 0 }, sketch }) {
@@ -10,14 +11,23 @@ export class Player {
     //Player properties
     this.objName = "player";
     this.onGround = false;
-    this.particlesPermisionDuration = 0.15;
     this.jumpForce = 15;
-    this.speed = 7;
+    this.speed = 10;
     this.isWalking = false;
     this.scale = 2;
     this.deadLevel = -20;
     this.lastSafePosition = new Vector3();
     this.lastFallTime = 0;
+
+    this.canChangeToIdle = false;
+    this.timerWalkStarted = false;
+
+    this.waterSplashParticlesSettings = {
+      adjustParticlesZoneStart: 0,
+      adjustParticlesZoneEnd: -2,
+      showParticlesZoneStart: -3,
+      showParticlesZoneEnd: -7,
+    };
 
     this.mode = "freeWalk";
     this.moveEvent = [];
@@ -48,7 +58,6 @@ export class Player {
     const processColision = (otherObject, event) => {
       if (event !== "end" && this.object.body.velocity.y < 1) {
         this.onGround = true;
-        this.particlesPermision = this.currentTime();
         if (
           this.object.position.y > this.deadLevel &&
           this.currentTime() - this.lastFallTime > 2
@@ -63,11 +72,14 @@ export class Player {
     this.sensor.body.on.collision(processColision);
 
     this.playerParticleSystem = new PlayerParticleSystem(sketch);
+    this.playerParticleSystem.active = false;
+
+    this.waterSplashParticleSystem = new WaterSplashParticleSystem(sketch);
   }
 
   async initPlayerObject(pos, sketch) {
     await sketch.load
-      .gltf("/src/assets/models/player/playerRework.glb")
+      .gltf("/src/assets/models/player/Player.glb")
       .then((gltf) => {
         this.object = new ExtendedObject3D();
         // gltf.scene.children[0].geometry.center();
@@ -221,13 +233,69 @@ export class Player {
     sketch.physics.add.constraints.lock(this.object.body, this.sensor.body);
   }
 
-  update(KeyHandler) {
-    this.isWalking = false;
-    let showParticles = false;
-    let accrossVel = 0;
-    let straightVel = 0;
+  hitBoss(bossPos = THREE.Vector2) {
+    let directVec = bossPos
+      .clone()
+      .sub(this.object.position)
+      .normalize()
+      .multiplyScalar(30);
+    this.object.body.applyForceY(7);
+    this.object.body.setVelocityZ(directVec.z);
+    this.object.body.setVelocityX(directVec.x);
+    this.onGround = false;
+    this.playAnimation("Attack");
+    let DoJump = (params) => {
+      return this.checkJumpEnd(params.direction);
+    };
+    this.moveEvent.push({
+      func: (params) => {
+        return DoJump(params);
+      },
+      params: { direction: directVec },
+    });
+  }
 
-    let moveVec = new THREE.Vector3();
+  checkJumpEnd(empty) {
+    if (
+      Math.abs(this.object.body.velocity.x) +
+        Math.abs(this.object.body.velocity.z) <=
+      1
+    ) {
+      return true;
+    }
+  }
+
+  addReturnEvent(standPos = Vector3) {
+    this.moveEvent.push({
+      func: (standPos) => {
+        if (this.moveEvent.length <= 2) {
+          let moveX = standPos.x - this.object.position.x;
+          let moveZ = standPos.z - this.object.position.z;
+          let distance = new THREE.Vector2(moveX, moveZ);
+          if (distance.length() >= 1) {
+            let destination = standPos
+              .clone()
+              .sub(this.object.position)
+              .normalize()
+              .multiplyScalar((this.speed / 5) * distance.length());
+            if (distance.length() >= 2) {
+              this.moveVec.x = destination.x;
+              this.moveVec.z = destination.z;
+            }
+            this.object.body.setVelocityX(destination.x);
+            this.object.body.setVelocityZ(destination.z);
+            this.isWalking = true;
+          }
+        }
+      },
+      params: standPos,
+    });
+  }
+
+  update(KeyHandler, deltaTime) {
+    this.isWalking = false;
+
+    this.moveVec = new THREE.Vector3();
     if (this.object.position.y < this.deadLevel) {
       let tmpPosition = { ...this.lastSafePosition };
       tmpPosition.y += 3;
@@ -235,40 +303,51 @@ export class Player {
       this.lastFallTime = this.currentTime();
     }
 
-    this.object.body.setAngularVelocityY(0);
-    if (this.moveEvent.length > 0) {
-      this.moveEvent.forEach((element) => {
-        element.func(element.params);
-      });
+    let adjustWaterSplashPos = false;
+    let showWaterSplash = false;
+    if (
+      this.object.position.y <
+        this.waterSplashParticlesSettings.adjustParticlesZoneStart &&
+      this.object.position.y >
+        this.waterSplashParticlesSettings.adjustParticlesZoneEnd
+    ) {
+      adjustWaterSplashPos = true;
     }
 
+    if (
+      this.object.position.y <
+        this.waterSplashParticlesSettings.showParticlesZoneStart &&
+      this.object.position.y >
+        this.waterSplashParticlesSettings.showParticlesZoneEnd
+    ) {
+      showWaterSplash = true;
+    }
+
+    if (this.waterSplashParticleSystem) {
+      this.waterSplashParticleSystem.active = showWaterSplash;
+      this.waterSplashParticleSystem.update(
+        this.object.position,
+        adjustWaterSplashPos
+      );
+    }
+
+    this.object.body.setAngularVelocityY(0);
+    this.moveEvent = this.moveEvent.filter(
+      (element) => !element.func(element.params)
+    );
+
     if (this.mode == "freeWalk") {
-      if (KeyHandler.key.a.pressed) {
-        this.object.body.setVelocityX(-this.speed);
+      this.moveVec = KeyHandler.moveVector;
+      let speedVec = this.moveVec
+        .clone()
+        .normalize()
+        .multiplyScalar(this.speed);
+      if (this.moveVec.length() != 0) {
+        if (this.moveVec.x != 0) this.object.body.setVelocityX(speedVec.x);
+        if (this.moveVec.z != 0) this.object.body.setVelocityZ(speedVec.z);
         this.isWalking = true;
-        accrossVel = -1;
-        showParticles = true;
-        moveVec.x = -1;
-      } else if (KeyHandler.key.d.pressed) {
-        this.object.body.setVelocityX(this.speed);
-        this.isWalking = true;
-        accrossVel = 1;
-        showParticles = true;
-        moveVec.x = 1;
       }
-      if (KeyHandler.key.w.pressed) {
-        this.object.body.setVelocityZ(-this.speed);
-        this.isWalking = true;
-        straightVel = -1;
-        showParticles = true;
-        moveVec.z = -1;
-      } else if (KeyHandler.key.s.pressed) {
-        this.object.body.setVelocityZ(this.speed);
-        this.isWalking = true;
-        straightVel = 1;
-        showParticles = true;
-        moveVec.z = 1;
-      }
+
       if (KeyHandler.key.space.pressed && this.onGround == true) {
         this.object.body.applyForceY(this.jumpForce);
         this.onGround = false;
@@ -278,21 +357,11 @@ export class Player {
       }
     }
 
-    if (
-      this.currentTime() - this.particlesPermision >
-      this.particlesPermisionDuration
-    ) {
-      showParticles = false;
-    }
-
-    moveVec = moveVec.length() == 0 ? undefined : moveVec;
-    this.animateWalk(moveVec);
-
-    this.playerParticleSystem.active = showParticles;
+    this.animateWalk(this.moveVec, deltaTime);
 
     this.playerParticleSystem.update(
       this.object.position,
-      new Vector3(accrossVel, 0, straightVel)
+      new Vector3(this.moveVec.x, 0, this.moveVec.z)
     );
   }
 
@@ -300,25 +369,11 @@ export class Player {
     this.moveEvent.push({
       func: (objPos = new Vector3()) => {
         let lookVec = objPos.clone().sub(this.object.position);
-        let targAng = Math.atan(lookVec.x / lookVec.z);
-        if (lookVec.z < 0) {
-          targAng += Math.PI;
-        }
-        let rotAngle = this.calcShortestRot(
-          (this.object.world.theta * 180) / Math.PI,
-          (targAng * 180) / Math.PI
-        );
-
-        // console.log((rotAngle * Math.PI) / 180);
-        this.object.body.setAngularVelocityY(rotAngle / 10);
-        if (Math.abs(rotAngle) <= 4) return true;
+        this.moveVec.x = lookVec.x;
+        this.moveVec.z = lookVec.z;
       },
       params: objPos,
     });
-  }
-
-  rotateToObject(objPos = new Vector3()) {
-    // this.object.body.rotation.y = (rotAngle * Math.PI) / 180;
   }
 
   currentTime() {
@@ -327,17 +382,42 @@ export class Player {
     return currentDate.getTime() / 1000;
   }
 
-  animateWalk(moveVec) {
+  walkCanChange() {
+    this.canChangeToIdle = true;
+  }
+
+  animateWalk(moveVec, deltaTime) {
     if (this.isWalking && this.onGround == true) {
+      //Walk plays at least one time logic
+      if (this.canChangeToIdle == true && this.timerWalkStarted == false)
+        this.canChangeToIdle = false;
+      if (this.timerWalkStarted == false) {
+        setTimeout(() => this.walkCanChange(), 500);
+        this.timerWalkStarted = true;
+      }
+
       this.playAnimation("Walk");
+
+      //Particles Showing logic
+      this.playerParticleSystem.animateParticlesOnJump(deltaTime);
+
+      //Auto jump logic
       if (this.autoJump.isNear && this.autoJump.canJump) {
-        this.object.body.applyForceY(6);
+        this.object.body.applyForceY(10);
         this.onGround = false;
       }
-    } else if (!this.isWalking && this.onGround == true) {
+    } else if (
+      !this.isWalking &&
+      this.onGround == true &&
+      this.canChangeToIdle
+    ) {
       this.playAnimation("Idle");
+      this.playerParticleSystem.active = false;
+      this.timerWalkStarted = false;
     }
-    if (moveVec != undefined) {
+
+    //Rotating Player
+    if (moveVec.length() != 0) {
       let rotateAngle = Math.atan(moveVec.x / moveVec.z);
       rotateAngle = moveVec.z < 0 ? rotateAngle + Math.PI : rotateAngle;
       let rotateSpeed =
@@ -355,6 +435,8 @@ export class Player {
 
   playAnimation(animName) {
     if (this.object.anims.current !== animName) {
+      if (animName == "Walk") this.object.animationMixer.timeScale = 2;
+      else this.object.animationMixer.timeScale = 1;
       this.object.anims.play(animName);
     }
   }

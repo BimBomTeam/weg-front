@@ -8,9 +8,8 @@ import {
 import Stats from "stats.js";
 import { KeyHandler } from "./keyHandler";
 
-import { MyCamera } from "./myCamera";
 import { Player } from "./player";
-import { Vector3 } from "three";
+import { Vector2, Vector3 } from "three";
 
 import { CSS2DRenderer } from "three/addons/renderers/CSS2DRenderer.js";
 import { Water } from "three/examples/jsm/objects/Water.js";
@@ -18,6 +17,7 @@ import { Sky } from "three/examples/jsm/objects/Sky";
 import { TestCamera } from "./testCamera";
 import { CameraOperator } from "./cameraOperator";
 import { StandartNPC } from "./standartNPC";
+import { BossNPC } from "./bossNPC";
 
 let changeUiVisibilityTest;
 
@@ -56,6 +56,14 @@ class MainScene extends Scene3D {
     this.labelRenderer.domElement.style.position = "absolute";
     this.labelRenderer.domElement.style.top = "0px";
     document.body.appendChild(this.labelRenderer.domElement);
+
+    window.addEventListener("resize", (event) => {
+      this.renderer.setPixelRatio(window.devicePixelRatio);
+      this.renderer.setSize(window.innerWidth, window.innerHeight);
+      this.labelRenderer.setSize(window.innerWidth, window.innerHeight);
+      this.camOperator.camera.aspect = window.innerWidth / window.innerHeight;
+      this.camOperator.camera.updateProjectionMatrix();
+    });
   }
 
   initStats() {
@@ -74,10 +82,10 @@ class MainScene extends Scene3D {
     lights.directionalLight.shadow.mapSize.height = 2048; // default
     lights.directionalLight.shadow.camera.near = 0.01; // default
     lights.directionalLight.shadow.camera.far = 300; // default
-    lights.directionalLight.shadow.camera.top = -100; // default
-    lights.directionalLight.shadow.camera.right = 100; // default
-    lights.directionalLight.shadow.camera.left = -100; // default
-    lights.directionalLight.shadow.camera.bottom = 100; // default
+    lights.directionalLight.shadow.camera.top = -200; // default
+    lights.directionalLight.shadow.camera.right = 200; // default
+    lights.directionalLight.shadow.camera.left = -200; // default
+    lights.directionalLight.shadow.camera.bottom = 200; // default
   }
 
   async initWater() {
@@ -148,11 +156,23 @@ class MainScene extends Scene3D {
 
     this.setupPlayer();
     this.setupMap();
-    this.standNPC = new StandartNPC({
-      pos: { x: 38, y: 10, z: 10 },
+    this.bossNPC = new BossNPC({
+      pos: { x: 80, y: 10, z: 85 },
       sketch: this,
+      path: "/src/assets/models/Boss/Boss.glb",
     });
-
+    this.standNPC = new StandartNPC({
+      pos: { x: 20, y: 10, z: 0 },
+      sketch: this,
+      path: "/src/assets/models/Npcs/Npc5.glb",
+    });
+    this.standNPC2 = new StandartNPC({
+      pos: { x: 100, y: 10, z: 95 },
+      sketch: this,
+      path: "/src/assets/models/Npcs/Npc1.glb",
+      textObjectText: "Ivan Vanovycz",
+    });
+    await this.sleep(500);
     this.box = this.physics.add.box(
       {
         name: "box",
@@ -167,9 +187,10 @@ class MainScene extends Scene3D {
     );
     this.box.body.setAngularFactor(0, 0, 0);
   }
+  sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay));
 
   setupMap() {
-    this.load.gltf("/src/assets/models/map1/world2.glb").then((gltf) => {
+    this.load.gltf("/src/assets/models/map1/BigWorld.glb").then((gltf) => {
       this.floor = new ExtendedObject3D();
       this.floor.add(gltf.scene);
       this.floor.position.setZ(5);
@@ -194,47 +215,108 @@ class MainScene extends Scene3D {
     });
   }
 
+  startBattle(NPC = BossNPC) {
+    this.player.mode = "battle";
+    let playerReturnPos = this.player.object.position
+      .clone()
+      .sub(NPC.object.position)
+      .normalize()
+      .multiplyScalar(13)
+      .add(NPC.object.position);
+    this.player.addReturnEvent(playerReturnPos);
+    NPC.standPos = NPC.object.position.clone();
+    NPC.mode = "battle";
+    let adjustVec = this.player.object.position
+      .clone()
+      .sub(NPC.object.position)
+      .normalize()
+      .multiplyScalar(17);
+    let adjustVec2 = new Vector2(adjustVec.x, adjustVec.z);
+    adjustVec2.rotateAround(new Vector2(), Math.PI / 10);
+    this.camOperator.removeEvent("NPCzoomIn");
+    this.camOperator.addNPCzoomIn({
+      targetPos: NPC.object.position,
+      adjustPosition: new Vector3(adjustVec2.x, 3, adjustVec2.y),
+    });
+    setTimeout(() => this.player.hitBoss(NPC.object.position), 5000);
+    setTimeout(() => NPC.hitPlayer(this.player.object.position), 10000);
+    setTimeout(() => this.player.hitBoss(NPC.object.position), 15000);
+    setTimeout(() => this.player.hitBoss(NPC.object.position), 20000);
+  }
+
+  processInteraction(NPC = StandartNPC) {
+    if (NPC.mode == "prepToInteract" || NPC.mode == "interact") {
+      if (this.KeyHandler.key.e.click && this.player.mode == "freeWalk") {
+        this.player.mode = "interact";
+        NPC.mode = "interact";
+        this.player.addRotateEvent(NPC.object.position);
+        let NpcToPlayerVec = this.player.object.position
+          .clone()
+          .sub(NPC.object.position);
+        let x1 = this.camOperator.getDistancedVector2Fixed(
+          NpcToPlayerVec,
+          NPC.scale + 4,
+          Math.PI / 3.4
+        );
+        this.camOperator.addNPCzoomIn({
+          targetPos: NPC.object.position,
+          adjustPosition: new Vector3(x1.x, NPC.size.y * NPC.scale, x1.y),
+        });
+      }
+      if (this.KeyHandler.key.esc.click && this.player.mode == "interact") {
+        this.player.mode = "freeWalk";
+        this.player.moveEvent = [];
+        NPC.mode = "prepToInteract";
+
+        this.camOperator.addNPCzoomOut();
+      }
+    }
+  }
+
+  processBattle(NPC = BossNPC) {
+    if (NPC.mode == "prepToInteract" || NPC.mode == "interact") {
+      if (this.KeyHandler.key.e.click && this.player.mode == "interact") {
+        this.startBattle(NPC);
+      }
+    } else if (NPC.mode == "battle") {
+      NPC.updateBattle();
+      if (this.KeyHandler.key.esc.click && this.player.mode == "battle") {
+        this.player.mode = "interact";
+        // this.player.moveEvent = [];
+        // this.camOperator.addNPCzoomOut();
+        NPC.addEvents = [];
+        NPC.actionEvents = [];
+        NPC.mode = "prepToInteract";
+      }
+    }
+  }
+
   setupPlayer() {
-    let testPos = { x: 40, y: 30, z: 75 };
-    this.player = new Player({ sketch: this });
+    let testPos = { x: 80, y: 30, z: 85 };
+    this.player = new Player({ pos: testPos, sketch: this });
   }
 
   update(time, delta) {
     this.labelRenderer.render(this.scene, this.camera);
-    this.water.material.uniforms["time"].value += 1.0 / 240.0;
+    this.water.material.uniforms["time"].value += delta / 1000 / 2;
     this.stats.update();
 
     if (this.player.object && this.player.object.body) {
-      this.player.update(this.KeyHandler);
+      this.player.update(this.KeyHandler, delta);
       this.standNPC.update();
       this.standNPC.checkInteraction(this.player.object.position);
+      this.standNPC2.update();
+      this.standNPC2.checkInteraction(this.player.object.position);
+      this.bossNPC.update();
+      if (this.bossNPC.mode != "battle")
+        this.bossNPC.checkInteraction(this.player.object.position);
 
-      // this.camOperator.removeEvent("lerpToAngle");
+      this.processBattle(this.bossNPC);
+      this.processInteraction(this.standNPC);
+      this.processInteraction(this.standNPC2);
+      this.processInteraction(this.bossNPC);
 
-      if (this.standNPC.mode == "prepToInteract") {
-        if (this.KeyHandler.key.e.click && this.player.mode == "freeWalk") {
-          changeUiVisibilityTest(true);
-          this.player.mode = "interact";
-          this.player.addRotateEvent(this.standNPC.object.position);
-          this.camOperator.addNPCzoomIn({
-            targetPos: this.standNPC.object.position,
-            adjustPosition: new Vector3(3, 1, 8),
-          });
-        }
-        if (this.KeyHandler.key.esc.click && this.player.mode == "interact") {
-          changeUiVisibilityTest(false);
-          this.player.mode = "freeWalk";
-          this.player.moveEvent = [];
-          this.camOperator.addNPCzoomOut();
-        }
-      }
-      // this.camera.update(
-      //   this.player.object.position,
-      //   delta,
-      //   this.KeyHandler,
-      //   npcNearBy
-      // );
-      this.camOperator.update(delta, this.KeyHandler);
+      this.camOperator.update(delta);
       this.KeyHandler.update();
     }
   }
