@@ -182,7 +182,7 @@ class MainScene extends Scene3D {
       pos: { x: 100, y: 10, z: 95 },
       sketch: this,
       path: "/src/assets/models/Npcs/Npc1.glb",
-      textObjectText: rolesReduxArr[0].name,
+      // textObjectText: rolesReduxArr[0].name,
       gltf: this.modelLoader.modelsArray["npc1"],
     });
     this.npcArray = [this.bossNPC, this.standNPC, this.standNPC2];
@@ -239,6 +239,7 @@ class MainScene extends Scene3D {
 
   startBattle(NPC = BossNPC) {
     this.player.mode = "battle";
+    this.player.addRotateEvent(NPC.object.position);
     let playerReturnPos = this.player.object.position
       .clone()
       .sub(NPC.object.position)
@@ -269,6 +270,8 @@ class MainScene extends Scene3D {
   processInteraction(NPC = StandartNPC) {
     if (NPC.mode == "prepToInteract" || NPC.mode == "interact") {
       if (this.KeyHandler.key.e.click && this.player.mode == "freeWalk") {
+        //TODO: chat -true
+        //TODO: hint - false
         this.player.mode = "interact";
         NPC.mode = "interact";
         this.player.addRotateEvent(NPC.object.position);
@@ -286,6 +289,7 @@ class MainScene extends Scene3D {
         });
       }
       if (this.KeyHandler.key.esc.click && this.player.mode == "interact") {
+        //TODO: chat - false
         this.player.mode = "freeWalk";
         this.player.moveEvent = [];
         NPC.mode = "prepToInteract";
@@ -297,18 +301,21 @@ class MainScene extends Scene3D {
 
   processBattle(NPC = BossNPC) {
     if (NPC.mode == "prepToInteract" || NPC.mode == "interact") {
-      if (this.KeyHandler.key.e.click && this.player.mode == "interact") {
+      if (this.KeyHandler.key.e.click && this.player.mode == "freeWalk") {
+        //TODO : battleUI - true
+        //TODO : hint - false
         this.startBattle(NPC);
       }
     } else if (NPC.mode == "battle") {
       NPC.updateBattle();
       if (this.KeyHandler.key.esc.click && this.player.mode == "battle") {
-        this.player.mode = "interact";
-        // this.player.moveEvent = [];
-        // this.camOperator.addNPCzoomOut();
+        this.player.mode = "freeWalk";
+        //TODO : battleUI - false
+        this.player.moveEvent = [];
         NPC.addEvents = [];
         NPC.actionEvents = [];
         NPC.mode = "prepToInteract";
+        this.camOperator.addNPCzoomOut();
       }
     }
   }
@@ -336,14 +343,15 @@ class MainScene extends Scene3D {
       this.processBattle(this.bossNPC);
       this.processInteraction(this.standNPC);
       this.processInteraction(this.standNPC2);
-      this.processInteraction(this.bossNPC);
+      // this.processInteraction(this.bossNPC);
 
       this.camOperator.update(delta);
       this.KeyHandler.update();
     }
+    //TODO: hint showing logic
     changeNearNpcHintVisibility(
       this.npcArray.map((x) => x.mode).some((x) => x === "prepToInteract") &&
-        !this.npcArray.map((x) => x.mode).some((x) => x === "interact")
+        (this.player.mode !== "interact" || this.player.mode !== "battle")
     );
   }
 }
