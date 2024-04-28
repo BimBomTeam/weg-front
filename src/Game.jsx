@@ -16,7 +16,7 @@ const Game = () => {
   const dispatch = useDispatch();
   const game = useRef();
 
-  const [isDialog, setDialogUiVisibility] = useState(false);
+  const [isDialog, setDialogUiVisibility] = useState(true);
   // const [isBossConfirmationDialog, setBossDialogVisibility] = useState(false);
   const [isBossFight, setBossFightVisibility] = useState(false);
   const [isNearNpc, setNearNpc] = useState(false);
@@ -65,8 +65,9 @@ const Game = () => {
       <canvas id="webgl"></canvas>
       {isLoadedScene ? (
         <>
-          {tmp === true && <NearNpcHint />}
+          {tmp === false && <NearNpcHint />}
           {isBossFight && <UiBossFight />}
+          {isDialog && <UiMenu />}
           {isDialog || <UserInterface />}
           <ToastContainer position="top-center" closeOnClick={true} />
         </>

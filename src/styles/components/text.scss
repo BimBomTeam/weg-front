@@ -311,7 +311,7 @@ label[for="password-repeat-label"] {
 
 @media only screen and (min-width: 2100px) and (max-width: 2561px) {
   .isListening {
-    right: 45px;
+    right: 28px;
   }
   .message-container {
     position: relative;
@@ -344,7 +344,7 @@ label[for="password-repeat-label"] {
 
 @media only screen and (min-width: 1801px) and (max-width: 2100px) {
   .isListening {
-    right: 45px;
+    right: 25px;
   }
 
   #paragraph {
@@ -377,7 +377,7 @@ label[for="password-repeat-label"] {
 
 @media only screen and (min-width: 1281px) and (max-width: 1800px) {
   .isListening {
-    right: 45px;
+    right: 3%;
   }
 
   #paragraph {
@@ -391,5 +391,9 @@ label[for="password-repeat-label"] {
   }
 }
 
-
+@media only screen and (max-width: 900px) {
+  .isListening {
+    right: 5px;
+  }
+}
 
