@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSpring, animated } from "react-spring";
 
-const PressE = () => {
+const NearNpcHint = () => {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -21,4 +21,4 @@ const PressE = () => {
   );
 };
 
-export default PressE;
+export default NearNpcHint;

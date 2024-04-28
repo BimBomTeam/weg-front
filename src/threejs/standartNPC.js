@@ -9,9 +9,11 @@ export class StandartNPC {
     pos = { x: 10, y: 20, z: 10 },
     sketch,
     path,
+    gltf,
     scale = 2,
     objName = "NPC",
     textObjectText,
+    changeNearNpcVisibility,
   }) {
     this.objName = objName;
 
@@ -30,7 +32,7 @@ export class StandartNPC {
     // this.initObject(sketch, pos, path)
 
     this.textObjectText = textObjectText;
-    this.initObject(sketch, pos, path);
+    this.initObject(sketch, pos, path, gltf);
     this.updateCooldowns();
   }
 
@@ -42,59 +44,57 @@ export class StandartNPC {
         : this.moveCooldown - Math.random() * this.moveCooldownDelta;
   }
 
-  async initObject(sketch, pos, path) {
-    await sketch.load.gltf(path).then((gltf) => {
-      this.object = new ExtendedObject3D();
-      // gltf.scene.children[0].geometry.center();
-      gltf.scene.rotateY(Math.PI);
+  async initObject(sketch, pos, path, gltf) {
+    this.object = new ExtendedObject3D();
+    // gltf.scene.children[0].geometry.center();
+    gltf.scene.rotateY(Math.PI);
 
-      //Getting the size of Player glb object
-      let box = new THREE.Box3().setFromObject(gltf.scene);
-      this.size = box.getSize(new THREE.Vector3());
+    //Getting the size of Player glb object
+    let box = new THREE.Box3().setFromObject(gltf.scene);
+    this.size = box.getSize(new THREE.Vector3());
 
-      //Render setup
-      this.object.add(gltf.scene);
-      sketch.add.existing(this.object);
+    //Render setup
+    this.object.add(gltf.scene);
+    sketch.add.existing(this.object);
 
-      this.object.position.set(pos.x, pos.y, pos.z);
+    this.object.position.set(pos.x, pos.y, pos.z);
 
-      this.object.traverse((child) => {
-        if (child.isMesh) {
-          child.castShadow = child.receiveShadow = true;
-        }
-      });
+    this.object.traverse((child) => {
+      if (child.isMesh) {
+        child.castShadow = child.receiveShadow = true;
+      }
+    });
 
-      //Setting Player glb object scale
-      this.object.scale.set(this.scale, this.scale, this.scale);
+    //Setting Player glb object scale
+    this.object.scale.set(this.scale, this.scale, this.scale);
 
-      //Physics enabling
-      sketch.physics.add.existing(this.object, {
-        shape: "box",
-        mass: 1,
-        width: this.size.x,
-        height: this.size.y,
-        depth: this.size.z,
-        offset: {
-          x: 0,
-          y: (-this.size.y * this.scale) / 2 - sketch.worldMargin,
-          z: 0,
-        },
-      });
-      this.object.body.checkCollisions = true;
-      this.object.body.setAngularFactor(0, 0, 0);
-      this.object.body.setFriction(0.8);
+    //Physics enabling
+    sketch.physics.add.existing(this.object, {
+      shape: "box",
+      mass: 1,
+      width: this.size.x,
+      height: this.size.y,
+      depth: this.size.z,
+      offset: {
+        x: 0,
+        y: (-this.size.y * this.scale) / 2 - sketch.worldMargin,
+        z: 0,
+      },
+    });
+    this.object.body.checkCollisions = true;
+    this.object.body.setAngularFactor(0, 0, 0);
+    this.object.body.setFriction(0.8);
 
-      this.object.body.setCcdMotionThreshold(1);
-      this.object.body.setCcdSweptSphereRadius(0.25);
+    this.object.body.setCcdMotionThreshold(1);
+    this.object.body.setCcdSweptSphereRadius(0.25);
 
-      //Updating player initial position
-      // this.setPosition(pos);
+    //Updating player initial position
+    // this.setPosition(pos);
 
-      //Animation setup
-      sketch.animationMixers.add(this.object.anims.mixer);
-      gltf.animations.forEach((animation) => {
-        this.object.anims.add(animation.name, animation);
-      });
+    //Animation setup
+    sketch.animationMixers.add(this.object.anims.mixer);
+    gltf.animations.forEach((animation) => {
+      this.object.anims.add(animation.name, animation);
     });
     if (this.textObjectText) {
       this.textObject = new TextObject({

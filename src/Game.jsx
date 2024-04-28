@@ -3,7 +3,7 @@ import UiMenu from "./components/interactive-game-ui/UIiMenu";
 import GameScene from "./threejs/main";
 import UserInterface from "./components/user-interface/user-interface/UserInterface";
 import UiBossFight from "./components/interactive-game-ui/BossFightUI";
-import PressE from "./components/user-interface/user-interface/hints/pressE";
+import NearNpcHint from "./components/user-interface/user-interface/hints/NearNpcHint";
 import { ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
@@ -13,7 +13,7 @@ const Game = () => {
   useEffect(() => {
     // navigator(0);
     console.log("render game");
-    const game = new GameScene(changeUiVisibility);
+    const game = new GameScene(changeUiVisibility, changeNearNpcVisibility);
     console.log("after render game");
 
     // setTimeout(() => {
@@ -23,24 +23,27 @@ const Game = () => {
   }, []);
 
   const [isUi, setUi] = useState(false);
-  const [isEVisible, setIsEVisible] = useState(true);
+  const [isNearNpc, setNearNpc] = useState(false);
 
   const changeUiVisibility = (isVis) => {
     if (!isVis) {
       setTimeout(() => {
         setUi(false);
-        setIsEVisible(true);
+        setNearNpc(false);
       }, 500);
     } else {
       setUi(isVis);
-      setIsEVisible(false);
+      setNearNpc(false);
     }
+  };
+  const changeNearNpcVisibility = (isVis) => {
+    setNearNpc(isVis);
   };
 
   return (
     <>
       <canvas id="webgl"></canvas>
-      {isEVisible && <PressE />}
+      {isNearNpc && <NearNpcHint />}
       {isUi && <UiBossFight />}
       {isUi || <UserInterface />}
       <ToastContainer position="top-center" closeOnClick={true} />

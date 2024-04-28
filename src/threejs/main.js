@@ -19,7 +19,11 @@ import { CameraOperator } from "./cameraOperator";
 import { StandartNPC } from "./standartNPC";
 import { BossNPC } from "./bossNPC";
 
+import store from "../store/store";
+import { ModelLoader } from "./modelLoaderService";
+
 let changeUiVisibilityTest;
+let changeNearNpcHintVisibility;
 
 class MainScene extends Scene3D {
   constructor() {
@@ -154,25 +158,37 @@ class MainScene extends Scene3D {
     this.camera = new TestCamera();
     this.camOperator = new CameraOperator({ camera: this.camera });
 
+    const rolesReduxArr = JSON.parse(
+      store.getState().roles.roles.roles.replaceAll("\\", "")
+    );
+
+    const modelsPath = "/src/assets/models/";
+
     this.setupPlayer();
     this.setupMap();
+    this.modelLoader = new ModelLoader();
+    await this.modelLoader.loadModelsAsync(modelsPath, this);
+
     this.bossNPC = new BossNPC({
       pos: { x: 80, y: 10, z: 85 },
       sketch: this,
       path: "/src/assets/models/Boss/Boss.glb",
+      gltf: this.modelLoader.modelsArray["boss"],
     });
     this.standNPC = new StandartNPC({
       pos: { x: 20, y: 10, z: 0 },
       sketch: this,
       path: "/src/assets/models/Npcs/Npc5.glb",
+      gltf: this.modelLoader.modelsArray["npc5"],
     });
     this.standNPC2 = new StandartNPC({
       pos: { x: 100, y: 10, z: 95 },
       sketch: this,
       path: "/src/assets/models/Npcs/Npc1.glb",
-      textObjectText: "Ivan Vanovycz",
+      textObjectText: rolesReduxArr[0].name,
+      gltf: this.modelLoader.modelsArray["npc1"],
     });
-    await this.sleep(500);
+    this.npcArray = [this.bossNPC, this.standNPC, this.standNPC2];
     this.box = this.physics.add.box(
       {
         name: "box",
@@ -319,6 +335,10 @@ class MainScene extends Scene3D {
       this.camOperator.update(delta);
       this.KeyHandler.update();
     }
+    changeNearNpcHintVisibility(
+      this.npcArray.map((x) => x.mode).some((x) => x === "prepToInteract") &&
+        !this.npcArray.map((x) => x.mode).some((x) => x === "interact")
+    );
   }
 }
 
@@ -336,8 +356,9 @@ const config = {
 };
 
 export default class GameScene {
-  constructor(changeUIVisibility) {
+  constructor(changeUIVisibility, changeNearNpcVisibility) {
     changeUiVisibilityTest = changeUIVisibility;
+    changeNearNpcHintVisibility = changeNearNpcVisibility;
     this.test = null;
 
     console.log("test inside 2");
