@@ -21,7 +21,12 @@ import { BossNPC } from "./bossNPC";
 
 import store from "../store/store";
 import { ModelLoader } from "./modelLoaderService";
-import { setBossHit } from "../actions/interact";
+import {
+  setBossHit,
+  setBattleVisibility,
+  setChatVisibility,
+  setHintVisibility,
+} from "../actions/interact";
 
 let changeUiVisibilityTest;
 let changeNearNpcHintVisibility;
@@ -270,6 +275,8 @@ class MainScene extends Scene3D {
   processInteraction(NPC = StandartNPC) {
     if (NPC.mode == "prepToInteract" || NPC.mode == "interact") {
       if (this.KeyHandler.key.e.click && this.player.mode == "freeWalk") {
+        store.dispatch(setChatVisibility(true));
+        store.dispatch(setHintVisibility(false));
         //TODO: chat -true
         //TODO: hint - false
         this.player.mode = "interact";
@@ -289,6 +296,7 @@ class MainScene extends Scene3D {
         });
       }
       if (this.KeyHandler.key.esc.click && this.player.mode == "interact") {
+        setChatVisibility(false);
         //TODO: chat - false
         this.player.mode = "freeWalk";
         this.player.moveEvent = [];
@@ -302,6 +310,8 @@ class MainScene extends Scene3D {
   processBattle(NPC = BossNPC) {
     if (NPC.mode == "prepToInteract" || NPC.mode == "interact") {
       if (this.KeyHandler.key.e.click && this.player.mode == "freeWalk") {
+        store.dispatch(setBattleVisibility(true));
+        store.dispatch(setHintVisibility(false));
         //TODO : battleUI - true
         //TODO : hint - false
         this.startBattle(NPC);
@@ -310,6 +320,7 @@ class MainScene extends Scene3D {
       NPC.updateBattle();
       if (this.KeyHandler.key.esc.click && this.player.mode == "battle") {
         this.player.mode = "freeWalk";
+        setBattleVisibility(false);
         //TODO : battleUI - false
         this.player.moveEvent = [];
         NPC.addEvents = [];
@@ -349,9 +360,15 @@ class MainScene extends Scene3D {
       this.KeyHandler.update();
     }
     //TODO: hint showing logic
-    changeNearNpcHintVisibility(
+    console.log(
       this.npcArray.map((x) => x.mode).some((x) => x === "prepToInteract") &&
         (this.player.mode !== "interact" || this.player.mode !== "battle")
+    );
+    store.dispatch(
+      setHintVisibility(
+        this.npcArray.map((x) => x.mode).some((x) => x === "prepToInteract") &&
+          (this.player.mode !== "interact" || this.player.mode !== "battle")
+      )
     );
   }
 }

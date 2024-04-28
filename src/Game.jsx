@@ -8,6 +8,8 @@ import { ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { checkRoles } from "./actions/roles";
+import store from "./store/store";
+import { useSelector } from "react-redux";
 
 const Game = () => {
   const navigator = useNavigate();
@@ -16,9 +18,10 @@ const Game = () => {
 
   const [isDialog, setDialogUiVisibility] = useState(false);
   // const [isBossConfirmationDialog, setBossDialogVisibility] = useState(false);
-  const [isBossFight, setBossFightVisibility] = useState(true);
+  const [isBossFight, setBossFightVisibility] = useState(false);
   const [isNearNpc, setNearNpc] = useState(false);
   const [isLoadedScene, setIsLoadedScene] = useState(false);
+  const tmp = useSelector((store) => store.interact.isHintVisible);
 
   useEffect(() => {
     // navigator(0);
@@ -55,12 +58,14 @@ const Game = () => {
     setBossFightVisibility(isVis);
   };
 
+  console.log("is", tmp);
+
   return (
     <>
       <canvas id="webgl"></canvas>
       {isLoadedScene ? (
         <>
-          {isNearNpc && <NearNpcHint />}
+          {tmp === true && <NearNpcHint />}
           {isBossFight && <UiBossFight />}
           {isDialog || <UserInterface />}
           <ToastContainer position="top-center" closeOnClick={true} />

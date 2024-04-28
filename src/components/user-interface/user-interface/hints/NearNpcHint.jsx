@@ -12,14 +12,13 @@ const NearNpcHint = ({ isVisible }) => {
     transform: isVisible ? "translateY(0%)" : "translateY(120%)",
   });
 
-  if (isVisible)
-    return (
-      <div className="container">
-        <p id="paragraphLeft">Press</p>
-        <img src="/images/pressE.png" className="pressE" />
-        <p id="paragraphRight">to talk</p>
-      </div>
-    );
+  return (
+    <div className="container">
+      <p id="paragraphLeft">Press</p>
+      <img src="/images/pressE.png" className="pressE" />
+      <p id="paragraphRight">to talk</p>
+    </div>
+  );
   // else return <></>;
 };
 
