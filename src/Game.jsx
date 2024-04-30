@@ -4,11 +4,12 @@ import GameScene from "./threejs/main";
 import UserInterface from "./components/user-interface/user-interface/UserInterface";
 import UiBossFight from "./components/interactive-game-ui/BossFightUI";
 import NearNpcHint from "./components/user-interface/user-interface/hints/NearNpcHint";
+import store from "./store/store";
+import WelcomeModal from "./components/user-interface/user-interface/modals/WelcomeModal";
 import { ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { checkRoles } from "./actions/roles";
-import store from "./store/store";
 import { useSelector } from "react-redux";
 
 const Game = () => {
@@ -65,10 +66,11 @@ const Game = () => {
       <canvas id="webgl"></canvas>
       {isLoadedScene ? (
         <>
-          {tmp === false && <NearNpcHint />}
+          {tmp === true && <NearNpcHint />}
           {isBossFight && <UiBossFight />}
           {isDialog && <UiMenu />}
           {isDialog || <UserInterface />}
+          <WelcomeModal/>
           <ToastContainer position="top-center" closeOnClick={true} />
         </>
       ) : (

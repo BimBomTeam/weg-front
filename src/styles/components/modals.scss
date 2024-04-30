@@ -13,8 +13,29 @@
     backdrop-filter: blur(18px);
   }
   
-  .modal-background {
+.welcomeModal {
+    z-index: 2;
+    display: block;
     position: fixed;
+    top: 15%;
+    transform: translate(-50%, -50%);
+    width: 70%;
+    height: 70%;
+    border-radius: 50px;
+    background-color: $button-gradient-start;
+    color: $password-label-color;
+    backdrop-filter: blur(18px);
+}
+
+  .welcomeModal #welcomeText {
+    font-size: 20px;
+    padding-left: 5%;
+    padding-right: 5%;
+    word-wrap: break-word;
+  }
+
+  .modal-background {
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
@@ -24,4 +45,5 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    transition: opacity 0.3s ease-in-out;
   }
