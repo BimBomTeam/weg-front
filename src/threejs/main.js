@@ -21,16 +21,9 @@ import { BossNPC } from "./bossNPC";
 
 import store from "../store/store";
 import { ModelLoader } from "./modelLoaderService";
-import {
-  setBossHit,
-  setBattleVisibility,
-  setChatVisibility,
-  setHintVisibility,
-} from "../actions/interact";
+import { setBossHit, setUiState } from "../actions/interact";
+import { UiStates } from "../reducers/interactReducer";
 
-let changeUiVisibilityTest;
-let changeNearNpcHintVisibility;
-let changeBossFight;
 let sceneLoaded;
 
 class MainScene extends Scene3D {
@@ -275,8 +268,7 @@ class MainScene extends Scene3D {
   processInteraction(NPC = StandartNPC) {
     if (NPC.mode == "prepToInteract" || NPC.mode == "interact") {
       if (this.KeyHandler.key.e.click && this.player.mode == "freeWalk") {
-        store.dispatch(setChatVisibility(true));
-        store.dispatch(setHintVisibility(false));
+        store.dispatch(setUiState(UiStates.CHAT));
         //TODO: chat -true
         //TODO: hint - false
         this.player.mode = "interact";
@@ -296,7 +288,7 @@ class MainScene extends Scene3D {
         });
       }
       if (this.KeyHandler.key.esc.click && this.player.mode == "interact") {
-        setChatVisibility(false);
+        store.dispatch(setUiState(UiStates.NONE));
         //TODO: chat - false
         this.player.mode = "freeWalk";
         this.player.moveEvent = [];
@@ -310,8 +302,7 @@ class MainScene extends Scene3D {
   processBattle(NPC = BossNPC) {
     if (NPC.mode == "prepToInteract" || NPC.mode == "interact") {
       if (this.KeyHandler.key.e.click && this.player.mode == "freeWalk") {
-        store.dispatch(setBattleVisibility(true));
-        store.dispatch(setHintVisibility(false));
+        store.dispatch(setUiState(UiStates.FIGHT));
         //TODO : battleUI - true
         //TODO : hint - false
         this.startBattle(NPC);
@@ -320,7 +311,8 @@ class MainScene extends Scene3D {
       NPC.updateBattle();
       if (this.KeyHandler.key.esc.click && this.player.mode == "battle") {
         this.player.mode = "freeWalk";
-        setBattleVisibility(false);
+        store.dispatch(setUiState(UiStates.NONE));
+        // setBattleVisibility(false);
         //TODO : battleUI - false
         this.player.moveEvent = [];
         NPC.addEvents = [];
@@ -360,16 +352,15 @@ class MainScene extends Scene3D {
       this.KeyHandler.update();
     }
     //TODO: hint showing logic
-    console.log(
-      this.npcArray.map((x) => x.mode).some((x) => x === "prepToInteract") &&
-        (this.player.mode !== "interact" || this.player.mode !== "battle")
-    );
-    store.dispatch(
-      setHintVisibility(
-        this.npcArray.map((x) => x.mode).some((x) => x === "prepToInteract") &&
-          (this.player.mode !== "interact" || this.player.mode !== "battle")
-      )
-    );
+    if (this.npcArray.map((x) => x.mode).some((x) => x === "prepToInteract")) {
+      store.dispatch(setUiState(UiStates.HINT));
+    } else if (
+      this.player.mode !== "interact" &&
+      this.player.mode !== "battle"
+    ) {
+      store.dispatch(setUiState(UiStates.NONE));
+    } //else {
+    // }
   }
 }
 
@@ -387,15 +378,7 @@ const config = {
 };
 
 export default class GameScene {
-  constructor(
-    sceneLoadedProp,
-    changeUIVisibility,
-    changeNearNpcVisibility,
-    changeBossFightVisibility
-  ) {
-    changeUiVisibilityTest = changeUIVisibility;
-    changeNearNpcHintVisibility = changeNearNpcVisibility;
-    changeBossFight = changeBossFightVisibility;
+  constructor(sceneLoadedProp) {
     sceneLoaded = sceneLoadedProp;
 
     this.test = null;

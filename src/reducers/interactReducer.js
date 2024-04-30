@@ -1,8 +1,18 @@
+// import { UiStates } from "../enums/uiStates";
+
+export const UiStates = Object.freeze({
+  NONE: "None",
+  CHAT: "Chat",
+  FIGHT: "Fight",
+  HINT: "Hint",
+});
+
 const initialState = {
   bossHit: () => {},
   isHintVisible: false,
   isBattleVisibility: false,
   isChatVisibility: false,
+  uiState: UiStates.NONE,
 };
 
 const interactReducer = (state = initialState, action) => {
@@ -29,6 +39,12 @@ const interactReducer = (state = initialState, action) => {
       return {
         ...state,
         isChatVisibility: action.payload.visibility,
+      };
+    case "SET_UI_STATE":
+      if (state.uiState === action.payload.state) return state;
+      return {
+        ...state,
+        uiState: action.payload.state,
       };
     default:
       return state;

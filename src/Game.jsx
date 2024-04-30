@@ -10,6 +10,7 @@ import { useDispatch } from "react-redux";
 import { checkRoles } from "./actions/roles";
 import store from "./store/store";
 import { useSelector } from "react-redux";
+import { UiStates } from "./reducers/interactReducer";
 
 const Game = () => {
   const navigator = useNavigate();
@@ -21,18 +22,22 @@ const Game = () => {
   const [isBossFight, setBossFightVisibility] = useState(false);
   const [isNearNpc, setNearNpc] = useState(false);
   const [isLoadedScene, setIsLoadedScene] = useState(false);
-  const tmp = useSelector((store) => store.interact.isHintVisible);
+  const isHintVisible = useSelector((store) => store.interact.isHintVisible);
+  const uiState = useSelector((store) => store.interact.uiState);
 
   useEffect(() => {
-    // navigator(0);
-    dispatch(checkRoles());
+    async function loadScene() {
+      // navigator(0);
+      await dispatch(checkRoles());
 
-    game.current = new GameScene(
-      sceneLoaded,
-      changeUiVisibility,
-      changeNearNpcVisibility,
-      changeBossFightVisibility
-    );
+      game.current = new GameScene(
+        sceneLoaded,
+        changeUiVisibility,
+        changeNearNpcVisibility,
+        changeBossFightVisibility
+      );
+    }
+    loadScene();
   }, []);
 
   // useEffect(() => {}, [isLoadedScene]);
@@ -58,16 +63,30 @@ const Game = () => {
     setBossFightVisibility(isVis);
   };
 
-  console.log("is", tmp);
+  const renderUi = () => {
+    switch (uiState) {
+      case UiStates.CHAT:
+        return <UiMenu />;
+      case UiStates.FIGHT:
+        return <UiBossFight />;
+      case UiStates.HINT:
+        return (
+          <>
+            <UserInterface />
+            <NearNpcHint />
+          </>
+        );
+      default:
+        return <UserInterface />;
+    }
+  };
 
   return (
     <>
       <canvas id="webgl"></canvas>
       {isLoadedScene ? (
         <>
-          {tmp === true && <NearNpcHint />}
-          {isBossFight && <UiBossFight />}
-          {isDialog || <UserInterface />}
+          {renderUi()}
           <ToastContainer position="top-center" closeOnClick={true} />
         </>
       ) : (
