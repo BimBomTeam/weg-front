@@ -19,8 +19,5 @@ export default function POST_tokenAuth(token) {
       }
       return response.json();
     })
-    .then((data) => {
-
-    })
     .catch((error) => toast.error(`${error}`));
 }

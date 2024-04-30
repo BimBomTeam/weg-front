@@ -15,7 +15,6 @@ export default function POST_tokenAuth(roleId) {
       return response.json();
     })
     .then((data) => {
-      console.log("-->", data);
       return data;
     })
     .catch((error) => toast.error(`${error}`));

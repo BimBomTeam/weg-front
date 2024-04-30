@@ -18,6 +18,7 @@ export default function LogOut() {
       if (!response.ok) {
         localStorage.removeItem("access_token"); //delete the token from localstorage
         localStorage.removeItem("refresh_token"); //delete the token from localstorage
+        sessionStorage.clear();
         window.location.reload();
       }
       return response.json();

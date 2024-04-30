@@ -2,7 +2,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function TokenDecoding() {
-  //вероятно вызвать при ValidateToken.js
+  //вероятно вызвать при PreBuildChecker.js
   const token = localStorage.getItem("access_token");
 
   if (!token) {

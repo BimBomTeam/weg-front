@@ -7,7 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 import POST_tokenAuth from "../server/POST_tokenAuth";
 import { checkRoles } from "../../actions/roles";
 
-export default function ValidateToken() {
+export default function PreBuildChecker() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const token = useSelector((state) => state.auth.isAuthenticated);
@@ -28,6 +28,7 @@ export default function ValidateToken() {
       if (token) {
         POST_tokenAuth(); //TO-DO: наверника что-то будет возвращаться, в зависимости от чего пускаем/нет
         dispatch(checkRoles());
+        navigate("/game");
       } else {
         toast.error("Please login. Token expired");
         navigate("/login");
