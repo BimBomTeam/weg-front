@@ -105,7 +105,7 @@ label[for="login"] {
   height: 60px;
   overflow: hidden;
   font-family: "Roboto";
-  font-size: 45px;
+  font-size: 400px;
   color: $label-color;
   font-weight: bold;
 }
@@ -249,6 +249,8 @@ label[for="password-repeat-label"] {
   display: flex;
   justify-content: space-between;
   margin-bottom: 10px;
+  font-size: 20px;
+  font-family: 'Roboto-Bold';
 }
 
 .slider-wrapper {
@@ -311,7 +313,7 @@ label[for="password-repeat-label"] {
 
 @media only screen and (min-width: 2100px) and (max-width: 2561px) {
   .isListening {
-    right: 45px;
+    right: 28px;
   }
   .message-container {
     position: relative;
@@ -344,7 +346,7 @@ label[for="password-repeat-label"] {
 
 @media only screen and (min-width: 1801px) and (max-width: 2100px) {
   .isListening {
-    right: 45px;
+    right: 25px;
   }
 
   #paragraph {
@@ -377,7 +379,7 @@ label[for="password-repeat-label"] {
 
 @media only screen and (min-width: 1281px) and (max-width: 1800px) {
   .isListening {
-    right: 45px;
+    right: 3%;
   }
 
   #paragraph {
@@ -391,5 +393,9 @@ label[for="password-repeat-label"] {
   }
 }
 
-
+@media only screen and (max-width: 900px) {
+  .isListening {
+    right: 5px;
+  }
+}
 

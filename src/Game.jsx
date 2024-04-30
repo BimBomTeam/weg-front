@@ -4,11 +4,12 @@ import GameScene from "./threejs/main";
 import UserInterface from "./components/user-interface/user-interface/UserInterface";
 import UiBossFight from "./components/interactive-game-ui/BossFightUI";
 import NearNpcHint from "./components/user-interface/user-interface/hints/NearNpcHint";
+import store from "./store/store";
+import WelcomeModal from "./components/user-interface/user-interface/modals/WelcomeModal";
 import { ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { checkRoles } from "./actions/roles";
-import store from "./store/store";
 import { useSelector } from "react-redux";
 import { UiStates } from "./reducers/interactReducer";
 
@@ -17,7 +18,7 @@ const Game = () => {
   const dispatch = useDispatch();
   const game = useRef();
 
-  const [isDialog, setDialogUiVisibility] = useState(false);
+  const [isDialog, setDialogUiVisibility] = useState(true);
   // const [isBossConfirmationDialog, setBossDialogVisibility] = useState(false);
   const [isBossFight, setBossFightVisibility] = useState(false);
   const [isNearNpc, setNearNpc] = useState(false);
@@ -87,6 +88,7 @@ const Game = () => {
       {isLoadedScene ? (
         <>
           {renderUi()}
+          <WelcomeModal/>
           <ToastContainer position="top-center" closeOnClick={true} />
         </>
       ) : (
