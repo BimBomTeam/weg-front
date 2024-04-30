@@ -33,3 +33,12 @@ export const setChatVisibility = (visibility) => {
     },
   };
 };
+
+export const setUiState = (state) => {
+  return {
+    type: "SET_UI_STATE",
+    payload: {
+      state,
+    },
+  };
+};
