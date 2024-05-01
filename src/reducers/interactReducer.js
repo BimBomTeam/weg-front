@@ -41,7 +41,9 @@ const interactReducer = (state = initialState, action) => {
         isChatVisibility: action.payload.visibility,
       };
     case "SET_UI_STATE":
-      if (state.uiState === action.payload.state) return state;
+      if (state.uiState === action.payload.state) {
+        return state;
+      } 
       return {
         ...state,
         uiState: action.payload.state,

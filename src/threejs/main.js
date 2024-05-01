@@ -288,6 +288,14 @@ class MainScene extends Scene3D {
           adjustPosition: new Vector3(x1.x, NPC.size.y * NPC.scale, x1.y),
         });
       }
+
+      //--ts--начало
+      if (!this.isReduxDataGenerated) {
+        const reduxData = GenerateWordsById(3); //вместо 2 -> вызов метода с взятием роли у NPS (return int)
+        console.log("->", reduxData);
+        this.isReduxDataGenerated = true;
+      }
+
       if (this.KeyHandler.key.esc.click && this.player.mode == "interact") {
         store.dispatch(setUiState(UiStates.NONE));
         //TODO: chat - false
@@ -352,16 +360,21 @@ class MainScene extends Scene3D {
       this.camOperator.update(delta);
       this.KeyHandler.update();
     }
-    //TODO: hint showing logic
-    if (this.npcArray.map((x) => x.mode).some((x) => x === "prepToInteract")) {
-      store.dispatch(setUiState(UiStates.HINT));
-    } else if (
-      this.player.mode !== "interact" &&
-      this.player.mode !== "battle"
-    ) {
-      store.dispatch(setUiState(UiStates.NONE));
-    } //else {
-    // }
+
+    // Проверка изменения состояния интерфейса перед вызовом dispatch
+    const npcModes = this.npcArray.map((x) => x.mode);
+    const hintVisible = npcModes.includes("prepToInteract");
+    const uiState = hintVisible
+      ? UiStates.HINT
+      : this.player.mode === "battle"
+      ? UiStates.FIGHT
+      : UiStates.NONE;
+
+    if (uiState !== this.previousUiState) {
+      store.dispatch(setUiState(uiState));
+      this.previousUiState = uiState;
+      this.isReduxDataGenerated = false;
+    }
   }
 }
 

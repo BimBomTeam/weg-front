@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Outlet, useNavigate } from "react-router-dom";
-import { checkToken } from "../../actions/checkToken";
+import { checkToken, } from "../../actions/checkToken";
+import { checkRoles } from "../../actions/roles"
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import POST_tokenAuth from "../server/POST_tokenAuth";
@@ -26,13 +27,14 @@ export default function PreBuildChecker() {
     if (!loading) {
       if (token) {
         POST_tokenAuth(); //TO-DO: наверника что-то будет возвращаться, в зависимости от чего пускаем/нет
-        // dispatch(checkRoles());
+        dispatch(checkRoles());
+        navigate("/game");
       } else {
         toast.error("Please login. Token expired");
         navigate("/login");
       }
     }
-  }, [token, loading, dispatch]);
+  }, [token, loading, dispatch, navigate]);
 
   //--------TO-DO--------
   //Podczas pierwszego renderowania komponent uruchamia się 3 razy
