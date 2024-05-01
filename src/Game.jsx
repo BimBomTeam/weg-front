@@ -6,6 +6,7 @@ import UiBossFight from "./components/interactive-game-ui/BossFightUI";
 import NearNpcHint from "./components/user-interface/user-interface/hints/NearNpcHint";
 import store from "./store/store";
 import WelcomeModal from "./components/user-interface/user-interface/modals/WelcomeModal";
+import Loader from "./components/user-interface/user-interface/hints/Loader";
 import { ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -25,19 +26,19 @@ const Game = () => {
   const [isLoadedScene, setIsLoadedScene] = useState(false);
   const isHintVisible = useSelector((store) => store.interact.isHintVisible);
   const uiState = useSelector((store) => store.interact.uiState);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     async function loadScene() {
-      // navigator(0);
+      setIsLoading(true);
       await dispatch(checkRoles());
-
       game.current = new GameScene(
         sceneLoaded,
         changeUiVisibility,
         changeNearNpcVisibility,
         changeBossFightVisibility
       );
-    }
+    }    
     loadScene();
   }, []);
 
@@ -45,7 +46,9 @@ const Game = () => {
 
   const sceneLoaded = () => {
     setIsLoadedScene(true);
+    setIsLoading(false);
   };
+  
   const changeUiVisibility = (isVis) => {
     if (!isVis) {
       setTimeout(() => {
@@ -85,17 +88,18 @@ const Game = () => {
   return (
     <>
       <canvas id="webgl"></canvas>
-      {isLoadedScene ? (
+      {isLoading ? (
+        <Loader />
+      ) : (
         <>
           {renderUi()}
-          <WelcomeModal/>
+          <WelcomeModal />
           <ToastContainer position="top-center" closeOnClick={true} />
         </>
-      ) : (
-        <></>
       )}
     </>
   );
+  
 };
 
 export default Game;
