@@ -1,0 +1,11 @@
+.error, .error404 {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    padding-top: 15%;
+    background-color: $button-gradient-start;
+    backdrop-filter: blur(18px);
+    color: $label-color;
+}
