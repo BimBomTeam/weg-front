@@ -11,7 +11,7 @@ function App() {
     <Provider store={store}>
       <Router>
         <Routes>
-          <Route path="/" element={<ValidateToken />}>
+          <Route path="/" element={<PreBuildChecker />}>
             <Route index element={<Game />} />
             <Route path="/game" element={<Game />} />
             <Route path="/login" element={<Login />} />
