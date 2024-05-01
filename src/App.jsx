@@ -3,6 +3,7 @@ import Game from "./Game";
 import Login from "./components/user-interface/login/Login";
 import Register from "./components/user-interface/register/Register";
 import PreBuildChecker from "./logic/token/PreBuildChecker";
+import Error404 from "./components/user-interface/user-interface/hints/Error404";
 import { Provider } from "react-redux";
 import store from "./store/store";
 
@@ -17,6 +18,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
           </Route>
+          <Route path="*" element={<Error404 />} />
         </Routes>
       </Router>
     </Provider>
