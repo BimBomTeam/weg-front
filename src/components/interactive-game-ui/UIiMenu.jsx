@@ -1,8 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import "regenerator-runtime/runtime";
-import SpeechRecognition, {
-  useSpeechRecognition,
-} from "react-speech-recognition";
+import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognition";
 import { useSpring, animated } from "react-spring";
 import Dialog from "../../logic/Dialog";
 import { ToastContainer, toast } from "react-toastify";
@@ -10,13 +8,14 @@ import "react-toastify/dist/ReactToastify.css";
 
 const UiMenu = () => {
   const [text, setText] = useState("");
+  const [isWordCounterVisible, setIsWordCounterVisible] = useState(false);
   const textareaRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
   const [isButtonClicked, setIsButtonClicked] = useState(false);
   const [isExpandButtonClicked, setIsExpandButtonClicked] = useState(false);
   const [isButtonRotated, setIsButtonRotated] = useState(false);
   const [isListening, setIsListening] = useState(false);
-  const { transcript } = useSpeechRecognition({
+  const { transcript, resetTranscript } = useSpeechRecognition({
     continuous: true,
     language: "en-US",
   });
@@ -49,11 +48,26 @@ const UiMenu = () => {
   };
 
   const onButtonClick = async () => {
+    event.preventDefault();
+    if (!text) {
+      toast.error("Please enter text to send a message")
+      return;
+    }
+
+    if (text.split(/\s+/).length > 100) {
+      toast.error("Maximum word limit reached (100 words)");
+      return;
+    }
     setIsButtonClicked(true);
     setIsButtonRotated(true);
 
     await handleSendMessage();
     setText("");
+    setIsWordCounterVisible(false);
+  };
+
+  const resetTranscriptOnClick = () => {
+    resetTranscript();
   };
 
   useEffect(() => {
@@ -90,25 +104,28 @@ const UiMenu = () => {
   }, [text]);
 
   useEffect(() => {}, [isExpandButtonClicked]);
-
-  useEffect(() => {
-    const wordCount = transcript.trim().split(/\s+/).length;
-    if (transcript && wordCount <= 100) {
-      setText(transcript);
-    } else if (transcript && wordCount > 100) {
-      toast.error("Maximum word limit reached (100 words)");
+  
+useEffect(() => {
+  if (transcript) {
+    setText(transcript);
+    if (transcript.split(/\s+/).length >= 100) {
+      setIsWordCounterVisible(true);
+    } else {
+      setIsWordCounterVisible(false);
     }
-  }, [transcript]);
-
+  }
+}, [transcript]);
+  
   const onTextChange = (event) => {
     const inputText = event.target.value;
-    const wordCount = inputText.trim().split(/\s+/).length;
-    if (wordCount <= 100) {
-      setText(inputText);
+    setText(inputText);
+
+    if (inputText.split(/\s+/).length >= 100) {
+      setIsWordCounterVisible(true);
     } else {
-      toast.error("Maximum word limit reached (100 words)");
+      setIsWordCounterVisible(false);
     }
-  };
+  };  
 
   const onButtonClickExpand = () => {
     setIsButtonRotated(!isButtonRotated);
@@ -124,77 +141,85 @@ const UiMenu = () => {
     setIsListening(!isListening);
   };
 
+  function getStyles(name) {
+    return getComputedStyle(document.documentElement).getPropertyValue(name);
+  }
+
   const animationProps = useSpring({
     height: isExpandButtonClicked
       ? isButtonClicked
-        ? "250px"
-        : "850px"
+        ? `${getStyles("--animationProps_height_expanded_clicked_true")}`
+        : `${getStyles("--animationProps_height_expanded_unclicked_false")}`
       : isButtonClicked
-      ? "850px"
-      : "250px",
+      ? `${getStyles("--animationProps_height_unexpanded_clicked_false")}`
+      : `${getStyles("--animationProps_height_unexpanded_unclicked_true")}`,
     transform: isVisible
       ? isExpandButtonClicked
-        ? "translateY(0%)"
-        : "translateY(0%)"
-      : "translateY(120%)",
+        ? `${getStyles(
+            "--animationProps_transform_visible_expanded_clicked_true"
+          )}`
+        : `${getStyles(
+            "--animationProps_transform_visible_expanded_unclicked_false"
+          )}`
+      : `${getStyles("--animationProps_transform_invisible_true")}`,
     top: isExpandButtonClicked
       ? isButtonClicked
-        ? "70%"
-        : "8%"
+        ? `${getStyles("--animationProps_top_expanded_clicked_true")}`
+        : `${getStyles("--animationProps_top_expanded_unclicked_false")}`
       : isButtonClicked
-      ? "8%"
-      : "70%",
+      ? `${getStyles("--animationProps_top_unexpanded_clicked_false")}`
+      : `${getStyles("--animationProps_top_unexpanded_unclicked_true")}`,
   });
 
   const textareaAnimationProps = useSpring({
     marginTop:
       (isExpandButtonClicked && isButtonClicked) ||
       (!isExpandButtonClicked && !isButtonClicked)
-        ? "0px"
-        : "410px",
+        ? `${getStyles("--textareaAnimationProps_marginTop_true")}`
+        : `${getStyles("--textareaAnimationProps_marginTop_false")}`,
   });
 
   const buttonAnimationProps = useSpring({
     marginTop:
       (isExpandButtonClicked && isButtonClicked) ||
       (!isExpandButtonClicked && !isButtonClicked)
-        ? "0px"
-        : "210px",
+        ? `${getStyles("--buttonAnimationProps_marginTop_true")}`
+        : `${getStyles("--buttonAnimationProps_marginTop_false")}`,
   });
 
   const buttonVoiceProps = useSpring({
     marginTop:
       (isExpandButtonClicked && isButtonClicked) ||
       (!isExpandButtonClicked && !isButtonClicked)
-        ? "0px"
-        : "350px",
+        ? `${getStyles("--buttonVoiceProps_marginTop_true")}`
+        : `${getStyles("--buttonVoiceProps_marginTop_false")}`,
   });
 
   const isListeningProps = useSpring({
     marginTop:
       (isExpandButtonClicked && isButtonClicked) ||
       (!isExpandButtonClicked && !isButtonClicked)
-        ? "0px"
-        : "133px",
+        ? `${getStyles("--isListeningProps_marginTop_true")}`
+        : `${getStyles("--isListeningProps_marginTop_false")}`,
     width: isListening
       ? isButtonClicked
-        ? "45px"
-        : "45px"
+        ? `${getStyles("--isListeningProps_width_true_true")}`
+        : `${getStyles("--isListeningProps_width_true_false")}`
       : isListening
-      ? "45px"
-      : "0px",
+      ? `${getStyles("--isListeningProps_width_false_true")}`
+      : `${getStyles("--isListeningProps_width_false_false")}`,
   });
 
   const buttonExpandProps = useSpring({
     marginTop: isExpandButtonClicked
       ? isButtonClicked
-        ? "150px"
-        : "0px"
+        ? `${getStyles("--buttonExpandProps_marginTop_true")}`
+        : `${getStyles("--buttonExpandProps_marginTop_false")}`
       : isButtonClicked
-      ? "20px"
-      : "0px",
+        ? `${getStyles("--buttonExpandProps_marginTop_true")}`
+        : `${getStyles("--buttonExpandProps_marginTop_false")}`,
     transform: `rotate(${isButtonRotated ? 180 : 0}deg)`,
-    config: { duration: 200 },
+    config: { duration: 100 },
   });
 
   const messageContainerAnimationProps = useSpring({
@@ -220,6 +245,8 @@ const UiMenu = () => {
 
         <animated.div className="isListening" style={isListeningProps} />
 
+        {isWordCounterVisible && <p className="word-counter">{text.split(/\s+/).length}/100</p>}
+        
         <animated.textarea
           ref={textareaRef}
           placeholder="Write something.."
@@ -227,8 +254,14 @@ const UiMenu = () => {
           onChange={onTextChange}
           rows={5}
           style={textareaAnimationProps}
+          onKeyPress={(event) => {
+            if (event.key === 'Enter' && !event.shiftKey) {
+              event.preventDefault();
+              onButtonClick();
+              resetTranscriptOnClick();
+            }
+          }}
         />
-
         <animated.button
           className="voice_button"
           style={buttonVoiceProps}
@@ -239,7 +272,7 @@ const UiMenu = () => {
 
         <animated.button
           id="send"
-          onClick={onButtonClick}
+          onClick={() => {onButtonClick(); resetTranscriptOnClick()}}
           style={buttonAnimationProps}
         ></animated.button>
 

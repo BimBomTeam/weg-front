@@ -1,11 +1,27 @@
 import { Vector3 } from "three";
+import { ExtendedObject3D } from "enable3d";
+import * as THREE from "three";
+
+import { TextObject } from "./textObject";
 
 export class StandartNPC {
-  constructor({ pos = { x: 10, y: 20, z: 10 }, sketch }) {
+  constructor({
+    pos = { x: 10, y: 20, z: 10 },
+    sketch,
+    path,
+    gltf,
+    scale = 2,
+    objName = "NPC",
+    textObjectText,
+    changeNearNpcVisibility,
+  }) {
+    this.objName = objName;
+
     this.zoneRadius = 7;
     this.innitPos = pos;
     this.speed = 5;
     this.moveState = "stand";
+    this.scale = scale;
 
     this.interactionRadius = 7;
 
@@ -13,7 +29,10 @@ export class StandartNPC {
 
     this.moveCooldown = 1500;
     this.moveCooldownDelta = 300;
-    this.initObject(sketch, pos);
+    // this.initObject(sketch, pos, path)
+
+    this.textObjectText = textObjectText;
+    this.initObject(sketch, pos, path, gltf);
     this.updateCooldowns();
   }
 
@@ -25,21 +44,64 @@ export class StandartNPC {
         : this.moveCooldown - Math.random() * this.moveCooldownDelta;
   }
 
-  initObject(sketch, pos) {
-    this.object = sketch.physics.add.box(
-      {
-        x: pos.x,
-        y: pos.y,
-        z: pos.z,
-        name: "NPC",
-        width: 3,
-        depth: 3,
-        height: 3,
-        mass: 1,
+  async initObject(sketch, pos, path, gltf) {
+    this.object = new ExtendedObject3D();
+    // gltf.scene.children[0].geometry.center();
+    gltf.scene.rotateY(Math.PI);
+
+    //Getting the size of Player glb object
+    let box = new THREE.Box3().setFromObject(gltf.scene);
+    this.size = box.getSize(new THREE.Vector3());
+
+    //Render setup
+    this.object.add(gltf.scene);
+    sketch.add.existing(this.object);
+
+    this.object.position.set(pos.x, pos.y, pos.z);
+
+    this.object.traverse((child) => {
+      if (child.isMesh) {
+        child.castShadow = child.receiveShadow = true;
+      }
+    });
+
+    //Setting Player glb object scale
+    this.object.scale.set(this.scale, this.scale, this.scale);
+
+    //Physics enabling
+    sketch.physics.add.existing(this.object, {
+      shape: "box",
+      mass: 1,
+      width: this.size.x,
+      height: this.size.y,
+      depth: this.size.z,
+      offset: {
+        x: 0,
+        y: (-this.size.y * this.scale) / 2 - sketch.worldMargin,
+        z: 0,
       },
-      { phong: { color: 0x00ff00 } }
-    );
+    });
+    this.object.body.checkCollisions = true;
     this.object.body.setAngularFactor(0, 0, 0);
+    this.object.body.setFriction(0.8);
+
+    this.object.body.setCcdMotionThreshold(1);
+    this.object.body.setCcdSweptSphereRadius(0.25);
+
+    //Updating player initial position
+    // this.setPosition(pos);
+
+    //Animation setup
+    sketch.animationMixers.add(this.object.anims.mixer);
+    gltf.animations.forEach((animation) => {
+      this.object.anims.add(animation.name, animation);
+    });
+    if (this.textObjectText) {
+      this.textObject = new TextObject({
+        textContent: this.textObjectText,
+        targetObject: this.object,
+      });
+    }
   }
 
   update() {
@@ -57,18 +119,26 @@ export class StandartNPC {
         let moveX = this.destPoint.x - this.object.position.x;
         let moveZ = this.destPoint.z - this.object.position.z;
         this.rotate(this.moveVec);
-        //   console.log(moveX, "-", moveZ);
         if (Math.abs(moveX) + Math.abs(moveZ) <= 3) {
           this.moveState = "stand";
           this.updateCooldowns();
         }
       }
     }
+    if (this.textObject) {
+      if (this.mode == "freeRoam" || this.mode == "prepToInteract") {
+        this.textObject.changeVisibility(true);
+      } else {
+        this.textObject.changeVisibility(false);
+      }
+    }
   }
 
   checkInteraction(playerPos = new Vector3()) {
     if (playerPos.distanceTo(this.object.position) <= this.interactionRadius) {
-      this.mode = "prepToInteract";
+      if (this.mode == "freeRoam") {
+        this.mode = "prepToInteract";
+      }
       this.object.body.setVelocityX(0);
       this.object.body.setVelocityZ(0);
       this.rotate(playerPos.clone().sub(this.object.position));

@@ -1,11 +1,10 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useSpring, animated } from "react-spring";
-import AccountModal from './modals/AccountModal';
-import DifficultyModal from './modals/DifficultyModal';
-import ShopModal from './modals/ShopModal';
-import InstructionModal from './modals/InstructionModal';
-import SettingsModal from './modals/SettingsModal';
-
+import AccountModal from "./modals/AccountModal";
+import DifficultyModal from "./modals/DifficultyModal";
+import ShopModal from "./modals/ShopModal";
+import InstructionModal from "./modals/InstructionModal";
+import SettingsModal from "./modals/SettingsModal";
 
 const UserInterface = () => {
   const [expanded, setExpanded] = useState(false);
@@ -15,16 +14,55 @@ const UserInterface = () => {
   const [openInstructionModal, setOpenInstructionModal] = useState(false);
   const [openSettingsModal, setOpenSettingsModal] = useState(false);
 
+  function getStyles(name) {
+    return getComputedStyle(document.documentElement).getPropertyValue(name);
+  }
 
   const animationProps = useSpring({
-    height: expanded ? "520px" : "120px",
-    config: { duration: 150 },
+    height: expanded
+      ? `${getStyles("--animationProps_height_true")}`
+      : `${getStyles("--animationProps_height_false")}`,
+    config: { duration: 400 },
   });
 
-  const buttonAnimationProps = useSpring({
+  const accountButtonAnimationProps = useSpring({
     opacity: expanded ? 1 : 0,
     pointerEvents: expanded ? "auto" : "none",
-    config: { tension: 400, friction: 20 },
+
+    config: { tension: 700, friction: 30 },
+    delay: expanded ? 300 : 0,
+  });
+
+  const difficultyButtonAnimationProps = useSpring({
+    opacity: expanded ? 1 : 0,
+    pointerEvents: expanded ? "auto" : "none",
+
+    config: { tension: 700, friction: 30 },
+    delay: expanded ? 400 : 10,
+  });
+
+  const shopButtonAnimationProps = useSpring({
+    opacity: expanded ? 1 : 0,
+    pointerEvents: expanded ? "auto" : "none",
+
+    config: { tension: 700, friction: 30 },
+    delay: expanded ? 500 : 20,
+  });
+
+  const instructionButtonAnimationProps = useSpring({
+    opacity: expanded ? 1 : 0,
+    pointerEvents: expanded ? "auto" : "none",
+
+    config: { tension: 700, friction: 30 },
+    delay: expanded ? 600 : 50,
+  });
+
+  const settingsButtonAnimationProps = useSpring({
+    opacity: expanded ? 1 : 0,
+    pointerEvents: expanded ? "auto" : "none",
+
+    config: { tension: 700, friction: 30 },
+    delay: expanded ? 700 : 40,
   });
 
   return (
@@ -32,47 +70,49 @@ const UserInterface = () => {
       <animated.div className="user-interface" style={animationProps}>
         <animated.button
           className="expandMenu"
-          onClick={() => setExpanded(!expanded)}>
-        </animated.button>
+          onClick={() => setExpanded(!expanded)}
+        ></animated.button>
 
         <animated.button
           className="account"
-          style={buttonAnimationProps}
-          onClick={() => setOpenAccountModal(true)} >
-        </animated.button>
+          style={accountButtonAnimationProps}
+          onClick={() => setOpenAccountModal(true)}
+        ></animated.button>
 
         <animated.button
           className="difficulty"
-          style={buttonAnimationProps}
-          onClick={() => setOpenDifficultyModal(true)} >
-        </animated.button>
+          style={difficultyButtonAnimationProps}
+          onClick={() => setOpenDifficultyModal(true)}
+        ></animated.button>
 
         <animated.button
           className="shop"
-          style={buttonAnimationProps}
-          onClick={() => setOpenShopModal(true)} >
-        </animated.button>
+          style={shopButtonAnimationProps}
+          onClick={() => setOpenShopModal(true)}
+        ></animated.button>
 
         <animated.button
           className="instruction"
-          style={buttonAnimationProps}
-          onClick={() => setOpenInstructionModal(true)} >
-        </animated.button>
+          style={instructionButtonAnimationProps}
+          onClick={() => setOpenInstructionModal(true)}
+        ></animated.button>
 
         <animated.button
           className="settings"
-          style={buttonAnimationProps}
-          onClick={() => setOpenSettingsModal(true)} >
-        </animated.button>
+          style={settingsButtonAnimationProps}
+          onClick={() => setOpenSettingsModal(true)}
+        ></animated.button>
       </animated.div>
 
       {openAccountModal && <AccountModal closeModal={setOpenAccountModal} />}
-      {openDifficultyModal && <DifficultyModal closeModal={setOpenDifficultyModal} />}
+      {openDifficultyModal && (
+        <DifficultyModal closeModal={setOpenDifficultyModal} />
+      )}
       {openShopModal && <ShopModal closeModal={setOpenShopModal} />}
-      {openInstructionModal && <InstructionModal closeModal={setOpenInstructionModal} />}
+      {openInstructionModal && (
+        <InstructionModal closeModal={setOpenInstructionModal} />
+      )}
       {openSettingsModal && <SettingsModal closeModal={setOpenSettingsModal} />}
-
-
     </div>
   );
 };

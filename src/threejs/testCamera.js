@@ -58,14 +58,10 @@ export class TestCamera extends THREE.PerspectiveCamera {
       objectPosition.y + adjustPosition.y,
       objectPosition.z + adjustPosition.z
     );
-    // console.log("zooming");
-    // targetPosition.add(this.position);
-    // console.log(targetPosition);
     this.position.lerp(targetPosition, deltaTime * 0.0001 * cameraSpeed);
     let moveX = targetPosition.x - this.position.x;
     let moveY = targetPosition.y - this.position.y;
     let moveZ = targetPosition.z - this.position.z;
-    // console.log(moveX, moveY, moveZ);
     if (Math.abs(moveX) + Math.abs(moveY) + Math.abs(moveZ) <= 4) return true;
   }
 
@@ -78,15 +74,12 @@ export class TestCamera extends THREE.PerspectiveCamera {
     this.lookAt(objectPosition);
     let finalPos = new THREE.Quaternion().copy(this.quaternion);
     this.quaternion.copy(firstPos);
-    // let firstPos = new THREE.Quaternion().copy(this.quaternion);
     this.quaternion.slerpQuaternions(
       firstPos,
       finalPos,
       deltaTime * 0.0001 * cameraSpeed
     );
-    console.log("aga");
-    // console.log(this.quaternion.dot(finalPos));
-    if (this.quaternion.dot(finalPos) + 0.0001 >= 1) {
+    if (Math.abs(this.quaternion.dot(finalPos)) + 0.0001 >= 1) {
       return true;
     }
   }
@@ -95,23 +88,6 @@ export class TestCamera extends THREE.PerspectiveCamera {
     objectPosition = new THREE.Vector3(),
     { cameraSpeed = 10 }
   ) {
-    // let v1 = objectPosition.clone().sub(this.position);
-    // v1.normalize();
-
-    // var vector = new THREE.Vector3(0, 0, -1);
-    // vector.applyQuaternion(this.quaternion);
-
-    // //fast way to get camera look vector
-    // this.getWorldDirection(vector);
-
-    // let directionA = vector.clone();
-    // let directionB = v1.clone().normalize();
-
-    // let rotationAngle = Math.acos(directionA.dot(directionB));
-    // rotationAngle = this.lerp(0, rotationAngle, 0.01);
-
-    // let rotationAxis = directionA.clone().cross(directionB).normalize();
-    // this.rotateOnAxis(rotationAxis, rotationAngle);
     if (this.angleTmpData === undefined) {
       let firstPos = new THREE.Quaternion().copy(this.quaternion);
       this.lookAt(objectPosition);
@@ -125,12 +101,10 @@ export class TestCamera extends THREE.PerspectiveCamera {
       this.angleTmpData,
       deltaTime * 0.0001 * cameraSpeed
     );
-    // console.log(this.quaternion.dot(finalPos));
-    if (this.quaternion.dot(this.angleTmpData) + 0.0001 >= 1) {
+    if (Math.abs(this.quaternion.dot(this.angleTmpData)) + 0.0001 >= 1) {
       this.angleTmpData = undefined;
       return true;
     }
-    // console.log(firstPos, finalPos);
   }
 
   setTargetAngle(objectPosition = new THREE.Vector3()) {}

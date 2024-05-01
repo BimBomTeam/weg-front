@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSpring, animated } from 'react-spring';
+import Slider from '../DifficultySlider';
 
 function ModalBackground({ children, onClick, onKeyDown }) {
     const handleBackgroundClick = (event) => {
@@ -77,6 +78,9 @@ function DifficultyModal({ closeModal }) {
         <ModalBackground onClick={handleModalBackgroundClick} onKeyDown={handleModalKeyDown}>
             <animated.div className="modal" style={modalAnimation}>
                 <h1>Difficulty</h1>
+                <div className='slider'>
+                <Slider /> 
+                </div>
                 <button className="back-button" onClick={handleBackButtonClick}></button>
             </animated.div>
         </ModalBackground>

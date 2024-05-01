@@ -10,13 +10,13 @@ function App() {
   return (
     <Provider store={store}>
       <Router>
-        {/* дублируется потому что если убрать, игра будет продолжаться даже с отсутсвием токена */}
-        <PreBuildChecker />
         <Routes>
-          <Route path="/" element={<PreBuildChecker />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/game" element={<Game />} />
+          <Route path="/" element={<ValidateToken />}>
+            <Route index element={<Game />} />
+            <Route path="/game" element={<Game />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+          </Route>
         </Routes>
       </Router>
     </Provider>
