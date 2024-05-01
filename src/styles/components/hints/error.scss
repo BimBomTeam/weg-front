@@ -1,4 +1,4 @@
-.error, .error404 {
+.error, .error404, .loader-container{
     position: fixed;
     width: 100%;
     height: 100%;
@@ -8,4 +8,13 @@
     background-color: $button-gradient-start;
     backdrop-filter: blur(18px);
     color: $label-color;
+}
+
+.loader-container {
+    font-size: 50px;
+}
+
+.bouncing-dots {
+    transform: scale(3.0);
+    margin-bottom: 2%;
 }
