@@ -368,6 +368,8 @@ class MainScene extends Scene3D {
       ? UiStates.HINT
       : this.player.mode === "battle"
       ? UiStates.FIGHT
+      : this.player.mode === "interact"
+      ? UiStates.CHAT // Add CHAT (without it, the default value was called)
       : UiStates.NONE;
 
     if (uiState !== this.previousUiState) {
