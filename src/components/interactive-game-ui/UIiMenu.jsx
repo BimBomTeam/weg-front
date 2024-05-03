@@ -4,6 +4,7 @@ import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognitio
 import { useSpring, animated } from "react-spring";
 import Dialog from "../../logic/Dialog";
 import { ToastContainer, toast } from "react-toastify";
+import Words from "./Words";
 import "react-toastify/dist/ReactToastify.css";
 
 const UiMenu = () => {
@@ -275,8 +276,9 @@ useEffect(() => {
           onClick={() => {onButtonClick(); resetTranscriptOnClick()}}
           style={buttonAnimationProps}
         ></animated.button>
-
+        
         {(isButtonClicked || isExpandButtonClicked) && (
+          
           <animated.div
             className="message-container"
             style={messageContainerAnimationProps}
@@ -310,7 +312,10 @@ useEffect(() => {
 
               {showAnimation && <BouncingDotsAnimation />}
             </animated.div>
-          </animated.div>
+          </animated.div>         
+        )}
+        {(isButtonClicked || isExpandButtonClicked) && (
+           <Words />
         )}
       </animated.div>
       <ToastContainer position="top-center" closeOnClick={true} />

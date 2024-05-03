@@ -106,6 +106,31 @@
     transform: translateY(-10px);
   }
 }
+
+.words {
+  z-index: 2;
+  position: relative;
+  display: flex;
+  height: 5%;
+  width: 80%;
+  background-color: transparent;
+  margin-bottom: 5%;
+  align-items: center; 
+  justify-content: center; 
+}
+.word {
+  margin-left: 2%;
+  background: linear-gradient(to top, #F8F0F0 0%, #C2E9EE 100%);
+  font-size: 20px;
+  color: $label-color;
+  display: flex;
+  text-align: center;
+  align-items: center; 
+  justify-content: center; 
+  border-radius: 10px;
+  padding: 2%;
+}
+
 //----------------2560 x 1440 (QHD)----------------
 @media only screen and (min-width: 2562px){
   :root {
