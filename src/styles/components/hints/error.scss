@@ -14,7 +14,9 @@
     font-size: 50px;
 }
 
-.bouncing-dots {
+.loading-dots {
     transform: scale(3.0);
-    margin-bottom: 2%;
-}
+    display: inline-flex;
+    align-items: center;
+    margin-bottom: 3%;
+  }
