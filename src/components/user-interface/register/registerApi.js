@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 const registerApi = async (formData) => {
   try {
     const response = await fetch(
-      "https://193.122.12.41/api/Authenticate/register",
+      `${import.meta.env.VITE_URL}/Authenticate/register`,
       {
         method: "POST",
         headers: {
