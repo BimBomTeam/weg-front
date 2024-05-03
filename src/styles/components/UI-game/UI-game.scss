@@ -109,12 +109,11 @@
 
 .words {
   z-index: 2;
-  position: relative;
+  position: absolute;
   display: flex;
   height: 5%;
   width: 80%;
   background-color: transparent;
-  margin-bottom: 5%;
   align-items: center; 
   justify-content: center; 
 }
@@ -150,6 +149,12 @@
   .message-scroll {
     height: 120%;
   }
+  .words {
+    bottom: 20%;
+  }
+  .word {
+    font-size: 18px;
+  }
 }
 
 @media only screen and (min-width: 2101px) and (max-width: 2561px) {
@@ -171,6 +176,12 @@
   }
   .message-scroll {
     height: 95%;
+  }
+  .words {
+    bottom: 20%;
+  }
+  .word {
+    font-size: 25px;
   }
 }
 
@@ -197,6 +208,12 @@
   .message-scroll {
     height: 85%;
   }
+  .words {
+    bottom: 25%;
+  }
+  .word {
+    font-size: 21px;
+  }
 }
 //----------------1600 x 900 (HD+)----------------
 @media only screen and (min-width: 1281px) and (max-width: 1800px) {
@@ -218,6 +235,12 @@
   }
   .message-scroll {
     height: 95%;
+  }
+  .words {
+    bottom: 20%;
+  }
+  .word {
+    font-size: 18px;
   }
 }
 //----------------1280 x 800 (WXGA)----------------
@@ -242,6 +265,12 @@
   .message-scroll {
     height: 90%;
   }
+  .words {
+    bottom: 20%;
+  }
+  .word {
+    font-size: 15px;
+  }
 }
 
 @media only screen and (max-width: 900px) {
@@ -264,5 +293,11 @@
   }
   .message-scroll {
     height: 90%;
+  }
+  .words {
+    bottom: 20%;
+  }
+  .word {
+    font-size: 15px;
   }
 }
