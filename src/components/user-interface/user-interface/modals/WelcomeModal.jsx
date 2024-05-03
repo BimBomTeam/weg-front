@@ -30,7 +30,7 @@ function ModalBackground({ children, onClick, onKeyDown, active }) {
     );
 }
 
-function WelcomeModal({ closeModal }) {
+function WelcomeModal() {
     const [showModal, setShowModal] = useState(false);
 
     useEffect(() => {
@@ -51,11 +51,6 @@ function WelcomeModal({ closeModal }) {
     const modalAnimation = useSpring({
         transform: showModal ? 'translateY(0%)' : 'translateY(150%)',
         opacity: showModal ? 1 : 0,
-        onRest: () => {
-            if (!showModal) {
-                closeModal(false);
-            }
-        },
     });
 
     const handleBackButtonClick = () => {
