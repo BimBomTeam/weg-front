@@ -143,17 +143,17 @@
   .main-ui {
     width: 40%;
     textarea {
-      width: calc(100% - 22%);
+      width: calc(100% - 25%);
     }
   }
   .message-scroll {
     height: 120%;
   }
   .words {
-    bottom: 20%;
+    bottom: 13%;
   }
   .word {
-    font-size: 18px;
+    font-size: 24px;
   }
 }
 
@@ -178,7 +178,7 @@
     height: 95%;
   }
   .words {
-    bottom: 20%;
+    bottom: 25%;
   }
   .word {
     font-size: 25px;
@@ -237,6 +237,7 @@
     height: 95%;
   }
   .words {
+    left: 5%;
     bottom: 20%;
   }
   .word {
