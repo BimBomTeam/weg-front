@@ -83,7 +83,7 @@ const UiMenu = () => {
       "Hamburger",
       "Conditional",
       "Hard-working",
-      "Crocodile",
+      "Crocodileeeeeee",
     ]);
   }, []);
 
@@ -188,28 +188,12 @@ useEffect(() => {
       : `${getStyles("--animationProps_top_unexpanded_unclicked_true")}`,
   });
 
-  const textareaAnimationProps = useSpring({
-    marginTop:
-      (isExpandButtonClicked && isButtonClicked) ||
-      (!isExpandButtonClicked && !isButtonClicked)
-        ? `${getStyles("--textareaAnimationProps_marginTop_true")}`
-        : `${getStyles("--textareaAnimationProps_marginTop_false")}`,
-  });
-
   const buttonAnimationProps = useSpring({
     marginTop:
       (isExpandButtonClicked && isButtonClicked) ||
       (!isExpandButtonClicked && !isButtonClicked)
         ? `${getStyles("--buttonAnimationProps_marginTop_true")}`
         : `${getStyles("--buttonAnimationProps_marginTop_false")}`,
-  });
-
-  const buttonVoiceProps = useSpring({
-    marginTop:
-      (isExpandButtonClicked && isButtonClicked) ||
-      (!isExpandButtonClicked && !isButtonClicked)
-        ? `${getStyles("--buttonVoiceProps_marginTop_true")}`
-        : `${getStyles("--buttonVoiceProps_marginTop_false")}`,
   });
 
   const isListeningProps = useSpring({
@@ -264,13 +248,12 @@ useEffect(() => {
 
         {isWordCounterVisible && <p className="word-counter">{text.split(/\s+/).length}/100</p>}
         
-        <animated.textarea
+        <textarea
           ref={textareaRef}
           placeholder="Write something.."
           value={text}
           onChange={onTextChange}
           rows={5}
-          style={textareaAnimationProps}
           onKeyPress={(event) => {
             if (event.key === 'Enter' && !event.shiftKey) {
               event.preventDefault();
@@ -279,19 +262,17 @@ useEffect(() => {
             }
           }}
         />
-        <animated.button
+        <button
           className="voice_button"
-          style={buttonVoiceProps}
           onClick={toggleListening}
         >
           {isListening ? "" : ""}
-        </animated.button>
+        </button>
 
-        <animated.button
+        <button
           id="send"
           onClick={() => {onButtonClick(); resetTranscriptOnClick()}}
-          style={buttonAnimationProps}
-        ></animated.button>
+        ></button>
         
         {(isButtonClicked || isExpandButtonClicked) && (
           
