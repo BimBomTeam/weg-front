@@ -4,7 +4,7 @@ import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognitio
 import { useSpring, animated } from "react-spring";
 import Dialog from "../../logic/Dialog";
 import { ToastContainer, toast } from "react-toastify";
-import Words from "./Words";
+import WordButton from "./WordButton";
 import "react-toastify/dist/ReactToastify.css";
 
 const UiMenu = () => {
@@ -22,6 +22,7 @@ const UiMenu = () => {
   });
   const [messages, setMessages] = useState([]);
   const [showAnimation] = useState(false);
+  const [words, setWords] = useState([]);
 
   const handleSendMessage = async () => {
     try {
@@ -67,9 +68,24 @@ const UiMenu = () => {
     setIsWordCounterVisible(false);
   };
 
+  const onWordClick = (text) => {
+    console.log(text);  // TODO: Logic -----------------------------------
+  };
+
   const resetTranscriptOnClick = () => {
     resetTranscript();
   };
+
+  useEffect(() => {
+    setIsVisible(true);
+    setWords([
+      "Elephant",
+      "Hamburger",
+      "Conditional",
+      "Hard-working",
+      "Crocodile",
+    ]);
+  }, []);
 
   useEffect(() => {
     setIsVisible(true);
@@ -315,7 +331,15 @@ useEffect(() => {
           </animated.div>         
         )}
         {(isButtonClicked || isExpandButtonClicked) && (
-           <Words />
+
+          <animated.div className="words">
+           {words.map((word, idx) => {
+             return (
+               <WordButton text={word} onClick={onWordClick} key={idx} />
+             );
+           })}
+         </animated.div>
+         
         )}
       </animated.div>
       <ToastContainer position="top-center" closeOnClick={true} />
