@@ -1,32 +1,43 @@
 import { useState, useEffect } from "react";
 import { useSpring, animated } from "react-spring";
 
-const Words = ({ text, onClick }) => {
+const WordButton = ({ text, learned, onClick }) => {
+  const [toggle, setToggle] = useState(false);
 
-    const [toggle, setToggle] = useState(false);
+  const onHandleClick = () => {
+    onClick(text);
+  };
 
-    const onHandleClick = () => {
-        onClick(text);
-    };
+  // Animacja pojawiania się przycisku
+  const { opacity } = useSpring({
+    opacity: toggle ? 1 : 0,
+    config: { duration: 500 }
+  });
 
-    const { opacity } = useSpring({
-        opacity: toggle ? 1 : 0,
-        config: { duration: 500 }
-      });
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setToggle(true);
+    }, 200);
 
-      useEffect(() => {
-        const timeout = setTimeout(() => {
-            setToggle(true);
-        }, 200);
-      
-        return () => clearTimeout(timeout);
-      }, []); 
+    return () => clearTimeout(timeout);
+  }, []);
 
-    return (
-        <animated.button style={{ opacity }} className="word" onClick={onHandleClick}>
-            {text}
-        </animated.button>
-    );
-}
 
-export default Words;
+  const isLearned = learned || false;
+
+  const buttonStyle = {
+    background: isLearned ? "linear-gradient(45deg, #F8F0F0 0%, #74FF8A 100%)" : "linear-gradient(45deg, #F8F0F0 0%, #C2E9EE 100%)",
+  };
+
+  return (
+    <animated.button
+      style={{ ...buttonStyle, opacity }}
+      className="word"
+      onClick={onHandleClick}
+    >
+      {text}
+    </animated.button>
+  );
+};
+
+export default WordButton;
