@@ -7,11 +7,6 @@ import Error404 from "./components/user-interface/user-interface/hints/Error404"
 import { Provider } from "react-redux";
 import store from "./store/store";
 
-function createPath(path) {
-  const { VITE_BASE_URL } = import.meta.env;
-  return `${VITE_BASE_URL}${path}`;
-}
-
 function App() {
   return (
     <Provider store={store}>

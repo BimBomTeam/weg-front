@@ -157,7 +157,7 @@ class MainScene extends Scene3D {
       store.getState().roles.roles.roles.replaceAll("\\", "")
     );
 
-    const modelsPath = "/src/assets/models/";
+    const modelsPath = "/public/assets/models/";
 
     this.setupPlayer();
     this.setupMap();
