@@ -157,7 +157,7 @@ class MainScene extends Scene3D {
       store.getState().roles.roles.roles.replaceAll("\\", "")
     );
 
-    const modelsPath = "/public/lib/models/";
+    const modelsPath = "/lib/models/";
     this.modelLoader = new ModelLoader();z
     await this.modelLoader.loadModelsAsync(modelsPath, this);
 
@@ -403,7 +403,7 @@ export default class GameScene {
     this.test = null;
 
     window.addEventListener("load", () => {
-      PhysicsLoader("/public/lib/ammo/kripken", () => {
+      PhysicsLoader("/lib/ammo/kripken", () => {
         this.test = new Project(config);
         // sceneLoadedProp();
       });
