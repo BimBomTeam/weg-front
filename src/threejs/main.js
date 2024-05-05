@@ -157,12 +157,12 @@ class MainScene extends Scene3D {
       store.getState().roles.roles.roles.replaceAll("\\", "")
     );
 
-    const modelsPath = "/lib/models/";
+    const modelsPath = "/public/lib/models/";
+    this.modelLoader = new ModelLoader();z
     await this.modelLoader.loadModelsAsync(modelsPath, this);
 
     this.setupPlayer();
     this.setupMap();
-    this.modelLoader = new ModelLoader();
 
     this.bossNPC = new BossNPC({
       pos: { x: 80, y: 10, z: 85 },
@@ -403,7 +403,7 @@ export default class GameScene {
     this.test = null;
 
     window.addEventListener("load", () => {
-      PhysicsLoader("/lib/ammo/kripken", () => {
+      PhysicsLoader("/public/lib/ammo/kripken", () => {
         this.test = new Project(config);
         // sceneLoadedProp();
       });
