@@ -22,12 +22,10 @@ input[type="text"] {
 }
 
 textarea {
-  position: fixed;
+  position: absolute;
   left: 2%;
   bottom: 20px;
-  height: 100%;
   border-radius: 10px;
-  padding-right: 200px;
   resize: none;
   padding: 1%;
   padding-right: 10%;
@@ -288,16 +286,16 @@ label[for="password-repeat-label"] {
 
 @media only screen and (min-width: 2561px) {
   .user-label {
-    font-size: 25px;
+    font-size: 23px;
   }
   .user-message {
-    font-size: 25px;
+    font-size: 23px;
   }
   .npc-message {
-    font-size: 25px;
+    font-size: 23px;
   }
   .npc-label {
-    font-size: 25px;
+    font-size: 23px;
   }
   .instruction_content {
     font-size: 20px;
@@ -323,24 +321,24 @@ label[for="password-repeat-label"] {
   }
   
   .user-label {
-    font-size: 25px;
+    font-size: 22px;
   }
 
   .user-message {
-    font-size: 25px;
+    font-size: 22px;
   }
   .npc-message {
-    font-size: 25px;
+    font-size: 22px;
   }
 
   .npc-label {
-    font-size: 25px;
+    font-size: 22px;
   }
   .instruction_content {
-    font-size: 28px;
+    font-size: 25px;
   }
   textarea {
-    font-size: 25px;
+    font-size: 20px;
   }
 }
 
@@ -356,24 +354,24 @@ label[for="password-repeat-label"] {
   }
 
   .user-label {
-    font-size: 25px;
+    font-size: 20px;
   }
 
   .user-message {
-    font-size: 25px;
+    font-size: 20px;
   }
   .npc-message {
-    font-size: 25px;
+    font-size: 20px;
   }
 
   .npc-label {
-    font-size: 25px;
+    font-size: 20px;
   }
   .instruction_content {
-    font-size: 28px;
+    font-size: 23px;
   }
   textarea {
-    font-size: 25px;
+    font-size: 20px;
   }
 }
 
