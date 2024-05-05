@@ -158,11 +158,11 @@ class MainScene extends Scene3D {
     );
 
     const modelsPath = "/lib/models/";
+    await this.modelLoader.loadModelsAsync(modelsPath, this);
 
     this.setupPlayer();
     this.setupMap();
     this.modelLoader = new ModelLoader();
-    await this.modelLoader.loadModelsAsync(modelsPath, this);
 
     this.bossNPC = new BossNPC({
       pos: { x: 80, y: 10, z: 85 },
@@ -211,29 +211,28 @@ class MainScene extends Scene3D {
   sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay));
 
   setupMap() {
-    this.load.gltf("/src/assets/models/map1/BigWorld.glb").then((gltf) => {
-      this.floor = new ExtendedObject3D();
-      this.floor.add(gltf.scene);
-      this.floor.position.setZ(5);
-      this.floor.position.setX(-5);
-      const scale = 5;
-      this.floor.scale.set(scale, scale, scale);
+    const gltf = this.modelLoader.modelsArray["map"];
+    this.floor = new ExtendedObject3D();
+    this.floor.add(gltf.scene);
+    this.floor.position.setZ(5);
+    this.floor.position.setX(-5);
+    const scale = 5;
+    this.floor.scale.set(scale, scale, scale);
 
-      this.floor.traverse((child) => {
-        if (child.isMesh) {
-          child.castShadow = child.receiveShadow = true;
-        }
-      });
-      this.add.existing(this.floor);
-      this.physics.add.existing(this.floor, {
-        shape: "concave",
-        mass: 0,
-        margin: this.worldMargin,
-      });
-      this.floor.body.setFriction(1);
-      this.floor.body.checkCollisions = true;
-      this.floor.name = "floor";
+    this.floor.traverse((child) => {
+      if (child.isMesh) {
+        child.castShadow = child.receiveShadow = true;
+      }
     });
+    this.add.existing(this.floor);
+    this.physics.add.existing(this.floor, {
+      shape: "concave",
+      mass: 0,
+      margin: this.worldMargin,
+    });
+    this.floor.body.setFriction(1);
+    this.floor.body.checkCollisions = true;
+    this.floor.name = "floor";
   }
 
   startBattle(NPC = BossNPC) {
@@ -334,7 +333,11 @@ class MainScene extends Scene3D {
 
   setupPlayer() {
     let testPos = { x: 80, y: 30, z: 85 };
-    this.player = new Player({ pos: testPos, sketch: this });
+    this.player = new Player({
+      pos: testPos,
+      gltf: this.modelLoader.modelsArray["player"],
+      sketch: this,
+    });
   }
 
   update(time, delta) {
