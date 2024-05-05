@@ -6,7 +6,7 @@ import { TextObject } from "./textObject";
 import WaterSplashParticleSystem from "./waterSplashParticleSystem";
 
 export class Player {
-  constructor({ pos = { x: 40, y: 20, z: 0 }, sketch }) {
+  constructor({ pos = { x: 40, y: 20, z: 0 }, gltf, sketch }) {
     this.sketch = sketch;
     //Player properties
     this.objName = "player";
@@ -32,11 +32,11 @@ export class Player {
     this.mode = "freeWalk";
     this.moveEvent = [];
 
-    this.initPlayer(pos, sketch);
+    this.initPlayer(pos, gltf, sketch);
   }
 
-  async initPlayer(pos, sketch) {
-    await this.initPlayerObject(pos, sketch);
+  async initPlayer(pos, gltf, sketch) {
+    await this.initPlayerObject(pos, gltf, sketch);
 
     sketch.camOperator.setTargetObject(this.object);
     sketch.camOperator.addEvent("lerpToAngle", {
@@ -77,62 +77,58 @@ export class Player {
     this.waterSplashParticleSystem = new WaterSplashParticleSystem(sketch);
   }
 
-  async initPlayerObject(pos, sketch) {
-    await sketch.load
-      .gltf("/src/assets/models/player/Player.glb")
-      .then((gltf) => {
-        this.object = new ExtendedObject3D();
-        // gltf.scene.children[0].geometry.center();
-        gltf.scene.rotateY(Math.PI);
+  async initPlayerObject(pos, gltf, sketch) {
+    this.object = new ExtendedObject3D();
+    // gltf.scene.children[0].geometry.center();
+    gltf.scene.rotateY(Math.PI);
 
-        //Getting the size of Player glb object
-        let box = new THREE.Box3().setFromObject(gltf.scene);
-        this.size = box.getSize(new THREE.Vector3());
+    //Getting the size of Player glb object
+    let box = new THREE.Box3().setFromObject(gltf.scene);
+    this.size = box.getSize(new THREE.Vector3());
 
-        //Render setup
-        this.object.add(gltf.scene);
-        sketch.add.existing(this.object);
+    //Render setup
+    this.object.add(gltf.scene);
+    sketch.add.existing(this.object);
 
-        this.object.position.set(pos.x, pos.y, pos.z);
+    this.object.position.set(pos.x, pos.y, pos.z);
 
-        this.object.traverse((child) => {
-          if (child.isMesh) {
-            child.castShadow = child.receiveShadow = true;
-          }
-        });
+    this.object.traverse((child) => {
+      if (child.isMesh) {
+        child.castShadow = child.receiveShadow = true;
+      }
+    });
 
-        //Setting Player glb object scale
-        this.object.scale.set(this.scale, this.scale, this.scale);
+    //Setting Player glb object scale
+    this.object.scale.set(this.scale, this.scale, this.scale);
 
-        //Physics enabling
-        sketch.physics.add.existing(this.object, {
-          shape: "box",
-          mass: 1,
-          width: 1,
-          height: this.size.y,
-          depth: 1,
-          offset: {
-            x: 0,
-            y: (-this.size.y * this.scale) / 2 - sketch.worldMargin,
-            z: 0,
-          },
-        });
-        this.object.body.checkCollisions = true;
-        this.object.body.setAngularFactor(0, 0, 0);
-        this.object.body.setFriction(0.8);
+    //Physics enabling
+    sketch.physics.add.existing(this.object, {
+      shape: "box",
+      mass: 1,
+      width: 1,
+      height: this.size.y,
+      depth: 1,
+      offset: {
+        x: 0,
+        y: (-this.size.y * this.scale) / 2 - sketch.worldMargin,
+        z: 0,
+      },
+    });
+    this.object.body.checkCollisions = true;
+    this.object.body.setAngularFactor(0, 0, 0);
+    this.object.body.setFriction(0.8);
 
-        this.object.body.setCcdMotionThreshold(1);
-        this.object.body.setCcdSweptSphereRadius(0.25);
+    this.object.body.setCcdMotionThreshold(1);
+    this.object.body.setCcdSweptSphereRadius(0.25);
 
-        //Updating player initial position
-        // this.setPosition(pos);
+    //Updating player initial position
+    // this.setPosition(pos);
 
-        //Animation setup
-        sketch.animationMixers.add(this.object.anims.mixer);
-        gltf.animations.forEach((animation) => {
-          this.object.anims.add(animation.name, animation);
-        });
-      });
+    //Animation setup
+    sketch.animationMixers.add(this.object.anims.mixer);
+    gltf.animations.forEach((animation) => {
+      this.object.anims.add(animation.name, animation);
+    });
   }
 
   setPosition(newPos) {
