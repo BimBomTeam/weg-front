@@ -164,12 +164,12 @@ class MainScene extends Scene3D {
     this.standNPC = new StandartNPC({
       pos: { x: 20, y: 10, z: 0 },
       sketch: this,
-      path: "/src/assets/models/Npcs/Npc5.glb",
+      path: "/src/assets/models/Npcs/NPC5.glb",
     });
     this.standNPC2 = new StandartNPC({
       pos: { x: 100, y: 10, z: 95 },
       sketch: this,
-      path: "/src/assets/models/Npcs/Npc1.glb",
+      path: "/src/assets/models/Npcs/NPC1.glb",
       textObjectText: "Ivan Vanovycz",
     });
     await this.sleep(500);
