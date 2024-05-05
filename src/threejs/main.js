@@ -101,7 +101,7 @@ class MainScene extends Scene3D {
       textureWidth: 512,
       textureHeight: 512,
       waterNormals: new THREE.TextureLoader().load(
-        "src/assets/water/waternormals.jpg",
+        "/lib/water/waternormals.jpg",
         function (texture) {
           texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
           texture.needsUpdate = true;
