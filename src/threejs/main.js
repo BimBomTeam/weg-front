@@ -400,7 +400,7 @@ export default class GameScene {
     this.test = null;
 
     window.addEventListener("load", () => {
-      PhysicsLoader("/src/threejs/lib/ammo/kripken", () => {
+      PhysicsLoader("/public/lib/ammo/kripken", () => {
         this.test = new Project(config);
         // sceneLoadedProp();
       });
