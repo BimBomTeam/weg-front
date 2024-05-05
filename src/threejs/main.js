@@ -158,7 +158,7 @@ class MainScene extends Scene3D {
     );
 
     const modelsPath = "/lib/models/";
-    this.modelLoader = new ModelLoader();z
+    this.modelLoader = new ModelLoader();
     await this.modelLoader.loadModelsAsync(modelsPath, this);
 
     this.setupPlayer();
