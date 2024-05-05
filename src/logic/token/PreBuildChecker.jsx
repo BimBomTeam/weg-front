@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Outlet, useNavigate } from "react-router-dom";
-import { checkToken, } from "../../actions/checkToken";
-import { checkRoles } from "../../actions/roles"
+import { checkToken } from "../../actions/checkToken";
+import { checkRoles } from "../../actions/roles";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import POST_tokenAuth from "../server/POST_tokenAuth";
@@ -12,6 +12,7 @@ export default function PreBuildChecker() {
   const dispatch = useDispatch();
   const token = useSelector((state) => state.auth.isAuthenticated);
   const [loading, setLoading] = useState(true);
+  const NonTokenLinks = ["/register", "/login"]
 
   useEffect(() => {
     dispatch(checkToken());
@@ -26,12 +27,15 @@ export default function PreBuildChecker() {
   useEffect(() => {
     if (!loading) {
       if (token) {
-        POST_tokenAuth(); //TO-DO: наверника что-то будет возвращаться, в зависимости от чего пускаем/нет
+        POST_tokenAuth(); //TO-DO: наверняка что-то будет возвращаться, в зависимости от чего пускаем/нет
         dispatch(checkRoles());
         navigate("/game");
       } else {
-        toast.error("Please login. Token expired");
-        navigate("/login");
+        const currentPath = window.location.pathname;
+        if (!NonTokenLinks.includes(currentPath)) {
+          toast.error("Please login. Token expired");
+          navigate("/login");
+        }
       }
     }
   }, [token, loading, dispatch, navigate]);
