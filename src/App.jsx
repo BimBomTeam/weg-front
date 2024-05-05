@@ -7,12 +7,17 @@ import Error404 from "./components/user-interface/user-interface/hints/Error404"
 import { Provider } from "react-redux";
 import store from "./store/store";
 
+function createPath(path) {
+  const { VITE_BASE_URL } = import.meta.env;
+  return `${VITE_BASE_URL}${path}`;
+}
+
 function App() {
   return (
     <Provider store={store}>
       <Router>
         <Routes>
-          <Route path="/" element={<PreBuildChecker />}>
+          <Route path={createPath('')} element={<PreBuildChecker />}>
             <Route index element={<Game />} />
             <Route path="/game" element={<Game />} />
             <Route path="/login" element={<Login />} />
