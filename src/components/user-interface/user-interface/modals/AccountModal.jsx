@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useSpring, animated } from 'react-spring';
+import LogOut from '../../../../logic/LogOut';
 
 function ModalBackground({ children, onClick, onKeyDown }) {
     const handleBackgroundClick = (event) => {
-        if (event.target === event.currentTarget) { // Sprawdź, czy kliknięcie nastąpiło na tle modalu, a nie na jego dzieciach
-            onClick(); // Wywołaj funkcję obsługi kliknięcia przekazaną z komponentu nadrzędnego
+        if (event.target === event.currentTarget) { 
+            onClick();
         }
     };
 
     const handleBackgroundKeyDown = (event) => {
-        onKeyDown(event); // Przekazuje zdarzenie onKeyDown do komponentu nadrzędnego
+        onKeyDown(event);
     };
 
     return (
@@ -78,6 +79,7 @@ function AccountModal({ closeModal }) {
             <animated.div className="modal" style={modalAnimation}>
                 <h1>Account</h1>
                 <button className="back-button" onClick={handleBackButtonClick}></button>
+                <button className="logout" onClick={() => LogOut()}>Wyloguj</button>
             </animated.div>
         </ModalBackground>
     );

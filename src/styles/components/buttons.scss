@@ -185,6 +185,7 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
   width: 200px;
   height: 100px;
   margin-top: 10%;
+  border: none;
   border-radius: 60px;
   font-size: 25px;
   color: $input-placeholder-color;
@@ -201,6 +202,23 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
   display: block;
   height: 75px;
   width: 10%;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+  background: linear-gradient(135deg, $button-gradient-start, $button-gradient-end), $button-default-color;
+  font-size: 26px;
+  font-family: 'Roboto';
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin: 0 auto;
+  margin-top: 2%;
+}
+
+.logout {
+  position: relative;
+  display: block;
+  height: auto;
+  width: 40%;
   padding: 10px 20px;
   border: none;
   border-radius: 20px;
