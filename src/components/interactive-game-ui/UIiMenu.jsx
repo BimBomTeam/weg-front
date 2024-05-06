@@ -1,13 +1,14 @@
 import { useState, useRef, useEffect } from "react";
 import "regenerator-runtime/runtime";
-import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognition";
+import SpeechRecognition, {
+  useSpeechRecognition,
+} from "react-speech-recognition";
 import { useSpring, animated } from "react-spring";
 import Dialog from "../../logic/Dialog";
 import { ToastContainer, toast } from "react-toastify";
 import WordButton from "./WordButton";
 import "react-toastify/dist/ReactToastify.css";
 import { useSelector } from "react-redux";
-
 
 const UiMenu = () => {
   const [text, setText] = useState("");
@@ -25,40 +26,8 @@ const UiMenu = () => {
   const [messages, setMessages] = useState([]);
   const [showAnimation] = useState(false);
   const [words, setWords] = useState([]);
-  const checkWordsPayload = useSelector(state => state.words);
-  const testWords = [
-    {
-      "id": 1,
-      "name": "XYZ",
-      "learned": false,
-      "roleId": 2
-    },
-    {
-      "id": 2,
-      "name": "Second word",
-      "learned": true,
-      "roleId": 2
-    },
-    {
-      "id": 3,
-      "name": "VEEEEEEEEEEEEEEEEEEERY LOOOOONG",
-      "learned": true,
-      "roleId": 2
-    },
-    {
-      "id": 4,
-      "name": "Short",
-      "learned": false,
-      "roleId": 2
-    },
-    {
-      "id": 5,
-      "name": "Thats all.",
-      "learned": true,
-      "roleId": 2
-    }
-  ];
-
+  let checkWordsPayload = useSelector((state) => state.words);
+  const wordsArray = JSON.parse(checkWordsPayload.words.words);
   const handleSendMessage = async () => {
     try {
       const data = await Dialog(text);
@@ -87,7 +56,7 @@ const UiMenu = () => {
   const onButtonClick = async () => {
     event.preventDefault();
     if (!text) {
-      toast.error("Please enter text to send a message")
+      toast.error("Please enter text to send a message");
       return;
     }
 
@@ -104,7 +73,7 @@ const UiMenu = () => {
   };
 
   const onWordClick = (text) => {
-    console.log(text);  // TODO: Logic -----------------------------------
+    console.log(text); // TODO: Logic -----------------------------------
   };
 
   const resetTranscriptOnClick = () => {
@@ -113,8 +82,6 @@ const UiMenu = () => {
 
   useEffect(() => {
     setIsVisible(true);
-    const wordNames = testWords.map(word => word.name);
-    setWords(wordNames);
   }, []);
 
   useEffect(() => {
@@ -150,7 +117,7 @@ const UiMenu = () => {
     }
   }, [text]);
 
-  useEffect(() => { }, [isExpandButtonClicked]);
+  useEffect(() => {}, [isExpandButtonClicked]);
 
   useEffect(() => {
     if (transcript) {
@@ -198,30 +165,30 @@ const UiMenu = () => {
         ? `${getStyles("--animationProps_height_expanded_clicked_true")}`
         : `${getStyles("--animationProps_height_expanded_unclicked_false")}`
       : isButtonClicked
-        ? `${getStyles("--animationProps_height_unexpanded_clicked_false")}`
-        : `${getStyles("--animationProps_height_unexpanded_unclicked_true")}`,
+      ? `${getStyles("--animationProps_height_unexpanded_clicked_false")}`
+      : `${getStyles("--animationProps_height_unexpanded_unclicked_true")}`,
     transform: isVisible
       ? isExpandButtonClicked
         ? `${getStyles(
-          "--animationProps_transform_visible_expanded_clicked_true"
-        )}`
+            "--animationProps_transform_visible_expanded_clicked_true"
+          )}`
         : `${getStyles(
-          "--animationProps_transform_visible_expanded_unclicked_false"
-        )}`
+            "--animationProps_transform_visible_expanded_unclicked_false"
+          )}`
       : `${getStyles("--animationProps_transform_invisible_true")}`,
     top: isExpandButtonClicked
       ? isButtonClicked
         ? `${getStyles("--animationProps_top_expanded_clicked_true")}`
         : `${getStyles("--animationProps_top_expanded_unclicked_false")}`
       : isButtonClicked
-        ? `${getStyles("--animationProps_top_unexpanded_clicked_false")}`
-        : `${getStyles("--animationProps_top_unexpanded_unclicked_true")}`,
+      ? `${getStyles("--animationProps_top_unexpanded_clicked_false")}`
+      : `${getStyles("--animationProps_top_unexpanded_unclicked_true")}`,
   });
 
   const buttonAnimationProps = useSpring({
     marginTop:
       (isExpandButtonClicked && isButtonClicked) ||
-        (!isExpandButtonClicked && !isButtonClicked)
+      (!isExpandButtonClicked && !isButtonClicked)
         ? `${getStyles("--buttonAnimationProps_marginTop_true")}`
         : `${getStyles("--buttonAnimationProps_marginTop_false")}`,
   });
@@ -229,7 +196,7 @@ const UiMenu = () => {
   const isListeningProps = useSpring({
     marginTop:
       (isExpandButtonClicked && isButtonClicked) ||
-        (!isExpandButtonClicked && !isButtonClicked)
+      (!isExpandButtonClicked && !isButtonClicked)
         ? `${getStyles("--isListeningProps_marginTop_true")}`
         : `${getStyles("--isListeningProps_marginTop_false")}`,
     width: isListening
@@ -237,8 +204,8 @@ const UiMenu = () => {
         ? `${getStyles("--isListeningProps_width_true_true")}`
         : `${getStyles("--isListeningProps_width_true_false")}`
       : isListening
-        ? `${getStyles("--isListeningProps_width_false_true")}`
-        : `${getStyles("--isListeningProps_width_false_false")}`,
+      ? `${getStyles("--isListeningProps_width_false_true")}`
+      : `${getStyles("--isListeningProps_width_false_false")}`,
   });
 
   const buttonExpandProps = useSpring({
@@ -247,8 +214,8 @@ const UiMenu = () => {
         ? `${getStyles("--buttonExpandProps_marginTop_true")}`
         : `${getStyles("--buttonExpandProps_marginTop_false")}`
       : isButtonClicked
-        ? `${getStyles("--buttonExpandProps_marginTop_true")}`
-        : `${getStyles("--buttonExpandProps_marginTop_false")}`,
+      ? `${getStyles("--buttonExpandProps_marginTop_true")}`
+      : `${getStyles("--buttonExpandProps_marginTop_false")}`,
     transform: `rotate(${isButtonRotated ? 180 : 0}deg)`,
     config: { duration: 100 },
   });
@@ -276,7 +243,9 @@ const UiMenu = () => {
 
         <animated.div className="isListening" style={isListeningProps} />
 
-        {isWordCounterVisible && <p className="word-counter">{text.split(/\s+/).length}/100</p>}
+        {isWordCounterVisible && (
+          <p className="word-counter">{text.split(/\s+/).length}/100</p>
+        )}
 
         <textarea
           ref={textareaRef}
@@ -285,27 +254,26 @@ const UiMenu = () => {
           onChange={onTextChange}
           rows={5}
           onKeyPress={(event) => {
-            if (event.key === 'Enter' && !event.shiftKey) {
+            if (event.key === "Enter" && !event.shiftKey) {
               event.preventDefault();
               onButtonClick();
               resetTranscriptOnClick();
             }
           }}
         />
-        <button
-          className="voice_button"
-          onClick={toggleListening}
-        >
+        <button className="voice_button" onClick={toggleListening}>
           {isListening ? "" : ""}
         </button>
 
         <button
           id="send"
-          onClick={() => { onButtonClick(); resetTranscriptOnClick() }}
+          onClick={() => {
+            onButtonClick();
+            resetTranscriptOnClick();
+          }}
         ></button>
 
         {(isButtonClicked || isExpandButtonClicked) && (
-
           <animated.div
             className="message-container"
             style={messageContainerAnimationProps}
@@ -341,21 +309,18 @@ const UiMenu = () => {
             </animated.div>
           </animated.div>
         )}
+
         {(isButtonClicked || isExpandButtonClicked) && (
-
           <animated.div className="words">
-            {testWords.map((word, idx) => {
-              return (
-                <WordButton
-                  text={word.name}
-                  learned={word.learned}
-                  onClick={onWordClick}
-                  key={idx}
-                />
-              );
-            })}
+            {wordsArray.map((item) => (
+              <WordButton
+                text={item.name}
+                learned={item.state}
+                onClick={() => onWordClick(item.id)}
+                key={item.id}
+              />
+            ))}
           </animated.div>
-
         )}
       </animated.div>
       <ToastContainer position="top-center" closeOnClick={true} />
