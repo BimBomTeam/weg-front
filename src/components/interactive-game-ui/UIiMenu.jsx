@@ -29,8 +29,52 @@ const UiMenu = () => {
   const [messages, setMessages] = useState([]);
   const [showAnimation] = useState(false);
   const [words, setWords] = useState([]);
-  let checkWordsPayload = useSelector((state) => state.words);
-  const wordsArray = JSON.parse(checkWordsPayload.words.words);
+
+  const checkWordsPayload = useSelector((state) => state.words);
+
+  useEffect(() => {
+    setIsVisible(true);
+    setIsButtonClicked(false);
+    setWords(JSON.parse(checkWordsPayload.words.words));
+  }, []);
+
+  useEffect(() => {
+    if (!isVisible) {
+      setText("");
+    }
+
+    const handleEsc = (event) => {
+      if (event.keyCode === 27) {
+        setIsVisible(false);
+        setIsButtonClicked(false);
+        setIsExpandButtonClicked(false);
+      }
+    };
+
+    window.addEventListener("keydown", handleEsc);
+
+    return () => {
+      window.removeEventListener("keydown", handleEsc);
+    };
+  }, [isVisible]);
+
+  useEffect(() => {
+    if (!text && textareaRef.current) {
+      textareaRef.current.style.height = "auto";
+    }
+  }, [text]);
+
+  useEffect(() => {
+    if (transcript) {
+      setText(transcript);
+      if (transcript.split(/\s+/).length >= 100) {
+        setIsWordCounterVisible(true);
+      } else {
+        setIsWordCounterVisible(false);
+      }
+    }
+  }, [transcript]);
+
   const handleSendMessage = async () => {
     try {
       const data = await POST_continueDialog({
@@ -53,7 +97,6 @@ const UiMenu = () => {
         npcMessage.animation = false;
         setMessages((prevMessages) => [...prevMessages]);
       }, 100);
-
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -85,7 +128,6 @@ const UiMenu = () => {
   const resetTranscriptOnClick = () => {
     resetTranscript();
   };
-
   useEffect(() => {
     (async function startDialog() {
       const data = await POST_startDialog({
@@ -329,7 +371,7 @@ const UiMenu = () => {
 
         {(isButtonClicked || isExpandButtonClicked) && (
           <animated.div className="words">
-            {wordsArray.map((item) => (
+            {words.map((item) => (
               <WordButton
                 text={item.name}
                 learned={item.state}

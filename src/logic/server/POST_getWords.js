@@ -1,7 +1,7 @@
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-export default function POST_tokenAuth(roleId) {
+export default function POST_getWords(roleId) {
   return fetch(`${import.meta.env.VITE_URL}/Words/get-words/${roleId}`, {
     method: "POST",
     headers: {
