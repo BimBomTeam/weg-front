@@ -24,3 +24,15 @@
     font-size: 35px;
     color: $input-placeholder-color;;
 }
+@media only screen and (max-width: 900px) {
+    .container p
+    {
+       font-size: 30px;  
+    }
+}
+@media only screen and (max-width: 800px) {
+    .container p
+    {
+       font-size: 25px;      
+    }
+}

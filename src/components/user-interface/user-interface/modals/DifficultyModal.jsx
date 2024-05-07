@@ -86,7 +86,7 @@ function DifficultyModal({ closeModal }) {
             <animated.div className="modal" style={modalAnimation}>
                 <h1>Difficulty</h1>
                 <div className='slider'>
-                    <Slider onConfirm={handleConfirmSlider}/> {/* Dodajemy props onConfirm i przekazujemy funkcję handleConfirmSlider */}
+                    <Slider onConfirm={handleConfirmSlider}/> {}
                 </div>
                 <button className="back-button" onClick={handleBackButtonClick}></button>
             </animated.div>
