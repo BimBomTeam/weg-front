@@ -7,6 +7,8 @@ import { useSpring, animated } from "react-spring";
 import Dialog from "../../logic/Dialog";
 import { ToastContainer, toast } from "react-toastify";
 import WordButton from "./WordButton";
+import Textarea from "./Textarea";
+import MessageContainer from "./MessageContainer";
 import "react-toastify/dist/ReactToastify.css";
 import { useSelector } from "react-redux";
 
@@ -117,7 +119,7 @@ const UiMenu = () => {
     }
   }, [text]);
 
-  useEffect(() => {}, [isExpandButtonClicked]);
+  useEffect(() => { }, [isExpandButtonClicked]);
 
   useEffect(() => {
     if (transcript) {
@@ -165,30 +167,30 @@ const UiMenu = () => {
         ? `${getStyles("--animationProps_height_expanded_clicked_true")}`
         : `${getStyles("--animationProps_height_expanded_unclicked_false")}`
       : isButtonClicked
-      ? `${getStyles("--animationProps_height_unexpanded_clicked_false")}`
-      : `${getStyles("--animationProps_height_unexpanded_unclicked_true")}`,
+        ? `${getStyles("--animationProps_height_unexpanded_clicked_false")}`
+        : `${getStyles("--animationProps_height_unexpanded_unclicked_true")}`,
     transform: isVisible
       ? isExpandButtonClicked
         ? `${getStyles(
-            "--animationProps_transform_visible_expanded_clicked_true"
-          )}`
+          "--animationProps_transform_visible_expanded_clicked_true"
+        )}`
         : `${getStyles(
-            "--animationProps_transform_visible_expanded_unclicked_false"
-          )}`
+          "--animationProps_transform_visible_expanded_unclicked_false"
+        )}`
       : `${getStyles("--animationProps_transform_invisible_true")}`,
     top: isExpandButtonClicked
       ? isButtonClicked
         ? `${getStyles("--animationProps_top_expanded_clicked_true")}`
         : `${getStyles("--animationProps_top_expanded_unclicked_false")}`
       : isButtonClicked
-      ? `${getStyles("--animationProps_top_unexpanded_clicked_false")}`
-      : `${getStyles("--animationProps_top_unexpanded_unclicked_true")}`,
+        ? `${getStyles("--animationProps_top_unexpanded_clicked_false")}`
+        : `${getStyles("--animationProps_top_unexpanded_unclicked_true")}`,
   });
 
   const buttonAnimationProps = useSpring({
     marginTop:
       (isExpandButtonClicked && isButtonClicked) ||
-      (!isExpandButtonClicked && !isButtonClicked)
+        (!isExpandButtonClicked && !isButtonClicked)
         ? `${getStyles("--buttonAnimationProps_marginTop_true")}`
         : `${getStyles("--buttonAnimationProps_marginTop_false")}`,
   });
@@ -196,7 +198,7 @@ const UiMenu = () => {
   const isListeningProps = useSpring({
     marginTop:
       (isExpandButtonClicked && isButtonClicked) ||
-      (!isExpandButtonClicked && !isButtonClicked)
+        (!isExpandButtonClicked && !isButtonClicked)
         ? `${getStyles("--isListeningProps_marginTop_true")}`
         : `${getStyles("--isListeningProps_marginTop_false")}`,
     width: isListening
@@ -204,8 +206,8 @@ const UiMenu = () => {
         ? `${getStyles("--isListeningProps_width_true_true")}`
         : `${getStyles("--isListeningProps_width_true_false")}`
       : isListening
-      ? `${getStyles("--isListeningProps_width_false_true")}`
-      : `${getStyles("--isListeningProps_width_false_false")}`,
+        ? `${getStyles("--isListeningProps_width_false_true")}`
+        : `${getStyles("--isListeningProps_width_false_false")}`,
   });
 
   const buttonExpandProps = useSpring({
@@ -214,8 +216,8 @@ const UiMenu = () => {
         ? `${getStyles("--buttonExpandProps_marginTop_true")}`
         : `${getStyles("--buttonExpandProps_marginTop_false")}`
       : isButtonClicked
-      ? `${getStyles("--buttonExpandProps_marginTop_true")}`
-      : `${getStyles("--buttonExpandProps_marginTop_false")}`,
+        ? `${getStyles("--buttonExpandProps_marginTop_true")}`
+        : `${getStyles("--buttonExpandProps_marginTop_false")}`,
     transform: `rotate(${isButtonRotated ? 180 : 0}deg)`,
     config: { duration: 100 },
   });
@@ -246,13 +248,12 @@ const UiMenu = () => {
         {isWordCounterVisible && (
           <p className="word-counter">{text.split(/\s+/).length}/100</p>
         )}
-
-        <textarea
-          ref={textareaRef}
-          placeholder="Write something.."
-          value={text}
-          onChange={onTextChange}
-          rows={5}
+        <Textarea
+          text={text}
+          setText={setText}
+          onTextChange={onTextChange}
+          resetTranscriptOnClick={resetTranscriptOnClick}
+          onButtonClick={onButtonClick}
           onKeyPress={(event) => {
             if (event.key === "Enter" && !event.shiftKey) {
               event.preventDefault();
@@ -260,55 +261,20 @@ const UiMenu = () => {
               resetTranscriptOnClick();
             }
           }}
+          onSendClick={() => {
+            onButtonClick();
+            resetTranscriptOnClick();
+          }}
         />
+
+
         <button className="voice_button" onClick={toggleListening}>
           {isListening ? "" : ""}
         </button>
 
-        <button
-          id="send"
-          onClick={() => {
-            onButtonClick();
-            resetTranscriptOnClick();
-          }}
-        ></button>
-
-        {(isButtonClicked || isExpandButtonClicked) && (
-          <animated.div
-            className="message-container"
-            style={messageContainerAnimationProps}
-          >
-            <animated.div
-              className="message-scroll"
-              style={messageScrollAnimationProps}
-            >
-              {messages.map((message, index) => (
-                <div key={index} className="message">
-                  {message.text.startsWith("User: ") ? (
-                    <div>
-                      <label className="user-label">User: </label>
-                      <span className="user-message">
-                        {message.text.substring(6)}
-                      </span>
-                    </div>
-                  ) : message.text.startsWith("NPC: ") ? (
-                    <div>
-                      <label className="npc-label">NPC: </label>
-                      <span className="npc-message">
-                        {message.text.substring(5)}
-                      </span>
-                      {message.animation && <BouncingDotsAnimation />}
-                    </div>
-                  ) : (
-                    <span>{message.text}</span>
-                  )}
-                </div>
-              ))}
-
-              {showAnimation && <BouncingDotsAnimation />}
-            </animated.div>
-          </animated.div>
-        )}
+        {isButtonClicked || isExpandButtonClicked ? (
+          <MessageContainer messages={messages} showAnimation={showAnimation} />
+        ) : null}
 
         {(isButtonClicked || isExpandButtonClicked) && (
           <animated.div className="words">
@@ -327,13 +293,5 @@ const UiMenu = () => {
     </div>
   );
 };
-
-const BouncingDotsAnimation = () => (
-  <div className="bouncing-dots">
-    <div className="dot"></div>
-    <div className="dot"></div>
-    <div className="dot"></div>
-  </div>
-);
 
 export default UiMenu;

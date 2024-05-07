@@ -6,20 +6,6 @@ $text-input-width: 80%;
 $text-input-height: 10%;
 $text-input-padding-right: 15%;
 
-input[type="text"] {
-  border-radius: $text-input-border-radius;
-  border: $text-input-border;
-  padding: $text-input-padding;
-  font-size: $text-input-font-size;
-  font-family: inherit;
-  color: black;
-  padding-right: $text-input-padding-right;
-  overflow-y: auto;
-  scrollbar-width: thin;
-  background-color: $input-background-color;
-  resize: none;
-  backdrop-filter: blur(5px);
-}
 
 textarea {
   position: absolute;
