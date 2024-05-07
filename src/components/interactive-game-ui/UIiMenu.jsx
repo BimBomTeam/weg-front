@@ -83,6 +83,23 @@ const UiMenu = () => {
   };
 
   useEffect(() => {
+    const handleWordsHeightChange = () => {
+      const wordsElement = document.querySelector(".words");
+      const messageContainerElement = document.querySelector(".message-container");
+      if (wordsElement && messageContainerElement) {
+        const wordsHeight = wordsElement.getBoundingClientRect().height;
+        const newMaxHeight = `${Math.max(0, 67 - wordsHeight * 0.1)}%`;
+        messageContainerElement.style.maxHeight = newMaxHeight;
+      }
+    };
+  
+    handleWordsHeightChange();
+    return () => {
+      
+    };
+  });
+
+  useEffect(() => {
     setIsVisible(true);
   }, []);
 

@@ -43,9 +43,36 @@
   backdrop-filter: blur(18px);
 }
 
+.words {
+  z-index: 2;
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  background-color: transparent;
+  align-items: center;
+  margin-right: 2%;
+  margin-left: 2%;
+}
+
+.word {
+  margin-left: 1%;
+  background: linear-gradient(to top, #F8F0F0 0%, #C2E9EE 100%);
+  font-size: 20px;
+  color: $label-color;
+  display: flex;
+  text-align: center;
+  align-items: center; 
+  justify-content: center; 
+  border-radius: 10px;
+  padding: 2%;
+  border: none;
+}
+
 .message-container {
   position: relative;
-  width: 95%;
+  padding: 10px;
+  height: 70%;
+  max-height: 60%;
 }
 
 .message-scroll {
@@ -100,30 +127,6 @@
   }
 }
 
-.words {
-  z-index: 2;
-  position: relative;
-  display: flex;
-  flex-wrap: wrap;
-  background-color: transparent;
-  align-items: center;
-  margin-right: 2%;
-}
-
-.word {
-  margin-left: 1%;
-  background: linear-gradient(to top, #F8F0F0 0%, #C2E9EE 100%);
-  font-size: 20px;
-  color: $label-color;
-  display: flex;
-  text-align: center;
-  align-items: center; 
-  justify-content: center; 
-  border-radius: 10px;
-  padding: 2%;
-  border: none;
-}
-
 //----------------2560 x 1440 (QHD)----------------
 @media only screen and (min-width: 2562px){
   :root {
@@ -139,13 +142,6 @@
     textarea {
       width: calc(100% - 21%);
     }
-  }
-  .message-scroll {
-    height: 85%;
-  }
-  .words {
-    bottom: 9%;
-    margin-left: 2%;
   }
   .word {
     margin-bottom: 2%;
@@ -170,16 +166,9 @@
       width: calc(100% - 25%);
     }
   }
-  .message-scroll {
-    height: 80%;
-  }
-  .words {
-    bottom: 10%;
-    margin-left: 2%;
-  }
   .word {
     margin-bottom: 2%;
-    font-size: 20px;
+    font-size: 17px;
   }
 }
 
@@ -199,13 +188,6 @@
     textarea {
       width: calc(100% - 25%);
     }
-  }
-  .message-scroll {
-    height: 85%;
-  }
-  .words {
-    bottom: 6%;
-    margin-left: 2%;
   }
   .word {
     margin-bottom: 2%;
@@ -229,13 +211,6 @@
     textarea {
       width: calc(100% - 29%);      
     }
-  }
-  .message-scroll {
-    height: 95%;
-  }
-  .words {
-    bottom: 2%;
-    margin-left: 2%;
   }
   .word {
     margin-bottom: 2%;
@@ -261,13 +236,6 @@
       height: 110px;
     }
   }
-  .message-scroll {
-    height: 95%;
-  }
-  .words {
-    bottom: 2%;
-    margin-left: 2%;
-  }
   .word {
     margin-bottom: 2%;
     font-size: 15px;
@@ -291,13 +259,6 @@
       width: calc(100% - 29%);
       height: 110px;
     }
-  }
-  .message-scroll {
-    height: 95%;
-  }
-  .words {
-    bottom: 2%;
-    margin-left: 2%;
   }
   .word {
     margin-bottom: 2%;
