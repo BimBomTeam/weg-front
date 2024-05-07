@@ -67,6 +67,10 @@ function WelcomeModal() {
         }
     };
 
+    const handleConfirmSlider = () => {
+        setShowModal(false); // Ta funkcja zostanie wywołana po naciśnięciu przycisku confirmButton w DifficultySlider
+    };
+
     return (
         <ModalBackground onClick={handleModalBackgroundClick} onKeyDown={handleModalKeyDown} active={showModal}>
             <animated.div className="welcomeModal" style={modalAnimation}>
@@ -75,7 +79,7 @@ function WelcomeModal() {
                 <button className="back-button" onClick={handleBackButtonClick}></button>
 
                 <div className='slider'>
-                    <Slider/> 
+                    <Slider onConfirm={handleConfirmSlider}/> {/* Przekazujemy funkcję handleConfirmSlider jako props */}
                 </div>
             </animated.div>
         </ModalBackground>
