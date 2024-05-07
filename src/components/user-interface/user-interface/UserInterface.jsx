@@ -28,7 +28,7 @@ const UserInterface = () => {
   const accountButtonAnimationProps = useSpring({
     opacity: expanded ? 1 : 0,
     pointerEvents: expanded ? "auto" : "none",
-  
+
     config: { tension: 700, friction: 30 },
     delay: expanded ? 300 : 0,
   });
@@ -36,7 +36,7 @@ const UserInterface = () => {
   const difficultyButtonAnimationProps = useSpring({
     opacity: expanded ? 1 : 0,
     pointerEvents: expanded ? "auto" : "none",
-  
+
     config: { tension: 700, friction: 30 },
     delay: expanded ? 400 : 10,
   });
@@ -44,7 +44,7 @@ const UserInterface = () => {
   const shopButtonAnimationProps = useSpring({
     opacity: expanded ? 1 : 0,
     pointerEvents: expanded ? "auto" : "none",
-  
+
     config: { tension: 700, friction: 30 },
     delay: expanded ? 500 : 20,
   });
@@ -52,7 +52,7 @@ const UserInterface = () => {
   const instructionButtonAnimationProps = useSpring({
     opacity: expanded ? 1 : 0,
     pointerEvents: expanded ? "auto" : "none",
-  
+
     config: { tension: 700, friction: 30 },
     delay: expanded ? 600 : 50,
   });
@@ -60,7 +60,7 @@ const UserInterface = () => {
   const settingsButtonAnimationProps = useSpring({
     opacity: expanded ? 1 : 0,
     pointerEvents: expanded ? "auto" : "none",
-  
+
     config: { tension: 700, friction: 30 },
     delay: expanded ? 700 : 40,
   });

@@ -4,9 +4,9 @@ import "react-toastify/dist/ReactToastify.css";
 export default function POST_tokenAuth(token) {
   console.log("");
   const data = {
-    token: token
-  }
-  return fetch('https://jsonplaceholder.typicode.com/posts', {
+    token: token,
+  };
+  return fetch("https://jsonplaceholder.typicode.com/posts", {
     method: "POST",
     headers: {
       "Content-Type": "application/json; charset=UTF-8",
@@ -18,11 +18,6 @@ export default function POST_tokenAuth(token) {
         throw new Error("Response is not OK");
       }
       return response.json();
-    })
-    .then(data => {
-        //УСПЕХ!
-
-        // navigate("/game");
     })
     .catch((error) => toast.error(`${error}`));
 }

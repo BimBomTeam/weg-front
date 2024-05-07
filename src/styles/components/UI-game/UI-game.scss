@@ -15,14 +15,8 @@
   --animationProps_top_unexpanded_clicked_false: 35%;
   --animationProps_top_unexpanded_unclicked_true: 70%; //общий блок относительно экрана
 
-  --textareaAnimationProps_marginTop_true: 0px;
-  --textareaAnimationProps_marginTop_false: 410px;
-
   --buttonAnimationProps_marginTop_true: 0px;
   --buttonAnimationProps_marginTop_false: 210px;
-
-  --buttonVoiceProps_marginTop_true: 0px;
-  --buttonVoiceProps_marginTop_false: 350px;
 
   --isListeningProps_marginTop_true: 0px;
   --isListeningProps_marginTop_false: 133px;
@@ -50,9 +44,8 @@
 }
 
 .message-container {
-  position: absolute;
+  position: relative;
   width: 95%;
-  height: 70%;
 }
 
 .message-scroll {
@@ -106,6 +99,31 @@
     transform: translateY(-10px);
   }
 }
+
+.words {
+  z-index: 2;
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  background-color: transparent;
+  align-items: center;
+  margin-right: 2%;
+}
+
+.word {
+  margin-left: 1%;
+  background: linear-gradient(to top, #F8F0F0 0%, #C2E9EE 100%);
+  font-size: 20px;
+  color: $label-color;
+  display: flex;
+  text-align: center;
+  align-items: center; 
+  justify-content: center; 
+  border-radius: 10px;
+  padding: 2%;
+  border: none;
+}
+
 //----------------2560 x 1440 (QHD)----------------
 @media only screen and (min-width: 2562px){
   :root {
@@ -117,13 +135,21 @@
     --buttonExpandProps_marginTop_false: 5px;
   }
   .main-ui {
-    width: 1500px;
+    width: 40%;
     textarea {
-      width: calc(100% - 22%);
+      width: calc(100% - 21%);
     }
   }
   .message-scroll {
-    height: 120%;
+    height: 85%;
+  }
+  .words {
+    bottom: 9%;
+    margin-left: 2%;
+  }
+  .word {
+    margin-bottom: 2%;
+    font-size: 20px;
   }
 }
 
@@ -139,24 +165,28 @@
     --buttonExpandProps_marginTop_false: 5px;
   }
   .main-ui {
-    width: 1500px;
+    width: 40%;
     textarea {
       width: calc(100% - 25%);
     }
   }
   .message-scroll {
-    height: 95%;
+    height: 80%;
+  }
+  .words {
+    bottom: 10%;
+    margin-left: 2%;
+  }
+  .word {
+    margin-bottom: 2%;
+    font-size: 20px;
   }
 }
-
-
-
 
 //----------------1920 x 1080 (Full HD)----------------
 @media only screen and (min-width: 1801px) and (max-width: 2100px) {
   :root {  
-    --animationProps_height_expanded_clicked_true: 100px;
-    --animationProps_height_expanded_unclicked_false: 100px;
+
     --animationProps_top_unexpanded_unclicked_true: 65%;
     --animationProps_top_unexpanded_clicked_false: 5%;
     --animationProps_height_unexpanded_clicked_false: 90%;
@@ -165,7 +195,7 @@
     --buttonExpandProps_marginTop_false: 5px;
   }
   .main-ui {
-    width: 1200px;
+    width: 40%;
     textarea {
       width: calc(100% - 25%);
     }
@@ -173,21 +203,28 @@
   .message-scroll {
     height: 85%;
   }
+  .words {
+    bottom: 6%;
+    margin-left: 2%;
+  }
+  .word {
+    margin-bottom: 2%;
+    font-size: 18px;
+  }
 }
 //----------------1600 x 900 (HD+)----------------
 @media only screen and (min-width: 1281px) and (max-width: 1800px) {
   :root {
-    --animationProps_height_expanded_clicked_true: 100px;
-    --animationProps_height_expanded_unclicked_false: 100px;
-    --animationProps_top_unexpanded_unclicked_true: 65%;
+
+    --animationProps_top_unexpanded_unclicked_true: 75%;
     --animationProps_top_unexpanded_clicked_false: 5%;
     --animationProps_height_unexpanded_clicked_false: 90%;
-    --animationProps_height_unexpanded_unclicked_true: 30%;
+    --animationProps_height_unexpanded_unclicked_true: 20%;
     --buttonExpandProps_marginTop_true: 0px;
     --buttonExpandProps_marginTop_false: 5px;
   }
   .main-ui {
-    width: 800px;
+    width: 40%;
 
     textarea {
       width: calc(100% - 29%);      
@@ -196,28 +233,44 @@
   .message-scroll {
     height: 95%;
   }
+  .words {
+    bottom: 2%;
+    margin-left: 2%;
+  }
+  .word {
+    margin-bottom: 2%;
+    font-size: 16px;
+  }
 }
 //----------------1280 x 800 (WXGA)----------------
 @media only screen and (min-width: 900px) and (max-width: 1280px) {
   :root {
     --animationProps_height_expanded_clicked_true: 100px;
     --animationProps_height_expanded_unclicked_false: 100px;
-    --animationProps_top_unexpanded_unclicked_true: 55%;
+    --animationProps_top_unexpanded_unclicked_true: 75%;
     --animationProps_top_unexpanded_clicked_false: 5%;
     --animationProps_height_unexpanded_clicked_false: 90%;
-    --animationProps_height_unexpanded_unclicked_true: 40%;
+    --animationProps_height_unexpanded_unclicked_true: 20%;
     --buttonExpandProps_marginTop_true: -15px;
     --buttonExpandProps_marginTop_false: 5px;
   }
   .main-ui {
-    width: 600px;
+    width: 50%;
     textarea {
       width: calc(100% - 29%);
       height: 50px;
     }
   }
   .message-scroll {
-    height: 90%;
+    height: 95%;
+  }
+  .words {
+    bottom: 2%;
+    margin-left: 2%;
+  }
+  .word {
+    margin-bottom: 2%;
+    font-size: 15px;
   }
 }
 
@@ -225,21 +278,29 @@
   :root {
     --animationProps_height_expanded_clicked_true: 100px;
     --animationProps_height_expanded_unclicked_false: 100px;
-    --animationProps_top_unexpanded_unclicked_true: 55%;
+    --animationProps_top_unexpanded_unclicked_true: 75%;
     --animationProps_top_unexpanded_clicked_false: 5%;
     --animationProps_height_unexpanded_clicked_false: 90%;
-    --animationProps_height_unexpanded_unclicked_true: 40%;
+    --animationProps_height_unexpanded_unclicked_true: 20%;
     --buttonExpandProps_marginTop_true: -15px;
     --buttonExpandProps_marginTop_false: 5px;
   }
   .main-ui {
-    width: 600px;
+    width: 50%;
     textarea {
       width: calc(100% - 29%);
       height: 50px;
     }
   }
   .message-scroll {
-    height: 90%;
+    height: 95%;
+  }
+  .words {
+    bottom: 2%;
+    margin-left: 2%;
+  }
+  .word {
+    margin-bottom: 2%;
+    font-size: 15px;
   }
 }

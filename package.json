@@ -14,6 +14,7 @@
     "@react-spring/web": "^9.7.3",
     "@redux-devtools/extension": "^3.3.0",
     "cannon": "^0.6.2",
+    "dotenv": "^16.4.5",
     "enable3d": "^0.25.4",
     "oimo": "^1.0.9",
     "react": "^18.2.0",
@@ -30,9 +31,9 @@
     "redux-thunk": "^3.1.0",
     "regenerator-runtime": "^0.14.1",
     "sass": "^1.71.1",
-    "three-nebula": "^10.0.3",
+    "stats.js": "^0.17.0",
     "three": "^0.161.0",
-    "stats.js": "^0.17.0"
+    "three-nebula": "^10.0.3"
   },
   "devDependencies": {
     "@types/react": "^18.2.56",

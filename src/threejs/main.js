@@ -17,10 +17,16 @@ import { Sky } from "three/examples/jsm/objects/Sky";
 import { TestCamera } from "./testCamera";
 import { CameraOperator } from "./cameraOperator";
 import { StandartNPC } from "./standartNPC";
+import GenerateWordsById from "../logic/GenerateWordsById";
 import { BossNPC } from "./bossNPC";
 import SoundManager from "./soundManager";
 
-let changeUiVisibilityTest;
+import store from "../store/store";
+import { ModelLoader } from "./modelLoaderService";
+import { setBossHit, setUiState } from "../actions/interact";
+import { UiStates } from "../reducers/interactReducer";
+
+let sceneLoaded;
 
 class MainScene extends Scene3D {
   constructor() {
@@ -96,7 +102,7 @@ class MainScene extends Scene3D {
       textureWidth: 512,
       textureHeight: 512,
       waterNormals: new THREE.TextureLoader().load(
-        "src/assets/water/waternormals.jpg",
+        "/public/lib/water/waternormals.jpg",
         function (texture) {
           texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
           texture.needsUpdate = true;
@@ -131,13 +137,6 @@ class MainScene extends Scene3D {
     skyUniforms["sunPosition"].value = new THREE.Vector3(2, 1, 0);
   }
 
-  async foo() {
-    this.camOperator.addNPCzoomIn({
-      targetPos: new Vector3(),
-      adjustPosition: new Vector3(),
-    });
-  }
-
   async create() {
     const { lights, orbitControls } = await this.warpSpeed("-ground, -sky");
     this.orbitControls = orbitControls;
@@ -156,26 +155,38 @@ class MainScene extends Scene3D {
     this.camOperator = new CameraOperator({ camera: this.camera });
 
     this.soundManager = new SoundManager(this.camera);
+    const rolesReduxArr = JSON.parse(
+      store.getState().roles.roles.roles.replaceAll("\\", "")
+    );
+
+    const modelsPath = "/public/lib/models/";
+    this.modelLoader = new ModelLoader();
+    await this.modelLoader.loadModelsAsync(modelsPath, this);
 
     this.setupPlayer();
     this.setupMap();
+
     this.bossNPC = new BossNPC({
       pos: { x: 80, y: 10, z: 85 },
       sketch: this,
       path: "/src/assets/models/Boss/Boss.glb",
+      gltf: this.modelLoader.modelsArray["boss"],
+      playerPosition: this.player.object.position,
     });
     this.standNPC = new StandartNPC({
       pos: { x: 20, y: 10, z: 0 },
       sketch: this,
       path: "/src/assets/models/Npcs/Npc5.glb",
+      gltf: this.modelLoader.modelsArray["npc5"],
     });
     this.standNPC2 = new StandartNPC({
       pos: { x: 100, y: 10, z: 95 },
       sketch: this,
       path: "/src/assets/models/Npcs/Npc1.glb",
-      textObjectText: "Ivan Vanovycz",
+      // textObjectText: rolesReduxArr[0].name,
+      gltf: this.modelLoader.modelsArray["npc1"],
     });
-    await this.sleep(500);
+    this.npcArray = [this.bossNPC, this.standNPC, this.standNPC2];
     this.box = this.physics.add.box(
       {
         name: "box",
@@ -189,37 +200,46 @@ class MainScene extends Scene3D {
       { phong: { color: 0x00ff00 } }
     );
     this.box.body.setAngularFactor(0, 0, 0);
+
+    const bossHitFunc = () => {
+      this.bossNPC.hitPlayer(this.player.object.position);
+    };
+
+    store.dispatch(setBossHit(bossHitFunc));
+
+    sceneLoaded();
   }
+
   sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay));
 
   setupMap() {
-    this.load.gltf("/src/assets/models/map1/BigWorld.glb").then((gltf) => {
-      this.floor = new ExtendedObject3D();
-      this.floor.add(gltf.scene);
-      this.floor.position.setZ(5);
-      this.floor.position.setX(-5);
-      const scale = 5;
-      this.floor.scale.set(scale, scale, scale);
+    const gltf = this.modelLoader.modelsArray["map"];
+    this.floor = new ExtendedObject3D();
+    this.floor.add(gltf.scene);
+    this.floor.position.setZ(5);
+    this.floor.position.setX(-5);
+    const scale = 5;
+    this.floor.scale.set(scale, scale, scale);
 
-      this.floor.traverse((child) => {
-        if (child.isMesh) {
-          child.castShadow = child.receiveShadow = true;
-        }
-      });
-      this.add.existing(this.floor);
-      this.physics.add.existing(this.floor, {
-        shape: "concave",
-        mass: 0,
-        margin: this.worldMargin,
-      });
-      this.floor.body.setFriction(1);
-      this.floor.body.checkCollisions = true;
-      this.floor.name = "floor";
+    this.floor.traverse((child) => {
+      if (child.isMesh) {
+        child.castShadow = child.receiveShadow = true;
+      }
     });
+    this.add.existing(this.floor);
+    this.physics.add.existing(this.floor, {
+      shape: "concave",
+      mass: 0,
+      margin: this.worldMargin,
+    });
+    this.floor.body.setFriction(1);
+    this.floor.body.checkCollisions = true;
+    this.floor.name = "floor";
   }
 
   startBattle(NPC = BossNPC) {
     this.player.mode = "battle";
+    this.player.addRotateEvent(NPC.object.position);
     let playerReturnPos = this.player.object.position
       .clone()
       .sub(NPC.object.position)
@@ -241,15 +261,18 @@ class MainScene extends Scene3D {
       targetPos: NPC.object.position,
       adjustPosition: new Vector3(adjustVec2.x, 3, adjustVec2.y),
     });
-    setTimeout(() => this.player.hitBoss(NPC.object.position), 5000);
-    setTimeout(() => NPC.hitPlayer(this.player.object.position), 10000);
-    setTimeout(() => this.player.hitBoss(NPC.object.position), 15000);
-    setTimeout(() => this.player.hitBoss(NPC.object.position), 20000);
+    // setTimeout(() => this.player.hitBoss(NPC.object.position), 5000);
+    // setTimeout(() => NPC.hitPlayer(this.player.object.position), 10000);
+    // setTimeout(() => this.player.hitBoss(NPC.object.position), 15000);
+    // setTimeout(() => this.player.hitBoss(NPC.object.position), 20000);
   }
 
   processInteraction(NPC = StandartNPC) {
     if (NPC.mode == "prepToInteract" || NPC.mode == "interact") {
       if (this.KeyHandler.key.e.click && this.player.mode == "freeWalk") {
+        store.dispatch(setUiState(UiStates.CHAT));
+        //TODO: chat -true
+        //TODO: hint - false
         this.player.mode = "interact";
         NPC.mode = "interact";
         this.player.addRotateEvent(NPC.object.position);
@@ -266,7 +289,17 @@ class MainScene extends Scene3D {
           adjustPosition: new Vector3(x1.x, NPC.size.y * NPC.scale, x1.y),
         });
       }
+
+      //--ts--начало
+      if (!this.isReduxDataGenerated) {
+        const reduxData = GenerateWordsById(3); //вместо 2 -> вызов метода с взятием роли у NPS (return int)
+        console.log("->", reduxData);
+        this.isReduxDataGenerated = true;
+      }
+
       if (this.KeyHandler.key.esc.click && this.player.mode == "interact") {
+        store.dispatch(setUiState(UiStates.NONE));
+        //TODO: chat - false
         this.player.mode = "freeWalk";
         this.player.moveEvent = [];
         NPC.mode = "prepToInteract";
@@ -278,25 +311,35 @@ class MainScene extends Scene3D {
 
   processBattle(NPC = BossNPC) {
     if (NPC.mode == "prepToInteract" || NPC.mode == "interact") {
-      if (this.KeyHandler.key.e.click && this.player.mode == "interact") {
+      if (this.KeyHandler.key.e.click && this.player.mode == "freeWalk") {
+        store.dispatch(setUiState(UiStates.FIGHT));
+        //TODO : battleUI - true
+        //TODO : hint - false
         this.startBattle(NPC);
       }
     } else if (NPC.mode == "battle") {
       NPC.updateBattle();
       if (this.KeyHandler.key.esc.click && this.player.mode == "battle") {
-        this.player.mode = "interact";
-        // this.player.moveEvent = [];
-        // this.camOperator.addNPCzoomOut();
+        this.player.mode = "freeWalk";
+        store.dispatch(setUiState(UiStates.NONE));
+        // setBattleVisibility(false);
+        //TODO : battleUI - false
+        this.player.moveEvent = [];
         NPC.addEvents = [];
         NPC.actionEvents = [];
         NPC.mode = "prepToInteract";
+        this.camOperator.addNPCzoomOut();
       }
     }
   }
 
   setupPlayer() {
     let testPos = { x: 80, y: 30, z: 85 };
-    this.player = new Player({ pos: testPos, sketch: this });
+    this.player = new Player({
+      pos: testPos,
+      gltf: this.modelLoader.modelsArray["player"],
+      sketch: this,
+    });
   }
 
   update(time, delta) {
@@ -317,10 +360,27 @@ class MainScene extends Scene3D {
       this.processBattle(this.bossNPC);
       this.processInteraction(this.standNPC);
       this.processInteraction(this.standNPC2);
-      this.processInteraction(this.bossNPC);
+      // this.processInteraction(this.bossNPC);
 
       this.camOperator.update(delta);
       this.KeyHandler.update();
+    }
+
+    // Проверка изменения состояния интерфейса перед вызовом dispatch
+    const npcModes = this.npcArray.map((x) => x.mode);
+    const hintVisible = npcModes.includes("prepToInteract");
+    const uiState = hintVisible
+      ? UiStates.HINT
+      : this.player.mode === "battle"
+      ? UiStates.FIGHT
+      : this.player.mode === "interact"
+      ? UiStates.CHAT // Add CHAT (without it, the default value was called)
+      : UiStates.NONE;
+
+    if (uiState !== this.previousUiState) {
+      store.dispatch(setUiState(uiState));
+      this.previousUiState = uiState;
+      this.isReduxDataGenerated = false;
     }
   }
 }
@@ -339,16 +399,15 @@ const config = {
 };
 
 export default class GameScene {
-  constructor(changeUIVisibility) {
-    changeUiVisibilityTest = changeUIVisibility;
+  constructor(sceneLoadedProp) {
+    sceneLoaded = sceneLoadedProp;
+
     this.test = null;
 
-    console.log("test inside 2");
     window.addEventListener("load", () => {
-      PhysicsLoader("/src/threejs/lib/ammo/kripken", () => {
+      PhysicsLoader("/public/lib/ammo/kripken", () => {
         this.test = new Project(config);
-        console.log("inside", this.test);
-        console.log("test inside");
+        // sceneLoadedProp();
       });
     });
   }

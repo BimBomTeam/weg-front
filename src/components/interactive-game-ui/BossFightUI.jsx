@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useSpring, animated } from "react-spring";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
 import BossFightButton from "./BossFightButton";
+import store from "../../store/store";
 
 const UiBossFight = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -41,6 +42,9 @@ const UiBossFight = () => {
 
   const onAnswerClick = (text) => {
     console.log(text); //TODO: Logic
+
+    store.getState().interact.bossHit.bossHit();
+    // bossHit();
   };
 
   return (

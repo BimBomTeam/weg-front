@@ -1,10 +1,14 @@
 import { useState, useRef, useEffect } from "react";
 import "regenerator-runtime/runtime";
-import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognition";
+import SpeechRecognition, {
+  useSpeechRecognition,
+} from "react-speech-recognition";
 import { useSpring, animated } from "react-spring";
 import Dialog from "../../logic/Dialog";
 import { ToastContainer, toast } from "react-toastify";
+import WordButton from "./WordButton";
 import "react-toastify/dist/ReactToastify.css";
+import { useSelector } from "react-redux";
 
 const UiMenu = () => {
   const [text, setText] = useState("");
@@ -21,7 +25,9 @@ const UiMenu = () => {
   });
   const [messages, setMessages] = useState([]);
   const [showAnimation] = useState(false);
-
+  const [words, setWords] = useState([]);
+  let checkWordsPayload = useSelector((state) => state.words);
+  const wordsArray = JSON.parse(checkWordsPayload.words.words);
   const handleSendMessage = async () => {
     try {
       const data = await Dialog(text);
@@ -50,7 +56,7 @@ const UiMenu = () => {
   const onButtonClick = async () => {
     event.preventDefault();
     if (!text) {
-      toast.error("Please enter text to send a message")
+      toast.error("Please enter text to send a message");
       return;
     }
 
@@ -66,9 +72,17 @@ const UiMenu = () => {
     setIsWordCounterVisible(false);
   };
 
+  const onWordClick = (text) => {
+    console.log(text); // TODO: Logic -----------------------------------
+  };
+
   const resetTranscriptOnClick = () => {
     resetTranscript();
   };
+
+  useEffect(() => {
+    setIsVisible(true);
+  }, []);
 
   useEffect(() => {
     setIsVisible(true);
@@ -104,18 +118,18 @@ const UiMenu = () => {
   }, [text]);
 
   useEffect(() => {}, [isExpandButtonClicked]);
-  
-useEffect(() => {
-  if (transcript) {
-    setText(transcript);
-    if (transcript.split(/\s+/).length >= 100) {
-      setIsWordCounterVisible(true);
-    } else {
-      setIsWordCounterVisible(false);
+
+  useEffect(() => {
+    if (transcript) {
+      setText(transcript);
+      if (transcript.split(/\s+/).length >= 100) {
+        setIsWordCounterVisible(true);
+      } else {
+        setIsWordCounterVisible(false);
+      }
     }
-  }
-}, [transcript]);
-  
+  }, [transcript]);
+
   const onTextChange = (event) => {
     const inputText = event.target.value;
     setText(inputText);
@@ -125,7 +139,7 @@ useEffect(() => {
     } else {
       setIsWordCounterVisible(false);
     }
-  };  
+  };
 
   const onButtonClickExpand = () => {
     setIsButtonRotated(!isButtonRotated);
@@ -171,28 +185,12 @@ useEffect(() => {
       : `${getStyles("--animationProps_top_unexpanded_unclicked_true")}`,
   });
 
-  const textareaAnimationProps = useSpring({
-    marginTop:
-      (isExpandButtonClicked && isButtonClicked) ||
-      (!isExpandButtonClicked && !isButtonClicked)
-        ? `${getStyles("--textareaAnimationProps_marginTop_true")}`
-        : `${getStyles("--textareaAnimationProps_marginTop_false")}`,
-  });
-
   const buttonAnimationProps = useSpring({
     marginTop:
       (isExpandButtonClicked && isButtonClicked) ||
       (!isExpandButtonClicked && !isButtonClicked)
         ? `${getStyles("--buttonAnimationProps_marginTop_true")}`
         : `${getStyles("--buttonAnimationProps_marginTop_false")}`,
-  });
-
-  const buttonVoiceProps = useSpring({
-    marginTop:
-      (isExpandButtonClicked && isButtonClicked) ||
-      (!isExpandButtonClicked && !isButtonClicked)
-        ? `${getStyles("--buttonVoiceProps_marginTop_true")}`
-        : `${getStyles("--buttonVoiceProps_marginTop_false")}`,
   });
 
   const isListeningProps = useSpring({
@@ -216,8 +214,8 @@ useEffect(() => {
         ? `${getStyles("--buttonExpandProps_marginTop_true")}`
         : `${getStyles("--buttonExpandProps_marginTop_false")}`
       : isButtonClicked
-        ? `${getStyles("--buttonExpandProps_marginTop_true")}`
-        : `${getStyles("--buttonExpandProps_marginTop_false")}`,
+      ? `${getStyles("--buttonExpandProps_marginTop_true")}`
+      : `${getStyles("--buttonExpandProps_marginTop_false")}`,
     transform: `rotate(${isButtonRotated ? 180 : 0}deg)`,
     config: { duration: 100 },
   });
@@ -245,36 +243,35 @@ useEffect(() => {
 
         <animated.div className="isListening" style={isListeningProps} />
 
-        {isWordCounterVisible && <p className="word-counter">{text.split(/\s+/).length}/100</p>}
-        
-        <animated.textarea
+        {isWordCounterVisible && (
+          <p className="word-counter">{text.split(/\s+/).length}/100</p>
+        )}
+
+        <textarea
           ref={textareaRef}
           placeholder="Write something.."
           value={text}
           onChange={onTextChange}
           rows={5}
-          style={textareaAnimationProps}
           onKeyPress={(event) => {
-            if (event.key === 'Enter' && !event.shiftKey) {
+            if (event.key === "Enter" && !event.shiftKey) {
               event.preventDefault();
               onButtonClick();
               resetTranscriptOnClick();
             }
           }}
         />
-        <animated.button
-          className="voice_button"
-          style={buttonVoiceProps}
-          onClick={toggleListening}
-        >
+        <button className="voice_button" onClick={toggleListening}>
           {isListening ? "" : ""}
-        </animated.button>
+        </button>
 
-        <animated.button
+        <button
           id="send"
-          onClick={() => {onButtonClick(); resetTranscriptOnClick()}}
-          style={buttonAnimationProps}
-        ></animated.button>
+          onClick={() => {
+            onButtonClick();
+            resetTranscriptOnClick();
+          }}
+        ></button>
 
         {(isButtonClicked || isExpandButtonClicked) && (
           <animated.div
@@ -310,6 +307,19 @@ useEffect(() => {
 
               {showAnimation && <BouncingDotsAnimation />}
             </animated.div>
+          </animated.div>
+        )}
+
+        {(isButtonClicked || isExpandButtonClicked) && (
+          <animated.div className="words">
+            {wordsArray.map((item) => (
+              <WordButton
+                text={item.name}
+                learned={item.state}
+                onClick={() => onWordClick(item.id)}
+                key={item.id}
+              />
+            ))}
           </animated.div>
         )}
       </animated.div>

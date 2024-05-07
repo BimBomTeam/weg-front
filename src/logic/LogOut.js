@@ -2,7 +2,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function LogOut() {
-  return fetch("https://193.122.12.41/api/Authenticate/logout", {
+  return fetch(`${import.meta.env.VITE_URL}/Authenticate/logout`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json; charset=UTF-8",
@@ -18,6 +18,7 @@ export default function LogOut() {
       if (!response.ok) {
         localStorage.removeItem("access_token"); //delete the token from localstorage
         localStorage.removeItem("refresh_token"); //delete the token from localstorage
+        sessionStorage.clear();
         window.location.reload();
       }
       return response.json();

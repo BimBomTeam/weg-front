@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 const loginApi = async (formData) => {
   try {
     const response = await fetch(
-      "https://193.122.12.41/api/Authenticate/login",
+      `${import.meta.env.VITE_URL}/Authenticate/login`,
       {
         method: "POST",
         headers: {

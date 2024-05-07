@@ -1,9 +1,9 @@
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-export default function GET_todayRoles() {
-  return fetch(`${import.meta.env.VITE_URL}/Role/get-today-roles`, {
-    method: "GET",
+export default function POST_tokenAuth(roleId) {
+  return fetch(`${import.meta.env.VITE_URL}/Words/get-words/${roleId}`, {
+    method: "POST",
     headers: {
       "Content-Type": "application/json; charset=UTF-8",
     },
@@ -15,11 +15,7 @@ export default function GET_todayRoles() {
       return response.json();
     })
     .then((data) => {
-      console.log(data);
       return data;
     })
-    .catch((error) => {
-      toast.error(`${error}`);
-      return [];
-    });
+    .catch((error) => toast.error(`${error}`));
 }
