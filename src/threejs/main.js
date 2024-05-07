@@ -18,6 +18,7 @@ import { TestCamera } from "./testCamera";
 import { CameraOperator } from "./cameraOperator";
 import { StandartNPC } from "./standartNPC";
 import { BossNPC } from "./bossNPC";
+import SoundManager from "./soundManager";
 
 let changeUiVisibilityTest;
 
@@ -153,6 +154,8 @@ class MainScene extends Scene3D {
     // this.camera = new MyCamera(new Vector3(0, 0, 0));
     this.camera = new TestCamera();
     this.camOperator = new CameraOperator({ camera: this.camera });
+
+    this.soundManager = new SoundManager(this.camera);
 
     this.setupPlayer();
     this.setupMap();
