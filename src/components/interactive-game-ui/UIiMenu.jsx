@@ -77,9 +77,10 @@ const UiMenu = () => {
 
   const handleSendMessage = async () => {
     try {
+      console.log("HISTORY:", localStorage.getItem("message_history"));
       const data = await POST_continueDialog({
-        "messages": JSON.parse(localStorage.getItem("message_history")),
-        "messageStr": text,
+        messages: JSON.parse(localStorage.getItem("message_history")),
+        messageStr: text,
       });
       localStorage.setItem("message_history", JSON.stringify(data));
 
