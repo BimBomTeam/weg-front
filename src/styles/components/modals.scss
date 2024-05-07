@@ -20,11 +20,12 @@
     top: 15%;
     transform: translate(-50%, -50%);
     width: 70%;
-    height: 50%;
+    height: auto;
     border-radius: 50px;
     background-color: $button-gradient-start;
     color: $password-label-color;
     backdrop-filter: blur(18px);
+    padding-bottom: 5%;
 }
 
   .welcomeModal #welcomeText {
