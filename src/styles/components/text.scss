@@ -74,18 +74,7 @@ textarea {
   color: black;
 }
 
-label[for="login"] {
-  padding-left: 35%;
-  width: 220px;
-  height: 60px;
-  overflow: hidden;
-  font-family: "Roboto";
-  font-size: 400px;
-  color: $label-color;
-  font-weight: bold;
-}
-
-label[for="register"] {
+label[for="register"], label[for="login"] {
   padding-left: 17%;
   width: 500px;
   height: 60px;
@@ -117,7 +106,7 @@ label[for="password-repeat-label"] {
   left: 0px;
   width: 600px;
   height: 85px;
-  padding-right: 10px;
+  padding-left: 10px;
   font-size: 32px;
   color: $black;
   border-width: 1px;
@@ -149,14 +138,6 @@ label[for="password-repeat-label"] {
     $password-input-gradient-start 0%,
     $password-input-gradient-end 100%
   );
-}
-
-#password,
-#repeat-password {
-  width: 610px;
-  height: 100px;
-  border-bottom-color: black;
-  padding-left: 10px;
 }
 
 .isListening {
