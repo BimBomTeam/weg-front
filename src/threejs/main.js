@@ -159,6 +159,8 @@ class MainScene extends Scene3D {
       store.getState().roles.roles.roles.replaceAll("\\", "")
     );
 
+    console.log("rolesReduxArr", rolesReduxArr);
+
     const modelsPath = "/public/lib/models/";
     this.modelLoader = new ModelLoader();
     await this.modelLoader.loadModelsAsync(modelsPath, this);
@@ -178,12 +180,13 @@ class MainScene extends Scene3D {
       sketch: this,
       path: "/src/assets/models/Npcs/Npc5.glb",
       gltf: this.modelLoader.modelsArray["npc5"],
+      textObjectText: rolesReduxArr[0].name,
     });
     this.standNPC2 = new StandartNPC({
       pos: { x: 100, y: 10, z: 95 },
       sketch: this,
       path: "/src/assets/models/Npcs/Npc1.glb",
-      // textObjectText: rolesReduxArr[0].name,
+      textObjectText: rolesReduxArr[0].name,
       gltf: this.modelLoader.modelsArray["npc1"],
     });
     this.npcArray = [this.bossNPC, this.standNPC, this.standNPC2];

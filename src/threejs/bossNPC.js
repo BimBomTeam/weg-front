@@ -15,7 +15,7 @@ export class BossNPC extends StandartNPC {
       path: path,
       scale: 4,
       objName: "Boss",
-      textObjectText: "BossOfGym",
+      textObjectText: "Boss",
       gltf,
     });
     this.actionEvents = [];

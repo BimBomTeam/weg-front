@@ -51,10 +51,10 @@ export class Player {
     this.initSensor(sketch, pos);
     this.initAutoJumpSensors(sketch, pos);
 
-    this.textObject = new TextObject({
-      textContent: "dimasikhdashdjs",
-      targetObject: this.object,
-    });
+    // this.textObject = new TextObject({
+    //   textContent: "dimasikhdashdjs",
+    //   targetObject: this.object,
+    // });
 
     const processColision = (otherObject, event) => {
       if (event !== "end" && this.object.body.velocity.y < 1) {
@@ -326,7 +326,10 @@ export class Player {
         this.object.position,
         adjustWaterSplashPos
       );
-      if (showWaterSplash && !this.originSoundManager.waterSplashSound.isPlaying) {
+      if (
+        showWaterSplash &&
+        !this.originSoundManager.waterSplashSound.isPlaying
+      ) {
         this.originSoundManager.waterSplashSound.play();
       }
     }
@@ -359,14 +362,13 @@ export class Player {
 
     this.animateWalk(this.moveVec, deltaTime);
 
-    let playWalkSound = this.isWalking && this.onGround == true && this.mode == "freeWalk";
+    let playWalkSound =
+      this.isWalking && this.onGround == true && this.mode == "freeWalk";
     if (playWalkSound) {
       if (!this.originSoundManager.sandFootstepSound.isPlaying) {
         this.originSoundManager.sandFootstepSound.play();
       }
-      
-    }
-    else {
+    } else {
       this.originSoundManager.sandFootstepSound.stop();
     }
 
