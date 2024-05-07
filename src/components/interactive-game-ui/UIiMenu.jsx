@@ -26,8 +26,52 @@ const UiMenu = () => {
   const [messages, setMessages] = useState([]);
   const [showAnimation] = useState(false);
   const [words, setWords] = useState([]);
-  let checkWordsPayload = useSelector((state) => state.words);
-  const wordsArray = JSON.parse(checkWordsPayload.words.words);
+
+  const checkWordsPayload = useSelector((state) => state.words);
+
+  useEffect(() => {
+    setIsVisible(true);
+    setIsButtonClicked(false);
+    setWords(JSON.parse(checkWordsPayload.words.words));
+  }, []);
+
+  useEffect(() => {
+    if (!isVisible) {
+      setText("");
+    }
+
+    const handleEsc = (event) => {
+      if (event.keyCode === 27) {
+        setIsVisible(false);
+        setIsButtonClicked(false);
+        setIsExpandButtonClicked(false);
+      }
+    };
+
+    window.addEventListener("keydown", handleEsc);
+
+    return () => {
+      window.removeEventListener("keydown", handleEsc);
+    };
+  }, [isVisible]);
+
+  useEffect(() => {
+    if (!text && textareaRef.current) {
+      textareaRef.current.style.height = "auto";
+    }
+  }, [text]);
+
+  useEffect(() => {
+    if (transcript) {
+      setText(transcript);
+      if (transcript.split(/\s+/).length >= 100) {
+        setIsWordCounterVisible(true);
+      } else {
+        setIsWordCounterVisible(false);
+      }
+    }
+  }, [transcript]);
+
   const handleSendMessage = async () => {
     try {
       const data = await Dialog(text);
@@ -79,56 +123,6 @@ const UiMenu = () => {
   const resetTranscriptOnClick = () => {
     resetTranscript();
   };
-
-  useEffect(() => {
-    setIsVisible(true);
-  }, []);
-
-  useEffect(() => {
-    setIsVisible(true);
-    setIsButtonClicked(false);
-  }, []);
-
-  useEffect(() => {
-    if (!isVisible) {
-      setText("");
-    }
-  }, [isVisible]);
-
-  useEffect(() => {
-    const handleEsc = (event) => {
-      if (event.keyCode === 27) {
-        setIsVisible(false);
-        setIsButtonClicked(false);
-        setIsExpandButtonClicked(false);
-      }
-    };
-
-    window.addEventListener("keydown", handleEsc);
-
-    return () => {
-      window.removeEventListener("keydown", handleEsc);
-    };
-  }, [isVisible]);
-
-  useEffect(() => {
-    if (!text && textareaRef.current) {
-      textareaRef.current.style.height = "auto";
-    }
-  }, [text]);
-
-  useEffect(() => {}, [isExpandButtonClicked]);
-
-  useEffect(() => {
-    if (transcript) {
-      setText(transcript);
-      if (transcript.split(/\s+/).length >= 100) {
-        setIsWordCounterVisible(true);
-      } else {
-        setIsWordCounterVisible(false);
-      }
-    }
-  }, [transcript]);
 
   const onTextChange = (event) => {
     const inputText = event.target.value;
@@ -312,7 +306,7 @@ const UiMenu = () => {
 
         {(isButtonClicked || isExpandButtonClicked) && (
           <animated.div className="words">
-            {wordsArray.map((item) => (
+            {words.map((item) => (
               <WordButton
                 text={item.name}
                 learned={item.state}
