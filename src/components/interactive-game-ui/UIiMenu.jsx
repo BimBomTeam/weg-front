@@ -78,9 +78,10 @@ const UiMenu = () => {
   const handleSendMessage = async () => {
     try {
       const data = await POST_continueDialog({
-        messages: msg,
-        messageStr: text,
+        "messages": JSON.parse(localStorage.getItem("message_history")),
+        "messageStr": text,
       });
+      localStorage.setItem("message_history", JSON.stringify(data));
 
       const newUserMessage = { text: "User: " + text, id: Date.now() };
       const npcMessage = { text: "NPC: ", animation: true, id: Date.now() + 1 };
@@ -92,10 +93,10 @@ const UiMenu = () => {
       ]);
 
       setTimeout(() => {
-        npcMessage.text = "NPC: " + data[3].message;
+        npcMessage.text = "NPC: " + data[data.length - 1].message;
         npcMessage.animation = false;
         setMessages((prevMessages) => [...prevMessages]);
-      }, 3000);
+      }, 100);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
