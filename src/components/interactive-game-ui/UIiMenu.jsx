@@ -4,11 +4,12 @@ import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
 import { useSpring, animated } from "react-spring";
-import Dialog from "../../logic/Dialog";
 import { ToastContainer, toast } from "react-toastify";
 import WordButton from "./WordButton";
 import "react-toastify/dist/ReactToastify.css";
 import { useSelector } from "react-redux";
+import POST_startDialog from "../../logic/server/POST_startDialog";
+import POST_continueDialog from "../../logic/server/POST_continueDialog";
 
 const UiMenu = () => {
   const [text, setText] = useState("");
@@ -19,6 +20,8 @@ const UiMenu = () => {
   const [isExpandButtonClicked, setIsExpandButtonClicked] = useState(false);
   const [isButtonRotated, setIsButtonRotated] = useState(false);
   const [isListening, setIsListening] = useState(false);
+  const getMessagesLS = localStorage.getItem("message_history");
+  const msg = JSON.parse(getMessagesLS);
   const { transcript, resetTranscript } = useSpeechRecognition({
     continuous: true,
     language: "en-US",
@@ -30,7 +33,10 @@ const UiMenu = () => {
   const wordsArray = JSON.parse(checkWordsPayload.words.words);
   const handleSendMessage = async () => {
     try {
-      const data = await Dialog(text);
+      const data = await POST_continueDialog({
+        "messages": msg,
+        "messageStr": text,
+      });
 
       const newUserMessage = { text: "User: " + text, id: Date.now() };
       const npcMessage = { text: "NPC: ", animation: true, id: Date.now() + 1 };
@@ -42,12 +48,11 @@ const UiMenu = () => {
       ]);
 
       setTimeout(() => {
-        npcMessage.text = "NPC: " + data.text;
+        npcMessage.text = "NPC: " + data[3].message;
         npcMessage.animation = false;
         setMessages((prevMessages) => [...prevMessages]);
       }, 3000);
 
-      console.log(data);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -79,6 +84,17 @@ const UiMenu = () => {
   const resetTranscriptOnClick = () => {
     resetTranscript();
   };
+
+  useEffect(() => {
+    (async function startDialog() {
+      const data = await POST_startDialog({
+        role: "cookier",
+        level: "B1",
+        wordsStr: "first, second",
+      });
+      localStorage.setItem("message_history", JSON.stringify(data));
+    })();
+  }, []);
 
   useEffect(() => {
     setIsVisible(true);
