@@ -18,6 +18,7 @@ export class Player {
     this.deadLevel = -20;
     this.lastSafePosition = new Vector3();
     this.lastFallTime = 0;
+    this.originSoundManager = this.sketch.soundManager;
 
     this.canChangeToIdle = false;
     this.timerWalkStarted = false;
@@ -325,6 +326,9 @@ export class Player {
         this.object.position,
         adjustWaterSplashPos
       );
+      if (showWaterSplash && !this.originSoundManager.waterSplashSound.isPlaying) {
+        this.originSoundManager.waterSplashSound.play();
+      }
     }
 
     this.object.body.setAngularVelocityY(0);
@@ -354,6 +358,17 @@ export class Player {
     }
 
     this.animateWalk(this.moveVec, deltaTime);
+
+    let playWalkSound = this.isWalking && this.onGround == true && this.mode == "freeWalk";
+    if (playWalkSound) {
+      if (!this.originSoundManager.sandFootstepSound.isPlaying) {
+        this.originSoundManager.sandFootstepSound.play();
+      }
+      
+    }
+    else {
+      this.originSoundManager.sandFootstepSound.stop();
+    }
 
     this.playerParticleSystem.update(
       this.object.position,

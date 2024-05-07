@@ -19,6 +19,7 @@ import { CameraOperator } from "./cameraOperator";
 import { StandartNPC } from "./standartNPC";
 import GenerateWordsById from "../logic/GenerateWordsById";
 import { BossNPC } from "./bossNPC";
+import SoundManager from "./soundManager";
 
 import store from "../store/store";
 import { ModelLoader } from "./modelLoaderService";
@@ -153,6 +154,7 @@ class MainScene extends Scene3D {
     this.camera = new TestCamera();
     this.camOperator = new CameraOperator({ camera: this.camera });
 
+    this.soundManager = new SoundManager(this.camera);
     const rolesReduxArr = JSON.parse(
       store.getState().roles.roles.roles.replaceAll("\\", "")
     );
