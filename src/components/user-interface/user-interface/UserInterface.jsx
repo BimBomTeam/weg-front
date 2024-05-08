@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSpring, animated } from "react-spring";
 import AccountModal from "./modals/AccountModal";
 import DifficultyModal from "./modals/DifficultyModal";
@@ -13,6 +13,25 @@ const UserInterface = () => {
   const [openShopModal, setOpenShopModal] = useState(false);
   const [openInstructionModal, setOpenInstructionModal] = useState(false);
   const [openSettingsModal, setOpenSettingsModal] = useState(false);
+  const [resolution, setResolution] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight
+  });
+
+  useEffect(() => {
+    const handleResize = () => {
+      setResolution({
+        width: window.innerWidth,
+        height: window.innerHeight
+      });
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   function getStyles(name) {
     return getComputedStyle(document.documentElement).getPropertyValue(name);
