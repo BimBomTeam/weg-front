@@ -41,9 +41,9 @@
   border-radius: 30px;
   background-color: $button-gradient-start;
   backdrop-filter: blur(18px);
-  border-width: 5px; /* Add default border width */
-  border-style: solid; /* Add default border style */
-  border-color: transparent; /* Add default border color */
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent;
 }
 
 .words {
@@ -60,8 +60,8 @@
 .word {
   margin-left: 1%;
   background: linear-gradient(to top, #F8F0F0 0%, #C2E9EE 100%);
-  font-size: 20px;
   color: $label-color;
+  margin-bottom: 2%;
   display: flex;
   text-align: center;
   align-items: center; 
@@ -144,13 +144,6 @@
       width: calc(100% - 21%);
     }
   }
-  .word {
-    margin-bottom: 2%;
-    font-size: 20px;
-  }
-  .message-container {
-    height: 65%;
-  }
 }
 
 @media only screen and (min-width: 2101px) and (max-width: 2561px) {
@@ -169,13 +162,6 @@
     textarea {
       width: calc(100% - 25%);
     }
-  }
-  .word {
-    margin-bottom: 2%;
-    font-size: 17px;
-  }
-  .message-container {
-    height: 65%;
   }
 }
 
@@ -196,14 +182,6 @@
       width: calc(100% - 25%);
     }
   }
-  .word {
-    margin-bottom: 2%;
-    font-size: 18px;
-  }
-  .message-container {
-    height: 55%;
-    margin-top: 7%;
-  }
 }
 //----------------1600 x 900 (HD+)----------------
 @media only screen and (min-width: 1281px) and (max-width: 1800px) {
@@ -222,13 +200,6 @@
     textarea {
       width: calc(100% - 29%);      
     }
-  }
-  .word {
-    margin-bottom: 2%;
-    font-size: 16px;
-  }
-  .message-container {
-    height: 63%;
   }
 }
 //----------------1280 x 800 (WXGA)----------------
@@ -250,13 +221,6 @@
       height: 110px;
     }
   }
-  .word {
-    margin-bottom: 2%;
-    font-size: 15px;
-  }
-  .message-container {
-    height: 64%;
-  }
 }
 
 @media only screen and (max-width: 900px) {
@@ -277,14 +241,22 @@
       height: 110px;
     }
   }
-  .word {
-    margin-bottom: 2%;
-    font-size: 15px;
+}
+
+@media only screen and (max-height: 1000px) {
+  :root {
+    --animationProps_top_unexpanded_unclicked_true: 65%;
+    --animationProps_top_unexpanded_clicked_false: 5%;
+    --animationProps_height_unexpanded_clicked_false: 90%;
+    --animationProps_height_unexpanded_unclicked_true: 30%;
+    --buttonExpandProps_marginTop_true: -15px;
+    --buttonExpandProps_marginTop_false: 5px;
   }
   .message-container {
     height: 65%;
   }
 }
+
 @media only screen and (max-height: 900px) {
   :root {
     --animationProps_top_unexpanded_unclicked_true: 65%;
@@ -295,7 +267,35 @@
     --buttonExpandProps_marginTop_false: 5px;
   }
   .message-container {
-    height: 60%;
+    height: 63%;
+  }
+}
+
+@media only screen and (max-height: 800px) {
+  :root {
+    --animationProps_top_unexpanded_unclicked_true: 55%;
+    --animationProps_top_unexpanded_clicked_false: 5%;
+    --animationProps_height_unexpanded_clicked_false: 90%;
+    --animationProps_height_unexpanded_unclicked_true: 40%;
+    --buttonExpandProps_marginTop_true: -15px;
+    --buttonExpandProps_marginTop_false: 5px;
+  }
+  .message-container {
+    height: 56%;
+  }
+}
+
+@media only screen and (max-height: 760px) {
+  :root {
+    --animationProps_top_unexpanded_unclicked_true: 55%;
+    --animationProps_top_unexpanded_clicked_false: 5%;
+    --animationProps_height_unexpanded_clicked_false: 90%;
+    --animationProps_height_unexpanded_unclicked_true: 40%;
+    --buttonExpandProps_marginTop_true: -15px;
+    --buttonExpandProps_marginTop_false: 5px;
+  }
+  .message-container {
+    height: 52%;
   }
 }
 
@@ -309,11 +309,21 @@
     --buttonExpandProps_marginTop_false: 5px;
   }
   .message-container {
-    height: 48%;
+    height: 50%;
   }
-  .word {
-    margin-bottom: 2%;
-    font-size: 12px;
+}
+
+@media only screen and (max-height: 670px) {
+  :root {
+    --animationProps_top_unexpanded_unclicked_true: 55%;
+    --animationProps_top_unexpanded_clicked_false: 5%;
+    --animationProps_height_unexpanded_clicked_false: 90%;
+    --animationProps_height_unexpanded_unclicked_true: 40%;
+    --buttonExpandProps_marginTop_true: -15px;
+    --buttonExpandProps_marginTop_false: 5px;
+  }
+  .message-container {
+    height: 45%;
   }
 }
 
@@ -327,13 +337,24 @@
     --buttonExpandProps_marginTop_false: 5px;
   }
   .message-container {
-    height: 45%;
-  }
-  .word {
-    margin-bottom: 2%;
-    font-size: 12px;
+    height: 40%;
   }
 }
+
+@media only screen and (max-height: 550px) {
+  :root {
+    --animationProps_top_unexpanded_unclicked_true: 55%;
+    --animationProps_top_unexpanded_clicked_false: 5%;
+    --animationProps_height_unexpanded_clicked_false: 90%;
+    --animationProps_height_unexpanded_unclicked_true: 40%;
+    --buttonExpandProps_marginTop_true: -15px;
+    --buttonExpandProps_marginTop_false: 5px;
+  }
+  .message-container {
+    height: 34%;
+  }
+}
+
 @media only screen and (max-height: 500px) {
   :root {
     --animationProps_top_unexpanded_unclicked_true: 55%;
@@ -344,10 +365,6 @@
     --buttonExpandProps_marginTop_false: 5px;
   }
   .message-container {
-    height: 38%;
-  }
-  .word {
-    margin-bottom: 2%;
-    font-size: 12px;
+    height: 25%;
   }
 }

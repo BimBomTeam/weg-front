@@ -92,7 +92,7 @@ const UiMenu = () => {
       const messageContainerElement = document.querySelector(".message-container");
       if (wordsElement && messageContainerElement) {
         const wordsHeight = wordsElement.getBoundingClientRect().height;
-        const newMaxHeight = `${Math.max(0, 100 - wordsHeight * 0.1)}%`;
+        const newMaxHeight = `${Math.max(0, 100 - wordsHeight * 0.4)}%`;
         messageContainerElement.style.maxHeight = newMaxHeight;
       }
     };
