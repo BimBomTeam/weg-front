@@ -427,59 +427,59 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
   }
   .expandMenu
   {  
-    top: 43px;
-    left: 42px;
-    height: 75px;
-    width: 75px;
+    top: 30px;
+    left: 22px;
+    height: 65px;
+    width: 65px;
 
   }
   .expandMenu:hover {
-    transform: scale(1.3);
+    transform: scale(1.1);
   }
   .account
   {
-    transform: scale(1.6);
+    transform: scale(1.2);
     height: 50px;
   }
   .account:hover {
-    transform: scale(1.9);
+    transform: scale(1.3);
   }
   .difficulty
   { 
-    transform: scale(1.9);
+    transform: scale(1.5);
     height: 35px;
     width: 50px;  
   }
   .difficulty:hover {
-    transform: scale(2.2);
+    transform: scale(1.6);
   }
   .shop
   {
-    transform: scale(1.8);
+    transform: scale(1.5);
     height: 45px;
     width: 50px;
   }
   .shop:hover {
-    transform: scale(2.1);
+    transform: scale(1.6);
   }
   .instruction
   {
-    transform: scale(2.1);
+    transform: scale(1.8);
     height: 35px;
     width: 35px;
   }
   .instruction:hover {
-    transform: scale(2.4);
+    transform: scale(1.9);
   }
   .settings
   {
-    transform: scale(2.3);
+    transform: scale(1.9);
     height: 35px;
     width: 35px;
-    margin-bottom: 80px;
+    margin-bottom: 55px;
   }
   .settings:hover {
-    transform: scale(2.6); // nie dziala
+    transform: scale(2.0); // nie dziala
   }
 }
 
