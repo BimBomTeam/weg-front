@@ -154,10 +154,10 @@
   :root {
     --animationProps_height_expanded_clicked_true: 100px;
     --animationProps_height_expanded_unclicked_false: 100px;
-    --animationProps_top_unexpanded_unclicked_true: 65%;
+    --animationProps_top_unexpanded_unclicked_true: 75%;
     --animationProps_top_unexpanded_clicked_false: 5%;
     --animationProps_height_unexpanded_clicked_false: 90%;
-    --animationProps_height_unexpanded_unclicked_true: 30%;
+    --animationProps_height_unexpanded_unclicked_true: 20%;
     --buttonExpandProps_marginTop_true: 20px;
     --buttonExpandProps_marginTop_false: 5px;
   }
@@ -180,10 +180,10 @@
 @media only screen and (min-width: 1801px) and (max-width: 2100px) {
   :root {  
 
-    --animationProps_top_unexpanded_unclicked_true: 65%;
+    --animationProps_top_unexpanded_unclicked_true: 70%;
     --animationProps_top_unexpanded_clicked_false: 5%;
     --animationProps_height_unexpanded_clicked_false: 90%;
-    --animationProps_height_unexpanded_unclicked_true: 30%;
+    --animationProps_height_unexpanded_unclicked_true: 25%;
     --buttonExpandProps_marginTop_true: 20px;
     --buttonExpandProps_marginTop_false: 5px;
   }

@@ -27,7 +27,10 @@ const UiMenu = () => {
   });
   const [messages, setMessages] = useState([]);
   const [showAnimation] = useState(false);
-  const [words, setWords] = useState([]);
+  const [resolution, setResolution] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight
+  });
   let checkWordsPayload = useSelector((state) => state.words);
   const wordsArray = JSON.parse(checkWordsPayload.words.words);
   const handleSendMessage = async () => {
@@ -95,7 +98,6 @@ const UiMenu = () => {
   
     handleWordsHeightChange();
     return () => {
-      
     };
   });
 
@@ -148,6 +150,21 @@ const UiMenu = () => {
       }
     }
   }, [transcript]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setResolution({
+        width: window.innerWidth,
+        height: window.innerHeight
+      });
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   const onTextChange = (event) => {
     const inputText = event.target.value;
