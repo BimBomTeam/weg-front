@@ -58,6 +58,7 @@ const UiMenu = () => {
     }
   };
 
+  const sumOfWordLengths = wordsArray.reduce((acc, curr) => acc + curr.name.length, 0);
   const onButtonClick = async () => {
     event.preventDefault();
     if (!text) {
@@ -98,7 +99,6 @@ const UiMenu = () => {
 
     handleWordsHeightChange();
     return () => {
-
     };
   });
 
@@ -116,6 +116,11 @@ const UiMenu = () => {
       setText("");
     }
   }, [isVisible]);
+
+  useEffect(() => {
+    const sumOfWordLengths = wordsArray.reduce((acc, curr) => acc + curr.name.length, 0);
+    console.log("Sum of lengths of all words:", sumOfWordLengths);
+  }, [wordsArray]);
 
   useEffect(() => {
     const handleEsc = (event) => {
@@ -244,7 +249,7 @@ const UiMenu = () => {
         className="main-ui"
         style={{
           ...animationProps,
-          ...borderAnimationProps, // Add animated border here
+          ...borderAnimationProps,
         }}
       >
         <animated.button
@@ -274,8 +279,7 @@ const UiMenu = () => {
             resetTranscriptOnClick();
           }}
         />
-
-
+        
         <button className="voice_button" onClick={toggleListening}>
           {isListening ? "" : ""}
         </button>
@@ -291,9 +295,11 @@ const UiMenu = () => {
                 text={item.name}
                 learned={item.state}
                 onClick={() => onWordClick(item.id)}
+                sumOfWordLengths={sumOfWordLengths}
                 key={item.id}
               />
             ))}
+
           </animated.div>
         )}
       </animated.div>
