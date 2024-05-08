@@ -23,6 +23,7 @@ const UiMenu = () => {
   const [isButtonRotated, setIsButtonRotated] = useState(false);
   const [isListening, setIsListening] = useState(false);
   const getMessagesLS = localStorage.getItem("message_history");
+  const [words, setWords] = useState([]); // Initialize as an empty array
   const msg = JSON.parse(getMessagesLS);
   const { transcript, resetTranscript } = useSpeechRecognition({
     continuous: true,
@@ -42,7 +43,7 @@ const UiMenu = () => {
     setIsVisible(true);
     setIsButtonClicked(false);
     setWords(JSON.parse(checkWordsPayload.words.words));
-  }, []);
+  }, [checkWordsPayload]); // Add checkWordsPayload to the dependency array
 
   useEffect(() => {
     if (!isVisible) {
@@ -110,7 +111,7 @@ const UiMenu = () => {
   };
 
   const sumOfWordLengths = wordsArray.reduce((acc, curr) => acc + curr.name.length, 0);
-  const onButtonClick = async () => {
+  const onButtonClick = async (event) => { // Pass event as a parameter
     event.preventDefault();
     if (!text) {
       toast.error("Please enter text to send a message");
@@ -136,6 +137,7 @@ const UiMenu = () => {
   const resetTranscriptOnClick = () => {
     resetTranscript();
   };
+
   useEffect(() => {
     (async function startDialog() {
       const data = await POST_startDialog({
@@ -324,19 +326,18 @@ const UiMenu = () => {
         )}
         <Textarea
           text={text}
-          setText={setText}
           onTextChange={onTextChange}
           resetTranscriptOnClick={resetTranscriptOnClick}
           onButtonClick={onButtonClick}
           onKeyPress={(event) => {
             if (event.key === "Enter" && !event.shiftKey) {
               event.preventDefault();
-              onButtonClick();
+              onButtonClick(event);
               resetTranscriptOnClick();
             }
           }}
           onSendClick={() => {
-            onButtonClick();
+            onButtonClick(event);
             resetTranscriptOnClick();
           }}
         />
@@ -360,7 +361,6 @@ const UiMenu = () => {
                 key={item.id}
               />
             ))}
-
           </animated.div>
         )}
       </animated.div>
