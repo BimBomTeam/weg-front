@@ -26,7 +26,7 @@ const WordButton = ({ text, learned, onClick, sumOfWordLengths }) => {
     background: isLearned
       ? "linear-gradient(45deg, #F8F0F0 0%, #74FF8A 100%)"
       : "linear-gradient(45deg, #F8F0F0 0%, #C2E9EE 100%)",
-    fontSize: sumOfWordLengths > 60 ? "15px" : sumOfWordLengths > 40 ? "18px" : "inherit"
+    fontSize: sumOfWordLengths > 60 ? "15px" : sumOfWordLengths > 40 ? "16px" : "inherit"
   };
 
   return (

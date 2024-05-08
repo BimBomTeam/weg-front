@@ -77,7 +77,6 @@ textarea {
   position: absolute;
   bottom: 7px;
   right: 30px;
-
   font-family: inherit;
   font-size: 14px;
   color: black;
@@ -236,6 +235,10 @@ label[for="password-repeat-label"] {
 }
 
 @media only screen and (min-width: 2561px) {
+  .word-counter {
+    font-size: 16px;
+    right: 2%;
+  }
   .user-label {
     font-size: 23px;
   }
@@ -258,6 +261,11 @@ label[for="password-repeat-label"] {
 }
 
 @media only screen and (min-width: 2100px) and (max-width: 2561px) {
+  .word-counter {
+    font-size: 16px;
+    right: 3%;
+  }
+
   .user-label {
     font-size: 22px;
   }
@@ -282,10 +290,9 @@ label[for="password-repeat-label"] {
 
 @media only screen and (min-width: 1801px) and (max-width: 2100px) {
 
-  #paragraph {
-    font-size: 20px;
-    bottom: -5px;
-    right: 40px;
+  .word-counter {
+    font-size: 15px;
+    right: 3%;
   }
 
   .user-label {
@@ -312,24 +319,17 @@ label[for="password-repeat-label"] {
 
 @media only screen and (min-width: 1281px) and (max-width: 1800px) {
 
-  #paragraph {
-    right: 50px;
+  .word-counter {
+    font-size: 12px;
+    right: 4%;
   }
 }
 
 @media only screen and (max-width: 1280px) {
-  :root{
-    --isListeningProps_marginTop_true: 0px;
-    --isListeningProps_marginTop_false: 0px;
-    --isListeningProps_width_true_true: 40px; //expanded true rozmiar 
-    --isListeningProps_width_true_false: 40px; //expanded false rozmiar 
-    --isListeningProps_width_false_true: 100px;
-    --isListeningProps_width_false_false: 0px;
-  }
-  #paragraph {
-    font-size: 20px;
-    bottom: -5px;
-    right: 40px;
+
+  .word-counter {
+    font-size: 12px;
+    right: 3%;
   }
 
   .user-label {
@@ -356,10 +356,9 @@ label[for="password-repeat-label"] {
 
 @media only screen and (max-width: 900px) {
 
-  #paragraph {
-    font-size: 20px;
-    bottom: -5px;
-    right: 40px;
+  .word-counter {
+    font-size: 12px;
+    right: 2%;
   }
 
   .user-label {

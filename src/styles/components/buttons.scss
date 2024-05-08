@@ -50,7 +50,6 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
 
 #expand_field_button {
   position: relative;
-  top: 2%;
   height: 50px;
   left: -3%;
   background-image: url('/images/expand.png');
@@ -404,7 +403,7 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
 @media only screen and (min-width: 1801px) and (max-width: 2100px) {
   #expand_field_button {
     width: 80px;
-    top: 0;
+    top: 3%;
   }
   .voice_button {
     width: 50px;
