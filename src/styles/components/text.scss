@@ -149,15 +149,6 @@ label[for="password-repeat-label"] {
   );
 }
 
-.isListening {
-  position: absolute;
-  bottom: 45px;
-  right: 25px;
-  background-color: red;
-  border-radius: 25px;
-  height: 5px;
-}
-
 .instruction_content {
   font-size: 20px;
   list-style-type: none;
@@ -245,14 +236,6 @@ label[for="password-repeat-label"] {
 }
 
 @media only screen and (min-width: 2561px) {
-  :root{
-    --isListeningProps_marginTop_true: 0px;
-    --isListeningProps_marginTop_false: 0px;
-    --isListeningProps_width_true_true: 40px; //expanded true rozmiar 
-    --isListeningProps_width_true_false: 40px; //expanded false rozmiar 
-    --isListeningProps_width_false_true: 100px;
-    --isListeningProps_width_false_false: 0px;
-  }
   .user-label {
     font-size: 23px;
   }
@@ -268,9 +251,6 @@ label[for="password-repeat-label"] {
   .instruction_content {
     font-size: 20px;
   }
-  .isListening {
-    right: 37px;
-  }
   #paragraph {
     font-size: 15px;
     right: 45px;
@@ -278,17 +258,6 @@ label[for="password-repeat-label"] {
 }
 
 @media only screen and (min-width: 2100px) and (max-width: 2561px) {
-  :root{
-    --isListeningProps_marginTop_true: 0px;
-    --isListeningProps_marginTop_false: 0px;
-    --isListeningProps_width_true_true: 40px; //expanded true rozmiar 
-    --isListeningProps_width_true_false: 40px; //expanded false rozmiar 
-    --isListeningProps_width_false_true: 100px;
-    --isListeningProps_width_false_false: 0px;
-  }
-  .isListening {
-    right: 30px;
-  }
   .message-container {
     position: relative;
     margin-top: 1%;
@@ -319,17 +288,6 @@ label[for="password-repeat-label"] {
 }
 
 @media only screen and (min-width: 1801px) and (max-width: 2100px) {
-  :root{
-    --isListeningProps_marginTop_true: 0px;
-    --isListeningProps_marginTop_false: 0px;
-    --isListeningProps_width_true_true: 40px; //expanded true rozmiar 
-    --isListeningProps_width_true_false: 40px; //expanded false rozmiar 
-    --isListeningProps_width_false_true: 100px;
-    --isListeningProps_width_false_false: 0px;
-  }
-  .isListening {
-    right: 3.5%;
-  }
 
   #paragraph {
     font-size: 20px;
@@ -360,17 +318,6 @@ label[for="password-repeat-label"] {
 }
 
 @media only screen and (min-width: 1281px) and (max-width: 1800px) {
-  :root{
-    --isListeningProps_marginTop_true: 0px;
-    --isListeningProps_marginTop_false: 0px;
-    --isListeningProps_width_true_true: 40px; //expanded true rozmiar 
-    --isListeningProps_width_true_false: 40px; //expanded false rozmiar 
-    --isListeningProps_width_false_true: 100px;
-    --isListeningProps_width_false_false: 0px;
-  }
-  .isListening {
-    right: 3%;
-  }
 
   #paragraph {
     right: 50px;
@@ -385,9 +332,6 @@ label[for="password-repeat-label"] {
     --isListeningProps_width_true_false: 40px; //expanded false rozmiar 
     --isListeningProps_width_false_true: 100px;
     --isListeningProps_width_false_false: 0px;
-  }
-  .isListening {
-    right: 4%;
   }
   #paragraph {
     font-size: 20px;
@@ -418,18 +362,6 @@ label[for="password-repeat-label"] {
 }
 
 @media only screen and (max-width: 900px) {
-  :root{
-    --isListeningProps_marginTop_true: 0px;
-    --isListeningProps_marginTop_false: 0px;
-    --isListeningProps_width_true_true: 40px; //expanded true rozmiar 
-    --isListeningProps_width_true_false: 40px; //expanded false rozmiar 
-    --isListeningProps_width_false_true: 100px;
-    --isListeningProps_width_false_false: 0px;
-  }
-  .isListening {
-    right: 2.7%;
-    
-  }
 
   #paragraph {
     font-size: 20px;

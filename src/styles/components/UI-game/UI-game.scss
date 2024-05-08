@@ -41,6 +41,9 @@
   border-radius: 30px;
   background-color: $button-gradient-start;
   backdrop-filter: blur(18px);
+  border-width: 5px; /* Add default border width */
+  border-style: solid; /* Add default border style */
+  border-color: transparent; /* Add default border color */
 }
 
 .words {
@@ -198,7 +201,8 @@
     font-size: 18px;
   }
   .message-container {
-    height: 59%;
+    height: 55%;
+    margin-top: 7%;
   }
 }
 //----------------1600 x 900 (HD+)----------------

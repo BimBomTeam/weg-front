@@ -25,12 +25,12 @@ const UiMenu = () => {
     continuous: true,
     language: "en-US",
   });
-  const [messages, setMessages] = useState([]);
-  const [showAnimation] = useState(false);
   const [resolution, setResolution] = useState({
     width: window.innerWidth,
     height: window.innerHeight
   });
+  const [messages, setMessages] = useState([]);
+  const [showAnimation] = useState(false);
   let checkWordsPayload = useSelector((state) => state.words);
   const wordsArray = JSON.parse(checkWordsPayload.words.words);
   const handleSendMessage = async () => {
@@ -95,9 +95,10 @@ const UiMenu = () => {
         messageContainerElement.style.maxHeight = newMaxHeight;
       }
     };
-  
+
     handleWordsHeightChange();
     return () => {
+
     };
   });
 
@@ -133,6 +134,21 @@ const UiMenu = () => {
   }, [isVisible]);
 
   useEffect(() => {
+    const handleResize = () => {
+      setResolution({
+        width: window.innerWidth,
+        height: window.innerHeight
+      });
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  useEffect(() => {
     if (!text && textareaRef.current) {
       textareaRef.current.style.height = "auto";
     }
@@ -150,21 +166,6 @@ const UiMenu = () => {
       }
     }
   }, [transcript]);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setResolution({
-        width: window.innerWidth,
-        height: window.innerHeight
-      });
-    };
-
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
 
   const onTextChange = (event) => {
     const inputText = event.target.value;
@@ -195,6 +196,10 @@ const UiMenu = () => {
     return getComputedStyle(document.documentElement).getPropertyValue(name);
   }
 
+  const borderAnimationProps = useSpring({
+    borderColor: isListening ? 'red' : 'transparent',
+  });
+
   const animationProps = useSpring({
     height: isExpandButtonClicked
       ? isButtonClicked
@@ -221,29 +226,6 @@ const UiMenu = () => {
         : `${getStyles("--animationProps_top_unexpanded_unclicked_true")}`,
   });
 
-  const buttonAnimationProps = useSpring({
-    marginTop:
-      (isExpandButtonClicked && isButtonClicked) ||
-        (!isExpandButtonClicked && !isButtonClicked)
-        ? `${getStyles("--buttonAnimationProps_marginTop_true")}`
-        : `${getStyles("--buttonAnimationProps_marginTop_false")}`,
-  });
-
-  const isListeningProps = useSpring({
-    marginTop:
-      (isExpandButtonClicked && isButtonClicked) ||
-        (!isExpandButtonClicked && !isButtonClicked)
-        ? `${getStyles("--isListeningProps_marginTop_true")}`
-        : `${getStyles("--isListeningProps_marginTop_false")}`,
-    width: isListening
-      ? isButtonClicked
-        ? `${getStyles("--isListeningProps_width_true_true")}`
-        : `${getStyles("--isListeningProps_width_true_false")}`
-      : isListening
-        ? `${getStyles("--isListeningProps_width_false_true")}`
-        : `${getStyles("--isListeningProps_width_false_false")}`,
-  });
-
   const buttonExpandProps = useSpring({
     marginTop: isExpandButtonClicked
       ? isButtonClicked
@@ -256,28 +238,20 @@ const UiMenu = () => {
     config: { duration: 100 },
   });
 
-  const messageContainerAnimationProps = useSpring({
-    opacity: isButtonClicked || isExpandButtonClicked ? 1 : 0,
-    pointerEvents: isButtonClicked || isExpandButtonClicked ? "auto" : "none",
-    config: { tension: 20, friction: 10 },
-  });
-
-  const messageScrollAnimationProps = useSpring({
-    opacity: isButtonClicked || isExpandButtonClicked ? 1 : 0,
-    pointerEvents: isButtonClicked || isExpandButtonClicked ? "auto" : "none",
-    config: { tension: 40, friction: 10 },
-  });
-
   return (
     <div style={{ display: "flex", justifyContent: "center" }}>
-      <animated.div className="main-ui" style={animationProps}>
+      <animated.div
+        className="main-ui"
+        style={{
+          ...animationProps,
+          ...borderAnimationProps, // Add animated border here
+        }}
+      >
         <animated.button
           id="expand_field_button"
           onClick={onButtonClickExpand}
           style={buttonExpandProps}
         ></animated.button>
-
-        <animated.div className="isListening" style={isListeningProps} />
 
         {isWordCounterVisible && (
           <p className="word-counter">{text.split(/\s+/).length}/100</p>
