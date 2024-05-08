@@ -1,3 +1,12 @@
+:root
+{
+  --isListeningProps_marginTop_true: 0px;
+  --isListeningProps_marginTop_false: 0px;
+  --isListeningProps_width_true_true: 0px;
+  --isListeningProps_width_true_false: 0px;
+  --isListeningProps_width_false_true: 0px;
+  --isListeningProps_width_false_false: 0px;
+}
 textarea {
   position: absolute;
   left: 2%;
@@ -236,6 +245,14 @@ label[for="password-repeat-label"] {
 }
 
 @media only screen and (min-width: 2561px) {
+  :root{
+    --isListeningProps_marginTop_true: 0px;
+    --isListeningProps_marginTop_false: 0px;
+    --isListeningProps_width_true_true: 40px; //expanded true rozmiar 
+    --isListeningProps_width_true_false: 40px; //expanded false rozmiar 
+    --isListeningProps_width_false_true: 100px;
+    --isListeningProps_width_false_false: 0px;
+  }
   .user-label {
     font-size: 23px;
   }
@@ -252,7 +269,7 @@ label[for="password-repeat-label"] {
     font-size: 20px;
   }
   .isListening {
-    right: 40px;
+    right: 37px;
   }
   #paragraph {
     font-size: 15px;
@@ -261,8 +278,16 @@ label[for="password-repeat-label"] {
 }
 
 @media only screen and (min-width: 2100px) and (max-width: 2561px) {
+  :root{
+    --isListeningProps_marginTop_true: 0px;
+    --isListeningProps_marginTop_false: 0px;
+    --isListeningProps_width_true_true: 40px; //expanded true rozmiar 
+    --isListeningProps_width_true_false: 40px; //expanded false rozmiar 
+    --isListeningProps_width_false_true: 100px;
+    --isListeningProps_width_false_false: 0px;
+  }
   .isListening {
-    right: 28px;
+    right: 30px;
   }
   .message-container {
     position: relative;
@@ -294,8 +319,16 @@ label[for="password-repeat-label"] {
 }
 
 @media only screen and (min-width: 1801px) and (max-width: 2100px) {
+  :root{
+    --isListeningProps_marginTop_true: 0px;
+    --isListeningProps_marginTop_false: 0px;
+    --isListeningProps_width_true_true: 40px; //expanded true rozmiar 
+    --isListeningProps_width_true_false: 40px; //expanded false rozmiar 
+    --isListeningProps_width_false_true: 100px;
+    --isListeningProps_width_false_false: 0px;
+  }
   .isListening {
-    right: 25px;
+    right: 3.5%;
   }
 
   #paragraph {
@@ -327,6 +360,14 @@ label[for="password-repeat-label"] {
 }
 
 @media only screen and (min-width: 1281px) and (max-width: 1800px) {
+  :root{
+    --isListeningProps_marginTop_true: 0px;
+    --isListeningProps_marginTop_false: 0px;
+    --isListeningProps_width_true_true: 40px; //expanded true rozmiar 
+    --isListeningProps_width_true_false: 40px; //expanded false rozmiar 
+    --isListeningProps_width_false_true: 100px;
+    --isListeningProps_width_false_false: 0px;
+  }
   .isListening {
     right: 3%;
   }
@@ -337,14 +378,84 @@ label[for="password-repeat-label"] {
 }
 
 @media only screen and (max-width: 1280px) {
+  :root{
+    --isListeningProps_marginTop_true: 0px;
+    --isListeningProps_marginTop_false: 0px;
+    --isListeningProps_width_true_true: 40px; //expanded true rozmiar 
+    --isListeningProps_width_true_false: 40px; //expanded false rozmiar 
+    --isListeningProps_width_false_true: 100px;
+    --isListeningProps_width_false_false: 0px;
+  }
   .isListening {
-    right: 25px;
+    right: 4%;
+  }
+  #paragraph {
+    font-size: 20px;
+    bottom: -5px;
+    right: 40px;
+  }
+
+  .user-label {
+    font-size: 13px;
+  }
+
+  .user-message {
+    font-size: 13px;
+  }
+  .npc-message {
+    font-size: 13px;
+  }
+
+  .npc-label {
+    font-size: 13px;
+  }
+  .instruction_content {
+    font-size: 15px;
+  }
+  textarea {
+    font-size: 15px;
   }
 }
 
 @media only screen and (max-width: 900px) {
-  .isListening {
-    right: 5px;
+  :root{
+    --isListeningProps_marginTop_true: 0px;
+    --isListeningProps_marginTop_false: 0px;
+    --isListeningProps_width_true_true: 40px; //expanded true rozmiar 
+    --isListeningProps_width_true_false: 40px; //expanded false rozmiar 
+    --isListeningProps_width_false_true: 100px;
+    --isListeningProps_width_false_false: 0px;
   }
-}
+  .isListening {
+    right: 2.7%;
+    
+  }
 
+  #paragraph {
+    font-size: 20px;
+    bottom: -5px;
+    right: 40px;
+  }
+
+  .user-label {
+    font-size: 12px;
+  }
+
+  .user-message {
+    font-size: 12px;
+  }
+  .npc-message {
+    font-size: 12px;
+  }
+
+  .npc-label {
+    font-size: 12px;
+  }
+  .instruction_content {
+    font-size: 15px;
+  }
+  textarea {
+    font-size: 15px;
+  }
+
+}

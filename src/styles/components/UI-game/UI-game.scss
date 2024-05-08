@@ -281,3 +281,69 @@
     height: 65%;
   }
 }
+@media only screen and (max-height: 900px) {
+  :root {
+    --animationProps_top_unexpanded_unclicked_true: 65%;
+    --animationProps_top_unexpanded_clicked_false: 5%;
+    --animationProps_height_unexpanded_clicked_false: 90%;
+    --animationProps_height_unexpanded_unclicked_true: 30%;
+    --buttonExpandProps_marginTop_true: -15px;
+    --buttonExpandProps_marginTop_false: 5px;
+  }
+  .message-container {
+    height: 60%;
+  }
+}
+
+@media only screen and (max-height: 700px) {
+  :root {
+    --animationProps_top_unexpanded_unclicked_true: 55%;
+    --animationProps_top_unexpanded_clicked_false: 5%;
+    --animationProps_height_unexpanded_clicked_false: 90%;
+    --animationProps_height_unexpanded_unclicked_true: 40%;
+    --buttonExpandProps_marginTop_true: -15px;
+    --buttonExpandProps_marginTop_false: 5px;
+  }
+  .message-container {
+    height: 48%;
+  }
+  .word {
+    margin-bottom: 2%;
+    font-size: 12px;
+  }
+}
+
+@media only screen and (max-height: 600px) {
+  :root {
+    --animationProps_top_unexpanded_unclicked_true: 55%;
+    --animationProps_top_unexpanded_clicked_false: 5%;
+    --animationProps_height_unexpanded_clicked_false: 90%;
+    --animationProps_height_unexpanded_unclicked_true: 40%;
+    --buttonExpandProps_marginTop_true: -15px;
+    --buttonExpandProps_marginTop_false: 5px;
+  }
+  .message-container {
+    height: 45%;
+  }
+  .word {
+    margin-bottom: 2%;
+    font-size: 12px;
+  }
+}
+@media only screen and (max-height: 500px) {
+  :root {
+    --animationProps_top_unexpanded_unclicked_true: 55%;
+    --animationProps_top_unexpanded_clicked_false: 5%;
+    --animationProps_height_unexpanded_clicked_false: 90%;
+    --animationProps_height_unexpanded_unclicked_true: 40%;
+    --buttonExpandProps_marginTop_true: -15px;
+    --buttonExpandProps_marginTop_false: 5px;
+  }
+  .message-container {
+    height: 38%;
+  }
+  .word {
+    margin-bottom: 2%;
+    font-size: 12px;
+  }
+}

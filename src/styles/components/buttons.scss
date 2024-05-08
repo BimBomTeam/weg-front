@@ -38,7 +38,7 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
   background-size: contain;
   background-color: transparent;
   background-repeat: no-repeat;
-  border: 0;
+  border: 0px;
   transition: transform 0.3s ease;
   cursor: pointer;
 }
@@ -244,7 +244,7 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
   .voice_button {
     width: 50px;
     bottom: 80px;
-    right: 41px;
+    right: 30px;
     transform: scale(1.8);
   }
 
@@ -312,7 +312,7 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
     margin-bottom: 120px;
   }
   .settings:hover {
-    transform: scale(3.2); // kolejny nie dziala
+    transform: scale(3.2); 
   }
 }
 
@@ -815,5 +815,13 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
   }
   .settings:hover {
     transform: scale(0.9);
+  }
+}
+
+@media only screen and (max-width: 900px) {
+  .voice_button {
+    width: 50px;
+    left: 87.5%;
+    bottom: 70px;
   }
 }
