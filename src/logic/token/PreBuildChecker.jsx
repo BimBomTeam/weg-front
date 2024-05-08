@@ -12,7 +12,7 @@ export default function PreBuildChecker() {
   const dispatch = useDispatch();
   const token = useSelector((state) => state.auth.isAuthenticated);
   const [loading, setLoading] = useState(true);
-  const NonTokenLinks = ["/register", "/login"]
+  const NonTokenLinks = ["/register", "/login", "/game"]
 
   useEffect(() => {
     dispatch(checkToken());

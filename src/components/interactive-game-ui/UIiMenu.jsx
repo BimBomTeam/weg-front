@@ -4,13 +4,14 @@ import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
 import { useSpring, animated } from "react-spring";
-import Dialog from "../../logic/Dialog";
 import { ToastContainer, toast } from "react-toastify";
 import WordButton from "./WordButton";
 import Textarea from "./Textarea";
 import MessageContainer from "./MessageContainer";
 import "react-toastify/dist/ReactToastify.css";
 import { useSelector } from "react-redux";
+import POST_startDialog from "../../logic/server/POST_startDialog";
+import POST_continueDialog from "../../logic/server/POST_continueDialog";
 
 const UiMenu = () => {
   const [text, setText] = useState("");
@@ -21,6 +22,8 @@ const UiMenu = () => {
   const [isExpandButtonClicked, setIsExpandButtonClicked] = useState(false);
   const [isButtonRotated, setIsButtonRotated] = useState(false);
   const [isListening, setIsListening] = useState(false);
+  const getMessagesLS = localStorage.getItem("message_history");
+  const msg = JSON.parse(getMessagesLS);
   const { transcript, resetTranscript } = useSpeechRecognition({
     continuous: true,
     language: "en-US",
@@ -31,11 +34,61 @@ const UiMenu = () => {
   });
   const [messages, setMessages] = useState([]);
   const [showAnimation] = useState(false);
+  
   let checkWordsPayload = useSelector((state) => state.words);
   const wordsArray = JSON.parse(checkWordsPayload.words.words);
+
+  useEffect(() => {
+    setIsVisible(true);
+    setIsButtonClicked(false);
+    setWords(JSON.parse(checkWordsPayload.words.words));
+  }, []);
+
+  useEffect(() => {
+    if (!isVisible) {
+      setText("");
+    }
+
+    const handleEsc = (event) => {
+      if (event.keyCode === 27) {
+        setIsVisible(false);
+        setIsButtonClicked(false);
+        setIsExpandButtonClicked(false);
+      }
+    };
+
+    window.addEventListener("keydown", handleEsc);
+
+    return () => {
+      window.removeEventListener("keydown", handleEsc);
+    };
+  }, [isVisible]);
+
+  useEffect(() => {
+    if (!text && textareaRef.current) {
+      textareaRef.current.style.height = "auto";
+    }
+  }, [text]);
+
+  useEffect(() => {
+    if (transcript) {
+      setText(transcript);
+      if (transcript.split(/\s+/).length >= 100) {
+        setIsWordCounterVisible(true);
+      } else {
+        setIsWordCounterVisible(false);
+      }
+    }
+  }, [transcript]);
+
   const handleSendMessage = async () => {
     try {
-      const data = await Dialog(text);
+      console.log("HISTORY:", localStorage.getItem("message_history"));
+      const data = await POST_continueDialog({
+        messages: JSON.parse(localStorage.getItem("message_history")),
+        messageStr: text,
+      });
+      localStorage.setItem("message_history", JSON.stringify(data));
 
       const newUserMessage = { text: "User: " + text, id: Date.now() };
       const npcMessage = { text: "NPC: ", animation: true, id: Date.now() + 1 };
@@ -47,12 +100,10 @@ const UiMenu = () => {
       ]);
 
       setTimeout(() => {
-        npcMessage.text = "NPC: " + data.text;
+        npcMessage.text = "NPC: " + data[data.length - 1].message;
         npcMessage.animation = false;
         setMessages((prevMessages) => [...prevMessages]);
-      }, 3000);
-
-      console.log(data);
+      }, 100);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -85,6 +136,16 @@ const UiMenu = () => {
   const resetTranscriptOnClick = () => {
     resetTranscript();
   };
+  useEffect(() => {
+    (async function startDialog() {
+      const data = await POST_startDialog({
+        role: "cookier",
+        level: "B1",
+        wordsStr: "first, second",
+      });
+      localStorage.setItem("message_history", JSON.stringify(data));
+    })();
+  }, []);
 
   useEffect(() => {
     const handleWordsHeightChange = () => {
@@ -290,7 +351,7 @@ const UiMenu = () => {
 
         {(isButtonClicked || isExpandButtonClicked) && (
           <animated.div className="words">
-            {wordsArray.map((item) => (
+            {words.map((item) => (
               <WordButton
                 text={item.name}
                 learned={item.state}

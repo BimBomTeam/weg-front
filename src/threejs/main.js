@@ -19,6 +19,7 @@ import { CameraOperator } from "./cameraOperator";
 import { StandartNPC } from "./standartNPC";
 import GenerateWordsById from "../logic/GenerateWordsById";
 import { BossNPC } from "./bossNPC";
+import SoundManager from "./soundManager";
 
 import store from "../store/store";
 import { ModelLoader } from "./modelLoaderService";
@@ -153,9 +154,12 @@ class MainScene extends Scene3D {
     this.camera = new TestCamera();
     this.camOperator = new CameraOperator({ camera: this.camera });
 
+    this.soundManager = new SoundManager(this.camera);
     const rolesReduxArr = JSON.parse(
       store.getState().roles.roles.roles.replaceAll("\\", "")
     );
+
+    console.log("rolesReduxArr", rolesReduxArr);
 
     const modelsPath = "/public/lib/models/";
     this.modelLoader = new ModelLoader();
@@ -176,12 +180,13 @@ class MainScene extends Scene3D {
       sketch: this,
       path: "/src/assets/models/Npcs/Npc5.glb",
       gltf: this.modelLoader.modelsArray["npc5"],
+      textObjectText: rolesReduxArr[0].name,
     });
     this.standNPC2 = new StandartNPC({
       pos: { x: 100, y: 10, z: 95 },
       sketch: this,
       path: "/src/assets/models/Npcs/Npc1.glb",
-      // textObjectText: rolesReduxArr[0].name,
+      textObjectText: rolesReduxArr[0].name,
       gltf: this.modelLoader.modelsArray["npc1"],
     });
     this.npcArray = [this.bossNPC, this.standNPC, this.standNPC2];
