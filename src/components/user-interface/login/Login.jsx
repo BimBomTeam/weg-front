@@ -40,31 +40,29 @@ const Login = () => {
   };
 
   return (
+    <div>
     <div className="login-container">
-      <div className="login-content">
-        <label htmlFor="login">Zaloguj się</label>
-        <label htmlFor="email-label">E-mail</label>
-        <input
-          type="text"
-          id="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <label htmlFor="password-label">Hasło</label>
-        <input
-          type="password"
-          id="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <div className="login-buttonBlock">
-          <button onClick={handleLogin} className="login-button">
-            Zaloguj się
-          </button>
-          <button onClick={handleRegister} className="to-register-button">
-            Zarejestruj się
-          </button>
-        </div>
+      <label htmlFor="login">Zaloguj się</label>
+      <label htmlFor="email-label">E-mail</label>
+      <input
+        type="text"
+        id="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+      />
+      <label htmlFor="password-label">Hasło</label>
+      <input
+        type="password"
+        id="password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+      />
+      <button onClick={handleLogin} className="login-button">
+        Zaloguj się
+      </button>
+      <button onClick={handleRegister} className="to-register-button">
+        Zarejestruj się
+      </button>
       </div>
       <ToastContainer position="top-center" closeOnClick={true} />
     </div>

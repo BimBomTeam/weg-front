@@ -82,71 +82,104 @@ textarea {
   color: black;
 }
 
-label[for="register"], label[for="login"] {
-  padding-left: 17%;
-  width: 500px;
-  height: 60px;
-  overflow: hidden;
+label[for="register"],
+label[for="login"] {
+  position: absolute;
+  margin-top: 2%;
+  width: 80%;
   font-family: "Roboto";
-  font-size: 45px;
+  font-size: 35px;
   color: $label-color;
   font-weight: bold;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
-label[for="email-label"],
-label[for="email-register-label"],
-label[for="password-label"],
-label[for="password-register-label"],
-label[for="password-repeat-label"] {
-  width: 300px;
-  height: 40px;
-  overflow: hidden;
-  font-family: "Roboto";
-  font-size: 32px;
-  text-align: left;
-  color: $label-color;
-}
+  label[for="email-label"],
+  label[for="email-register-label"],
+  label[for="password-label"],
+  label[for="password-register-label"],
+  label[for="name-label"] {
+    position: absolute;
+    width: 300px;
+    height: 40px;
+    left: 15%;
+    overflow: hidden;
+    font-family: "Roboto";
+    font-size: 20px;
+    text-align: left;
+    color: $label-color;
+  }
 
-#password,
-#repeat-password,
-#email {
-  top: 40px;
-  left: 0px;
-  width: 600px;
-  height: 85px;
-  padding-left: 10px;
-  font-size: 32px;
-  color: $black;
-  border-width: 1px;
-  border-radius: 10px;
-  box-shadow: inset 0px 4px 4px 1px $button-login-shadow;
-  background: $password-input-background;
-  background: -webkit-linear-gradient(
-    -224.90398121603deg,
-    $password-input-gradient-start 0%,
-    $password-input-gradient-end 100%
-  );
-  background: -o-linear-gradient(
-    -224.90398121603deg,
-    $password-input-gradient-start 0%,
-    $password-input-gradient-end 100%
-  );
-  background: -moz-linear-gradient(
-    -224.90398121603deg,
-    $password-input-gradient-start 0%,
-    $password-input-gradient-end 100%
-  );
-  background: -ms-linear-gradient(
-    -224.90398121603deg,
-    $password-input-gradient-start 0%,
-    $password-input-gradient-end 100%
-  );
-  background: linear-gradient(
-    -224.90398121603deg,
-    $password-input-gradient-start 0%,
-    $password-input-gradient-end 100%
-  );
-}
+  label[for="email-label"],
+  label[for="email-register-label"] {
+    top: 20%;
+  }
+
+  label[for="password-label"],
+  label[for="name-label"]  {
+    top: 45%;
+  }
+
+  label[for="password-register-label"] {
+    top: 70%;
+  }
+
+  #password,
+  #password-reg,
+  #name,
+  #email {
+    position: absolute;
+    width: 70%;
+    height: 12%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding-left: 10px;
+    font-size: 15px;
+    color: $black;
+    border-width: 1px;
+    border-radius: 10px;
+    box-shadow: inset 0px 4px 4px 1px $button-login-shadow;
+    background: $password-input-background;
+    background: -webkit-linear-gradient(
+      -224.90398121603deg,
+      $password-input-gradient-start 0%,
+      $password-input-gradient-end 100%
+    );
+    background: -o-linear-gradient(
+      -224.90398121603deg,
+      $password-input-gradient-start 0%,
+      $password-input-gradient-end 100%
+    );
+    background: -moz-linear-gradient(
+      -224.90398121603deg,
+      $password-input-gradient-start 0%,
+      $password-input-gradient-end 100%
+    );
+    background: -ms-linear-gradient(
+      -224.90398121603deg,
+      $password-input-gradient-start 0%,
+      $password-input-gradient-end 100%
+    );
+    background: linear-gradient(
+      -224.90398121603deg,
+      $password-input-gradient-start 0%,
+      $password-input-gradient-end 100%
+    );
+  }
+
+  #email {
+    top: 30%;
+  }
+
+  #name,
+  #password {
+    top: 55%;
+  }
+
+  #password-reg {
+    top: 80%;
+  }
 
 .instruction_content {
   font-size: 20px;

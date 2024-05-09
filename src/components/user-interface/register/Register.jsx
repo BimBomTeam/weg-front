@@ -42,41 +42,44 @@ const Register = () => {
   };
 
   return (
-    <div className="register-container">
-      <div className="register-content">
-        <button onClick={handleBack} className="back-button"></button>
+    <div>
+      <div className="register-container">
         <label htmlFor="register">Rejestracja</label>
-        <label htmlFor="email-register-label">E-mail</label>
-        <input
-          type="text"
-          id="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <label htmlFor="password-repeat-label">Imie</label>
-        <input
-          type="text"
-          id="repeat-password"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        <label htmlFor="password-register-label">
-          Hasło
-          <BsInfoCircle
-            style={{ marginLeft: "5px", cursor: "pointer" }}
-            title="Your password should contain at least 8 characters, one uppercase letter, and one special character"
-            size={25}
+        <div className="input-container">
+          <button onClick={handleBack} className="back-button"></button>
+          <label htmlFor="email-register-label">E-mail</label>
+          <input
+            type="text"
+            id="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
-        </label>
-        <input
-          type="password"
-          id="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <button onClick={handleRegister} className="register-button">
-          Zarejestruj się
-        </button>
+          <label htmlFor="name-label">Imie</label>
+          <input
+            type="text"
+            id="name"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+          <label htmlFor="password-register-label">
+            Hasło
+            <BsInfoCircle
+              style={{ marginLeft: "5px", cursor: "pointer" }}
+              title="Your password should contain at least 8 characters, one uppercase letter, and one special character"
+              size={15}
+            />
+          </label>
+          <input
+            type="password"
+            id="password-reg"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <button onClick={handleRegister} className="register-button">
+            Zarejestruj się
+          </button>
+        </div>
+
       </div>
       <ToastContainer position="top-center" closeOnClick={true} />
     </div>

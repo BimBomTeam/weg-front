@@ -80,32 +80,33 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
 
 .login-button, .to-register-button, .register-button {
   position: relative;
-  display: block;
-  height: 75px;
-  width: 50%;
-  padding: 10px 20px;
   border: none;
   border-radius: 15px;
   background: linear-gradient(135deg, $button-gradient-start, $button-gradient-end), $button-default-color;
-  font-size: 26px;
+  font-size: 15px;
   font-family: 'Roboto';
   cursor: pointer;
   transition: background-color 0.3s ease;
-  margin: 0 auto;
+  margin: 2%;
 }
 
 .login-button {
-  margin-top: 5%;
+  width: 25%;
+  height: 15%;
+  top: 72%;
 }
 
 .to-register-button {
-  margin-top: 2%;
+  width: 30%;
+  height: 15%;
+  top: 72%;
 }
 
 .register-button {
-  margin-top: 6%;
+  width: 40%;
+  height: 15%;
+  top: 95%;
 }
-
 
 .login-button:hover, .to-register-button:hover, .register-button:hover {
   background: linear-gradient(135deg, $button-gradient-start, $button-gradient-end), $button-hover-color-alt;
@@ -118,8 +119,8 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
 
 .back-button {
   position: absolute;
-  top: 40px;
-  left: 40px;
+  top: 10%;
+  left: 5%;
   width: 30px;
   height: 30px;
   border: 0;
@@ -205,13 +206,13 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
 .backToGame {
   position: relative;
   display: block;
-  height: 75px;
-  width: 10%;
+  width: 20%;
+  height: 10%;
+  font-size: 15px;
   padding: 10px 20px;
   border: none;
   border-radius: 20px;
   background: linear-gradient(135deg, $button-gradient-start, $button-gradient-end), $button-default-color;
-  font-size: 26px;
   font-family: 'Roboto';
   cursor: pointer;
   transition: background-color 0.3s ease;
