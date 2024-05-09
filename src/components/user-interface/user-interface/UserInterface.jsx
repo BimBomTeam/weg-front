@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSpring, animated } from "react-spring";
 import AccountModal from "./modals/AccountModal";
 import DifficultyModal from "./modals/DifficultyModal";
@@ -13,6 +13,25 @@ const UserInterface = () => {
   const [openShopModal, setOpenShopModal] = useState(false);
   const [openInstructionModal, setOpenInstructionModal] = useState(false);
   const [openSettingsModal, setOpenSettingsModal] = useState(false);
+  const [resolution, setResolution] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight
+  });
+
+  useEffect(() => {
+    const handleResize = () => {
+      setResolution({
+        width: window.innerWidth,
+        height: window.innerHeight
+      });
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   function getStyles(name) {
     return getComputedStyle(document.documentElement).getPropertyValue(name);
@@ -28,7 +47,6 @@ const UserInterface = () => {
   const accountButtonAnimationProps = useSpring({
     opacity: expanded ? 1 : 0,
     pointerEvents: expanded ? "auto" : "none",
-
     config: { tension: 700, friction: 30 },
     delay: expanded ? 300 : 0,
   });
@@ -36,7 +54,6 @@ const UserInterface = () => {
   const difficultyButtonAnimationProps = useSpring({
     opacity: expanded ? 1 : 0,
     pointerEvents: expanded ? "auto" : "none",
-
     config: { tension: 700, friction: 30 },
     delay: expanded ? 400 : 10,
   });
@@ -44,7 +61,6 @@ const UserInterface = () => {
   const shopButtonAnimationProps = useSpring({
     opacity: expanded ? 1 : 0,
     pointerEvents: expanded ? "auto" : "none",
-
     config: { tension: 700, friction: 30 },
     delay: expanded ? 500 : 20,
   });
@@ -52,7 +68,6 @@ const UserInterface = () => {
   const instructionButtonAnimationProps = useSpring({
     opacity: expanded ? 1 : 0,
     pointerEvents: expanded ? "auto" : "none",
-
     config: { tension: 700, friction: 30 },
     delay: expanded ? 600 : 50,
   });
@@ -60,7 +75,6 @@ const UserInterface = () => {
   const settingsButtonAnimationProps = useSpring({
     opacity: expanded ? 1 : 0,
     pointerEvents: expanded ? "auto" : "none",
-
     config: { tension: 700, friction: 30 },
     delay: expanded ? 700 : 40,
   });

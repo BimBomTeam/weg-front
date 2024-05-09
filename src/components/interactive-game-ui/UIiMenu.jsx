@@ -6,6 +6,8 @@ import SpeechRecognition, {
 import { useSpring, animated } from "react-spring";
 import { ToastContainer, toast } from "react-toastify";
 import WordButton from "./WordButton";
+import Textarea from "./Textarea";
+import MessageContainer from "./MessageContainer";
 import "react-toastify/dist/ReactToastify.css";
 import { useSelector } from "react-redux";
 import POST_startDialog from "../../logic/server/POST_startDialog";
@@ -21,22 +23,27 @@ const UiMenu = () => {
   const [isButtonRotated, setIsButtonRotated] = useState(false);
   const [isListening, setIsListening] = useState(false);
   const getMessagesLS = localStorage.getItem("message_history");
+  const [words, setWords] = useState([]); // Initialize as an empty array
   const msg = JSON.parse(getMessagesLS);
   const { transcript, resetTranscript } = useSpeechRecognition({
     continuous: true,
     language: "en-US",
   });
+  const [resolution, setResolution] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight
+  });
   const [messages, setMessages] = useState([]);
   const [showAnimation] = useState(false);
-  const [words, setWords] = useState([]);
-
-  const checkWordsPayload = useSelector((state) => state.words);
+  
+  let checkWordsPayload = useSelector((state) => state.words);
+  const wordsArray = JSON.parse(checkWordsPayload.words.words);
 
   useEffect(() => {
     setIsVisible(true);
     setIsButtonClicked(false);
     setWords(JSON.parse(checkWordsPayload.words.words));
-  }, []);
+  }, [checkWordsPayload]); // Add checkWordsPayload to the dependency array
 
   useEffect(() => {
     if (!isVisible) {
@@ -103,7 +110,8 @@ const UiMenu = () => {
     }
   };
 
-  const onButtonClick = async () => {
+  const sumOfWordLengths = wordsArray.reduce((acc, curr) => acc + curr.name.length, 0);
+  const onButtonClick = async (event) => { // Pass event as a parameter
     event.preventDefault();
     if (!text) {
       toast.error("Please enter text to send a message");
@@ -129,6 +137,7 @@ const UiMenu = () => {
   const resetTranscriptOnClick = () => {
     resetTranscript();
   };
+
   useEffect(() => {
     (async function startDialog() {
       const data = await POST_startDialog({
@@ -139,6 +148,22 @@ const UiMenu = () => {
       localStorage.setItem("message_history", JSON.stringify(data));
     })();
   }, []);
+
+  useEffect(() => {
+    const handleWordsHeightChange = () => {
+      const wordsElement = document.querySelector(".words");
+      const messageContainerElement = document.querySelector(".message-container");
+      if (wordsElement && messageContainerElement) {
+        const wordsHeight = wordsElement.getBoundingClientRect().height;
+        const newMaxHeight = `${Math.max(0, 100 - wordsHeight * 0.4)}%`;
+        messageContainerElement.style.maxHeight = newMaxHeight;
+      }
+    };
+
+    handleWordsHeightChange();
+    return () => {
+    };
+  });
 
   useEffect(() => {
     setIsVisible(true);
@@ -154,6 +179,11 @@ const UiMenu = () => {
       setText("");
     }
   }, [isVisible]);
+
+  useEffect(() => {
+    const sumOfWordLengths = wordsArray.reduce((acc, curr) => acc + curr.name.length, 0);
+    console.log("Sum of lengths of all words:", sumOfWordLengths);
+  }, [wordsArray]);
 
   useEffect(() => {
     const handleEsc = (event) => {
@@ -172,12 +202,27 @@ const UiMenu = () => {
   }, [isVisible]);
 
   useEffect(() => {
+    const handleResize = () => {
+      setResolution({
+        width: window.innerWidth,
+        height: window.innerHeight
+      });
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  useEffect(() => {
     if (!text && textareaRef.current) {
       textareaRef.current.style.height = "auto";
     }
   }, [text]);
 
-  useEffect(() => {}, [isExpandButtonClicked]);
+  useEffect(() => { }, [isExpandButtonClicked]);
 
   useEffect(() => {
     if (transcript) {
@@ -219,53 +264,34 @@ const UiMenu = () => {
     return getComputedStyle(document.documentElement).getPropertyValue(name);
   }
 
+  const borderAnimationProps = useSpring({
+    borderColor: isListening ? 'red' : 'transparent',
+  });
+
   const animationProps = useSpring({
     height: isExpandButtonClicked
       ? isButtonClicked
         ? `${getStyles("--animationProps_height_expanded_clicked_true")}`
         : `${getStyles("--animationProps_height_expanded_unclicked_false")}`
       : isButtonClicked
-      ? `${getStyles("--animationProps_height_unexpanded_clicked_false")}`
-      : `${getStyles("--animationProps_height_unexpanded_unclicked_true")}`,
+        ? `${getStyles("--animationProps_height_unexpanded_clicked_false")}`
+        : `${getStyles("--animationProps_height_unexpanded_unclicked_true")}`,
     transform: isVisible
       ? isExpandButtonClicked
         ? `${getStyles(
-            "--animationProps_transform_visible_expanded_clicked_true"
-          )}`
+          "--animationProps_transform_visible_expanded_clicked_true"
+        )}`
         : `${getStyles(
-            "--animationProps_transform_visible_expanded_unclicked_false"
-          )}`
+          "--animationProps_transform_visible_expanded_unclicked_false"
+        )}`
       : `${getStyles("--animationProps_transform_invisible_true")}`,
     top: isExpandButtonClicked
       ? isButtonClicked
         ? `${getStyles("--animationProps_top_expanded_clicked_true")}`
         : `${getStyles("--animationProps_top_expanded_unclicked_false")}`
       : isButtonClicked
-      ? `${getStyles("--animationProps_top_unexpanded_clicked_false")}`
-      : `${getStyles("--animationProps_top_unexpanded_unclicked_true")}`,
-  });
-
-  const buttonAnimationProps = useSpring({
-    marginTop:
-      (isExpandButtonClicked && isButtonClicked) ||
-      (!isExpandButtonClicked && !isButtonClicked)
-        ? `${getStyles("--buttonAnimationProps_marginTop_true")}`
-        : `${getStyles("--buttonAnimationProps_marginTop_false")}`,
-  });
-
-  const isListeningProps = useSpring({
-    marginTop:
-      (isExpandButtonClicked && isButtonClicked) ||
-      (!isExpandButtonClicked && !isButtonClicked)
-        ? `${getStyles("--isListeningProps_marginTop_true")}`
-        : `${getStyles("--isListeningProps_marginTop_false")}`,
-    width: isListening
-      ? isButtonClicked
-        ? `${getStyles("--isListeningProps_width_true_true")}`
-        : `${getStyles("--isListeningProps_width_true_false")}`
-      : isListening
-      ? `${getStyles("--isListeningProps_width_false_true")}`
-      : `${getStyles("--isListeningProps_width_false_false")}`,
+        ? `${getStyles("--animationProps_top_unexpanded_clicked_false")}`
+        : `${getStyles("--animationProps_top_unexpanded_unclicked_true")}`,
   });
 
   const buttonExpandProps = useSpring({
@@ -274,101 +300,55 @@ const UiMenu = () => {
         ? `${getStyles("--buttonExpandProps_marginTop_true")}`
         : `${getStyles("--buttonExpandProps_marginTop_false")}`
       : isButtonClicked
-      ? `${getStyles("--buttonExpandProps_marginTop_true")}`
-      : `${getStyles("--buttonExpandProps_marginTop_false")}`,
+        ? `${getStyles("--buttonExpandProps_marginTop_true")}`
+        : `${getStyles("--buttonExpandProps_marginTop_false")}`,
     transform: `rotate(${isButtonRotated ? 180 : 0}deg)`,
     config: { duration: 100 },
   });
 
-  const messageContainerAnimationProps = useSpring({
-    opacity: isButtonClicked || isExpandButtonClicked ? 1 : 0,
-    pointerEvents: isButtonClicked || isExpandButtonClicked ? "auto" : "none",
-    config: { tension: 20, friction: 10 },
-  });
-
-  const messageScrollAnimationProps = useSpring({
-    opacity: isButtonClicked || isExpandButtonClicked ? 1 : 0,
-    pointerEvents: isButtonClicked || isExpandButtonClicked ? "auto" : "none",
-    config: { tension: 40, friction: 10 },
-  });
-
   return (
     <div style={{ display: "flex", justifyContent: "center" }}>
-      <animated.div className="main-ui" style={animationProps}>
+      <animated.div
+        className="main-ui"
+        style={{
+          ...animationProps,
+          ...borderAnimationProps,
+        }}
+      >
         <animated.button
           id="expand_field_button"
           onClick={onButtonClickExpand}
           style={buttonExpandProps}
         ></animated.button>
 
-        <animated.div className="isListening" style={isListeningProps} />
-
         {isWordCounterVisible && (
           <p className="word-counter">{text.split(/\s+/).length}/100</p>
         )}
-
-        <textarea
-          ref={textareaRef}
-          placeholder="Write something.."
-          value={text}
-          onChange={onTextChange}
-          rows={5}
+        <Textarea
+          text={text}
+          onTextChange={onTextChange}
+          resetTranscriptOnClick={resetTranscriptOnClick}
+          onButtonClick={onButtonClick}
           onKeyPress={(event) => {
             if (event.key === "Enter" && !event.shiftKey) {
               event.preventDefault();
-              onButtonClick();
+              onButtonClick(event);
               resetTranscriptOnClick();
             }
           }}
+          onSendClick={() => {
+            onButtonClick(event);
+            resetTranscriptOnClick();
+          }}
         />
+        
         <button className="voice_button" onClick={toggleListening}>
           {isListening ? "" : ""}
         </button>
 
-        <button
-          id="send"
-          onClick={() => {
-            onButtonClick();
-            resetTranscriptOnClick();
-          }}
-        ></button>
-
-        {(isButtonClicked || isExpandButtonClicked) && (
-          <animated.div
-            className="message-container"
-            style={messageContainerAnimationProps}
-          >
-            <animated.div
-              className="message-scroll"
-              style={messageScrollAnimationProps}
-            >
-              {messages.map((message, index) => (
-                <div key={index} className="message">
-                  {message.text.startsWith("User: ") ? (
-                    <div>
-                      <label className="user-label">User: </label>
-                      <span className="user-message">
-                        {message.text.substring(6)}
-                      </span>
-                    </div>
-                  ) : message.text.startsWith("NPC: ") ? (
-                    <div>
-                      <label className="npc-label">NPC: </label>
-                      <span className="npc-message">
-                        {message.text.substring(5)}
-                      </span>
-                      {message.animation && <BouncingDotsAnimation />}
-                    </div>
-                  ) : (
-                    <span>{message.text}</span>
-                  )}
-                </div>
-              ))}
-
-              {showAnimation && <BouncingDotsAnimation />}
-            </animated.div>
-          </animated.div>
-        )}
+        {isButtonClicked || isExpandButtonClicked ? (
+          <MessageContainer messages={messages} showAnimation={showAnimation} />
+        ) : null}
 
         {(isButtonClicked || isExpandButtonClicked) && (
           <animated.div className="words">
@@ -377,6 +357,7 @@ const UiMenu = () => {
                 text={item.name}
                 learned={item.state}
                 onClick={() => onWordClick(item.id)}
+                sumOfWordLengths={sumOfWordLengths}
                 key={item.id}
               />
             ))}
@@ -387,13 +368,5 @@ const UiMenu = () => {
     </div>
   );
 };
-
-const BouncingDotsAnimation = () => (
-  <div className="bouncing-dots">
-    <div className="dot"></div>
-    <div className="dot"></div>
-    <div className="dot"></div>
-  </div>
-);
 
 export default UiMenu;

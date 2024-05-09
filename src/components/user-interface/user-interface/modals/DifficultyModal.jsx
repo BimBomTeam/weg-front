@@ -74,12 +74,19 @@ function DifficultyModal({ closeModal }) {
         }
     };
 
+    const handleConfirmSlider = () => {
+        setShowModal(false);
+        setTimeout(() => {
+            closeModal(false);
+        }, 300);
+    };
+
     return (
         <ModalBackground onClick={handleModalBackgroundClick} onKeyDown={handleModalKeyDown}>
             <animated.div className="modal" style={modalAnimation}>
                 <h1>Difficulty</h1>
                 <div className='slider'>
-                <Slider /> 
+                    <Slider onConfirm={handleConfirmSlider}/> {}
                 </div>
                 <button className="back-button" onClick={handleBackButtonClick}></button>
             </animated.div>

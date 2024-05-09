@@ -3,7 +3,7 @@ import Slider from 'react-slider';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const DifficultySlider = () => {
+const DifficultySlider = ({ onConfirm }) => { 
   const [languageLevel, setLanguageLevel] = useState(0);
 
   const languageLevels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
@@ -15,6 +15,9 @@ const DifficultySlider = () => {
   const handleConfirm = () => {
     const selectedLevel = languageLevels[languageLevel];
     toast.success(`Selected level: ${selectedLevel}`);
+    if (onConfirm) { 
+      onConfirm(); 
+    }
   };
 
   return (

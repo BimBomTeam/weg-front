@@ -67,15 +67,19 @@ function WelcomeModal() {
         }
     };
 
+    const handleConfirmSlider = () => {
+        setShowModal(false); 
+    };
+
     return (
         <ModalBackground onClick={handleModalBackgroundClick} onKeyDown={handleModalKeyDown} active={showModal}>
             <animated.div className="welcomeModal" style={modalAnimation}>
-                <h1>Welcome</h1>
+                <h1>Witalny Ekran</h1>
                 <h2 id='welcomeText'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ante in nibh mauris cursus mattis molestie. Amet nisl purus in mollis nunc.</h2>
                 <button className="back-button" onClick={handleBackButtonClick}></button>
 
                 <div className='slider'>
-                    <Slider/> 
+                    <Slider onConfirm={handleConfirmSlider}/> {}
                 </div>
             </animated.div>
         </ModalBackground>

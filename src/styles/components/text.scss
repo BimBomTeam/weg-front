@@ -1,26 +1,12 @@
-$text-input-border-radius: 8px;
-$text-input-border: 1px solid $border-one;
-$text-input-padding: 10px;
-$text-input-font-size: 16px;
-$text-input-width: 80%;
-$text-input-height: 10%;
-$text-input-padding-right: 15%;
-
-input[type="text"] {
-  border-radius: $text-input-border-radius;
-  border: $text-input-border;
-  padding: $text-input-padding;
-  font-size: $text-input-font-size;
-  font-family: inherit;
-  color: black;
-  padding-right: $text-input-padding-right;
-  overflow-y: auto;
-  scrollbar-width: thin;
-  background-color: $input-background-color;
-  resize: none;
-  backdrop-filter: blur(5px);
+:root
+{
+  --isListeningProps_marginTop_true: 0px;
+  --isListeningProps_marginTop_false: 0px;
+  --isListeningProps_width_true_true: 0px;
+  --isListeningProps_width_true_false: 0px;
+  --isListeningProps_width_false_true: 0px;
+  --isListeningProps_width_false_false: 0px;
 }
-
 textarea {
   position: absolute;
   left: 2%;
@@ -91,24 +77,12 @@ textarea {
   position: absolute;
   bottom: 7px;
   right: 30px;
-
   font-family: inherit;
   font-size: 14px;
   color: black;
 }
 
-label[for="login"] {
-  padding-left: 35%;
-  width: 220px;
-  height: 60px;
-  overflow: hidden;
-  font-family: "Roboto";
-  font-size: 400px;
-  color: $label-color;
-  font-weight: bold;
-}
-
-label[for="register"] {
+label[for="register"], label[for="login"] {
   padding-left: 17%;
   width: 500px;
   height: 60px;
@@ -140,7 +114,7 @@ label[for="password-repeat-label"] {
   left: 0px;
   width: 600px;
   height: 85px;
-  padding-right: 10px;
+  padding-left: 10px;
   font-size: 32px;
   color: $black;
   border-width: 1px;
@@ -174,23 +148,6 @@ label[for="password-repeat-label"] {
   );
 }
 
-#password,
-#repeat-password {
-  width: 610px;
-  height: 100px;
-  border-bottom-color: black;
-  padding-left: 10px;
-}
-
-.isListening {
-  position: absolute;
-  bottom: 45px;
-  right: 25px;
-  background-color: red;
-  border-radius: 25px;
-  height: 5px;
-}
-
 .instruction_content {
   font-size: 20px;
   list-style-type: none;
@@ -208,13 +165,6 @@ label[for="password-repeat-label"] {
   font-size: 20px;
   font-family: "Roboto-Bold";
   color: $label-color;
-}
-
-.message-container {
-  position: relative;
-  margin-top: 1%;
-  padding: 10px;
-  height: 60%;
 }
 
 .message {
@@ -285,6 +235,10 @@ label[for="password-repeat-label"] {
 }
 
 @media only screen and (min-width: 2561px) {
+  .word-counter {
+    font-size: 16px;
+    right: 2%;
+  }
   .user-label {
     font-size: 23px;
   }
@@ -300,9 +254,6 @@ label[for="password-repeat-label"] {
   .instruction_content {
     font-size: 20px;
   }
-  .isListening {
-    right: 40px;
-  }
   #paragraph {
     font-size: 15px;
     right: 45px;
@@ -310,16 +261,11 @@ label[for="password-repeat-label"] {
 }
 
 @media only screen and (min-width: 2100px) and (max-width: 2561px) {
-  .isListening {
-    right: 28px;
+  .word-counter {
+    font-size: 16px;
+    right: 3%;
   }
-  .message-container {
-    position: relative;
-    margin-top: 1%;
-    padding: 10px;
-    height: 60%;
-  }
-  
+
   .user-label {
     font-size: 22px;
   }
@@ -343,14 +289,10 @@ label[for="password-repeat-label"] {
 }
 
 @media only screen and (min-width: 1801px) and (max-width: 2100px) {
-  .isListening {
-    right: 25px;
-  }
 
-  #paragraph {
-    font-size: 20px;
-    bottom: -5px;
-    right: 40px;
+  .word-counter {
+    font-size: 15px;
+    right: 3%;
   }
 
   .user-label {
@@ -376,24 +318,68 @@ label[for="password-repeat-label"] {
 }
 
 @media only screen and (min-width: 1281px) and (max-width: 1800px) {
-  .isListening {
-    right: 3%;
-  }
 
-  #paragraph {
-    right: 50px;
+  .word-counter {
+    font-size: 12px;
+    right: 4%;
   }
 }
 
 @media only screen and (max-width: 1280px) {
-  .isListening {
-    right: 25px;
+
+  .word-counter {
+    font-size: 12px;
+    right: 3%;
+  }
+
+  .user-label {
+    font-size: 13px;
+  }
+
+  .user-message {
+    font-size: 13px;
+  }
+  .npc-message {
+    font-size: 13px;
+  }
+
+  .npc-label {
+    font-size: 13px;
+  }
+  .instruction_content {
+    font-size: 15px;
+  }
+  textarea {
+    font-size: 15px;
   }
 }
 
 @media only screen and (max-width: 900px) {
-  .isListening {
-    right: 5px;
-  }
-}
 
+  .word-counter {
+    font-size: 12px;
+    right: 2%;
+  }
+
+  .user-label {
+    font-size: 12px;
+  }
+
+  .user-message {
+    font-size: 12px;
+  }
+  .npc-message {
+    font-size: 12px;
+  }
+
+  .npc-label {
+    font-size: 12px;
+  }
+  .instruction_content {
+    font-size: 15px;
+  }
+  textarea {
+    font-size: 15px;
+  }
+
+}
