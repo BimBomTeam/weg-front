@@ -1,8 +1,10 @@
 .container {
     z-index: 3;
     position: absolute;
-    width: 30%;
+    width: auto;
     height: 10%;
+    padding-left: 2%;
+    padding-right: 2%;
     background-color: $button-gradient-start;
     backdrop-filter: blur(18px);
     bottom: 0;
@@ -34,5 +36,9 @@
     .container p
     {
        font-size: 25px;      
+    }
+    .pressE {
+        width: 30px;
+        height: 30px;
     }
 }
