@@ -35,7 +35,7 @@ const UiMenu = () => {
   });
   const [messages, setMessages] = useState([]);
   const [showAnimation] = useState(false);
-  
+
   let checkWordsPayload = useSelector((state) => state.words);
   const wordsArray = JSON.parse(checkWordsPayload.words.words);
 
@@ -328,7 +328,9 @@ const UiMenu = () => {
           text={text}
           onTextChange={onTextChange}
           resetTranscriptOnClick={resetTranscriptOnClick}
-          onButtonClick={onButtonClick}
+          onButtonClick={(event) => {
+            onButtonClick(event);
+          }}
           onKeyPress={(event) => {
             if (event.key === "Enter" && !event.shiftKey) {
               event.preventDefault();
@@ -336,12 +338,12 @@ const UiMenu = () => {
               resetTranscriptOnClick();
             }
           }}
-          onSendClick={() => {
+          onSendClick={(event) => {
             onButtonClick(event);
             resetTranscriptOnClick();
           }}
         />
-        
+
         <button className="voice_button" onClick={toggleListening}>
           {isListening ? "" : ""}
         </button>
