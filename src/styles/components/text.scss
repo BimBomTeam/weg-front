@@ -234,6 +234,22 @@ label[for="password-repeat-label"] {
   left: 0;
 }
 
+.Toastify__toast-container {
+  width: auto;
+}
+
+.Toastify__toast--default,
+.Toastify__toast--success,
+.Toastify__toast--error,
+.Toastify__toast--warning {
+  background-color: $button-gradient-start;
+  backdrop-filter: blur(18px);
+}
+
+.Toastify__toast-body {
+  font-family: 'Roboto';
+}
+
 @media only screen and (min-width: 2561px) {
   .word-counter {
     font-size: 16px;

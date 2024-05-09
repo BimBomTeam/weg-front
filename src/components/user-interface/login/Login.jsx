@@ -16,7 +16,7 @@ const Login = () => {
     e.preventDefault();
 
     if (!email || !password) {
-      toast.error("Fields cannot be empty");
+      return toast.error("Fields cannot be empty");
     }
 
     try {
@@ -27,9 +27,11 @@ const Login = () => {
         setTimeout(() => {
           navigate("/game");
         }, 2500);
+      } else {
+        throw new Error("Authentication Error");
       }
     } catch (error) {
-      toast.error("Authentication Error");
+      toast.error(error.message || "Authentication Error");
     }
   };
 

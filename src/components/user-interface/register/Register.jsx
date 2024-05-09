@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import registerApi from "./registerApi";
+import { BsInfoCircle } from "react-icons/bs"; // Dodano import
 
 const Register = () => {
   const navigate = useNavigate();
@@ -10,15 +11,14 @@ const Register = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-
   const handleRegister = async () => {
     if (!email || !password || !username) {
       toast.error("Fields cannot be empty");
-    }
-    // else if (!password) {
-    //   toast.error("Passwords must be the same");
-    // }
-    else {
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      toast.error("Invalid email address");
+    } else if (password.length < 8) {
+      toast.error("Password does not meet the requirements.");
+    } else {
       try {
         const { success } = await registerApi({ email, username, password });
         if (success) {
@@ -28,7 +28,11 @@ const Register = () => {
           }, 2500);
         }
       } catch (error) {
-        toast.error("Error with registration");
+        if (error.response && error.response.status === 500) {
+          toast.error("Server Error. Please try again later.");
+        } else {
+          toast.error("Error with registration");
+        }
       }
     }
   };
@@ -56,7 +60,14 @@ const Register = () => {
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
-        <label htmlFor="password-register-label">Hasło</label>
+        <label htmlFor="password-register-label">
+          Hasło
+          <BsInfoCircle
+            style={{ marginLeft: "5px", cursor: "pointer" }}
+            title="Your password should contain at least 8 characters, one uppercase letter, and one special character"
+            size={25}
+          />
+        </label>
         <input
           type="password"
           id="password"
