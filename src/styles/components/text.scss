@@ -86,7 +86,7 @@ label[for="register"],
 label[for="login"] {
   position: absolute;
   margin-top: 2%;
-  width: 100%;
+  width: 80%;
   font-family: "Roboto";
   font-size: 35px;
   color: $label-color;
@@ -99,7 +99,7 @@ label[for="login"] {
   label[for="email-register-label"],
   label[for="password-label"],
   label[for="password-register-label"],
-  label[for="password-repeat-label"] {
+  label[for="name-label"] {
     position: absolute;
     width: 300px;
     height: 40px;
@@ -111,16 +111,23 @@ label[for="login"] {
     color: $label-color;
   }
 
-  label[for="email-label"] {
+  label[for="email-label"],
+  label[for="email-register-label"] {
     top: 20%;
   }
 
-  label[for="password-label"] {
+  label[for="password-label"],
+  label[for="name-label"]  {
     top: 45%;
   }
 
+  label[for="password-register-label"] {
+    top: 70%;
+  }
+
   #password,
-  #repeat-password,
+  #password-reg,
+  #name,
   #email {
     position: absolute;
     width: 70%;
@@ -165,8 +172,13 @@ label[for="login"] {
     top: 30%;
   }
 
+  #name,
   #password {
     top: 55%;
+  }
+
+  #password-reg {
+    top: 80%;
   }
 
 .instruction_content {
