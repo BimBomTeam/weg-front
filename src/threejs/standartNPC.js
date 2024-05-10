@@ -19,7 +19,7 @@ export class StandartNPC {
 
     this.zoneRadius = 7;
     this.innitPos = pos;
-    this.speed = 5;
+    this.speed = 7;
     this.moveState = "stand";
     this.scale = scale;
 
@@ -71,7 +71,7 @@ export class StandartNPC {
     //Physics enabling
     sketch.physics.add.existing(this.object, {
       shape: "box",
-      mass: 1,
+      mass: 10,
       width: this.size.x,
       height: this.size.y,
       depth: this.size.z,

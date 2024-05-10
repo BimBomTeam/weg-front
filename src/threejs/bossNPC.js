@@ -89,7 +89,7 @@ export class BossNPC extends StandartNPC {
 
   jumpAtack(direction = new Vector3(10, 4, 8)) {
     if (this.onGround) {
-      this.object.body.applyForceY(7);
+      this.object.body.applyForceY(50);
       this.object.body.setVelocityZ(direction.z);
       this.object.body.setVelocityX(direction.x);
       this.onGround = false;
