@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "regenerator-runtime/runtime";
 import SpeechRecognition, {
   useSpeechRecognition,
@@ -38,6 +38,8 @@ const UiMenu = () => {
 
   let checkWordsPayload = useSelector((state) => state.words);
   const wordsArray = JSON.parse(checkWordsPayload.words.words);
+
+  const [npcRole, setNpcRole] = useState("");
 
   useEffect(() => {
     setIsVisible(true);
@@ -90,28 +92,28 @@ const UiMenu = () => {
         messageStr: text,
       });
       localStorage.setItem("message_history", JSON.stringify(data));
-
+  
       const newUserMessage = { text: "User: " + text, id: Date.now() };
-      const npcMessage = { text: "NPC: ", animation: true, id: Date.now() + 1 };
-
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        newUserMessage,
-        npcMessage,
-      ]);
-
+      const npcMessage = {
+        text: `${npcRole}: ${data[data.length - 1].message}`,
+        animation: true,
+        id: Date.now() + 1,
+      };
+  
+      setMessages((prevMessages) => [...prevMessages, newUserMessage, npcMessage]);
+  
       setTimeout(() => {
-        npcMessage.text = "NPC: " + data[data.length - 1].message;
+        npcMessage.text = `${npcRole}: ${data[data.length - 1].message}`;
         npcMessage.animation = false;
         setMessages((prevMessages) => [...prevMessages]);
       }, 100);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
-  };
+  };  
 
   const sumOfWordLengths = wordsArray.reduce((acc, curr) => acc + curr.name.length, 0);
-  const onButtonClick = async (event) => { // Pass event as a parameter
+  const onButtonClick = async (event) => {
     event.preventDefault();
     if (!text) {
       toast.error("Please enter text to send a message");
@@ -147,16 +149,21 @@ const UiMenu = () => {
           wordsStr: "first, second",
         });
         localStorage.setItem("message_history", JSON.stringify(data));
-        
-        const npcMessage = { text: "NPC: " + data[data.length - 1].message, animation: false, id: Date.now() + 1 };
+        const role = data[data.length - 1].role;
+        setNpcRole(role); 
+        const npcMessage = {
+          text: `${role}: ${data[data.length - 1].message}`,
+          animation: false,
+          id: Date.now() + 1,
+        };
         setMessages([npcMessage, ...messages]);
       } catch (error) {
         console.error("Error starting dialog:", error);
       }
     };
-
+  
     startDialog();
-  }, []);
+  }, []);  
 
   useEffect(() => {
     const handleWordsHeightChange = () => {
@@ -358,7 +365,11 @@ const UiMenu = () => {
         </button>
 
         {isButtonClicked || isExpandButtonClicked ? (
-          <MessageContainer messages={messages} showAnimation={showAnimation} />
+          <MessageContainer
+            messages={messages}
+            showAnimation={showAnimation}
+            npcRole={npcRole}
+          />
         ) : null}
 
         {(isButtonClicked || isExpandButtonClicked) && (
