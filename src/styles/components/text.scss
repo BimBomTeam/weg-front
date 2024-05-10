@@ -1,5 +1,4 @@
-:root
-{
+:root {
   --isListeningProps_marginTop_true: 0px;
   --isListeningProps_marginTop_false: 0px;
   --isListeningProps_width_true_true: 0px;
@@ -7,6 +6,7 @@
   --isListeningProps_width_false_true: 0px;
   --isListeningProps_width_false_false: 0px;
 }
+
 textarea {
   position: absolute;
   left: 2%;
@@ -25,31 +25,21 @@ textarea {
   -moz-box-shadow: inset 0px 4px 4px 1px rgba(0, 0, 0, 0.25);
   box-shadow: inset 0px 4px 4px 1px rgba(0, 0, 0, 0.25);
   background: rgba(255, 255, 255, 0);
-  background: -webkit-linear-gradient(
-    -224.90398121603deg,
-    rgba(132.33, 191.39, 224.61, 0.5) 0%,
-    rgba(23.22, 73.75, 95.41, 0.15) 100%
-  );
-  background: -o-linear-gradient(
-    -224.90398121603deg,
-    rgba(132.33, 191.39, 224.61, 0.5) 0%,
-    rgba(23.22, 73.75, 95.41, 0.15) 100%
-  );
-  background: -moz-linear-gradient(
-    -224.90398121603deg,
-    rgba(132.33, 191.39, 224.61, 0.5) 0%,
-    rgba(23.22, 73.75, 95.41, 0.15) 100%
-  );
-  background: -ms-linear-gradient(
-    -224.90398121603deg,
-    rgba(132.33, 191.39, 224.61, 0.5) 0%,
-    rgba(23.22, 73.75, 95.41, 0.15) 100%
-  );
-  background: linear-gradient(
-    -224.90398121603deg,
-    rgba(132.33, 191.39, 224.61, 0.5) 0%,
-    rgba(23.22, 73.75, 95.41, 0.15) 100%
-  );
+  background: -webkit-linear-gradient(-224.90398121603deg,
+      rgba(132.33, 191.39, 224.61, 0.5) 0%,
+      rgba(23.22, 73.75, 95.41, 0.15) 100%);
+  background: -o-linear-gradient(-224.90398121603deg,
+      rgba(132.33, 191.39, 224.61, 0.5) 0%,
+      rgba(23.22, 73.75, 95.41, 0.15) 100%);
+  background: -moz-linear-gradient(-224.90398121603deg,
+      rgba(132.33, 191.39, 224.61, 0.5) 0%,
+      rgba(23.22, 73.75, 95.41, 0.15) 100%);
+  background: -ms-linear-gradient(-224.90398121603deg,
+      rgba(132.33, 191.39, 224.61, 0.5) 0%,
+      rgba(23.22, 73.75, 95.41, 0.15) 100%);
+  background: linear-gradient(-224.90398121603deg,
+      rgba(132.33, 191.39, 224.61, 0.5) 0%,
+      rgba(23.22, 73.75, 95.41, 0.15) 100%);
 
   &::placeholder {
     color: $input-placeholder-color;
@@ -88,98 +78,85 @@ label[for="login"] {
   margin-top: 2%;
   width: 80%;
   font-family: "Roboto";
-  font-size: 35px;
   color: $label-color;
   font-weight: bold;
   left: 50%;
   transform: translateX(-50%);
 }
 
-  label[for="email-label"],
-  label[for="email-register-label"],
-  label[for="password-label"],
-  label[for="password-register-label"],
-  label[for="name-label"] {
-    position: absolute;
-    width: 300px;
-    height: 40px;
-    left: 15%;
-    overflow: hidden;
-    font-family: "Roboto";
-    font-size: 20px;
-    text-align: left;
-    color: $label-color;
-  }
+label[for="email-label"],
+label[for="email-register-label"],
+label[for="password-label"],
+label[for="password-register-label"],
+label[for="name-label"] {
+  position: absolute;
+  width: 300px;
+  height: auto;
+  left: 15%;
+  overflow: hidden;
+  font-family: "Roboto";
+  text-align: left;
+  color: $label-color;
+}
 
-  label[for="email-label"],
-  label[for="email-register-label"] {
-    top: 20%;
-  }
+label[for="email-label"],
+label[for="email-register-label"] {
+  top: 20%;
+}
 
-  label[for="password-label"],
-  label[for="name-label"]  {
-    top: 45%;
-  }
+label[for="password-label"],
+label[for="name-label"] {
+  top: 45%;
+}
 
-  label[for="password-register-label"] {
-    top: 70%;
-  }
+label[for="password-register-label"] {
+  top: 70%;
+}
 
-  #password,
-  #password-reg,
-  #name,
-  #email {
-    position: absolute;
-    width: 70%;
-    height: 12%;
-    left: 50%;
-    transform: translateX(-50%);
-    padding-left: 10px;
-    font-size: 15px;
-    color: $black;
-    border-width: 1px;
-    border-radius: 10px;
-    box-shadow: inset 0px 4px 4px 1px $button-login-shadow;
-    background: $password-input-background;
-    background: -webkit-linear-gradient(
-      -224.90398121603deg,
+#password,
+#password-reg,
+#name,
+#email {
+  position: absolute;
+  width: 70%;
+  height: 12%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding-left: 10px;
+  color: $black;
+  border-width: 1px;
+  border-radius: 10px;
+  box-shadow: inset 0px 4px 4px 1px $button-login-shadow;
+  background: $password-input-background;
+  background: -webkit-linear-gradient(-224.90398121603deg,
       $password-input-gradient-start 0%,
-      $password-input-gradient-end 100%
-    );
-    background: -o-linear-gradient(
-      -224.90398121603deg,
+      $password-input-gradient-end 100%);
+  background: -o-linear-gradient(-224.90398121603deg,
       $password-input-gradient-start 0%,
-      $password-input-gradient-end 100%
-    );
-    background: -moz-linear-gradient(
-      -224.90398121603deg,
+      $password-input-gradient-end 100%);
+  background: -moz-linear-gradient(-224.90398121603deg,
       $password-input-gradient-start 0%,
-      $password-input-gradient-end 100%
-    );
-    background: -ms-linear-gradient(
-      -224.90398121603deg,
+      $password-input-gradient-end 100%);
+  background: -ms-linear-gradient(-224.90398121603deg,
       $password-input-gradient-start 0%,
-      $password-input-gradient-end 100%
-    );
-    background: linear-gradient(
-      -224.90398121603deg,
+      $password-input-gradient-end 100%);
+  background: linear-gradient(-224.90398121603deg,
       $password-input-gradient-start 0%,
-      $password-input-gradient-end 100%
-    );
-  }
+      $password-input-gradient-end 100%);
+}
 
-  #email {
-    top: 30%;
-  }
+#email {
+  top: 30%;
+}
 
-  #name,
-  #password {
-    top: 55%;
-  }
+#name,
+#password {
+  top: 55%;
+}
 
-  #password-reg {
-    top: 80%;
-  }
+#password-reg {
+  top: 80%;
+}
 
 .instruction_content {
   font-size: 20px;
@@ -241,7 +218,7 @@ label[for="login"] {
 .thumb {
   width: 20px;
   height: 20px;
-  background-color: $input-placeholder-color; 
+  background-color: $input-placeholder-color;
   border-radius: 50%;
   cursor: pointer;
   position: absolute;
@@ -288,25 +265,53 @@ label[for="login"] {
     font-size: 16px;
     right: 2%;
   }
+
   .user-label {
     font-size: 23px;
   }
+
   .user-message {
     font-size: 23px;
   }
+
   .npc-message {
     font-size: 23px;
   }
+
   .npc-label {
     font-size: 23px;
   }
+
   .instruction_content {
     font-size: 20px;
   }
+
   #paragraph {
     font-size: 15px;
     right: 45px;
   }
+
+  label[for="register"],
+  label[for="login"] {
+
+    font-size: 50px;
+
+  }
+
+  label[for="email-label"],
+label[for="email-register-label"],
+label[for="password-label"],
+label[for="password-register-label"],
+label[for="name-label"] {
+  font-size: 45px;
+}
+
+#password,
+#password-reg,
+#name,
+#email {
+  font-size: 35px;
+}
 }
 
 @media only screen and (min-width: 2100px) and (max-width: 2561px) {
@@ -322,6 +327,7 @@ label[for="login"] {
   .user-message {
     font-size: 22px;
   }
+
   .npc-message {
     font-size: 22px;
   }
@@ -329,12 +335,35 @@ label[for="login"] {
   .npc-label {
     font-size: 22px;
   }
+
   .instruction_content {
     font-size: 25px;
   }
+
   textarea {
     font-size: 20px;
   }
+  label[for="register"],
+  label[for="login"] {
+
+    font-size: 45px;
+
+  }
+
+  label[for="email-label"],
+label[for="email-register-label"],
+label[for="password-label"],
+label[for="password-register-label"],
+label[for="name-label"] {
+  font-size: 40px;
+}
+
+#password,
+#password-reg,
+#name,
+#email {
+  font-size: 30px;
+}
 }
 
 @media only screen and (min-width: 1801px) and (max-width: 2100px) {
@@ -351,6 +380,7 @@ label[for="login"] {
   .user-message {
     font-size: 20px;
   }
+
   .npc-message {
     font-size: 20px;
   }
@@ -358,12 +388,36 @@ label[for="login"] {
   .npc-label {
     font-size: 20px;
   }
+
   .instruction_content {
     font-size: 23px;
   }
+
   textarea {
     font-size: 20px;
   }
+
+  label[for="register"],
+  label[for="login"] {
+
+    font-size: 40px;
+
+  }
+
+  label[for="email-label"],
+label[for="email-register-label"],
+label[for="password-label"],
+label[for="password-register-label"],
+label[for="name-label"] {
+  font-size: 35px;
+}
+
+#password,
+#password-reg,
+#name,
+#email {
+  font-size: 25px;
+}
 }
 
 @media only screen and (min-width: 1281px) and (max-width: 1800px) {
@@ -372,6 +426,28 @@ label[for="login"] {
     font-size: 12px;
     right: 4%;
   }
+
+  label[for="register"],
+  label[for="login"] {
+
+    font-size: 35px;
+
+  }
+
+  label[for="email-label"],
+label[for="email-register-label"],
+label[for="password-label"],
+label[for="password-register-label"],
+label[for="name-label"] {
+  font-size: 30px;
+}
+
+#password,
+#password-reg,
+#name,
+#email {
+  font-size: 20px;
+}
 }
 
 @media only screen and (max-width: 1280px) {
@@ -388,6 +464,7 @@ label[for="login"] {
   .user-message {
     font-size: 13px;
   }
+
   .npc-message {
     font-size: 13px;
   }
@@ -395,12 +472,36 @@ label[for="login"] {
   .npc-label {
     font-size: 13px;
   }
+
   .instruction_content {
     font-size: 15px;
   }
+
   textarea {
     font-size: 15px;
   }
+
+  label[for="register"],
+  label[for="login"] {
+
+    font-size: 30px;
+
+  }
+
+  label[for="email-label"],
+label[for="email-register-label"],
+label[for="password-label"],
+label[for="password-register-label"],
+label[for="name-label"] {
+  font-size: 25px;
+}
+
+#password,
+#password-reg,
+#name,
+#email {
+  font-size: 15px;
+}
 }
 
 @media only screen and (max-width: 900px) {
@@ -417,6 +518,7 @@ label[for="login"] {
   .user-message {
     font-size: 12px;
   }
+
   .npc-message {
     font-size: 12px;
   }
@@ -424,11 +526,34 @@ label[for="login"] {
   .npc-label {
     font-size: 12px;
   }
+
   .instruction_content {
     font-size: 15px;
   }
+
   textarea {
     font-size: 15px;
   }
 
+  label[for="register"],
+  label[for="login"] {
+
+    font-size: 25px;
+
+  }
+
+  label[for="email-label"],
+label[for="email-register-label"],
+label[for="password-label"],
+label[for="password-register-label"],
+label[for="name-label"] {
+  font-size: 20px;
+}
+
+#password,
+#password-reg,
+#name,
+#email {
+  font-size: 12px;
+}
 }
