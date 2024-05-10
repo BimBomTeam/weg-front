@@ -139,14 +139,23 @@ const UiMenu = () => {
   };
 
   useEffect(() => {
-    (async function startDialog() {
-      const data = await POST_startDialog({
-        role: "cookier",
-        level: "B1",
-        wordsStr: "first, second",
-      });
-      localStorage.setItem("message_history", JSON.stringify(data));
-    })();
+    const startDialog = async () => {
+      try {
+        const data = await POST_startDialog({
+          role: "cookier",
+          level: "B1",
+          wordsStr: "first, second",
+        });
+        localStorage.setItem("message_history", JSON.stringify(data));
+        
+        const npcMessage = { text: "NPC: " + data[data.length - 1].message, animation: false, id: Date.now() + 1 };
+        setMessages([npcMessage, ...messages]);
+      } catch (error) {
+        console.error("Error starting dialog:", error);
+      }
+    };
+
+    startDialog();
   }, []);
 
   useEffect(() => {
