@@ -16,31 +16,21 @@ textarea {
   -moz-box-shadow: inset 0px 4px 4px 1px rgba(0, 0, 0, 0.25);
   box-shadow: inset 0px 4px 4px 1px rgba(0, 0, 0, 0.25);
   background: rgba(255, 255, 255, 0);
-  background: -webkit-linear-gradient(
-    -224.90398121603deg,
-    rgba(132.33, 191.39, 224.61, 0.5) 0%,
-    rgba(23.22, 73.75, 95.41, 0.15) 100%
-  );
-  background: -o-linear-gradient(
-    -224.90398121603deg,
-    rgba(132.33, 191.39, 224.61, 0.5) 0%,
-    rgba(23.22, 73.75, 95.41, 0.15) 100%
-  );
-  background: -moz-linear-gradient(
-    -224.90398121603deg,
-    rgba(132.33, 191.39, 224.61, 0.5) 0%,
-    rgba(23.22, 73.75, 95.41, 0.15) 100%
-  );
-  background: -ms-linear-gradient(
-    -224.90398121603deg,
-    rgba(132.33, 191.39, 224.61, 0.5) 0%,
-    rgba(23.22, 73.75, 95.41, 0.15) 100%
-  );
-  background: linear-gradient(
-    -224.90398121603deg,
-    rgba(132.33, 191.39, 224.61, 0.5) 0%,
-    rgba(23.22, 73.75, 95.41, 0.15) 100%
-  );
+  background: -webkit-linear-gradient(-224.90398121603deg,
+      rgba(132.33, 191.39, 224.61, 0.5) 0%,
+      rgba(23.22, 73.75, 95.41, 0.15) 100%);
+  background: -o-linear-gradient(-224.90398121603deg,
+      rgba(132.33, 191.39, 224.61, 0.5) 0%,
+      rgba(23.22, 73.75, 95.41, 0.15) 100%);
+  background: -moz-linear-gradient(-224.90398121603deg,
+      rgba(132.33, 191.39, 224.61, 0.5) 0%,
+      rgba(23.22, 73.75, 95.41, 0.15) 100%);
+  background: -ms-linear-gradient(-224.90398121603deg,
+      rgba(132.33, 191.39, 224.61, 0.5) 0%,
+      rgba(23.22, 73.75, 95.41, 0.15) 100%);
+  background: linear-gradient(-224.90398121603deg,
+      rgba(132.33, 191.39, 224.61, 0.5) 0%,
+      rgba(23.22, 73.75, 95.41, 0.15) 100%);
 
   &::placeholder {
     color: $input-placeholder-color;
@@ -73,70 +63,90 @@ textarea {
   color: black;
 }
 
-label[for="register"], label[for="login"] {
-  padding-left: 17%;
-  width: 500px;
-  height: 60px;
-  overflow: hidden;
+label[for="register"],
+label[for="login"] {
+  position: absolute;
+  margin-top: 2%;
+  width: 80%;
   font-family: "Roboto";
-  font-size: 45px;
   color: $label-color;
   font-weight: bold;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 label[for="email-label"],
 label[for="email-register-label"],
 label[for="password-label"],
 label[for="password-register-label"],
-label[for="password-repeat-label"] {
+label[for="name-label"] {
+  position: absolute;
   width: 300px;
-  height: 40px;
+  height: auto;
+  left: 15%;
   overflow: hidden;
   font-family: "Roboto";
-  font-size: 32px;
   text-align: left;
   color: $label-color;
 }
 
+label[for="email-label"],
+label[for="email-register-label"] {
+  top: 20%;
+}
+
+label[for="password-label"],
+label[for="name-label"] {
+  top: 45%;
+}
+
+label[for="password-register-label"] {
+  top: 70%;
+}
+
 #password,
-#repeat-password,
+#password-reg,
+#name,
 #email {
-  top: 40px;
-  left: 0px;
-  width: 600px;
-  height: 85px;
+  position: absolute;
+  width: 70%;
+  height: 12%;
+  left: 50%;
+  transform: translateX(-50%);
   padding-left: 10px;
-  font-size: 32px;
   color: $black;
   border-width: 1px;
   border-radius: 10px;
   box-shadow: inset 0px 4px 4px 1px $button-login-shadow;
   background: $password-input-background;
-  background: -webkit-linear-gradient(
-    -224.90398121603deg,
-    $password-input-gradient-start 0%,
-    $password-input-gradient-end 100%
-  );
-  background: -o-linear-gradient(
-    -224.90398121603deg,
-    $password-input-gradient-start 0%,
-    $password-input-gradient-end 100%
-  );
-  background: -moz-linear-gradient(
-    -224.90398121603deg,
-    $password-input-gradient-start 0%,
-    $password-input-gradient-end 100%
-  );
-  background: -ms-linear-gradient(
-    -224.90398121603deg,
-    $password-input-gradient-start 0%,
-    $password-input-gradient-end 100%
-  );
-  background: linear-gradient(
-    -224.90398121603deg,
-    $password-input-gradient-start 0%,
-    $password-input-gradient-end 100%
-  );
+  background: -webkit-linear-gradient(-224.90398121603deg,
+      $password-input-gradient-start 0%,
+      $password-input-gradient-end 100%);
+  background: -o-linear-gradient(-224.90398121603deg,
+      $password-input-gradient-start 0%,
+      $password-input-gradient-end 100%);
+  background: -moz-linear-gradient(-224.90398121603deg,
+      $password-input-gradient-start 0%,
+      $password-input-gradient-end 100%);
+  background: -ms-linear-gradient(-224.90398121603deg,
+      $password-input-gradient-start 0%,
+      $password-input-gradient-end 100%);
+  background: linear-gradient(-224.90398121603deg,
+      $password-input-gradient-start 0%,
+      $password-input-gradient-end 100%);
+}
+
+#email {
+  top: 30%;
+}
+
+#name,
+#password {
+  top: 55%;
+}
+
+#password-reg {
+  top: 80%;
 }
 
 .instruction_content {
@@ -201,7 +211,7 @@ label[for="password-repeat-label"] {
 .thumb {
   width: 20px;
   height: 20px;
-  background-color: $input-placeholder-color; 
+  background-color: $input-placeholder-color;
   border-radius: 50%;
   cursor: pointer;
   position: absolute;
@@ -227,26 +237,74 @@ label[for="password-repeat-label"] {
   left: 0;
 }
 
+.Toastify__toast-container {
+  width: auto;
+}
+
+.Toastify__toast--default,
+.Toastify__toast--success,
+.Toastify__toast--error,
+.Toastify__toast--warning {
+  background-color: $button-gradient-start;
+  backdrop-filter: blur(18px);
+}
+
+.Toastify__toast-body {
+  font-family: 'Roboto';
+}
+
 @media only screen and (min-width: 2561px) {
   .word-counter {
     font-size: 16px;
     right: 2%;
   }
+
   .user-label {
     font-size: 23px;
   }
+
   .user-message {
     font-size: 23px;
   }
+
   .npc-message {
     font-size: 23px;
   }
+
   .npc-label {
     font-size: 23px;
   }
+
   .instruction_content {
     font-size: 20px;
   }
+
+  #paragraph {
+    font-size: 15px;
+    right: 45px;
+  }
+
+  label[for="register"],
+  label[for="login"] {
+
+    font-size: 50px;
+
+  }
+
+  label[for="email-label"],
+label[for="email-register-label"],
+label[for="password-label"],
+label[for="password-register-label"],
+label[for="name-label"] {
+  font-size: 45px;
+}
+
+#password,
+#password-reg,
+#name,
+#email {
+  font-size: 35px;
+}
 }
 
 @media only screen and (min-width: 2100px) and (max-width: 2561px) {
@@ -262,6 +320,7 @@ label[for="password-repeat-label"] {
   .user-message {
     font-size: 22px;
   }
+
   .npc-message {
     font-size: 22px;
   }
@@ -269,12 +328,35 @@ label[for="password-repeat-label"] {
   .npc-label {
     font-size: 22px;
   }
+
   .instruction_content {
     font-size: 25px;
   }
+
   textarea {
     font-size: 20px;
   }
+  label[for="register"],
+  label[for="login"] {
+
+    font-size: 45px;
+
+  }
+
+  label[for="email-label"],
+label[for="email-register-label"],
+label[for="password-label"],
+label[for="password-register-label"],
+label[for="name-label"] {
+  font-size: 40px;
+}
+
+#password,
+#password-reg,
+#name,
+#email {
+  font-size: 30px;
+}
 }
 
 @media only screen and (min-width: 1801px) and (max-width: 2100px) {
@@ -291,6 +373,7 @@ label[for="password-repeat-label"] {
   .user-message {
     font-size: 20px;
   }
+
   .npc-message {
     font-size: 20px;
   }
@@ -298,12 +381,36 @@ label[for="password-repeat-label"] {
   .npc-label {
     font-size: 20px;
   }
+
   .instruction_content {
     font-size: 23px;
   }
+
   textarea {
     font-size: 20px;
   }
+
+  label[for="register"],
+  label[for="login"] {
+
+    font-size: 40px;
+
+  }
+
+  label[for="email-label"],
+label[for="email-register-label"],
+label[for="password-label"],
+label[for="password-register-label"],
+label[for="name-label"] {
+  font-size: 35px;
+}
+
+#password,
+#password-reg,
+#name,
+#email {
+  font-size: 25px;
+}
 }
 
 @media only screen and (min-width: 1281px) and (max-width: 1800px) {
@@ -312,6 +419,28 @@ label[for="password-repeat-label"] {
     font-size: 12px;
     right: 4%;
   }
+
+  label[for="register"],
+  label[for="login"] {
+
+    font-size: 35px;
+
+  }
+
+  label[for="email-label"],
+label[for="email-register-label"],
+label[for="password-label"],
+label[for="password-register-label"],
+label[for="name-label"] {
+  font-size: 30px;
+}
+
+#password,
+#password-reg,
+#name,
+#email {
+  font-size: 20px;
+}
 }
 
 @media only screen and (max-width: 1280px) {
@@ -328,6 +457,7 @@ label[for="password-repeat-label"] {
   .user-message {
     font-size: 13px;
   }
+
   .npc-message {
     font-size: 13px;
   }
@@ -335,6 +465,36 @@ label[for="password-repeat-label"] {
   .npc-label {
     font-size: 13px;
   }
+
+  .instruction_content {
+    font-size: 15px;
+  }
+
+  textarea {
+    font-size: 15px;
+  }
+
+  label[for="register"],
+  label[for="login"] {
+
+    font-size: 30px;
+
+  }
+
+  label[for="email-label"],
+label[for="email-register-label"],
+label[for="password-label"],
+label[for="password-register-label"],
+label[for="name-label"] {
+  font-size: 25px;
+}
+
+#password,
+#password-reg,
+#name,
+#email {
+  font-size: 15px;
+}
   textarea {
     font-size: 15px;
   }
@@ -367,12 +527,34 @@ label[for="password-repeat-label"] {
   .user-message {
     font-size: 12px;
   }
+
   .npc-message {
     font-size: 12px;
   }
   .npc-label {
     font-size: 12px;
   }
+  label[for="register"],
+  label[for="login"] {
+
+    font-size: 25px;
+
+  }
+
+  label[for="email-label"],
+label[for="email-register-label"],
+label[for="password-label"],
+label[for="password-register-label"],
+label[for="name-label"] {
+  font-size: 20px;
+}
+
+#password,
+#password-reg,
+#name,
+#email {
+  font-size: 12px;
+}
   textarea {
     font-size: 15px;
   }

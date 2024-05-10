@@ -14,11 +14,14 @@ const registerApi = async (formData) => {
     );
 
     if (response.ok) {
-
       return { success: true };
-    }
-    if (!response.ok) {
-      toast.error("Response is not OK");
+    } else {
+      const errorMessage = await response.text();
+      if (errorMessage.includes("Email")) {
+        toast.error("The Email field is not a valid e-mail address.");
+      } else {
+        toast.error(errorMessage);
+      }
       return { success: false };
     }
   } catch (error) {
