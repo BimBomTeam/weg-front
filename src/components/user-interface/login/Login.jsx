@@ -27,8 +27,6 @@ const Login = () => {
         setTimeout(() => {
           navigate("/game");
         }, 2500);
-      } else {
-        throw new Error("Authentication Error");
       }
     } catch (error) {
       toast.error(error.message || "Authentication Error");

@@ -18,8 +18,15 @@ const loginApi = async (formData) => {
       localStorage.setItem("access_token", data.token);
       localStorage.setItem("refresh_token", data.refreshToken);
       return { success: true };
-    }
-    if (!response.ok) {
+    } else {
+      const errorMessage = await response.text();
+      
+      if (errorMessage.includes("Email")) {
+        toast.error("The Email field is not a valid e-mail address.");
+      } else {
+        toast.error(errorMessage);
+      }
+      
       return { success: false };
     }
   } catch (error) {

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import registerApi from "./registerApi";
-import { BsInfoCircle } from "react-icons/bs"; // Dodano import
+import { BsInfoCircle } from "react-icons/bs";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -14,8 +14,6 @@ const Register = () => {
   const handleRegister = async () => {
     if (!email || !password || !username) {
       toast.error("Fields cannot be empty");
-    } else if (!/\S+@\S+\.\S+/.test(email)) {
-      toast.error("Invalid email address");
     } else if (password.length < 8) {
       toast.error("Password does not meet the requirements.");
     } else {
