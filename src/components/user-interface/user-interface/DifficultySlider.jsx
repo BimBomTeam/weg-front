@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Slider from 'react-slider';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import difficultyApi from './difficultyApi';
 
 const DifficultySlider = ({ onConfirm }) => { 
   const [languageLevel, setLanguageLevel] = useState(0);
@@ -12,11 +13,18 @@ const DifficultySlider = ({ onConfirm }) => {
     setLanguageLevel(value);
   };
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     const selectedLevel = languageLevels[languageLevel];
     toast.success(`Selected level: ${selectedLevel}`);
-    if (onConfirm) { 
-      onConfirm(); 
+    
+    const response = await difficultyApi(selectedLevel);
+    
+    if (response.success) {
+      if (onConfirm) { 
+        onConfirm(); 
+      }
+    } else {
+      toast.error("Failed to send difficulty level to server.");
     }
   };
 
