@@ -25,8 +25,9 @@ const Login = () => {
         toast.success("Successfully login");
         dispatch(checkToken());
         setTimeout(() => {
+          window.location.reload();
           navigate("/game");
-        }, 2500);
+        }, 2000);
       }
     } catch (error) {
       toast.error(error.message || "Authentication Error");

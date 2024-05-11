@@ -12,8 +12,9 @@ export const generateWordsById = (id) => {
     // words is not defend from redux storage
     else {
       const fetchedWords = await POST_getWords(id);
+      
       sessionStorage.setItem(`wordsLoaded_${id}`, JSON.stringify(fetchedWords));
-      dispatch(setWords(fetchedWords));
+      dispatch(setWords(JSON.stringify(fetchedWords)));
     }
   };
 };

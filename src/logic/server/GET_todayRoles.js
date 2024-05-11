@@ -15,7 +15,6 @@ export default function GET_todayRoles() {
       return response.json();
     })
     .then((data) => {
-      console.log(data);
       return data;
     })
     .catch((error) => {

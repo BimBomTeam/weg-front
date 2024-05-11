@@ -41,7 +41,6 @@ const UiBossFight = () => {
   }, []);
 
   const onAnswerClick = (text) => {
-    console.log(text); //TODO: Logic
 
     store.getState().interact.bossHit.bossHit();
     // bossHit();

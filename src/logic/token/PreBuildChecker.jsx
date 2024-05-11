@@ -12,7 +12,7 @@ export default function PreBuildChecker() {
   const dispatch = useDispatch();
   const token = useSelector((state) => state.auth.isAuthenticated);
   const [loading, setLoading] = useState(true);
-  const NonTokenLinks = ["/register", "/login"]
+  const NonTokenLinks = ["/register", "/login"];
 
   useEffect(() => {
     dispatch(checkToken());
@@ -23,6 +23,20 @@ export default function PreBuildChecker() {
       setLoading(false);
     }
   }, [token]);
+
+  useEffect(() => {
+    let timer = setTimeout(() => {
+      const canvas = document.getElementById('webgl');
+  
+      if (canvas && (!canvas.hasAttribute('width') || !canvas.hasAttribute('height'))) {
+        window.location.reload();
+      }
+    }, 500);
+  
+    return () => clearTimeout(timer);
+  }, []);
+  
+  
 
   useEffect(() => {
     if (!loading) {
