@@ -3,20 +3,23 @@ import { useSpring, animated } from "react-spring";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
 import BossFightButton from "./BossFightButton";
 import store from "../../store/store";
+import POST_getBossWords from "../../logic/server/POST_getBossWords";
 
 const UiBossFight = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [answers, setAnswers] = useState([]);
-
   useEffect(() => {
-    setIsVisible(true);
-    setAnswers([
-      "Brzęczyszczykiewicz",
-      "Brzęczyszczykiewicz",
-      "Dokąd nocą tupta jeż, możesz wiedzieć jeśli chcesz",
-      "Brzęczyszczykiewicz",
-    ]);
+    const fetchData = async () => {
+      const getWords = await POST_getBossWords({
+        "level": "b1",
+        "role": "cooker"
+      })
+      setIsVisible(true);
+      setAnswers(getWords.words);
+    }
+    fetchData();
   }, []);
+
 
   const animationProps = useSpring({
     transform: isVisible ? "translateY(0%)" : "translateY(150%)",
