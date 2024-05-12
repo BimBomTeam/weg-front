@@ -100,6 +100,14 @@ export class KeyHandler {
           break;
       }
     });
+
+    // window.addEventListener("focus", (event) => {
+    //   this.moveVector = new Vector3();
+    //   console.log(event);
+    // });
+    window.oncontextmenu = (e) => {
+      this.moveVector = new Vector3();
+    };
   }
 
   update() {
@@ -107,7 +115,7 @@ export class KeyHandler {
       if (this.key[element].click !== undefined) {
         this.key[element].click = false;
       }
-      this.key.pressed = false;
+      // this.key[element].pressed = false;
     }
   }
 }
