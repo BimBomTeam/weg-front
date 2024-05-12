@@ -8,16 +8,16 @@ export class StandartNPC {
   constructor({
     pos = { x: 10, y: 20, z: 10 },
     sketch,
-    path,
     gltf,
     scale = 2,
+    zoneRadius = 7,
     objName = "NPC",
     textObjectText,
     changeNearNpcVisibility,
   }) {
     this.objName = objName;
 
-    this.zoneRadius = 7;
+    this.zoneRadius = zoneRadius;
     this.innitPos = pos;
     this.speed = 7;
     this.moveState = "stand";
@@ -32,7 +32,7 @@ export class StandartNPC {
     // this.initObject(sketch, pos, path)
 
     this.textObjectText = textObjectText;
-    this.initObject(sketch, pos, path, gltf);
+    this.initObject(sketch, pos, gltf);
     this.updateCooldowns();
   }
 
@@ -44,7 +44,7 @@ export class StandartNPC {
         : this.moveCooldown - Math.random() * this.moveCooldownDelta;
   }
 
-  async initObject(sketch, pos, path, gltf) {
+  async initObject(sketch, pos, gltf) {
     this.object = new ExtendedObject3D();
     // gltf.scene.children[0].geometry.center();
     gltf.scene.rotateY(Math.PI);
@@ -96,6 +96,7 @@ export class StandartNPC {
     gltf.animations.forEach((animation) => {
       this.object.anims.add(animation.name, animation);
     });
+    this.playAnimation("Idle");
     if (this.textObjectText) {
       this.textObject = new TextObject({
         textContent: this.textObjectText,
@@ -107,21 +108,25 @@ export class StandartNPC {
   update() {
     this.object.body.setAngularVelocityY(0);
     if (this.mode == "freeRoam") {
-      if (this.moveState == "stand") {
-        if (this.currentTime() - this.lastMoveTime > this.curMoveCooldown) {
-          this.moveState = "move";
-          this.destPoint = this.generateRandPoint();
-          this.moveVec = this.calcVecToPoint(this.destPoint);
-        }
-      } else if (this.moveState == "move") {
-        this.object.body.setVelocityX(this.moveVec.x);
-        this.object.body.setVelocityZ(this.moveVec.z);
-        let moveX = this.destPoint.x - this.object.position.x;
-        let moveZ = this.destPoint.z - this.object.position.z;
-        this.rotate(this.moveVec);
-        if (Math.abs(moveX) + Math.abs(moveZ) <= 3) {
-          this.moveState = "stand";
-          this.updateCooldowns();
+      if (this.zoneRadius > 0) {
+        if (this.moveState == "stand") {
+          this.playAnimation("Idle");
+          if (this.currentTime() - this.lastMoveTime > this.curMoveCooldown) {
+            this.moveState = "move";
+            this.destPoint = this.generateRandPoint();
+            this.moveVec = this.calcVecToPoint(this.destPoint);
+          }
+        } else if (this.moveState == "move") {
+          this.playAnimation("Walk");
+          this.object.body.setVelocityX(this.moveVec.x);
+          this.object.body.setVelocityZ(this.moveVec.z);
+          let moveX = this.destPoint.x - this.object.position.x;
+          let moveZ = this.destPoint.z - this.object.position.z;
+          this.rotate(this.moveVec);
+          if (Math.abs(moveX) + Math.abs(moveZ) <= 3) {
+            this.moveState = "stand";
+            this.updateCooldowns();
+          }
         }
       }
     }
@@ -138,6 +143,7 @@ export class StandartNPC {
     if (playerPos.distanceTo(this.object.position) <= this.interactionRadius) {
       if (this.mode == "freeRoam") {
         this.mode = "prepToInteract";
+        this.playAnimation("Idle");
       }
       this.object.body.setVelocityX(0);
       this.object.body.setVelocityZ(0);
@@ -220,5 +226,13 @@ export class StandartNPC {
 
     // Determine the shortest direction.
     return left <= right ? left : right * -1;
+  }
+
+  playAnimation(animName) {
+    if (this.object.anims.current !== animName) {
+      if (animName == "Walk") this.object.animationMixer.timeScale = 2;
+      else this.object.animationMixer.timeScale = 1;
+      this.object.anims.play(animName);
+    }
   }
 }
