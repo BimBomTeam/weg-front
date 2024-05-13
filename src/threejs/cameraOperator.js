@@ -12,6 +12,11 @@ export class CameraOperator {
         adjustPosition: { x: 0, y: 40, z: 20 },
         cameraSpeed: 10,
       },
+      playerFollowMountain: {
+        deadZone: { x: 0, y: 0, z: 0 },
+        adjustPosition: { x: 0, y: 2, z: 10 },
+        cameraSpeed: 10,
+      },
     };
     this.eternalUpateList = {
       playerFollow: function fun(deltaTime, targetPos, adjustPos, camData) {
@@ -30,6 +35,10 @@ export class CameraOperator {
       lerpToAngle: function fun(deltaTime, config) {
         let { targetPos } = config;
         return camera.lerpAngle(deltaTime, targetPos, {});
+      },
+      lerpToAngleDynamic: function fun(deltaTime, config) {
+        let { targetPos } = config;
+        return camera.lerpAngleDynamic(deltaTime, targetPos, {});
       },
       NPCzoomIn: function fun(deltaTime, config) {
         let { targetPos, adjustPosition } = config;
@@ -61,8 +70,17 @@ export class CameraOperator {
       },
     };
 
-    this.currentAdjustPosition = new THREE.Vector3();
+    this.currentAdjustPosition = { x: 0, y: 0, z: 0 };
     // this.camera.lookAt(new THREE.Vector3(0, 0, 0));
+
+    this.zones = [
+      {
+        name: "mountain",
+        pos: { xMin: -90, xMax: -66, zMin: -36, zMax: -24 },
+        enterEternalUpdateName: "playerFollowMountain",
+        exitEternalUpdateName: "playerFollow",
+      },
+    ];
   }
 
   getDistancedVector2Fixed(
@@ -96,17 +114,82 @@ export class CameraOperator {
       (element) =>
         !this.eventUpdates[element.name](deltaTime, { ...element.config })
     );
-    // console.log(this.eventList);
 
-    //Place for enternalUpdate logic
+    this.updateZones();
+
     if (this.eternalUpate.state == 1) {
+      //Place for enternalUpdate logic
       this.eternalUpate.funUpdate(
         deltaTime,
         this.targetPos,
-        this.currentAdjustPosition,
-        { ...this.cameraData[this.eternalUpate.name] }
+        this.addPseudoVec3(
+          this.cameraData[this.eternalUpate.name].adjustPosition,
+          this.currentAdjustPosition
+        ),
+        this.cameraData[this.eternalUpate.name]
       );
     }
+  }
+
+  updateZones() {
+    this.zones.forEach((zone) => {
+      const zoneDelta = {
+        x: zone.pos.xMax - zone.pos.xMin,
+        z: zone.pos.zMax - zone.pos.zMin,
+      };
+      const zonePlayerDelta = {
+        x: this.targetPos.x - zone.pos.xMin,
+        z: this.targetPos.z - zone.pos.zMin,
+      };
+      if (
+        zonePlayerDelta.x > 0 &&
+        zonePlayerDelta.x < zoneDelta.x &&
+        zonePlayerDelta.z > 0 &&
+        zonePlayerDelta.z < zoneDelta.z
+      ) {
+        if (this.eternalUpate.name != zone.enterEternalUpdateName) {
+          const playerPositionAfter = this.camera.position
+            .clone()
+            .add(
+              new THREE.Vector3(
+                this.cameraData[zone.enterEternalUpdateName].adjustPosition.x,
+                this.cameraData[zone.enterEternalUpdateName].adjustPosition.y,
+                this.cameraData[zone.enterEternalUpdateName].adjustPosition.z
+              ).negate()
+            );
+          this.camera.angleTmpData = undefined;
+          this.eternalUpate.state = 1;
+          this.eventList = [];
+          this.addLerpToAngle({
+            targetPos: playerPositionAfter,
+          });
+        }
+        this.eternalUpate.name = zone.enterEternalUpdateName;
+      } else {
+        if (this.eternalUpate.name != zone.exitEternalUpdateName) {
+          const playerPositionAfter = this.camera.position
+            .clone()
+            .add(
+              new THREE.Vector3(
+                this.cameraData[zone.exitEternalUpdateName].adjustPosition.x,
+                this.cameraData[zone.exitEternalUpdateName].adjustPosition.y,
+                this.cameraData[zone.exitEternalUpdateName].adjustPosition.z
+              ).negate()
+            );
+          this.camera.angleTmpData = undefined;
+          this.eventList = [];
+          this.eternalUpate.state = 1;
+          this.addLerpToAngle({
+            targetPos: playerPositionAfter,
+          });
+        }
+        this.eternalUpate.name = zone.exitEternalUpdateName;
+      }
+    });
+  }
+
+  addPseudoVec3(vecA, vecB) {
+    return { x: vecA.x + vecB.x, y: vecA.y + vecB.y, z: vecA.z + vecB.z };
   }
 
   setTargetObject(targetObj) {
@@ -132,7 +215,7 @@ export class CameraOperator {
         this.targetPos.z + this.cameraData[event].adjustPosition.z
       )
     );
-    this.currentAdjustPosition = this.cameraData[event].adjustPosition;
+    // this.currentAdjustPosition = this.cameraData[event].adjustPosition;
   }
 
   addEvent(eventName, config) {
@@ -141,17 +224,27 @@ export class CameraOperator {
     let event = { name: eventName, config: config };
     this.eventList.push(event);
     if (eventName == "NPCzoomIn") {
-      this.currentAdjustPosition = {
-        x: config.targetPos.x + config.adjustPosition.x,
-        y: config.targetPos.y + config.adjustPosition.y,
-        z: config.targetPos.z + config.adjustPosition.z,
-      };
+      // this.currentAdjustPosition = {
+      //   x: config.targetPos.x + config.adjustPosition.x,
+      //   y: config.targetPos.y + config.adjustPosition.y,
+      //   z: config.targetPos.z + config.adjustPosition.z,
+      // };
       this.eternalUpate.state = 0;
     }
   }
 
   addLerpToAngle({ targetPos = new THREE.Vector3() }) {
     const eventName = "lerpToAngle";
+    if (this.eventIsPlayed(eventName)) return;
+    let event = {
+      name: eventName,
+      config: { targetPos: targetPos },
+    };
+    this.eventList.push(event);
+  }
+
+  addLerpToAngleDynamic({ targetPos = new THREE.Vector3() }) {
+    const eventName = "lerpToAngleDynamic";
     if (this.eventIsPlayed(eventName)) return;
     let event = {
       name: eventName,
@@ -171,11 +264,11 @@ export class CameraOperator {
       config: { targetPos: targetPos, adjustPosition: adjustPosition },
     };
     this.eventList.push(event);
-    this.currentAdjustPosition = {
-      x: targetPos.x + adjustPosition.x,
-      y: targetPos.y + adjustPosition.y,
-      z: targetPos.z + adjustPosition.z,
-    };
+    // this.currentAdjustPosition = {
+    //   x: targetPos.x + adjustPosition.x,
+    //   y: targetPos.y + adjustPosition.y,
+    //   z: targetPos.z + adjustPosition.z,
+    // };
     this.eternalUpate.state = 0;
     this.removeEvent("NPCzoomOut");
     this.removeEvent("lerpToAngle");
@@ -189,15 +282,15 @@ export class CameraOperator {
       targetPos = this.targetPos.clone();
     }
     if (adjustPosition === undefined) {
-      adjustPosition = this.cameraData.playerFollow.adjustPosition;
+      adjustPosition = this.cameraData[this.eternalUpate.name].adjustPosition;
     }
     let event = {
       name: eventName,
       config: { targetPos: targetPos, adjustPosition: adjustPosition },
     };
     this.eventList.push(event);
-    this.currentAdjustPosition =
-      this.cameraData[this.eternalUpate.name].addjustPosition;
+    // this.currentAdjustPosition =
+    //   this.cameraData[this.eternalUpate.name].addjustPosition;
     this.removeEvent("NPCzoomIn");
     this.removeEvent("lerpToAngle");
     this.camera.angleTmpData = undefined;
