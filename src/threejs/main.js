@@ -387,7 +387,7 @@ class MainScene extends Scene3D {
   setupPlayer() {
     let testPos = { x: -80, y: 30, z: -90 };
     this.player = new Player({
-      pos: { x: 16, y: 30, z: -23 },
+      pos: testPos,
       gltf: this.modelLoader.modelsArray["player"],
       sketch: this,
     });
