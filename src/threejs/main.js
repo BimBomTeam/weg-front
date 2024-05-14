@@ -102,7 +102,7 @@ class MainScene extends Scene3D {
       textureWidth: 512,
       textureHeight: 512,
       waterNormals: new THREE.TextureLoader().load(
-        "/public/lib/water/waternormals.jpg",
+        "/lib/water/waternormals.jpg",
         function (texture) {
           texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
           texture.needsUpdate = true;
@@ -159,7 +159,7 @@ class MainScene extends Scene3D {
 
     console.log("rolesReduxArr", rolesReduxArr);
 
-    const modelsPath = "/public/lib/models/";
+    const modelsPath = "/lib/models/";
     this.modelLoader = new ModelLoader();
     await this.modelLoader.loadModelsAsync(modelsPath, this);
 
@@ -469,7 +469,7 @@ export default class GameScene {
     this.test = null;
 
     window.addEventListener("load", () => {
-      PhysicsLoader("/public/lib/ammo/kripken", () => {
+      PhysicsLoader("/lib/ammo/kripken", () => {
         this.test = new Project(config);
         // sceneLoadedProp();
       });
