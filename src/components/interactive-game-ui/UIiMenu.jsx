@@ -31,7 +31,7 @@ const UiMenu = () => {
   });
   const [resolution, setResolution] = useState({
     width: window.innerWidth,
-    height: window.innerHeight
+    height: window.innerHeight,
   });
   const [messages, setMessages] = useState([]);
   const [showAnimation] = useState(false);
@@ -42,30 +42,8 @@ const UiMenu = () => {
   const [npcRole, setNpcRole] = useState("");
 
   useEffect(() => {
-    setIsVisible(true);
-    setIsButtonClicked(false);
     setWords(JSON.parse(checkWordsPayload.words.words));
   }, [checkWordsPayload]); // Add checkWordsPayload to the dependency array
-
-  useEffect(() => {
-    if (!isVisible) {
-      setText("");
-    }
-
-    const handleEsc = (event) => {
-      if (event.keyCode === 27) {
-        setIsVisible(false);
-        setIsButtonClicked(false);
-        setIsExpandButtonClicked(false);
-      }
-    };
-
-    window.addEventListener("keydown", handleEsc);
-
-    return () => {
-      window.removeEventListener("keydown", handleEsc);
-    };
-  }, [isVisible]);
 
   useEffect(() => {
     if (!text && textareaRef.current) {
@@ -92,16 +70,20 @@ const UiMenu = () => {
         messageStr: text,
       });
       localStorage.setItem("message_history", JSON.stringify(data));
-  
+
       const newUserMessage = { text: "User: " + text, id: Date.now() };
       const npcMessage = {
         text: `${npcRole}: ${data[data.length - 1].message}`,
         animation: true,
         id: Date.now() + 1,
       };
-  
-      setMessages((prevMessages) => [...prevMessages, newUserMessage, npcMessage]);
-  
+
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        newUserMessage,
+        npcMessage,
+      ]);
+
       setTimeout(() => {
         npcMessage.text = `${npcRole}: ${data[data.length - 1].message}`;
         npcMessage.animation = false;
@@ -110,9 +92,12 @@ const UiMenu = () => {
     } catch (error) {
       console.error("Error fetching data:", error);
     }
-  };  
+  };
 
-  const sumOfWordLengths = wordsArray.reduce((acc, curr) => acc + curr.name.length, 0);
+  const sumOfWordLengths = wordsArray.reduce(
+    (acc, curr) => acc + curr.name.length,
+    0
+  );
   const onButtonClick = async (event) => {
     event.preventDefault();
     if (!text) {
@@ -150,7 +135,7 @@ const UiMenu = () => {
         });
         localStorage.setItem("message_history", JSON.stringify(data));
         const role = data[data.length - 1].role;
-        setNpcRole(role); 
+        setNpcRole(role);
         const npcMessage = {
           text: `${role}: ${data[data.length - 1].message}`,
           animation: false,
@@ -161,14 +146,15 @@ const UiMenu = () => {
         console.error("Error starting dialog:", error);
       }
     };
-  
+
     startDialog();
-  }, []);  
+  }, []);
 
   useEffect(() => {
     const handleWordsHeightChange = () => {
       const wordsElement = document.querySelector(".words");
-      const messageContainerElement = document.querySelector(".message-container");
+      const messageContainerElement =
+        document.querySelector(".message-container");
       if (wordsElement && messageContainerElement) {
         const wordsHeight = wordsElement.getBoundingClientRect().height;
         const newMaxHeight = `${Math.max(0, 100 - wordsHeight * 0.4)}%`;
@@ -177,29 +163,8 @@ const UiMenu = () => {
     };
 
     handleWordsHeightChange();
-    return () => {
-    };
+    return () => {};
   });
-
-  useEffect(() => {
-    setIsVisible(true);
-  }, []);
-
-  useEffect(() => {
-    setIsVisible(true);
-    setIsButtonClicked(false);
-  }, []);
-
-  useEffect(() => {
-    if (!isVisible) {
-      setText("");
-    }
-  }, [isVisible]);
-
-  useEffect(() => {
-    const sumOfWordLengths = wordsArray.reduce((acc, curr) => acc + curr.name.length, 0);
-    console.log("Sum of lengths of all words:", sumOfWordLengths);
-  }, [wordsArray]);
 
   useEffect(() => {
     const handleEsc = (event) => {
@@ -221,7 +186,7 @@ const UiMenu = () => {
     const handleResize = () => {
       setResolution({
         width: window.innerWidth,
-        height: window.innerHeight
+        height: window.innerHeight,
       });
     };
 
@@ -238,7 +203,15 @@ const UiMenu = () => {
     }
   }, [text]);
 
-  useEffect(() => { }, [isExpandButtonClicked]);
+  useEffect(() => {
+    const sumOfWordLengths = wordsArray.reduce(
+      (acc, curr) => acc + curr.name.length,
+      0
+    );
+    console.log("Sum of lengths of all words:", sumOfWordLengths);
+  }, [wordsArray]);
+
+  useEffect(() => {}, [isExpandButtonClicked]);
 
   useEffect(() => {
     if (transcript) {
@@ -250,6 +223,14 @@ const UiMenu = () => {
       }
     }
   }, [transcript]);
+
+  useEffect(() => {
+    // Automatically open the chat with animation after the component mounts
+    setTimeout(() => {
+      setIsVisible(true);
+      setIsButtonClicked(true);
+    }, 100); // 100ms delay to allow the component to mount first
+  }, []);
 
   const onTextChange = (event) => {
     const inputText = event.target.value;
@@ -263,8 +244,9 @@ const UiMenu = () => {
   };
 
   const onButtonClickExpand = () => {
-    setIsButtonRotated(!isButtonRotated);
-    setIsButtonClicked(!isButtonClicked);
+    //страшный костыль для отключения кнопки
+    // setIsButtonRotated(!isButtonRotated);
+    // setIsButtonClicked(!isButtonClicked);
   };
 
   const toggleListening = () => {
@@ -281,7 +263,7 @@ const UiMenu = () => {
   }
 
   const borderAnimationProps = useSpring({
-    borderColor: isListening ? 'red' : 'transparent',
+    borderColor: isListening ? "red" : "transparent",
   });
 
   const animationProps = useSpring({
@@ -290,24 +272,30 @@ const UiMenu = () => {
         ? `${getStyles("--animationProps_height_expanded_clicked_true")}`
         : `${getStyles("--animationProps_height_expanded_unclicked_false")}`
       : isButtonClicked
-        ? `${getStyles("--animationProps_height_unexpanded_clicked_false")}`
-        : `${getStyles("--animationProps_height_unexpanded_unclicked_true")}`,
+      ? `${getStyles("--animationProps_height_unexpanded_clicked_false")}`
+      : `${getStyles("--animationProps_height_unexpanded_unclicked_true")}`,
+    width: isExpandButtonClicked
+      ? `${getStyles("--animationProps_width_expanded_true")}`
+      : isButtonClicked
+      ? `${getStyles("--animationProps_width_unexpanded_clicked_false")}`
+      : `${getStyles("--animationProps_width_unexpanded_unclicked_true")}`,
+    opacity: isVisible ? 1 : 0,
     transform: isVisible
       ? isExpandButtonClicked
         ? `${getStyles(
-          "--animationProps_transform_visible_expanded_clicked_true"
-        )}`
+            "--animationProps_transform_visible_expanded_clicked_true"
+          )}`
         : `${getStyles(
-          "--animationProps_transform_visible_expanded_unclicked_false"
-        )}`
+            "--animationProps_transform_visible_expanded_unclicked_false"
+          )}`
       : `${getStyles("--animationProps_transform_invisible_true")}`,
     top: isExpandButtonClicked
       ? isButtonClicked
         ? `${getStyles("--animationProps_top_expanded_clicked_true")}`
         : `${getStyles("--animationProps_top_expanded_unclicked_false")}`
       : isButtonClicked
-        ? `${getStyles("--animationProps_top_unexpanded_clicked_false")}`
-        : `${getStyles("--animationProps_top_unexpanded_unclicked_true")}`,
+      ? `${getStyles("--animationProps_top_unexpanded_clicked_false")}`
+      : `${getStyles("--animationProps_top_unexpanded_unclicked_true")}`,
   });
 
   const buttonExpandProps = useSpring({
@@ -316,8 +304,8 @@ const UiMenu = () => {
         ? `${getStyles("--buttonExpandProps_marginTop_true")}`
         : `${getStyles("--buttonExpandProps_marginTop_false")}`
       : isButtonClicked
-        ? `${getStyles("--buttonExpandProps_marginTop_true")}`
-        : `${getStyles("--buttonExpandProps_marginTop_false")}`,
+      ? `${getStyles("--buttonExpandProps_marginTop_true")}`
+      : `${getStyles("--buttonExpandProps_marginTop_false")}`,
     transform: `rotate(${isButtonRotated ? 180 : 0}deg)`,
     config: { duration: 100 },
   });
