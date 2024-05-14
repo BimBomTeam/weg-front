@@ -12,8 +12,8 @@ const Textarea = ({ text, setText, onTextChange, resetTranscriptOnClick, onButto
         />
         <button
           id="send"
-          onClick={() => {
-            onButtonClick();
+          onClick={(event) => {
+            onButtonClick(event);
             resetTranscriptOnClick();
           }}
         ></button>

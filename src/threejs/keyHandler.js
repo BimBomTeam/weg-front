@@ -26,6 +26,10 @@ export class KeyHandler {
         pressed: false,
         click: false,
       },
+      p: {
+        pressed: false,
+        click: false,
+      },
     };
     this.moveVector = new Vector3();
 
@@ -55,6 +59,9 @@ export class KeyHandler {
           break;
         case "Escape":
           this.key.esc.pressed = true;
+          break;
+        case "KeyP":
+          this.key.p.pressed = true;
           break;
       }
     });
@@ -86,8 +93,21 @@ export class KeyHandler {
         case "Escape":
           this.key.esc.click = true;
           this.key.esc.pressed = false;
+          break;
+        case "KeyP":
+          this.key.p.click = true;
+          this.key.p.pressed = false;
+          break;
       }
     });
+
+    // window.addEventListener("focus", (event) => {
+    //   this.moveVector = new Vector3();
+    //   console.log(event);
+    // });
+    window.oncontextmenu = (e) => {
+      this.moveVector = new Vector3();
+    };
   }
 
   update() {
@@ -95,7 +115,7 @@ export class KeyHandler {
       if (this.key[element].click !== undefined) {
         this.key[element].click = false;
       }
-      this.key.pressed = false;
+      // this.key[element].pressed = false;
     }
   }
 }

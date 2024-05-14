@@ -31,14 +31,16 @@ const Game = () => {
   useEffect(() => {
     async function loadScene() {
       setIsLoading(true);
+      console.log("before dispatch");
       await dispatch(checkRoles());
+      console.log("after dispatch");
       game.current = new GameScene(
         sceneLoaded,
         changeUiVisibility,
         changeNearNpcVisibility,
         changeBossFightVisibility
       );
-    }    
+    }
     loadScene();
   }, []);
 
@@ -48,7 +50,7 @@ const Game = () => {
     setIsLoadedScene(true);
     setIsLoading(false);
   };
-  
+
   const changeUiVisibility = (isVis) => {
     if (!isVis) {
       setTimeout(() => {
@@ -99,7 +101,6 @@ const Game = () => {
       )}
     </>
   );
-  
 };
 
 export default Game;

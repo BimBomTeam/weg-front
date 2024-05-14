@@ -12,6 +12,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useSelector } from "react-redux";
 import POST_startDialog from "../../logic/server/POST_startDialog";
 import POST_continueDialog from "../../logic/server/POST_continueDialog";
+import store from "../../store/store";
 
 const UiMenu = () => {
   const [text, setText] = useState("");
@@ -35,14 +36,16 @@ const UiMenu = () => {
   });
   const [messages, setMessages] = useState([]);
   const [showAnimation] = useState(false);
+  let checkWordsPayload = store.getState().words.words.words;
+  const wordsArray = JSON.parse(checkWordsPayload);
 
-  let checkWordsPayload = useSelector((state) => state.words);
-  const wordsArray = JSON.parse(checkWordsPayload.words.words);
 
   const [npcRole, setNpcRole] = useState("");
 
   useEffect(() => {
-    setWords(JSON.parse(checkWordsPayload.words.words));
+    setIsVisible(true);
+    setIsButtonClicked(false);
+    setWords(wordsArray);
   }, [checkWordsPayload]); // Add checkWordsPayload to the dependency array
 
   useEffect(() => {
@@ -64,7 +67,6 @@ const UiMenu = () => {
 
   const handleSendMessage = async () => {
     try {
-      console.log("HISTORY:", localStorage.getItem("message_history"));
       const data = await POST_continueDialog({
         messages: JSON.parse(localStorage.getItem("message_history")),
         messageStr: text,

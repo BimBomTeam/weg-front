@@ -269,13 +269,13 @@ export class Player {
           let moveX = standPos.x - this.object.position.x;
           let moveZ = standPos.z - this.object.position.z;
           let distance = new THREE.Vector2(moveX, moveZ);
-          if (distance.length() >= 1) {
+          if (distance.length() >= 0.5) {
             let destination = standPos
               .clone()
               .sub(this.object.position)
               .normalize()
               .multiplyScalar((this.speed / 5) * distance.length());
-            if (distance.length() >= 2) {
+            if (distance.length() >= 1) {
               this.moveVec.x = destination.x;
               this.moveVec.z = destination.z;
             }

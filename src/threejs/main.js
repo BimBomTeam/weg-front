@@ -102,7 +102,7 @@ class MainScene extends Scene3D {
       textureWidth: 512,
       textureHeight: 512,
       waterNormals: new THREE.TextureLoader().load(
-        "/public/lib/water/waternormals.jpg",
+        "/lib/water/waternormals.jpg",
         function (texture) {
           texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
           texture.needsUpdate = true;
@@ -155,41 +155,17 @@ class MainScene extends Scene3D {
     this.camOperator = new CameraOperator({ camera: this.camera });
 
     this.soundManager = new SoundManager(this.camera);
-    const rolesReduxArr = JSON.parse(
-      store.getState().roles.roles.roles.replaceAll("\\", "")
-    );
+    const rolesReduxArr = store.getState().roles.roles.roles;
 
     console.log("rolesReduxArr", rolesReduxArr);
 
-    const modelsPath = "/public/lib/models/";
+    const modelsPath = "/lib/models/";
     this.modelLoader = new ModelLoader();
     await this.modelLoader.loadModelsAsync(modelsPath, this);
 
     this.setupPlayer();
+    this.setupNpcs(rolesReduxArr);
     this.setupMap();
-
-    this.bossNPC = new BossNPC({
-      pos: { x: 80, y: 10, z: 85 },
-      sketch: this,
-      path: "/src/assets/models/Boss/Boss.glb",
-      gltf: this.modelLoader.modelsArray["boss"],
-      playerPosition: this.player.object.position,
-    });
-    this.standNPC = new StandartNPC({
-      pos: { x: 20, y: 10, z: 0 },
-      sketch: this,
-      path: "/src/assets/models/Npcs/Npc5.glb",
-      gltf: this.modelLoader.modelsArray["npc5"],
-      textObjectText: rolesReduxArr[0].name,
-    });
-    this.standNPC2 = new StandartNPC({
-      pos: { x: 100, y: 10, z: 95 },
-      sketch: this,
-      path: "/src/assets/models/Npcs/Npc1.glb",
-      textObjectText: rolesReduxArr[0].name,
-      gltf: this.modelLoader.modelsArray["npc1"],
-    });
-    this.npcArray = [this.bossNPC, this.standNPC, this.standNPC2];
     this.box = this.physics.add.box(
       {
         name: "box",
@@ -211,6 +187,60 @@ class MainScene extends Scene3D {
     store.dispatch(setBossHit(bossHitFunc));
 
     sceneLoaded();
+  }
+
+  setupNpcs(rolesReduxArr) {
+    this.npcArray = [];
+
+    this.bossNPC = new BossNPC({
+      pos: { x: 16, y: 10, z: -23 },
+      sketch: this,
+      gltf: this.modelLoader.modelsArray["boss"],
+      playerPosition: this.player.object.position,
+    });
+    this.standNPC = new StandartNPC({
+      pos: { x: -80, y: 10, z: -118 },
+      sketch: this,
+      zoneRadius: 10,
+      gltf: this.modelLoader.modelsArray["npc5"],
+      textObjectText: rolesReduxArr[0].name,
+    });
+    this.standNPC2 = new StandartNPC({
+      pos: { x: 64, y: 10, z: -111 },
+      sketch: this,
+      zoneRadius: 12,
+      textObjectText: rolesReduxArr[1].name,
+      gltf: this.modelLoader.modelsArray["npc1"],
+    });
+    this.standNPC3 = new StandartNPC({
+      pos: { x: 108, y: 10, z: 83 },
+      sketch: this,
+      zoneRadius: 11,
+      textObjectText: rolesReduxArr[2].name,
+      gltf: this.modelLoader.modelsArray["npc2"],
+    });
+    this.standNPC4 = new StandartNPC({
+      pos: { x: -69, y: 10, z: 75 },
+      sketch: this,
+      zoneRadius: 12,
+      textObjectText: rolesReduxArr[3].name,
+      gltf: this.modelLoader.modelsArray["npc4"],
+    });
+    this.standNPC5 = new StandartNPC({
+      pos: { x: -86, y: 4, z: -28 },
+      sketch: this,
+      zoneRadius: -10,
+      textObjectText: rolesReduxArr[4].name,
+      gltf: this.modelLoader.modelsArray["npc3"],
+    });
+    this.npcArray = [
+      this.bossNPC,
+      this.standNPC,
+      this.standNPC2,
+      this.standNPC3,
+      this.standNPC4,
+      this.standNPC5,
+    ];
   }
 
   sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay));
@@ -336,8 +366,24 @@ class MainScene extends Scene3D {
     }
   }
 
+  checkPlayerSoftLockOnInteraction() {
+    if (
+      this.npcArray.every((NPC) => NPC.mode != "interact") &&
+      this.player.mode == "interact"
+    ) {
+      store.dispatch(setUiState(UiStates.NONE));
+      //TODO: chat - false
+      this.player.mode = "freeWalk";
+      this.player.moveEvent = [];
+
+      if (this.camOperator.eternalUpate.state == 0) {
+        this.camOperator.addNPCzoomOut();
+      }
+    }
+  }
+
   setupPlayer() {
-    let testPos = { x: 80, y: 30, z: 85 };
+    let testPos = { x: -80, y: 30, z: -90 };
     this.player = new Player({
       pos: testPos,
       gltf: this.modelLoader.modelsArray["player"],
@@ -351,18 +397,33 @@ class MainScene extends Scene3D {
     this.stats.update();
 
     if (this.player.object && this.player.object.body) {
+      if (this.KeyHandler.key.p.click) {
+        console.log("Player position - ", this.player.object.position);
+      }
       this.player.update(this.KeyHandler, delta);
-      this.standNPC.update();
-      this.standNPC.checkInteraction(this.player.object.position);
-      this.standNPC2.update();
-      this.standNPC2.checkInteraction(this.player.object.position);
-      this.bossNPC.update();
-      if (this.bossNPC.mode != "battle")
-        this.bossNPC.checkInteraction(this.player.object.position);
+      this.npcArray.forEach((Npc) => {
+        Npc.update();
+        if (Npc.objName != "Boss") {
+          Npc.checkInteraction(this.player.object.position);
+          this.processInteraction(Npc);
+        } else {
+          if (Npc.mode != "battle")
+            Npc.checkInteraction(this.player.object.position);
+          this.processBattle(Npc);
+        }
+      });
+      this.checkPlayerSoftLockOnInteraction();
+      // this.standNPC.update();
+      // this.standNPC.checkInteraction(this.player.object.position);
+      // this.standNPC2.update();
+      // this.standNPC2.checkInteraction(this.player.object.position);
+      // this.bossNPC.update();
+      // if (this.bossNPC.mode != "battle")
+      //   this.bossNPC.checkInteraction(this.player.object.position);
 
-      this.processBattle(this.bossNPC);
-      this.processInteraction(this.standNPC);
-      this.processInteraction(this.standNPC2);
+      // this.processBattle(this.bossNPC);
+      // this.processInteraction(this.standNPC);
+      // this.processInteraction(this.standNPC2);
       // this.processInteraction(this.bossNPC);
 
       this.camOperator.update(delta);
@@ -408,7 +469,7 @@ export default class GameScene {
     this.test = null;
 
     window.addEventListener("load", () => {
-      PhysicsLoader("/public/lib/ammo/kripken", () => {
+      PhysicsLoader("/lib/ammo/kripken", () => {
         this.test = new Project(config);
         // sceneLoadedProp();
       });

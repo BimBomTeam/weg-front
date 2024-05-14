@@ -2,17 +2,10 @@ import { Vector3 } from "three";
 import { StandartNPC } from "./standartNPC";
 
 export class BossNPC extends StandartNPC {
-  constructor({
-    pos = { x: 10, y: 20, z: 10 },
-    sketch,
-    path,
-    gltf,
-    playerPosition,
-  }) {
+  constructor({ pos = { x: 10, y: 20, z: 10 }, sketch, gltf, playerPosition }) {
     super({
       pos: pos,
       sketch: sketch,
-      path: path,
       scale: 4,
       objName: "Boss",
       textObjectText: "Boss",
