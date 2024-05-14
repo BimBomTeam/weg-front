@@ -155,9 +155,7 @@ class MainScene extends Scene3D {
     this.camOperator = new CameraOperator({ camera: this.camera });
 
     this.soundManager = new SoundManager(this.camera);
-    const rolesReduxArr = JSON.parse(
-      store.getState().roles.roles.roles.replaceAll("\\", "")
-    );
+    const rolesReduxArr = store.getState().roles.roles.roles;
 
     console.log("rolesReduxArr", rolesReduxArr);
 
@@ -211,28 +209,28 @@ class MainScene extends Scene3D {
       pos: { x: 64, y: 10, z: -111 },
       sketch: this,
       zoneRadius: 12,
-      textObjectText: rolesReduxArr[0].name,
+      textObjectText: rolesReduxArr[1].name,
       gltf: this.modelLoader.modelsArray["npc1"],
     });
     this.standNPC3 = new StandartNPC({
       pos: { x: 108, y: 10, z: 83 },
       sketch: this,
       zoneRadius: 11,
-      textObjectText: rolesReduxArr[0].name,
+      textObjectText: rolesReduxArr[2].name,
       gltf: this.modelLoader.modelsArray["npc2"],
     });
     this.standNPC4 = new StandartNPC({
       pos: { x: -69, y: 10, z: 75 },
       sketch: this,
       zoneRadius: 12,
-      textObjectText: rolesReduxArr[0].name,
+      textObjectText: rolesReduxArr[3].name,
       gltf: this.modelLoader.modelsArray["npc4"],
     });
     this.standNPC5 = new StandartNPC({
       pos: { x: -86, y: 4, z: -28 },
       sketch: this,
       zoneRadius: -10,
-      textObjectText: rolesReduxArr[0].name,
+      textObjectText: rolesReduxArr[4].name,
       gltf: this.modelLoader.modelsArray["npc3"],
     });
     this.npcArray = [
