@@ -1,7 +1,7 @@
 import React from "react";
 import { animated } from "react-spring";
 
-const MessageContainer = ({ messages, showAnimation }) => {
+const MessageContainer = ({ messages, showAnimation, npcRole }) => {
   return (
     <animated.div className="message-container">
       <animated.div className="message-scroll">
@@ -14,11 +14,11 @@ const MessageContainer = ({ messages, showAnimation }) => {
                   {message.text.substring(6)}
                 </span>
               </div>
-            ) : message.text.startsWith("NPC: ") ? (
+            ) : message.text.startsWith(`${npcRole}: `) ? (
               <div>
-                <label className="npc-label">NPC: </label>
+                <label className="npc-label">{npcRole}: </label>
                 <span className="npc-message">
-                  {message.text.substring(5)}
+                  {message.text.substring(npcRole.length + 2)}
                 </span>
                 {message.animation && <BouncingDotsAnimation />}
               </div>
