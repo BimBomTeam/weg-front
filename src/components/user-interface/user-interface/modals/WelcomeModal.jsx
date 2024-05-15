@@ -34,18 +34,11 @@ function WelcomeModal() {
     const [showModal, setShowModal] = useState(false);
 
     useEffect(() => {
-        setShowModal(true);
-        const handleEscapeKey = (event) => {
-            if (event.key === 'Escape') {
-                setShowModal(false);
-            }
-        };
-
-        document.addEventListener('keydown', handleEscapeKey);
-
-        return () => {
-            document.removeEventListener('keydown', handleEscapeKey);
-        };
+        const isNewUser = localStorage.getItem("isNewUser");
+        if (isNewUser === "true") {
+            setShowModal(true);
+            localStorage.removeItem("isNewUser");
+        }
     }, []);
 
     const modalAnimation = useSpring({
@@ -68,7 +61,7 @@ function WelcomeModal() {
     };
 
     const handleConfirmSlider = () => {
-        setShowModal(false); 
+        setShowModal(false);
     };
 
     return (
@@ -79,7 +72,7 @@ function WelcomeModal() {
                 <button className="back-button" onClick={handleBackButtonClick}></button>
 
                 <div className='slider'>
-                    <Slider onConfirm={handleConfirmSlider}/> {}
+                    <Slider onConfirm={handleConfirmSlider} />
                 </div>
             </animated.div>
         </ModalBackground>
