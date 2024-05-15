@@ -204,6 +204,7 @@ class MainScene extends Scene3D {
       zoneRadius: 10,
       gltf: this.modelLoader.modelsArray["npc5"],
       textObjectText: rolesReduxArr[0].name,
+      roleId: rolesReduxArr[0].id,
     });
     this.standNPC2 = new StandartNPC({
       pos: { x: 64, y: 10, z: -111 },
@@ -211,6 +212,7 @@ class MainScene extends Scene3D {
       zoneRadius: 12,
       textObjectText: rolesReduxArr[1].name,
       gltf: this.modelLoader.modelsArray["npc1"],
+      roleId: rolesReduxArr[1].id,
     });
     this.standNPC3 = new StandartNPC({
       pos: { x: 108, y: 10, z: 83 },
@@ -218,6 +220,7 @@ class MainScene extends Scene3D {
       zoneRadius: 11,
       textObjectText: rolesReduxArr[2].name,
       gltf: this.modelLoader.modelsArray["npc2"],
+      roleId: rolesReduxArr[2].id,
     });
     this.standNPC4 = new StandartNPC({
       pos: { x: -69, y: 10, z: 75 },
@@ -225,6 +228,7 @@ class MainScene extends Scene3D {
       zoneRadius: 12,
       textObjectText: rolesReduxArr[3].name,
       gltf: this.modelLoader.modelsArray["npc4"],
+      roleId: rolesReduxArr[3].id,
     });
     this.standNPC5 = new StandartNPC({
       pos: { x: -86, y: 4, z: -28 },
@@ -232,6 +236,7 @@ class MainScene extends Scene3D {
       zoneRadius: -10,
       textObjectText: rolesReduxArr[4].name,
       gltf: this.modelLoader.modelsArray["npc3"],
+      roleId: rolesReduxArr[4].id,
     });
     this.npcArray = [
       this.bossNPC,
@@ -324,11 +329,11 @@ class MainScene extends Scene3D {
       }
 
       //--ts--начало
-      if (!this.isReduxDataGenerated) {
-        const reduxData = GenerateWordsById(3); //вместо 2 -> вызов метода с взятием роли у NPS (return int)
-        console.log("->", reduxData);
-        this.isReduxDataGenerated = true;
-      }
+      // if (!this.isReduxDataGenerated) {
+      //   const reduxData = GenerateWordsById(3); //вместо 2 -> вызов метода с взятием роли у NPS (return int)
+      //   console.log("->", reduxData);
+      //   this.isReduxDataGenerated = true;
+      // }
 
       if (this.KeyHandler.key.esc.click && this.player.mode == "interact") {
         store.dispatch(setUiState(UiStates.NONE));

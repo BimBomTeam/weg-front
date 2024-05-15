@@ -1,6 +1,9 @@
 import { Vector3 } from "three";
 import { ExtendedObject3D } from "enable3d";
 import * as THREE from "three";
+import api from "../axiosConfig";
+import { setLoading, setWords } from "../actions/words";
+import store from "../store/store";
 
 import { TextObject } from "./textObject";
 
@@ -13,6 +16,7 @@ export class StandartNPC {
     zoneRadius = 7,
     objName = "NPC",
     textObjectText,
+    roleId,
     changeNearNpcVisibility,
   }) {
     this.objName = objName;
@@ -30,6 +34,9 @@ export class StandartNPC {
     this.moveCooldown = 1500;
     this.moveCooldownDelta = 300;
     // this.initObject(sketch, pos, path)
+
+    this.roleName = textObjectText;
+    this.roleId = roleId;
 
     this.textObjectText = textObjectText;
     this.initObject(sketch, pos, gltf);
@@ -139,10 +146,35 @@ export class StandartNPC {
     }
   }
 
+  async fetchRoleWords(roleId, roleName) {
+    store.dispatch(setLoading(true));
+    const roleIdStr = roleId.toString();
+    var words = [];
+    let sessionStorageWords = sessionStorage.getItem("words");
+    if (sessionStorageWords !== null) {
+      const parsed = JSON.parse(sessionStorageWords);
+      if (parsed[roleIdStr] !== null && parsed[roleIdStr] !== undefined) {
+        words = parsed[roleIdStr];
+      }
+    } else sessionStorageWords = {};
+    if (words.length === 0 || words === undefined || words === null) {
+      const response = await api.post("Words/get-words/" + roleId);
+      console.log("response", response);
+
+      words = response.data;
+      sessionStorageWords[roleIdStr] = words;
+      sessionStorage.setItem("words", JSON.stringify(sessionStorageWords));
+    }
+
+    store.dispatch(setLoading(false));
+  }
+
   checkInteraction(playerPos = new Vector3()) {
     if (playerPos.distanceTo(this.object.position) <= this.interactionRadius) {
       if (this.mode == "freeRoam") {
         this.mode = "prepToInteract";
+        // console.log("HINT", this.roleName + this.roleId);
+        this.fetchRoleWords(this.roleId, this.roleName);
         //TODO: E hint
         this.playAnimation("Idle");
       }
