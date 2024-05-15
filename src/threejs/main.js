@@ -155,7 +155,7 @@ class MainScene extends Scene3D {
     this.camOperator = new CameraOperator({ camera: this.camera });
 
     this.soundManager = new SoundManager(this.camera);
-    const rolesReduxArr = store.getState().roles.roles.roles;
+    const rolesReduxArr = store.getState().roles.roles;
 
     console.log("rolesReduxArr", rolesReduxArr);
 

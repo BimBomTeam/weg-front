@@ -7,7 +7,7 @@ const rolesReducer = (state = initialState, action) => {
     case "CHECK_ROLES":
       return {
         ...state,
-        roles: action.payload,
+        roles: action.payload.roles,
       };
     default:
       return state;

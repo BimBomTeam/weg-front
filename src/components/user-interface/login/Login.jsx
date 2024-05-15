@@ -26,7 +26,6 @@ const Login = () => {
         email,
         password,
       });
-      console.log("response", response);
 
       if (response.status === 200) {
         toast.success("Successfully login");

@@ -16,11 +16,10 @@ export const checkRoles = () => {
   };
 };
 
-export const setRoles = (roles, hasRoles) => {
+export const setRoles = (roles) => {
   return {
     type: "CHECK_ROLES",
     payload: {
-      hasRoles: hasRoles,
       roles: roles,
     },
   };
