@@ -68,7 +68,7 @@ function WelcomeModal() {
         <ModalBackground onClick={handleModalBackgroundClick} onKeyDown={handleModalKeyDown} active={showModal}>
             <animated.div className="welcomeModal" style={modalAnimation}>
                 <h1>Welcome</h1>
-                <h2 id='welcomeText'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ante in nibh mauris cursus mattis molestie. Amet nisl purus in mollis nunc.</h2>
+                <h2 id='welcomeText'>Witaj w Aicademii - Twoim nowym towarzyszu w nauce angielskiego! Tu w Aicademii wykorzystujemy najnowocześniejszą sztuczną inteligencję, by uczynić Twoją naukę języka angielskiego nie tylko efektywną, ale także ekscytującą. Gotowy na fascynującą podróż przez świat angielskiego? Zaczynamy!</h2>
                 <button className="back-button" onClick={handleBackButtonClick}></button>
 
                 <div className='slider'>
