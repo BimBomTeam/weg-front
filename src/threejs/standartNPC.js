@@ -143,6 +143,7 @@ export class StandartNPC {
     if (playerPos.distanceTo(this.object.position) <= this.interactionRadius) {
       if (this.mode == "freeRoam") {
         this.mode = "prepToInteract";
+        //TODO: E hint
         this.playAnimation("Idle");
       }
       this.object.body.setVelocityX(0);

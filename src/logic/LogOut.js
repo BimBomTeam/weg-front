@@ -19,7 +19,7 @@ export default function LogOut() {
         localStorage.removeItem("access_token"); //delete the token from localstorage
         localStorage.removeItem("refresh_token"); //delete the token from localstorage
         sessionStorage.clear();
-        window.location.reload();
+        // window.location.reload();
       }
       return response.json();
     })

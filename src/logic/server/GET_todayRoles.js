@@ -7,6 +7,7 @@ export default function GET_todayRoles() {
     method: "GET",
     headers: {
       "Content-Type": "application/json; charset=UTF-8",
+      Authorization: `Bearer ${localStorage.getItem("access_token")}`,
     },
   })
     .then((response) => {

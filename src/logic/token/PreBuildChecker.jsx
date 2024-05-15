@@ -26,24 +26,25 @@ export default function PreBuildChecker() {
 
   useEffect(() => {
     let timer = setTimeout(() => {
-      const canvas = document.getElementById('webgl');
-  
-      if (canvas && (!canvas.hasAttribute('width') || !canvas.hasAttribute('height'))) {
-        window.location.reload();
+      const canvas = document.getElementById("webgl");
+
+      if (
+        canvas &&
+        (!canvas.hasAttribute("width") || !canvas.hasAttribute("height"))
+      ) {
+        // window.location.reload();
       }
     }, 500);
-  
+
     return () => clearTimeout(timer);
   }, []);
-  
-  
 
   useEffect(() => {
     if (!loading) {
       if (token) {
         POST_tokenAuth(); //TO-DO: наверняка что-то будет возвращаться, в зависимости от чего пускаем/нет
         dispatch(checkRoles());
-        navigate("/game");
+        // navigate("/game");
       } else {
         const currentPath = window.location.pathname;
         if (!NonTokenLinks.includes(currentPath)) {
