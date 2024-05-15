@@ -20,6 +20,7 @@ const Register = () => {
       try {
         const { success } = await registerApi({ email, username, password });
         if (success) {
+          localStorage.setItem("isNewUser", "true");
           toast.success("Successfully registered");
           setTimeout(() => {
             navigate("/login");

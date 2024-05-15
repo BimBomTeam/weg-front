@@ -79,12 +79,12 @@ function InstructionModal({ closeModal }) {
                 <h1>Instruction</h1>
                 <button className="back-button" onClick={handleBackButtonClick}></button>
                 <ul className='instruction_content'>
-                    <strong>Instrukcja do gry "Lorem Ipsum: Przygoda w Nieznanych Krainach"</strong>
+                    <strong>Instrukcja do gry "Aicademia"</strong>
                     <li>Witaj, podróżniku!</li>
-                    <li>W grze "Lorem Ipsum: Przygoda w Nieznanych Krainach" wcielisz się w rolę śmiałka poszukującego zaginionego skarbu w tajemniczych krainach pełnych niebezpieczeństw i niespodzianek</li>
-                    <li>Twoim celem jest odnalezienie starożytnego artefaktu znanego jako "Księga Lorem Ipsum", która według legend zawiera tajemnicze moce i wiedzę o zapomnianym królestwie</li>
-                    <li>Przed Tobą wiele wyzwań i testów, które będziesz musiał przejść, aby dotrzeć do celu</li>
-                    <li>Czy jesteś gotowy na tę ekscytującą przygodę?</li>
+                    <li><strong>Sterowanie:</strong> Poruszaj się po interfejsie za pomocą klawiszy <strong>WSAD</strong>.</li>
+                    <li><strong>Rozpocznij rozmowę:</strong> Wciśnij klawisz <strong>E</strong> aby rozpocząć rozmowę z naszą sztuczną inteligencją.</li>
+                    <li><strong>Zakończ rozmowę:</strong> Aby zakończyć rozmowę i wrócić do głównego menu, wciśnij klawisz <strong>ESC</strong>.</li>
+                    <li>Gotowy do odkrywania tajemnic angielskiego ze wsparciem Aicademii? Powodzenia!</li>
                 </ul>
             </animated.div>
         </ModalBackground>
