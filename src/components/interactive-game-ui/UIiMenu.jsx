@@ -39,7 +39,6 @@ const UiMenu = () => {
   let checkWordsPayload = store.getState().words.words.words;
   const wordsArray = JSON.parse(checkWordsPayload);
 
-
   const [npcRole, setNpcRole] = useState("");
 
   useEffect(() => {
@@ -210,7 +209,6 @@ const UiMenu = () => {
       (acc, curr) => acc + curr.name.length,
       0
     );
-    console.log("Sum of lengths of all words:", sumOfWordLengths);
   }, [wordsArray]);
 
   useEffect(() => {}, [isExpandButtonClicked]);
