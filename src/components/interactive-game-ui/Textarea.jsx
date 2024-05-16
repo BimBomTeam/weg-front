@@ -10,7 +10,7 @@ const Textarea = ({
   disabled,
 }) => {
   return (
-    <div>
+    <div id="textarea-container">
       <textarea
         placeholder="Write something.."
         value={text}

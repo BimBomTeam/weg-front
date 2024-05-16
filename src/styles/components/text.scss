@@ -1,11 +1,10 @@
 textarea {
-  position: absolute;
-  left: 2%;
-  bottom: 20px;
+  margin-left: 1%;
+  margin-bottom: 1%;
   border-radius: 10px;
   resize: none;
   padding: 1%;
-  padding-right: 10%;
+  width: 100%;
   font-family: "Roboto";
   font-size: 18px;
   overflow: auto;
@@ -52,6 +51,10 @@ textarea {
     background: #195E85;
     border-radius: 20px;
   }
+}
+
+#textarea-container {
+  width: 75%;
 }
 
 .word-counter {

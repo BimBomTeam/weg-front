@@ -1,42 +1,8 @@
-:root {
-  --animationProps_height_expanded_clicked_true: 250px;
-  --animationProps_height_expanded_unclicked_false: 100px;
-
-  --animationProps_height_unexpanded_clicked_false: 850px;
-  --animationProps_height_unexpanded_unclicked_true: 250px;
-
-  --animationProps_transform_visible_expanded_clicked_true: translateY(0%);
-  --animationProps_transform_visible_expanded_unclicked_false: translateY(0%);
-  --animationProps_transform_invisible_true: translateY(150%);
-
-  --animationProps_top_expanded_clicked_true: 20%;
-  --animationProps_top_expanded_unclicked_false: 20%;
-
-  --animationProps_top_unexpanded_clicked_false: 20%;
-  --animationProps_top_unexpanded_unclicked_true: 70%; //общий блок относительно экрана
-
-  --buttonAnimationProps_marginTop_true: 0px;
-  --buttonAnimationProps_marginTop_false: 210px;
-
-  --isListeningProps_marginTop_true: 0px;
-  --isListeningProps_marginTop_false: 133px;
-
-  --isListeningProps_width_true_true: 45px;
-  --isListeningProps_width_true_false: 45px;
-
-  --isListeningProps_width_false_true: 45px;
-  --isListeningProps_width_false_false: 0px;
-
-  --buttonExpandProps_marginTop_true: -30px;
-  --buttonExpandProps_marginTop_false: 0px;
-}
-
 .main-ui {
   display: flex;
+  flex-direction: column;
   z-index: 2;
-  display: block;
-  position: fixed;
-  width: 100%;
+  width: 50vh;
   height: 75vh;
   border-radius: 30px;
   background-color: $button-gradient-start;
@@ -48,32 +14,32 @@
 
 .words {
   z-index: 2;
-  position: relative;
-  display: flex;
   flex-wrap: wrap;
   background-color: transparent;
   align-items: center;
-  margin-right: 2%;
-  margin-left: 2%;
 }
 
 .word {
-  margin-left: 1%;
   background: linear-gradient(to top, #f8f0f0 0%, #c2e9ee 100%);
   color: $label-color;
   margin-bottom: 2%;
-  display: flex;
   text-align: center;
   align-items: center;
   justify-content: center;
   border-radius: 10px;
   padding: 2%;
+  margin-left: 1%;
   border: none;
 }
 
+#chat-container {
+  display: flex;
+  flex-direction: row;
+}
+
 .message-container {
-  position: relative;
   padding: 10px;
+  height: 100%;
 }
 
 .message-scroll {
@@ -125,244 +91,5 @@
   }
   100% {
     transform: translateY(-10px);
-  }
-}
-
-//----------------2560 x 1440 (QHD)----------------
-@media only screen and (min-width: 2562px) {
-  :root {
-    --animationProps_top_unexpanded_unclicked_true: 75%;
-    --animationProps_top_unexpanded_clicked_false: 5%;
-    --animationProps_height_unexpanded_clicked_false: 90%;
-    --animationProps_height_unexpanded_unclicked_true: 20%;
-    --buttonExpandProps_marginTop_true: 20px;
-    --buttonExpandProps_marginTop_false: 5px;
-  }
-  .main-ui {
-    width: 40%;
-    textarea {
-      width: calc(100% - 21%);
-    }
-  }
-}
-
-@media only screen and (min-width: 2101px) and (max-width: 2561px) {
-  :root {
-    --animationProps_height_expanded_clicked_true: 100px;
-    --animationProps_height_expanded_unclicked_false: 100px;
-    --animationProps_top_unexpanded_unclicked_true: 75%;
-    --animationProps_top_unexpanded_clicked_false: 5%;
-    --animationProps_height_unexpanded_clicked_false: 90%;
-    --animationProps_height_unexpanded_unclicked_true: 20%;
-    --buttonExpandProps_marginTop_true: 20px;
-    --buttonExpandProps_marginTop_false: 5px;
-  }
-  .main-ui {
-    width: 40%;
-    textarea {
-      width: calc(100% - 25%);
-    }
-  }
-}
-
-//----------------1920 x 1080 (Full HD)----------------
-@media only screen and (min-width: 1801px) and (max-width: 2100px) {
-  :root {
-    --animationProps_top_unexpanded_unclicked_true: 20%;
-    --animationProps_top_unexpanded_clicked_false: 25%;
-    --animationProps_height_unexpanded_clicked_false: 90%;
-    --animationProps_height_unexpanded_unclicked_true: 25%;
-    --buttonExpandProps_marginTop_true: 20px;
-    --buttonExpandProps_marginTop_false: 5px;
-  }
-  .main-ui {
-    width: 40%;
-    textarea {
-      width: calc(100% - 25%);
-    }
-  }
-}
-//----------------1600 x 900 (HD+)----------------
-@media only screen and (min-width: 1281px) and (max-width: 1800px) {
-  :root {
-    --animationProps_top_unexpanded_unclicked_true: 75%;
-    --animationProps_top_unexpanded_clicked_false: 5%;
-    --animationProps_height_unexpanded_clicked_false: 90%;
-    --animationProps_height_unexpanded_unclicked_true: 20%;
-    --buttonExpandProps_marginTop_true: 0px;
-    --buttonExpandProps_marginTop_false: 5px;
-  }
-  .main-ui {
-    width: 40%;
-
-    textarea {
-      width: calc(100% - 29%);
-    }
-  }
-}
-//----------------1280 x 800 (WXGA)----------------
-@media only screen and (min-width: 900px) and (max-width: 1280px) {
-  :root {
-    --animationProps_height_expanded_clicked_true: 100px;
-    --animationProps_height_expanded_unclicked_false: 100px;
-    --animationProps_top_unexpanded_unclicked_true: 75%;
-    --animationProps_top_unexpanded_clicked_false: 5%;
-    --animationProps_height_unexpanded_clicked_false: 90%;
-    --animationProps_height_unexpanded_unclicked_true: 20%;
-    --buttonExpandProps_marginTop_true: -15px;
-    --buttonExpandProps_marginTop_false: 5px;
-  }
-  .main-ui {
-    width: 50%;
-    textarea {
-      width: calc(100% - 29%);
-      height: 110px;
-    }
-  }
-}
-
-@media only screen and (max-width: 900px) {
-  :root {
-    --animationProps_height_expanded_clicked_true: 100px;
-    --animationProps_height_expanded_unclicked_false: 100px;
-    --animationProps_top_unexpanded_unclicked_true: 75%;
-    --animationProps_top_unexpanded_clicked_false: 5%;
-    --animationProps_height_unexpanded_clicked_false: 90%;
-    --animationProps_height_unexpanded_unclicked_true: 20%;
-    --buttonExpandProps_marginTop_true: -15px;
-    --buttonExpandProps_marginTop_false: 5px;
-  }
-  .main-ui {
-    width: 50%;
-    textarea {
-      width: calc(100% - 29%);
-      height: 110px;
-    }
-  }
-}
-
-@media only screen and (max-height: 1000px) {
-  :root {
-    --animationProps_top_unexpanded_unclicked_true: 65%;
-    --animationProps_top_unexpanded_clicked_false: 5%;
-    --animationProps_height_unexpanded_clicked_false: 90%;
-    --animationProps_height_unexpanded_unclicked_true: 30%;
-    --buttonExpandProps_marginTop_true: -15px;
-    --buttonExpandProps_marginTop_false: 5px;
-  }
-  .message-container {
-    height: 65%;
-  }
-}
-
-@media only screen and (max-height: 900px) {
-  :root {
-    --animationProps_top_unexpanded_unclicked_true: 65%;
-    --animationProps_top_unexpanded_clicked_false: 5%;
-    --animationProps_height_unexpanded_clicked_false: 90%;
-    --animationProps_height_unexpanded_unclicked_true: 30%;
-    --buttonExpandProps_marginTop_true: -15px;
-    --buttonExpandProps_marginTop_false: 5px;
-  }
-  .message-container {
-    height: 63%;
-  }
-}
-
-@media only screen and (max-height: 800px) {
-  :root {
-    --animationProps_top_unexpanded_unclicked_true: 55%;
-    --animationProps_top_unexpanded_clicked_false: 5%;
-    --animationProps_height_unexpanded_clicked_false: 90%;
-    --animationProps_height_unexpanded_unclicked_true: 40%;
-    --buttonExpandProps_marginTop_true: -15px;
-    --buttonExpandProps_marginTop_false: 5px;
-  }
-  .message-container {
-    height: 56%;
-  }
-}
-
-@media only screen and (max-height: 760px) {
-  :root {
-    --animationProps_top_unexpanded_unclicked_true: 55%;
-    --animationProps_top_unexpanded_clicked_false: 5%;
-    --animationProps_height_unexpanded_clicked_false: 90%;
-    --animationProps_height_unexpanded_unclicked_true: 40%;
-    --buttonExpandProps_marginTop_true: -15px;
-    --buttonExpandProps_marginTop_false: 5px;
-  }
-  .message-container {
-    height: 52%;
-  }
-}
-
-@media only screen and (max-height: 700px) {
-  :root {
-    --animationProps_top_unexpanded_unclicked_true: 55%;
-    --animationProps_top_unexpanded_clicked_false: 5%;
-    --animationProps_height_unexpanded_clicked_false: 90%;
-    --animationProps_height_unexpanded_unclicked_true: 40%;
-    --buttonExpandProps_marginTop_true: -15px;
-    --buttonExpandProps_marginTop_false: 5px;
-  }
-  .message-container {
-    height: 50%;
-  }
-}
-
-@media only screen and (max-height: 670px) {
-  :root {
-    --animationProps_top_unexpanded_unclicked_true: 55%;
-    --animationProps_top_unexpanded_clicked_false: 5%;
-    --animationProps_height_unexpanded_clicked_false: 90%;
-    --animationProps_height_unexpanded_unclicked_true: 40%;
-    --buttonExpandProps_marginTop_true: -15px;
-    --buttonExpandProps_marginTop_false: 5px;
-  }
-  .message-container {
-    height: 45%;
-  }
-}
-
-@media only screen and (max-height: 600px) {
-  :root {
-    --animationProps_top_unexpanded_unclicked_true: 55%;
-    --animationProps_top_unexpanded_clicked_false: 5%;
-    --animationProps_height_unexpanded_clicked_false: 90%;
-    --animationProps_height_unexpanded_unclicked_true: 40%;
-    --buttonExpandProps_marginTop_true: -15px;
-    --buttonExpandProps_marginTop_false: 5px;
-  }
-  .message-container {
-    height: 40%;
-  }
-}
-
-@media only screen and (max-height: 550px) {
-  :root {
-    --animationProps_top_unexpanded_unclicked_true: 55%;
-    --animationProps_top_unexpanded_clicked_false: 5%;
-    --animationProps_height_unexpanded_clicked_false: 90%;
-    --animationProps_height_unexpanded_unclicked_true: 40%;
-    --buttonExpandProps_marginTop_true: -15px;
-    --buttonExpandProps_marginTop_false: 5px;
-  }
-  .message-container {
-    height: 34%;
-  }
-}
-
-@media only screen and (max-height: 500px) {
-  :root {
-    --animationProps_top_unexpanded_unclicked_true: 20%;
-    --animationProps_top_unexpanded_clicked_false: 25%;
-    --animationProps_height_unexpanded_clicked_false: 90%;
-    --animationProps_height_unexpanded_unclicked_true: 40%;
-    --buttonExpandProps_marginTop_true: -15px;
-    --buttonExpandProps_marginTop_false: 5px;
-  }
-  .message-container {
-    height: 25%;
   }
 }
