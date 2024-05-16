@@ -94,15 +94,11 @@ const UiBossFight = () => {
 
   const onAnswerClick = (answer) => {
     setLoading(true);
-    console.log("wordsDtoArr", wordsDtoArr.current);
-    console.log("word", answer);
     var dtoEl = wordsDtoArr.current.find((x) => x.name === answer.word);
-    console.log(dtoEl);
     if (dtoEl === undefined || dtoEl === null) {
       dtoEl = wordsDtoArr.current.find((x) => x.name === answer.answer);
       if (dtoEl === null) dtoEl = {};
     }
-    console.log(answer);
     if (answer.answer.correct === true) {
       store.getState().interact.playerHit.playerHit();
       dtoEl.state = "Approved";
@@ -110,7 +106,6 @@ const UiBossFight = () => {
       store.getState().interact.bossHit.bossHit();
     }
     setNextQuestion();
-    console.log("wordsDtoArr.current", wordsDtoArr.current);
   };
 
   const onTimeFinish = () => {

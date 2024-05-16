@@ -13,7 +13,7 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<PreBuildChecker />}>
-            <Route index element={<Game />} />
+            <Route index element={<Login />} />
             <Route path="/game" element={<Game />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />

@@ -373,7 +373,7 @@ export class Player {
       if (!this.originSoundManager.sandFootstepSound.isPlaying) {
         this.originSoundManager.sandFootstepSound.play();
       }
-      this.originSoundManager.backgroundSong.play();
+      // this.originSoundManager.backgroundSong.play();
     } else {
       this.originSoundManager.sandFootstepSound.stop();
     }

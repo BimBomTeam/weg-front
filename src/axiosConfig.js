@@ -60,6 +60,7 @@ api.interceptors.response.use(
       } catch (err) {
         console.error("Failed to refresh token in response interceptor", err);
         // Optionally: Redirect to login page or handle error appropriately
+        // window.location.replace("/login");
       }
     }
     return Promise.reject(error);

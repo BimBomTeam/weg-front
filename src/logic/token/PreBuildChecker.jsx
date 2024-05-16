@@ -10,7 +10,8 @@ import POST_tokenAuth from "../server/POST_tokenAuth";
 export default function PreBuildChecker() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const token = useSelector((state) => state.auth.isAuthenticated);
+  const token = localStorage.getItem("accessToken");
+  // const token = useSelector((state) => state.auth.accessToken);
   const [loading, setLoading] = useState(true);
   const NonTokenLinks = ["/register", "/login"];
 
@@ -18,42 +19,43 @@ export default function PreBuildChecker() {
   //   dispatch(setAuthorization());
   // }, [dispatch]);
 
-  // useEffect(() => {
-  //   if (token !== undefined) {
-  //     setLoading(false);
-  //   }
-  // }, [token]);
+  useEffect(() => {
+    if (token !== undefined) {
+      setLoading(false);
+    }
+  }, [token]);
 
-  // useEffect(() => {
-  //   let timer = setTimeout(() => {
-  //     const canvas = document.getElementById("webgl");
+  useEffect(() => {
+    let timer = setTimeout(() => {
+      const canvas = document.getElementById("webgl");
 
-  //     if (
-  //       canvas &&
-  //       (!canvas.hasAttribute("width") || !canvas.hasAttribute("height"))
-  //     ) {
-  //       // window.location.reload();
-  //     }
-  //   }, 500);
+      if (
+        canvas &&
+        (!canvas.hasAttribute("width") || !canvas.hasAttribute("height"))
+      ) {
+        // window.location.reload();
+      }
+    }, 500);
 
-  //   return () => clearTimeout(timer);
-  // }, []);
+    return () => clearTimeout(timer);
+  }, []);
 
-  // useEffect(() => {
-  //   if (!loading) {
-  //     if (token) {
-  //       //POST_tokenAuth(); //TO-DO: наверняка что-то будет возвращаться, в зависимости от чего пускаем/нет
-  //       dispatch(checkRoles());
-  //       // navigate("/game");
-  //     } else {
-  //       const currentPath = window.location.pathname;
-  //       if (!NonTokenLinks.includes(currentPath)) {
-  //         toast.error("Please login. Token expired");
-  //         navigate("/login");
-  //       }
-  //     }
-  //   }
-  // }, [token, loading, dispatch, navigate]);
+  useEffect(() => {
+    console.log("TOKEN", token);
+    if (!loading) {
+      if (token) {
+        //POST_tokenAuth(); //TO-DO: наверняка что-то будет возвращаться, в зависимости от чего пускаем/нет
+        // dispatch(checkRoles());
+        // navigate("/game");
+      } else {
+        const currentPath = window.location.pathname;
+        if (!NonTokenLinks.includes(currentPath)) {
+          // toast.error("Please login. Token expired");
+          // navigate("/login");
+        }
+      }
+    }
+  }, [token, loading, dispatch, navigate]);
 
   //--------TO-DO--------
   //Podczas pierwszego renderowania komponent uruchamia się 3 razy

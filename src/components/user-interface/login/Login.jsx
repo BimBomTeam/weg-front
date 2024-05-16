@@ -33,10 +33,10 @@ const Login = () => {
         localStorage.setItem("accessToken", token);
         localStorage.setItem("refreshToken", refreshToken);
 
-        dispatch(setAuthorization(token, firstLogin));
+        dispatch(setAuthorization(token, refreshToken, firstLogin));
         setTimeout(() => {
-          window.location.reload();
           navigate("/game");
+          window.location.reload();
         }, 2000);
       } else {
         toast.error("Error in login: ", response.data);
