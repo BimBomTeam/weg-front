@@ -18,6 +18,7 @@ const UiBossFight = () => {
   const [questionsArray, setQuestionsArray] = useState([]);
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
+  const [showModal, setShowModal] = useState(false);
   const [correctAnswersCount, setCorrectAnswersCount] = useState(0);
 
   useEffect(() => {
@@ -35,11 +36,8 @@ const UiBossFight = () => {
     if (response.status === 200) {
       const allWords = response.data;
       wordsDtoArr.current = allWords;
-      // sessionStorage.setItem("allDailyWords", JSON.stringify(allWords));
-      // var allWords = JSON.parse(sessionStorage.getItem("words"));
       const shuffledWords = shuffleArray(allWords.map((x) => x.name));
 
-      console.log(shuffledWords);
       wordsArr.current = shuffledWords;
 
       await setNextQuestion();
@@ -63,7 +61,6 @@ const UiBossFight = () => {
     if (idx >= questionsArray.length) {
       const question = await fetchByIndex(idx);
       const tmpArr = [...questionsArray.slice(), question];
-      console.log("tmpArr", tmpArr);
       setQuestionsArray(tmpArr);
       setCurrentQuestion(question);
       if (wordsArr.current.length - idx > 1) {
@@ -82,7 +79,6 @@ const UiBossFight = () => {
     const response = await api.post("AiCommunication/get-boss-quiz", {
       word: wordsArr.current[index],
     });
-    console.log("response: ", response);
     if (response.status === 200) {
       return response.data;
     }
@@ -96,15 +92,11 @@ const UiBossFight = () => {
 
   const onAnswerClick = (answer) => {
     setLoading(true);
-    console.log("wordsDtoArr", wordsDtoArr.current);
-    console.log("word", answer);
     var dtoEl = wordsDtoArr.current.find((x) => x.name === answer.word);
-    console.log(dtoEl);
     if (dtoEl === undefined || dtoEl === null) {
       dtoEl = wordsDtoArr.current.find((x) => x.name === answer.answer);
       if (dtoEl === null) dtoEl = {};
     }
-    console.log(answer);
     if (answer.answer.correct === true) {
       store.getState().interact.playerHit.playerHit();
       dtoEl.state = "Approved";
@@ -113,7 +105,6 @@ const UiBossFight = () => {
       store.getState().interact.bossHit.bossHit();
     }
     setNextQuestion();
-    console.log("wordsDtoArr.current", wordsDtoArr.current);
   };
 
   const onTimeFinish = () => {
@@ -129,19 +120,22 @@ const UiBossFight = () => {
     setTimeout(() => {
       store.getState().interact.finishInteraction.finishInteraction();
     }, 1000);
-    <FinishQuizModal closeModal={setIsVisible} correctAnswersCount={correctAnswersCount} />
+    setShowModal(true); // Display the modal
     console.log("Liczba prawidłowych odpowiedzi:", correctAnswersCount);
   };
 
   if (currentQuestion) {
     return (
-      <QuestionUnit
-        quizUnit={currentQuestion}
-        onAnswerClick={onAnswerClick}
-        isVisible={isVisible}
-        onTimeFinish={onTimeFinish}
-        loading={loading}
-      />
+      <>
+        <QuestionUnit
+          quizUnit={currentQuestion}
+          onAnswerClick={onAnswerClick}
+          isVisible={isVisible}
+          onTimeFinish={onTimeFinish}
+          loading={loading}
+        />
+        {showModal && <FinishQuizModal closeModal={() => setShowModal(false)} correctAnswersCount={correctAnswersCount} />} {/* Render the modal when showModal === true */}
+      </>
     );
   } else return <></>;
 };
