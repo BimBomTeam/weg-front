@@ -224,22 +224,6 @@ const UiMenu = () => {
   }, []);
 
   useEffect(() => {
-    const handleWordsHeightChange = () => {
-      const wordsElement = document.querySelector(".words");
-      const messageContainerElement =
-        document.querySelector(".message-container");
-      if (wordsElement && messageContainerElement) {
-        const wordsHeight = wordsElement.getBoundingClientRect().height;
-        const newMaxHeight = `${Math.max(0, 100 - wordsHeight * 0.4)}%`;
-        messageContainerElement.style.maxHeight = newMaxHeight;
-      }
-    };
-
-    handleWordsHeightChange();
-    return () => {};
-  });
-
-  useEffect(() => {
     const handleResize = () => {
       setResolution({
         width: window.innerWidth,
@@ -291,7 +275,7 @@ const UiMenu = () => {
     };
   }, [words]);
 
-  useEffect(() => {}, [isExpandButtonClicked]);
+  useEffect(() => { }, [isExpandButtonClicked]);
 
   useEffect(() => {
     if (transcript) {
@@ -346,70 +330,38 @@ const UiMenu = () => {
     borderColor: isListening ? "red" : "transparent",
   });
 
-  const animationProps = useSpring({
-    height: isExpandButtonClicked
-      ? isButtonClicked
-        ? `${getStyles("--animationProps_height_expanded_clicked_true")}`
-        : `${getStyles("--animationProps_height_expanded_unclicked_false")}`
-      : isButtonClicked
-      ? `${getStyles("--animationProps_height_unexpanded_clicked_false")}`
-      : `${getStyles("--animationProps_height_unexpanded_unclicked_true")}`,
-    width: isExpandButtonClicked
-      ? `${getStyles("--animationProps_width_expanded_true")}`
-      : isButtonClicked
-      ? `${getStyles("--animationProps_width_unexpanded_clicked_false")}`
-      : `${getStyles("--animationProps_width_unexpanded_unclicked_true")}`,
-    opacity: isVisible ? 1 : 0,
-    transform: isVisible
-      ? isExpandButtonClicked
-        ? `${getStyles(
-            "--animationProps_transform_visible_expanded_clicked_true"
-          )}`
-        : `${getStyles(
-            "--animationProps_transform_visible_expanded_unclicked_false"
-          )}`
-      : `${getStyles("--animationProps_transform_invisible_true")}`,
-    top: isExpandButtonClicked
-      ? isButtonClicked
-        ? `${getStyles("--animationProps_top_expanded_clicked_true")}`
-        : `${getStyles("--animationProps_top_expanded_unclicked_false")}`
-      : isButtonClicked
-      ? `${getStyles("--animationProps_top_unexpanded_clicked_false")}`
-      : `${getStyles("--animationProps_top_unexpanded_unclicked_true")}`,
+  const menuAnimation = useSpring({
+    transform: isVisible ? "translateY(0)" : "translateY(100%)", // Wysuwamy w górę lub w dół
+    config: { duration: 300 } // Czas trwania animacji
   });
 
-  const buttonExpandProps = useSpring({
-    marginTop: isExpandButtonClicked
-      ? isButtonClicked
-        ? `${getStyles("--buttonExpandProps_marginTop_true")}`
-        : `${getStyles("--buttonExpandProps_marginTop_false")}`
-      : isButtonClicked
-      ? `${getStyles("--buttonExpandProps_marginTop_true")}`
-      : `${getStyles("--buttonExpandProps_marginTop_false")}`,
-    transform: `rotate(${isButtonRotated ? 180 : 0}deg)`,
-    config: { duration: 100 },
-  });
+  const combinedStyles = { ...borderAnimationProps, ...menuAnimation };
 
-  if (words === undefined || words === null || words.length === 0) return <></>;
-  else
-    return (
-      <div style={{ display: "flex", justifyContent: "center" }}>
-        <animated.div
-          className="main-ui"
-          style={{
-            // ...animationProps,
-            ...borderAnimationProps,
-          }}
-        >
-          <animated.button
-            id="expand_field_button"
-            onClick={onButtonClickExpand}
-            style={buttonExpandProps}
-          ></animated.button>
+  return (
+    <div style={{ display: "flex", justifyContent: "center" }}>
+      <animated.div className="main-ui" style={combinedStyles}>
+        <MessageContainer
+          messages={messages}
+          showAnimation={waitForResponse}
+          npcRole={currentRole.name}
+        />
 
-          {isWordCounterVisible && (
-            <p className="word-counter">{text.split(/\s+/).length}/100</p>
-          )}
+        <animated.div className="words">
+          {words.map((item) => (
+            <WordButton
+              text={item.name}
+              learned={item.state}
+              onClick={() => onWordClick(item.id)}
+              key={item.id}
+            />
+          ))}
+        </animated.div>
+
+        {isWordCounterVisible && (
+          <p className="word-counter">{text.split(/\s+/).length}/100</p>
+        )}
+
+        <div id="chat-container">
           <Textarea
             text={text}
             onTextChange={onTextChange}
@@ -432,32 +384,13 @@ const UiMenu = () => {
           />
 
           <button className="voice_button" onClick={toggleListening}>
-            {isListening ? "" : ""}
           </button>
+        </div>
+      </animated.div>
+      <ToastContainer position="top-center" closeOnClick={true} />
+    </div>
+  );
 
-          {/* {isButtonClicked || isExpandButtonClicked ? ( */}
-          <MessageContainer
-            messages={messages}
-            showAnimation={waitForResponse}
-            npcRole={currentRole.name}
-          />
-          {/* ) : null} */}
-
-          <animated.div className="words">
-            {words.map((item) => (
-              <WordButton
-                text={item.name}
-                learned={item.state}
-                onClick={() => onWordClick(item.id)}
-                sumOfWordLengths={sumOfWordLengths}
-                key={item.id}
-              />
-            ))}
-          </animated.div>
-        </animated.div>
-        <ToastContainer position="top-center" closeOnClick={true} />
-      </div>
-    );
 };
 
 export default UiMenu;
