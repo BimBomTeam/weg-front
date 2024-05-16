@@ -1,15 +1,13 @@
 $button-login-shadow: rgba(0, 0, 0, 0.25);
 
 #send {
+  grid-column: 1;
   position: absolute;
-  top: 25%;
-  right: 10px;
+  top: 50%;
+  right: 0px;
   height: 45px;
-
   transform: translateY(-50%);
   z-index: 1;
-  padding: 5px 10px;
-
   width: 45px;
   border-radius: 8px;
   border: 1px solid transparent;
@@ -27,11 +25,12 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
   transition: transform 0.3s ease, margin-right 0.3s;
 
   &:hover {
-    transform: scale(1.2);
   }
 }
 
 .voice_button {
+  grid-column: 2;
+
   height: 50px;
   bottom: 60px;
   flex-grow: 2;
