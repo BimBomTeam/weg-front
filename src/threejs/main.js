@@ -221,6 +221,7 @@ class MainScene extends Scene3D {
       gltf: this.modelLoader.modelsArray["npc5"],
       textObjectText: rolesReduxArr[0].name,
       roleId: rolesReduxArr[0].id,
+      voice: "nova",
     });
     this.standNPC2 = new StandartNPC({
       pos: { x: 64, y: 10, z: -111 },
@@ -229,6 +230,7 @@ class MainScene extends Scene3D {
       textObjectText: rolesReduxArr[1].name,
       gltf: this.modelLoader.modelsArray["npc1"],
       roleId: rolesReduxArr[1].id,
+      voice: "echo",
     });
     this.standNPC3 = new StandartNPC({
       pos: { x: 108, y: 10, z: 83 },
@@ -237,6 +239,7 @@ class MainScene extends Scene3D {
       textObjectText: rolesReduxArr[2].name,
       gltf: this.modelLoader.modelsArray["npc2"],
       roleId: rolesReduxArr[2].id,
+      voice: "alloy",
     });
     this.standNPC4 = new StandartNPC({
       pos: { x: -69, y: 10, z: 75 },
@@ -245,6 +248,7 @@ class MainScene extends Scene3D {
       textObjectText: rolesReduxArr[3].name,
       gltf: this.modelLoader.modelsArray["npc4"],
       roleId: rolesReduxArr[3].id,
+      voice: "fable",
     });
     this.standNPC5 = new StandartNPC({
       pos: { x: -86, y: 4, z: -28 },
@@ -253,6 +257,7 @@ class MainScene extends Scene3D {
       textObjectText: rolesReduxArr[4].name,
       gltf: this.modelLoader.modelsArray["npc3"],
       roleId: rolesReduxArr[4].id,
+      voice: "shimmer",
     });
     this.npcArray = [
       this.bossNPC,
@@ -325,7 +330,13 @@ class MainScene extends Scene3D {
     if (NPC.mode == "prepToInteract" || NPC.mode == "interact") {
       if (this.KeyHandler.key.e.click && this.player.mode == "freeWalk") {
         store.dispatch(setUiState(UiStates.CHAT));
-        store.dispatch(setCurrentRole({ id: NPC.roleId, name: NPC.roleName }));
+        store.dispatch(
+          setCurrentRole({
+            id: NPC.roleId,
+            name: NPC.roleName,
+            voice: NPC.voice,
+          })
+        );
         //TODO: chat -true
         //TODO: hint - false
         this.player.mode = "interact";

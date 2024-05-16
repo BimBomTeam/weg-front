@@ -16,7 +16,6 @@ import store from "../../store/store";
 import api from "../../axiosConfig";
 import { useDispatch } from "react-redux";
 import { setWords } from "../../actions/words";
-import axios from "axios";
 
 const UiMenu = () => {
   const [text, setText] = useState("");
@@ -89,8 +88,8 @@ const UiMenu = () => {
       if (response.status === 200) {
         const { dialog, words } = response.data;
         // localStorage.setItem("messageHistory", JSON.stringify(dialog));
-        if (localStorage.getItem("isVoice") !== null)
-          await fetchAndPlayMp3(dialog.at(-1).message);
+        // if (localStorage.getItem("isVoice") !== null)
+        await fetchAndPlayMp3(dialog.at(-1).message);
         dispatch(setWords(words));
         setMessages(dialog);
         setWaitForResponse(false);
@@ -169,7 +168,7 @@ const UiMenu = () => {
     try {
       const response = await api.post(
         "AiCommunication/generate-audio",
-        { input: input },
+        { input: input, voice: currentRole.voice },
         {
           responseType: "arraybuffer",
         }
@@ -391,72 +390,74 @@ const UiMenu = () => {
     config: { duration: 100 },
   });
 
-  return (
-    <div style={{ display: "flex", justifyContent: "center" }}>
-      <animated.div
-        className="main-ui"
-        style={{
-          // ...animationProps,
-          ...borderAnimationProps,
-        }}
-      >
-        <animated.button
-          id="expand_field_button"
-          onClick={onButtonClickExpand}
-          style={buttonExpandProps}
-        ></animated.button>
-
-        {isWordCounterVisible && (
-          <p className="word-counter">{text.split(/\s+/).length}/100</p>
-        )}
-        <Textarea
-          text={text}
-          onTextChange={onTextChange}
-          resetTranscriptOnClick={resetTranscriptOnClick}
-          onButtonClick={(event) => {
-            onButtonClick(event);
+  if (words === undefined || words === null || words.length === 0) return <></>;
+  else
+    return (
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <animated.div
+          className="main-ui"
+          style={{
+            // ...animationProps,
+            ...borderAnimationProps,
           }}
-          onKeyPress={(event) => {
-            if (event.key === "Enter" && !event.shiftKey) {
-              event.preventDefault();
+        >
+          <animated.button
+            id="expand_field_button"
+            onClick={onButtonClickExpand}
+            style={buttonExpandProps}
+          ></animated.button>
+
+          {isWordCounterVisible && (
+            <p className="word-counter">{text.split(/\s+/).length}/100</p>
+          )}
+          <Textarea
+            text={text}
+            onTextChange={onTextChange}
+            resetTranscriptOnClick={resetTranscriptOnClick}
+            onButtonClick={(event) => {
+              onButtonClick(event);
+            }}
+            onKeyPress={(event) => {
+              if (event.key === "Enter" && !event.shiftKey) {
+                event.preventDefault();
+                onButtonClick(event);
+                resetTranscriptOnClick();
+              }
+            }}
+            onSendClick={(event) => {
               onButtonClick(event);
               resetTranscriptOnClick();
-            }
-          }}
-          onSendClick={(event) => {
-            onButtonClick(event);
-            resetTranscriptOnClick();
-          }}
-          disabled={waitForResponse}
-        />
+            }}
+            disabled={waitForResponse}
+          />
 
-        <button className="voice_button" onClick={toggleListening}>
-          {isListening ? "" : ""}
-        </button>
+          <button className="voice_button" onClick={toggleListening}>
+            {isListening ? "" : ""}
+          </button>
 
-        {/* {isButtonClicked || isExpandButtonClicked ? ( */}
-        <MessageContainer
-          messages={messages}
-          showAnimation={waitForResponse}
-          npcRole={currentRole.name}
-        />
-        {/* ) : null} */}
+          {/* {isButtonClicked || isExpandButtonClicked ? ( */}
+          <MessageContainer
+            messages={messages}
+            showAnimation={waitForResponse}
+            npcRole={currentRole.name}
+          />
+          {/* ) : null} */}
 
-        <animated.div className="words">
-          {words.map((item) => (
-            <WordButton
-              text={item.name}
-              learned={item.state}
-              onClick={() => onWordClick(item.id)}
-              sumOfWordLengths={sumOfWordLengths}
-              key={item.id}
-            />
-          ))}
+          <animated.div className="words">
+            {words.map((item) => (
+              <WordButton
+                text={item.name}
+                learned={item.state}
+                onClick={() => onWordClick(item.id)}
+                sumOfWordLengths={sumOfWordLengths}
+                key={item.id}
+              />
+            ))}
+          </animated.div>
         </animated.div>
-      </animated.div>
-      <ToastContainer position="top-center" closeOnClick={true} />
-    </div>
-  );
+        <ToastContainer position="top-center" closeOnClick={true} />
+      </div>
+    );
 };
 
 export default UiMenu;
