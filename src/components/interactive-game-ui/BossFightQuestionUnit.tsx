@@ -39,7 +39,11 @@ const QuestionUnit = ({
           return (
             <BossFightButton
               text={capitalizeFirstLetter(answer.answer)}
-              onClick={() => (loading ? () => {} : onAnswerClick(answer))}
+              onClick={() =>
+                loading
+                  ? () => {}
+                  : onAnswerClick({ answer: answer, word: quizUnit.word })
+              }
               key={idx}
             />
           );
