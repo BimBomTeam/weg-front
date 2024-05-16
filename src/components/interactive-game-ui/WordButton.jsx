@@ -5,7 +5,7 @@ const WordButton = ({ text, learned, onClick, sumOfWordLengths }) => {
   const [toggle, setToggle] = useState(false);
   const { opacity } = useSpring({
     opacity: toggle ? 1 : 0,
-    config: { duration: 500 }
+    config: { duration: 500 },
   });
 
   useEffect(() => {
@@ -26,7 +26,17 @@ const WordButton = ({ text, learned, onClick, sumOfWordLengths }) => {
     background: isLearned
       ? "linear-gradient(45deg, #F8F0F0 0%, #74FF8A 100%)"
       : "linear-gradient(45deg, #F8F0F0 0%, #C2E9EE 100%)",
-    fontSize: sumOfWordLengths > 60 ? "15px" : sumOfWordLengths > 40 ? "16px" : "inherit"
+    fontSize:
+      sumOfWordLengths > 60
+        ? "15px"
+        : sumOfWordLengths > 40
+        ? "16px"
+        : "inherit",
+  };
+
+  const capitalizeFirstLetter = (str) => {
+    if (!str) return str;
+    return str.charAt(0).toUpperCase() + str.slice(1);
   };
 
   return (
@@ -35,7 +45,7 @@ const WordButton = ({ text, learned, onClick, sumOfWordLengths }) => {
       className="word"
       onClick={onHandleClick}
     >
-      {text}
+      {capitalizeFirstLetter(text)}
     </animated.button>
   );
 };

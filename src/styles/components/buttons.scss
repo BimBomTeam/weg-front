@@ -2,9 +2,14 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
 
 #send {
   position: absolute;
-  bottom: 9%;
-  right: 20%;
+  top: 25%;
+  right: 10px;
   height: 45px;
+
+  transform: translateY(-50%);
+  z-index: 1;
+  padding: 5px 10px;
+
   width: 45px;
   border-radius: 8px;
   border: 1px solid transparent;
@@ -12,7 +17,7 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
   font-weight: 500;
   font-family: inherit;
   line-height: 0;
-  background-image: url('/images/send.png');
+  background-image: url("/images/send.png");
   background-size: 100%;
   background-size: contain;
   background-color: transparent;
@@ -22,16 +27,17 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
   transition: transform 0.3s ease, margin-right 0.3s;
 
   &:hover {
-    transform: scale(1.2); 
+    transform: scale(1.2);
   }
 }
 
 .voice_button {
   height: 50px;
   bottom: 60px;
-  margin-left: 5%;
-  margin-top: 2%;
-  background-image: url('/images/voice.png');
+  flex-grow: 2;
+  // margin-left: 5%;
+  // margin-top: 2%;
+  background-image: url("/images/voice.png");
   background-size: 100%;
   background-size: contain;
   background-color: transparent;
@@ -42,7 +48,7 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
 }
 
 .voice_button:hover {
-  transform: scale(1.4); 
+  transform: scale(1.4);
 }
 
 #Login {
@@ -53,20 +59,57 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
   border-radius: 15px;
   box-shadow: 0px 4px 4px 1px $button-login-shadow;
   background: $password-input-background;
-  background: -webkit-linear-gradient(-225.11807074516deg, $password-input-gradient-start, 0.8 0%, $password-input-gradient-start, 0.4 100%);
-  background: -o-linear-gradient(-225.11807074516deg, $password-input-gradient-start, 0.8 0%, $password-input-gradient-start, 0.4 100%);
-  background: -moz-linear-gradient(-225.11807074516deg, $password-input-gradient-start, 0.8 0%, $password-input-gradient-start, 0.4 100%);
-  background: -ms-linear-gradient(-225.11807074516deg, $password-input-gradient-start, 0.8 0%, $password-input-gradient-start, 0.4 100%);
-  background: linear-gradient(-225.11807074516deg, $password-input-gradient-start, 0.8 0%, $password-input-gradient-start, 0.4 100%);
+  background: -webkit-linear-gradient(
+    -225.11807074516deg,
+    $password-input-gradient-start,
+    0.8 0%,
+    $password-input-gradient-start,
+    0.4 100%
+  );
+  background: -o-linear-gradient(
+    -225.11807074516deg,
+    $password-input-gradient-start,
+    0.8 0%,
+    $password-input-gradient-start,
+    0.4 100%
+  );
+  background: -moz-linear-gradient(
+    -225.11807074516deg,
+    $password-input-gradient-start,
+    0.8 0%,
+    $password-input-gradient-start,
+    0.4 100%
+  );
+  background: -ms-linear-gradient(
+    -225.11807074516deg,
+    $password-input-gradient-start,
+    0.8 0%,
+    $password-input-gradient-start,
+    0.4 100%
+  );
+  background: linear-gradient(
+    -225.11807074516deg,
+    $password-input-gradient-start,
+    0.8 0%,
+    $password-input-gradient-start,
+    0.4 100%
+  );
   cursor: pointer;
 }
 
-.login-button, .to-register-button, .register-button {
+.login-button,
+.to-register-button,
+.register-button {
   position: relative;
   border: none;
   border-radius: 15px;
-  background: linear-gradient(135deg, $button-gradient-start, $button-gradient-end), $button-default-color;
-  font-family: 'Roboto';
+  background: linear-gradient(
+      135deg,
+      $button-gradient-start,
+      $button-gradient-end
+    ),
+    $button-default-color;
+  font-family: "Roboto";
   cursor: pointer;
   transition: background-color 0.3s ease;
   margin: 2%;
@@ -90,14 +133,22 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
   top: 95%;
 }
 
-.login-button:hover, .to-register-button:hover, .register-button:hover {
-  background: linear-gradient(135deg, $button-gradient-start, $button-gradient-end), $button-hover-color-alt;
+.login-button:hover,
+.to-register-button:hover,
+.register-button:hover {
+  background: linear-gradient(
+      135deg,
+      $button-gradient-start,
+      $button-gradient-end
+    ),
+    $button-hover-color-alt;
 }
 
-.login-button:focus, .to-register-button:focus, .register-button:focus {
+.login-button:focus,
+.to-register-button:focus,
+.register-button:focus {
   outline: none;
 }
-
 
 .back-button {
   position: absolute;
@@ -107,17 +158,22 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
   height: 30px;
   border: 0;
   background-color: transparent;
-  background-image: url('/images/back.png');
+  background-image: url("/images/back.png");
   background-size: cover;
   transition: transform 0.3s ease;
-  cursor: pointer; 
+  cursor: pointer;
 }
 
 .back-button:hover {
-  transform: scale(1.3); 
+  transform: scale(1.3);
 }
 
-.expandMenu, .account, .difficulty, .shop, .instruction, .settings {
+.expandMenu,
+.account,
+.difficulty,
+.shop,
+.instruction,
+.settings {
   background-size: cover;
   background-color: transparent;
   border: 0;
@@ -133,37 +189,37 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
 .expandMenu {
   position: absolute;
   top: 20px;
-  background-image: url('/images/menu.png');
+  background-image: url("/images/menu.png");
   height: 50px;
   width: 50px;
 }
 
 .account {
-  background-image: url('/images/account.png');
+  background-image: url("/images/account.png");
   height: 50px;
   width: 50px;
 }
 
 .difficulty {
-  background-image: url('/images/difficulty.png');
+  background-image: url("/images/difficulty.png");
   height: 50px;
   width: 70px;
 }
 
 .shop {
-  background-image: url('/images/shop.png');
+  background-image: url("/images/shop.png");
   height: 55px;
   width: 60px;
 }
 
 .instruction {
-  background-image: url('/images/instruction.png');
+  background-image: url("/images/instruction.png");
   height: 60px;
   width: 60px;
 }
 
 .settings {
-  background-image: url('/images/settings.png');
+  background-image: url("/images/settings.png");
   height: 60px;
   width: 60px;
   margin-bottom: 30px;
@@ -178,7 +234,7 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
   border-radius: 60px;
   font-size: 25px;
   color: $input-placeholder-color;
-  background: linear-gradient(to bottom, #F8F0F0 0%, #C2E9EE 100%);
+  background: linear-gradient(to bottom, #f8f0f0 0%, #c2e9ee 100%);
   transition: transform 0.3s ease;
 }
 
@@ -195,8 +251,13 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
   padding: 10px 20px;
   border: none;
   border-radius: 20px;
-  background: linear-gradient(135deg, $button-gradient-start, $button-gradient-end), $button-default-color;
-  font-family: 'Roboto';
+  background: linear-gradient(
+      135deg,
+      $button-gradient-start,
+      $button-gradient-end
+    ),
+    $button-default-color;
+  font-family: "Roboto";
   cursor: pointer;
   transition: background-color 0.3s ease;
   margin: 0 auto;
@@ -211,9 +272,14 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
   padding: 10px 20px;
   border: none;
   border-radius: 20px;
-  background: linear-gradient(135deg, $button-gradient-start, $button-gradient-end), $button-default-color;
+  background: linear-gradient(
+      135deg,
+      $button-gradient-start,
+      $button-gradient-end
+    ),
+    $button-default-color;
   font-size: 26px;
-  font-family: 'Roboto';
+  font-family: "Roboto";
   cursor: pointer;
   transition: background-color 0.3s ease;
   margin: 0 auto;
@@ -233,7 +299,7 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
   }
 
   .voice_button:hover {
-    transform: scale(2.0); 
+    transform: scale(2);
   }
 
   #send {
@@ -245,33 +311,28 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
   #send:hover {
     transform: scale(1.5);
   }
-  .expandMenu
-  {  
+  .expandMenu {
     top: 45px;
     left: 45px;
     height: 100px;
     width: 100px;
-
   }
-  .account
-  {
-    transform: scale(2.0);
+  .account {
+    transform: scale(2);
     height: 50px;
   }
   .account:hover {
     transform: scale(2.3);
   }
-  .difficulty
-  { 
+  .difficulty {
     transform: scale(2.3);
     height: 35px;
-    width: 50px;  
+    width: 50px;
   }
   .difficulty:hover {
     transform: scale(2.6);
   }
-  .shop
-  {
+  .shop {
     transform: scale(2.3);
     height: 45px;
     width: 50px;
@@ -279,26 +340,26 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
   .shop:hover {
     transform: scale(2.6);
   }
-  .instruction
-  {
+  .instruction {
     transform: scale(2.7);
     height: 35px;
     width: 35px;
   }
   .instruction:hover {
-    transform: scale(3.0);
+    transform: scale(3);
   }
-  .settings
-  {
+  .settings {
     transform: scale(2.9);
     height: 35px;
     width: 35px;
     margin-bottom: 120px;
   }
   .settings:hover {
-    transform: scale(3.2); 
+    transform: scale(3.2);
   }
-  .login-button, .to-register-button, .register-button {
+  .login-button,
+  .to-register-button,
+  .register-button {
     font-size: 35px;
   }
 }
@@ -306,7 +367,6 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
 @media only screen and (min-width: 2100px) and (max-width: 2561px) {
   #expand_field_button {
     width: 80px;
-    
   }
   .voice_button {
     width: 50px;
@@ -316,7 +376,7 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
   }
 
   .voice_button:hover {
-    transform: scale(2.0); 
+    transform: scale(2);
   }
 
   #send {
@@ -328,8 +388,7 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
   #send:hover {
     transform: scale(1.7);
   }
-  .expandMenu
-  {  
+  .expandMenu {
     top: 33px;
     left: 30px;
     height: 60px;
@@ -339,25 +398,22 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
     transform: scale(1.2);
     margin-right: 0;
   }
-  .account
-  {
+  .account {
     transform: scale(1.2);
     height: 50px;
   }
   .account:hover {
     transform: scale(1.3);
   }
-  .difficulty
-  { 
+  .difficulty {
     transform: scale(1.5);
     height: 35px;
-    width: 50px;  
+    width: 50px;
   }
   .difficulty:hover {
     transform: scale(1.6);
   }
-  .shop
-  {
+  .shop {
     transform: scale(1.4);
     height: 45px;
     width: 50px;
@@ -365,8 +421,7 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
   .shop:hover {
     transform: scale(1.5);
   }
-  .instruction
-  {
+  .instruction {
     transform: scale(1.8);
     height: 35px;
     width: 35px;
@@ -374,22 +429,22 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
   .instruction:hover {
     transform: scale(1.9);
   }
-  .settings
-  {
+  .settings {
     transform: scale(1.9);
     height: 35px;
     width: 35px;
     margin-bottom: 85px;
   }
   .settings:hover {
-    transform: scale(2.0);
+    transform: scale(2);
   }
 
-  .login-button, .to-register-button, .register-button {
+  .login-button,
+  .to-register-button,
+  .register-button {
     font-size: 30px;
   }
 }
-
 
 @media only screen and (min-width: 1801px) and (max-width: 2100px) {
   #expand_field_button {
@@ -404,48 +459,43 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
   }
 
   .voice_button:hover {
-    transform: scale(2.0); 
+    transform: scale(2);
   }
 
-  #send {
-    bottom: 60px;
-    right: 120px;
-    transform: scale(1.2);
-  }
+  // #send {
+  //   bottom: 60px;
+  //   right: 120px;
+  //   transform: scale(1.2);
+  // }
 
   #send:hover {
     transform: scale(1.4);
   }
-  .expandMenu
-  {  
+  .expandMenu {
     top: 30px;
     left: 22px;
     height: 65px;
     width: 65px;
-
   }
   .expandMenu:hover {
     transform: scale(1.1);
   }
-  .account
-  {
+  .account {
     transform: scale(1.2);
     height: 50px;
   }
   .account:hover {
     transform: scale(1.3);
   }
-  .difficulty
-  { 
+  .difficulty {
     transform: scale(1.5);
     height: 35px;
-    width: 50px;  
+    width: 50px;
   }
   .difficulty:hover {
     transform: scale(1.6);
   }
-  .shop
-  {
+  .shop {
     transform: scale(1.5);
     height: 45px;
     width: 50px;
@@ -453,8 +503,7 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
   .shop:hover {
     transform: scale(1.6);
   }
-  .instruction
-  {
+  .instruction {
     transform: scale(1.8);
     height: 35px;
     width: 35px;
@@ -462,22 +511,22 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
   .instruction:hover {
     transform: scale(1.9);
   }
-  .settings
-  {
+  .settings {
     transform: scale(1.9);
     height: 35px;
     width: 35px;
     margin-bottom: 55px;
   }
   .settings:hover {
-    transform: scale(2.0); // nie dziala
+    transform: scale(2); // nie dziala
   }
 
-  .login-button, .to-register-button, .register-button {
+  .login-button,
+  .to-register-button,
+  .register-button {
     font-size: 25px;
   }
 }
-
 
 @media only screen and (min-width: 1601px) and (max-width: 1800px) {
   #expand_field_button {
@@ -492,39 +541,35 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
   }
 
   .voice_button:hover {
-    transform: scale(1.8); 
+    transform: scale(1.8);
   }
 
   #send {
     bottom: 35px;
   }
-  .expandMenu
-  {  
+  .expandMenu {
     height: 55px;
     width: 55px;
   }
   .expandMenu:hover {
     transform: scale(1.3);
   }
-  .account
-  {
+  .account {
     transform: scale(1.3);
     height: 50px;
   }
   .account:hover {
     transform: scale(1.5);
   }
-  .difficulty
-  { 
+  .difficulty {
     transform: scale(1.5);
     height: 35px;
-    width: 50px;  
+    width: 50px;
   }
   .difficulty:hover {
     transform: scale(1.7);
   }
-  .shop
-  {
+  .shop {
     transform: scale(1.5);
     height: 45px;
     width: 50px;
@@ -532,18 +577,16 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
   .shop:hover {
     transform: scale(1.7);
   }
-  .instruction
-  {
+  .instruction {
     transform: scale(1.8);
     height: 35px;
     width: 35px;
   }
   .instruction:hover {
-    transform: scale(2.0);
+    transform: scale(2);
   }
-  .settings
-  {
-    transform: scale(2.0);
+  .settings {
+    transform: scale(2);
     height: 35px;
     width: 35px;
     margin-bottom: 70px;
@@ -551,7 +594,9 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
   .settings:hover {
     transform: scale(2.2);
   }
-  .login-button, .to-register-button, .register-button {
+  .login-button,
+  .to-register-button,
+  .register-button {
     font-size: 20px;
   }
 }
@@ -567,35 +612,30 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
     transform: scale(1.4);
   }
   .voice_button:hover {
-    transform: scale(1.6); 
+    transform: scale(1.6);
   }
-  .expandMenu
-  {  
+  .expandMenu {
     top: 22px;
     left: 23px;
     height: 60px;
     width: 60px;
-
   }
-  .account
-  {
+  .account {
     transform: scale(1.2);
     height: 50px;
   }
   .account:hover {
     transform: scale(1.4);
   }
-  .difficulty
-  { 
+  .difficulty {
     transform: scale(1.4);
     height: 35px;
-    width: 50px;  
+    width: 50px;
   }
   .difficulty:hover {
     transform: scale(1.6);
   }
-  .shop
-  {
+  .shop {
     transform: scale(1.4);
     height: 45px;
     width: 50px;
@@ -603,8 +643,7 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
   .shop:hover {
     transform: scale(1.6);
   }
-  .instruction
-  {
+  .instruction {
     transform: scale(1.7);
     height: 35px;
     width: 35px;
@@ -612,21 +651,21 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
   .instruction:hover {
     transform: scale(1.9);
   }
-  .settings
-  {
+  .settings {
     transform: scale(1.8);
     height: 35px;
     width: 35px;
     margin-bottom: 70px;
   }
   .settings:hover {
-    transform: scale(2.0);
+    transform: scale(2);
   }
-  .login-button, .to-register-button, .register-button {
+  .login-button,
+  .to-register-button,
+  .register-button {
     font-size: 20px;
   }
 }
-
 
 @media only screen and (max-width: 1400px) {
   #expand_field_button {
@@ -636,8 +675,7 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
     width: 60px;
     left: 88.5%;
   }
-  .expandMenu
-  {  
+  .expandMenu {
     top: 22px;
     left: 24px;
     height: 50px;
@@ -646,25 +684,22 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
   .expandMenu:hover {
     transform: scale(1.2);
   }
-  .account
-  {
-    transform: scale(1.0);
+  .account {
+    transform: scale(1);
     height: 50px;
   }
   .account:hover {
     transform: scale(1.2);
   }
-  .difficulty
-  { 
+  .difficulty {
     transform: scale(1.2);
     height: 35px;
-    width: 50px;  
+    width: 50px;
   }
   .difficulty:hover {
     transform: scale(1.4);
   }
-  .shop
-  {
+  .shop {
     transform: scale(1.2);
     height: 45px;
     width: 50px;
@@ -672,8 +707,7 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
   .shop:hover {
     transform: scale(1.4);
   }
-  .instruction
-  {
+  .instruction {
     transform: scale(1.4);
     height: 35px;
     width: 35px;
@@ -681,8 +715,7 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
   .instruction:hover {
     transform: scale(1.6);
   }
-  .settings
-  {
+  .settings {
     transform: scale(1.5);
     height: 35px;
     width: 35px;
@@ -691,7 +724,9 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
   .settings:hover {
     transform: scale(1.7);
   }
-  .login-button, .to-register-button, .register-button {
+  .login-button,
+  .to-register-button,
+  .register-button {
     font-size: 20px;
   }
 }
@@ -703,8 +738,7 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
   #expand_field_button {
     width: 50px;
   }
-  .expandMenu
-  {  
+  .expandMenu {
     top: 16px;
     left: 14px;
     height: 35px;
@@ -713,43 +747,38 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
   .expandMenu:hover {
     transform: scale(1.2);
   }
-  .account
-  {
+  .account {
     transform: scale(0.7);
     height: 50px;
   }
   .account:hover {
     transform: scale(0.9);
   }
-  .difficulty
-  { 
+  .difficulty {
     transform: scale(0.8);
     height: 35px;
-    width: 50px;  
+    width: 50px;
   }
   .difficulty:hover {
-    transform: scale(1.0);
+    transform: scale(1);
   }
-  .shop
-  {
+  .shop {
     transform: scale(0.8);
     height: 45px;
     width: 50px;
   }
   .shop:hover {
-    transform: scale(1.0);
+    transform: scale(1);
   }
-  .instruction
-  {
-    transform: scale(1.0);
+  .instruction {
+    transform: scale(1);
     height: 35px;
     width: 35px;
   }
   .instruction:hover {
     transform: scale(1.2);
   }
-  .settings
-  {
+  .settings {
     transform: scale(1.1);
     height: 35px;
     width: 35px;
@@ -759,8 +788,10 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
     transform: scale(1.3);
   }
 
-  .login-button, .to-register-button, .register-button {
-    font-size:18px;
+  .login-button,
+  .to-register-button,
+  .register-button {
+    font-size: 18px;
   }
 }
 
@@ -771,33 +802,28 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
   #expand_field_button {
     width: 50px;
   }
-  .expandMenu
-  {
+  .expandMenu {
     top: 16px;
     left: 14px;
     height: 30px;
     width: 30px;
-
   }
-  .account
-  {
+  .account {
     transform: scale(0.6);
     height: 50px;
   }
   .account:hover {
     transform: scale(0.7);
   }
-  .difficulty
-  { 
+  .difficulty {
     transform: scale(0.8);
     height: 35px;
-    width: 50px;  
+    width: 50px;
   }
   .difficulty:hover {
     transform: scale(0.9);
   }
-  .shop
-  {
+  .shop {
     transform: scale(0.8);
     height: 40px;
     width: 45px;
@@ -805,8 +831,7 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
   .shop:hover {
     transform: scale(0.9);
   }
-  .instruction
-  {
+  .instruction {
     transform: scale(0.8);
     height: 40px;
     width: 40px;
@@ -814,8 +839,7 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
   .instruction:hover {
     transform: scale(0.9);
   }
-  .settings
-  {
+  .settings {
     transform: scale(0.8);
     height: 45px;
     width: 45px;
@@ -830,7 +854,9 @@ $button-login-shadow: rgba(0, 0, 0, 0.25);
     bottom: 70px;
   }
 
-  .login-button, .to-register-button, .register-button {
+  .login-button,
+  .to-register-button,
+  .register-button {
     font-size: 10px;
   }
   .logout {
