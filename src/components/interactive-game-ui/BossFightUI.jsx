@@ -7,6 +7,7 @@ import POST_getBossWords from "../../logic/server/POST_getBossWords";
 import QuestionUnit from "./BossFightQuestionUnit";
 import api from "../../axiosConfig";
 import { useDispatch } from "react-redux";
+import FinishQuizModal from "../user-interface/user-interface/modals/FinishQuizModal";
 
 const UiBossFight = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -16,6 +17,7 @@ const UiBossFight = () => {
   const [questionsArray, setQuestionsArray] = useState([]);
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
+  const [showModal, setShowModal] = useState(false); // Добавлено состояние для модального окна
 
   useEffect(() => {
     fetchData();
@@ -28,17 +30,17 @@ const UiBossFight = () => {
   }, []);
 
   const fetchData = async () => {
-    var allWords = JSON.parse(sessionStorage.getItem("words"));
-    const shuffledWords = shuffleArray(
-      Object.values(allWords)
-        .map((wordsArray) => wordsArray.map((x) => x.name))
-        .flat()
-    );
+    const response = await api.get("Words/get-all-today-words");
+    if (response.status === 200) {
+      const allWords = response.data;
+      sessionStorage.setItem("allDailyWords", JSON.stringify(allWords));
+      const shuffledWords = shuffleArray(allWords.map((x) => x.name));
 
-    console.log(shuffledWords);
-    wordsArr.current = shuffledWords;
+      console.log(shuffledWords);
+      wordsArr.current = shuffledWords;
 
-    await setNextQuestion();
+      await setNextQuestion();
+    }
   };
 
   const shuffleArray = (array) => {
@@ -106,20 +108,27 @@ const UiBossFight = () => {
   };
 
   const finishQuiz = () => {
+
+
     setTimeout(() => {
       store.getState().interact.finishInteraction.finishInteraction();
-    }, 1000);
+    }, 3000);
+
+    setShowModal(true);
   };
 
   if (currentQuestion) {
     return (
-      <QuestionUnit
-        quizUnit={currentQuestion}
-        onAnswerClick={onAnswerClick}
-        isVisible={isVisible}
-        onTimeFinish={onTimeFinish}
-        loading={loading}
-      />
+      <>
+        <QuestionUnit
+          quizUnit={currentQuestion}
+          onAnswerClick={onAnswerClick}
+          isVisible={isVisible}
+          onTimeFinish={onTimeFinish}
+          loading={loading}
+        />
+        {showModal && <FinishQuizModal />}
+      </>
     );
   } else return <></>;
 };

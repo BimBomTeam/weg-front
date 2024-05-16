@@ -6,6 +6,8 @@ import PreBuildChecker from "./logic/token/PreBuildChecker";
 import Error404 from "./components/user-interface/user-interface/hints/Error404";
 import { Provider } from "react-redux";
 import store from "./store/store";
+import FinishQuizModal from "./components/user-interface/user-interface/modals/FinishQuizModal";
+
 
 function App() {
   return (
