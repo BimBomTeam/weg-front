@@ -38,7 +38,7 @@ export default function PreBuildChecker() {
     }, 500);
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     console.log("TOKEN", token);
