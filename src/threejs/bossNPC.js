@@ -2,7 +2,13 @@ import { Vector3 } from "three";
 import { StandartNPC } from "./standartNPC";
 
 export class BossNPC extends StandartNPC {
-  constructor({ pos = { x: 10, y: 20, z: 10 }, sketch, gltf, playerPosition }) {
+  constructor({
+    pos = { x: 10, y: 20, z: 10 },
+    sketch,
+    gltf,
+    playerPosition,
+    voice = "alloy",
+  }) {
     super({
       pos: pos,
       sketch: sketch,
@@ -10,6 +16,7 @@ export class BossNPC extends StandartNPC {
       objName: "Boss",
       textObjectText: "Boss",
       gltf,
+      voice,
     });
     this.actionEvents = [];
     this.addEvents = [];

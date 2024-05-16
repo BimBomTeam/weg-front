@@ -9,6 +9,8 @@ export const UiStates = Object.freeze({
 
 const initialState = {
   bossHit: () => {},
+  playerHit: () => {},
+  finishInteraction: () => {},
   isHintVisible: false,
   isBattleVisibility: false,
   isChatVisibility: false,
@@ -21,6 +23,16 @@ const interactReducer = (state = initialState, action) => {
       return {
         ...state,
         bossHit: action.payload,
+      };
+    case "FINISH_INTERACTION":
+      return {
+        ...state,
+        finishInteraction: action.payload,
+      };
+    case "PLAYER_HIT":
+      return {
+        ...state,
+        playerHit: action.payload,
       };
     case "SET_HINT_VISIBILITY":
       if (state.isHintVisible === action.payload.visibility) return state;
@@ -43,7 +55,7 @@ const interactReducer = (state = initialState, action) => {
     case "SET_UI_STATE":
       if (state.uiState === action.payload.state) {
         return state;
-      } 
+      }
       return {
         ...state,
         uiState: action.payload.state,

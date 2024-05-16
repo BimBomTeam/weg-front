@@ -10,9 +10,10 @@ import Loader from "./components/user-interface/user-interface/hints/Loader";
 import { ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { checkRoles } from "./actions/roles";
+import { setRoles } from "./actions/roles";
 import { useSelector } from "react-redux";
 import { UiStates } from "./reducers/interactReducer";
+import api from "./axiosConfig";
 
 const Game = () => {
   const navigator = useNavigate();
@@ -26,14 +27,28 @@ const Game = () => {
   const [isLoadedScene, setIsLoadedScene] = useState(false);
   const isHintVisible = useSelector((store) => store.interact.isHintVisible);
   const uiState = useSelector((store) => store.interact.uiState);
+  const firstLogin = useSelector((store) => store.auth.firstLogin);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     async function loadScene() {
       setIsLoading(true);
-      console.log("before dispatch");
-      await dispatch(checkRoles());
-      console.log("after dispatch");
+
+      let roles = [];
+      if (sessionStorage.getItem("roles") === null) {
+        roles = await fetchRoles();
+      } else {
+        roles = JSON.parse(sessionStorage.getItem("roles"));
+      }
+
+      if (roles === null) {
+        toast.error("Error in roles fetch");
+      } else {
+        dispatch(setRoles(roles));
+      }
+
+      console.log("game render");
+
       game.current = new GameScene(
         sceneLoaded,
         changeUiVisibility,
@@ -43,6 +58,19 @@ const Game = () => {
     }
     loadScene();
   }, []);
+
+  const fetchRoles = async () => {
+    const response = await api.get("Role/get-today-roles");
+    console.log("response", response);
+    if (response.status === 200) {
+      const roles = response.data;
+      console.log(roles);
+      sessionStorage.setItem("roles", JSON.stringify(roles));
+      return roles;
+    } else {
+      return null;
+    }
+  };
 
   // useEffect(() => {}, [isLoadedScene]);
 
@@ -95,7 +123,7 @@ const Game = () => {
       ) : (
         <>
           {renderUi()}
-          <WelcomeModal />
+          {firstLogin && <WelcomeModal />}
           <ToastContainer position="top-center" closeOnClick={true} />
         </>
       )}

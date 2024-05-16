@@ -1,5 +1,6 @@
 const initialState = {
-    words: [],
+  words: [],
+  wordLoading: false,
 };
 
 const wordsReducer = (state = initialState, action) => {
@@ -8,6 +9,11 @@ const wordsReducer = (state = initialState, action) => {
       return {
         ...state,
         words: action.payload,
+      };
+    case "SET_LOADING":
+      return {
+        ...state,
+        wordLoading: action.payload,
       };
     default:
       return state;

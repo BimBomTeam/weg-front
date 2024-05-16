@@ -1,5 +1,6 @@
 const initialState = {
   roles: [],
+  currentRole: null,
 };
 
 const rolesReducer = (state = initialState, action) => {
@@ -7,7 +8,12 @@ const rolesReducer = (state = initialState, action) => {
     case "CHECK_ROLES":
       return {
         ...state,
-        roles: action.payload,
+        roles: action.payload.roles,
+      };
+    case "SET_CURRENT_ROLE":
+      return {
+        ...state,
+        currentRole: action.payload,
       };
     default:
       return state;

@@ -2,7 +2,6 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function POST_tokenAuth(token) {
-  console.log("");
   const data = {
     token: token,
   };

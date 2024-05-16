@@ -1,33 +1,36 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { animated } from "react-spring";
 
 const MessageContainer = ({ messages, showAnimation, npcRole }) => {
+  useEffect(() => {});
   return (
     <animated.div className="message-container">
       <animated.div className="message-scroll">
-        {messages.map((message, index) => (
+        {messages.slice(1).map((message, index) => (
           <div key={index} className="message">
-            {message.text.startsWith("User: ") ? (
+            {message.role === "User" ? (
               <div>
-                <label className="user-label">User: </label>
-                <span className="user-message">
-                  {message.text.substring(6)}
-                </span>
+                <label className="user-label">You: </label>
+                <span className="user-message">{message.message}</span>
               </div>
-            ) : message.text.startsWith(`${npcRole}: `) ? (
+            ) : message.role === "Assistant" ? (
               <div>
                 <label className="npc-label">{npcRole}: </label>
-                <span className="npc-message">
-                  {message.text.substring(npcRole.length + 2)}
-                </span>
-                {message.animation && <BouncingDotsAnimation />}
+                <span className="npc-message">{message.message}</span>
+                {/* <BouncingDotsAnimation /> */}
+                {/* {message.animation && <BouncingDotsAnimation />} */}
               </div>
             ) : (
-              <span>{message.text}</span>
+              <span>{message.message}</span>
             )}
           </div>
         ))}
-        {showAnimation && <BouncingDotsAnimation />}
+        {showAnimation === true && (
+          <div className="message">
+            <label className="npc-label">{npcRole}: </label>
+            <BouncingDotsAnimation />
+          </div>
+        )}
       </animated.div>
     </animated.div>
   );

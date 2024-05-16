@@ -2,9 +2,10 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import loginApi from "./loginApi";
-import { checkToken } from "../../../actions/checkToken";
+// import loginApi from "./loginApi";
+import { setAuthorization } from "../../../actions/setAuthorization";
 import { useDispatch } from "react-redux";
+import api from "../../../axiosConfig";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -20,14 +21,25 @@ const Login = () => {
     }
 
     try {
-      const { success } = await loginApi({ email, password });
-      if (success) {
+      // const { success } = await loginApi({ email, password });
+      const response = await api.post("/Authenticate/login", {
+        email,
+        password,
+      });
+
+      if (response.status === 200) {
         toast.success("Successfully login");
-        dispatch(checkToken());
+        const { token, refreshToken, firstLogin } = response.data;
+        localStorage.setItem("accessToken", token);
+        localStorage.setItem("refreshToken", refreshToken);
+
+        dispatch(setAuthorization(token, firstLogin));
         setTimeout(() => {
-          // window.location.reload();
-          // navigate("/game");
+          window.location.reload();
+          navigate("/game");
         }, 2000);
+      } else {
+        toast.error("Error in login: ", response.data);
       }
     } catch (error) {
       toast.error(error.message || "Authentication Error");
