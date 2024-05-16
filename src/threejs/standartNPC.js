@@ -18,6 +18,7 @@ export class StandartNPC {
     textObjectText,
     roleId,
     changeNearNpcVisibility,
+    voice = "alloy",
   }) {
     this.objName = objName;
 
@@ -26,6 +27,7 @@ export class StandartNPC {
     this.speed = 7;
     this.moveState = "stand";
     this.scale = scale;
+    this.voice = voice;
 
     this.interactionRadius = 7;
 

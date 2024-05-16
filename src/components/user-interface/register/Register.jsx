@@ -4,6 +4,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import registerApi from "./registerApi";
 import { BsInfoCircle } from "react-icons/bs";
+import api from "../../../axiosConfig";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -18,12 +19,19 @@ const Register = () => {
       toast.error("Password does not meet the requirements.");
     } else {
       try {
-        const { success } = await registerApi({ email, username, password });
-        if (success) {
+        // const { success } = await registerApi({ email, username, password });
+        const response = await api.post("Authenticate/register", {
+          email: email,
+          username: username,
+          password: password,
+        });
+        if (response.status === 200) {
           toast.success("Successfully registered");
           setTimeout(() => {
             navigate("/login");
           }, 2500);
+        } else {
+          toast.error("Error with registration");
         }
       } catch (error) {
         if (error.response && error.response.status === 500) {
@@ -77,7 +85,6 @@ const Register = () => {
             Zarejestruj się
           </button>
         </div>
-
       </div>
       <ToastContainer position="top-center" closeOnClick={true} />
     </div>

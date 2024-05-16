@@ -13,6 +13,7 @@ const UiBossFight = () => {
   const [currentQuestion, setCurrentQuestion] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const wordsArr = useRef();
+  const wordsDtoArr = useRef();
   const [questionsArray, setQuestionsArray] = useState([]);
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
@@ -28,17 +29,19 @@ const UiBossFight = () => {
   }, []);
 
   const fetchData = async () => {
-    var allWords = JSON.parse(sessionStorage.getItem("words"));
-    const shuffledWords = shuffleArray(
-      Object.values(allWords)
-        .map((wordsArray) => wordsArray.map((x) => x.name))
-        .flat()
-    );
+    const response = await api.get("Words/get-all-today-words");
+    if (response.status === 200) {
+      const allWords = response.data;
+      wordsDtoArr.current = allWords;
+      // sessionStorage.setItem("allDailyWords", JSON.stringify(allWords));
+      // var allWords = JSON.parse(sessionStorage.getItem("words"));
+      const shuffledWords = shuffleArray(allWords.map((x) => x.name));
 
-    console.log(shuffledWords);
-    wordsArr.current = shuffledWords;
+      console.log(shuffledWords);
+      wordsArr.current = shuffledWords;
 
-    await setNextQuestion();
+      await setNextQuestion();
+    }
   };
 
   const shuffleArray = (array) => {
@@ -91,13 +94,23 @@ const UiBossFight = () => {
 
   const onAnswerClick = (answer) => {
     setLoading(true);
+    console.log("wordsDtoArr", wordsDtoArr.current);
+    console.log("word", answer);
+    var dtoEl = wordsDtoArr.current.find((x) => x.name === answer.word);
+    console.log(dtoEl);
+    if (dtoEl === undefined || dtoEl === null) {
+      dtoEl = wordsDtoArr.current.find((x) => x.name === answer.answer);
+      if (dtoEl === null) dtoEl = {};
+    }
     console.log(answer);
-    if (answer.correct === true) {
+    if (answer.answer.correct === true) {
       store.getState().interact.playerHit.playerHit();
+      dtoEl.state = "Approved";
     } else {
       store.getState().interact.bossHit.bossHit();
     }
     setNextQuestion();
+    console.log("wordsDtoArr.current", wordsDtoArr.current);
   };
 
   const onTimeFinish = () => {
@@ -105,7 +118,11 @@ const UiBossFight = () => {
     setNextQuestion();
   };
 
-  const finishQuiz = () => {
+  const finishQuiz = async () => {
+    const response = await api.post("Words/save-words", wordsDtoArr.current);
+    if (response.status !== 200) {
+      console.log("error in words save");
+    }
     setTimeout(() => {
       store.getState().interact.finishInteraction.finishInteraction();
     }, 1000);

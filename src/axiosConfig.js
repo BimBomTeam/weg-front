@@ -9,7 +9,7 @@ const api = axios.create({
 const refreshAuthToken = async () => {
   try {
     const response = await axios.post(
-      "https://aicademia.xyz/api/Authentificate/refresh",
+      "https://aicademia.xyz/api/Authenticate/refresh",
       {
         accessToken: localStorage.getItem("accessToken"),
         refreshToken: localStorage.getItem("refreshToken"),

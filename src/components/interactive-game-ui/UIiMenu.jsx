@@ -16,7 +16,6 @@ import store from "../../store/store";
 import api from "../../axiosConfig";
 import { useDispatch } from "react-redux";
 import { setWords } from "../../actions/words";
-import axios from "axios";
 
 const UiMenu = () => {
   const [text, setText] = useState("");
@@ -89,8 +88,8 @@ const UiMenu = () => {
       if (response.status === 200) {
         const { dialog, words } = response.data;
         // localStorage.setItem("messageHistory", JSON.stringify(dialog));
-        if (localStorage.getItem("isVoice") !== null)
-          await fetchAndPlayMp3(dialog.at(-1).message);
+        // if (localStorage.getItem("isVoice") !== null)
+        await fetchAndPlayMp3(dialog.at(-1).message);
         dispatch(setWords(words));
         setMessages(dialog);
         setWaitForResponse(false);
@@ -169,7 +168,7 @@ const UiMenu = () => {
     try {
       const response = await api.post(
         "AiCommunication/generate-audio",
-        { input: input },
+        { input: input, voice: currentRole.voice },
         {
           responseType: "arraybuffer",
         }
@@ -338,7 +337,6 @@ const UiMenu = () => {
 
   const combinedStyles = { ...borderAnimationProps, ...menuAnimation };
 
-
   return (
     <div style={{ display: "flex", justifyContent: "center" }}>
       <animated.div className="main-ui" style={combinedStyles}>
@@ -392,6 +390,7 @@ const UiMenu = () => {
       <ToastContainer position="top-center" closeOnClick={true} />
     </div>
   );
+
 };
 
 export default UiMenu;

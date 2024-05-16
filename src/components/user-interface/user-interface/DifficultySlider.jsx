@@ -1,29 +1,30 @@
-import React, { useState } from 'react';
-import Slider from 'react-slider';
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import difficultyApi from './difficultyApi';
+import React, { useState } from "react";
+import Slider from "react-slider";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import difficultyApi from "./difficultyApi";
+import api from "../../../axiosConfig";
 
-const DifficultySlider = ({ onConfirm }) => { 
+const DifficultySlider = ({ onConfirm }) => {
   const [languageLevel, setLanguageLevel] = useState(0);
 
-  const languageLevels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
+  const languageLevels = ["A1", "A2", "B1", "B2", "C1", "C2"];
 
-  const handleChange = value => {
+  const handleChange = (value) => {
     setLanguageLevel(value);
   };
 
   const handleConfirm = async () => {
     const selectedLevel = languageLevels[languageLevel];
     toast.success(`Selected level: ${selectedLevel}`);
-    
-    const response = await difficultyApi(selectedLevel);
-    
-    if (response.success) {
-      if (onConfirm) { 
-        onConfirm(); 
-      }
-    } else {
+
+    // const response = await difficultyApi(selectedLevel);
+
+    const response = await api.post("/LevelChange", {
+      newLevel: selectedLevel,
+    });
+
+    if (response.status !== 200) {
       toast.error("Failed to send difficulty level to server.");
     }
   };
@@ -41,7 +42,7 @@ const DifficultySlider = ({ onConfirm }) => {
           {languageLevels.map((level, index) => (
             <div
               key={index}
-              className={`level ${index === languageLevel ? 'active' : ''}`}
+              className={`level ${index === languageLevel ? "active" : ""}`}
             />
           ))}
         </div>
@@ -50,15 +51,18 @@ const DifficultySlider = ({ onConfirm }) => {
           max={languageLevels.length - 1}
           value={languageLevel}
           onChange={handleChange}
-          renderThumb={(props, state) => (
-            <div className="thumb" {...props} />
-          )}
-          renderTrack={(props, state) => (
-            <div className="track" {...props} />
-          )}
+          renderThumb={(props, state) => <div className="thumb" {...props} />}
+          renderTrack={(props, state) => <div className="track" {...props} />}
         />
-        <div className="new-track" style={{ width: `${(languageLevel / (languageLevels.length - 1)) * 100}%` }} />
-        <button className='confirmButton' onClick={handleConfirm}>OK!</button>
+        <div
+          className="new-track"
+          style={{
+            width: `${(languageLevel / (languageLevels.length - 1)) * 100}%`,
+          }}
+        />
+        <button className="confirmButton" onClick={handleConfirm}>
+          OK!
+        </button>
       </div>
     </div>
   );
