@@ -7,6 +7,7 @@ import POST_getBossWords from "../../logic/server/POST_getBossWords";
 import QuestionUnit from "./BossFightQuestionUnit";
 import api from "../../axiosConfig";
 import { useDispatch } from "react-redux";
+import FinishQuizModal from "../user-interface/user-interface/modals/FinishQuizModal";
 
 const UiBossFight = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -17,6 +18,7 @@ const UiBossFight = () => {
   const [questionsArray, setQuestionsArray] = useState([]);
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
+  const [correctAnswersCount, setCorrectAnswersCount] = useState(0);
 
   useEffect(() => {
     fetchData();
@@ -106,6 +108,7 @@ const UiBossFight = () => {
     if (answer.answer.correct === true) {
       store.getState().interact.playerHit.playerHit();
       dtoEl.state = "Approved";
+      setCorrectAnswersCount((prevCount) => prevCount + 1);
     } else {
       store.getState().interact.bossHit.bossHit();
     }
@@ -126,6 +129,8 @@ const UiBossFight = () => {
     setTimeout(() => {
       store.getState().interact.finishInteraction.finishInteraction();
     }, 1000);
+    <FinishQuizModal closeModal={setIsVisible} correctAnswersCount={correctAnswersCount} />
+    console.log("Liczba prawidłowych odpowiedzi:", correctAnswersCount);
   };
 
   if (currentQuestion) {
