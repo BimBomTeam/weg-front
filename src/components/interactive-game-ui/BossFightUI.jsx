@@ -7,6 +7,7 @@ import POST_getBossWords from "../../logic/server/POST_getBossWords";
 import QuestionUnit from "./BossFightQuestionUnit";
 import api from "../../axiosConfig";
 import { useDispatch } from "react-redux";
+import FinishQuizModal from "../user-interface/user-interface/modals/FinishQuizModal";
 
 const UiBossFight = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -17,6 +18,8 @@ const UiBossFight = () => {
   const [questionsArray, setQuestionsArray] = useState([]);
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+  const [correctAnswersCount, setCorrectAnswersCount] = useState(0);
 
   useEffect(() => {
     fetchData();
@@ -33,11 +36,8 @@ const UiBossFight = () => {
     if (response.status === 200) {
       const allWords = response.data;
       wordsDtoArr.current = allWords;
-      // sessionStorage.setItem("allDailyWords", JSON.stringify(allWords));
-      // var allWords = JSON.parse(sessionStorage.getItem("words"));
       const shuffledWords = shuffleArray(allWords.map((x) => x.name));
 
-      console.log(shuffledWords);
       wordsArr.current = shuffledWords;
 
       await setNextQuestion();
@@ -61,7 +61,6 @@ const UiBossFight = () => {
     if (idx >= questionsArray.length) {
       const question = await fetchByIndex(idx);
       const tmpArr = [...questionsArray.slice(), question];
-      console.log("tmpArr", tmpArr);
       setQuestionsArray(tmpArr);
       setCurrentQuestion(question);
       if (wordsArr.current.length - idx > 1) {
@@ -80,7 +79,6 @@ const UiBossFight = () => {
     const response = await api.post("AiCommunication/get-boss-quiz", {
       word: wordsArr.current[index],
     });
-    console.log("response: ", response);
     if (response.status === 200) {
       return response.data;
     }
@@ -102,6 +100,7 @@ const UiBossFight = () => {
     if (answer.answer.correct === true) {
       store.getState().interact.playerHit.playerHit();
       dtoEl.state = "Approved";
+      setCorrectAnswersCount((prevCount) => prevCount + 1);
     } else {
       store.getState().interact.bossHit.bossHit();
     }
@@ -121,17 +120,22 @@ const UiBossFight = () => {
     setTimeout(() => {
       store.getState().interact.finishInteraction.finishInteraction();
     }, 1000);
+    setShowModal(true); 
+    console.log("Liczba prawidłowych odpowiedzi:", correctAnswersCount);
   };
 
   if (currentQuestion) {
     return (
-      <QuestionUnit
-        quizUnit={currentQuestion}
-        onAnswerClick={onAnswerClick}
-        isVisible={isVisible}
-        onTimeFinish={onTimeFinish}
-        loading={loading}
-      />
+      <>
+        <QuestionUnit
+          quizUnit={currentQuestion}
+          onAnswerClick={onAnswerClick}
+          isVisible={isVisible}
+          onTimeFinish={onTimeFinish}
+          loading={loading}
+        />
+        {showModal && <FinishQuizModal closeModal={() => setShowModal(false)} correctAnswersCount={correctAnswersCount} />} {/* Render the modal when showModal === true */}
+      </>
     );
   } else return <></>;
 };
