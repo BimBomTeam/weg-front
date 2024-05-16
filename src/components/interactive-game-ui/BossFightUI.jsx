@@ -120,7 +120,7 @@ const UiBossFight = () => {
     setTimeout(() => {
       store.getState().interact.finishInteraction.finishInteraction();
     }, 1000);
-    setShowModal(true); // Display the modal
+    setShowModal(true); 
     console.log("Liczba prawidłowych odpowiedzi:", correctAnswersCount);
   };
 
