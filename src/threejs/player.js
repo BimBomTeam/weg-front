@@ -19,6 +19,7 @@ export class Player {
     this.lastSafePosition = new Vector3();
     this.lastFallTime = 0;
     this.originSoundManager = this.sketch.soundManager;
+    this.defaultPos = pos;
 
     this.canChangeToIdle = false;
     this.timerWalkStarted = false;
@@ -289,6 +290,10 @@ export class Player {
     });
   }
 
+  resetPosition() {
+    this.setPosition(this.defaultPos);
+  }
+
   update(KeyHandler, deltaTime) {
     this.isWalking = false;
 
@@ -368,6 +373,7 @@ export class Player {
       if (!this.originSoundManager.sandFootstepSound.isPlaying) {
         this.originSoundManager.sandFootstepSound.play();
       }
+      this.originSoundManager.backgroundSong.play();
     } else {
       this.originSoundManager.sandFootstepSound.stop();
     }
