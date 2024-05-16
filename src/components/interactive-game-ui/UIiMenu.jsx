@@ -276,7 +276,7 @@ const UiMenu = () => {
     };
   }, [words]);
 
-  useEffect(() => {}, [isExpandButtonClicked]);
+  useEffect(() => { }, [isExpandButtonClicked]);
 
   useEffect(() => {
     if (transcript) {
@@ -331,15 +331,17 @@ const UiMenu = () => {
     borderColor: isListening ? "red" : "transparent",
   });
 
+  const menuAnimation = useSpring({
+    transform: isVisible ? "translateY(0)" : "translateY(100%)", // Wysuwamy w górę lub w dół
+    config: { duration: 300 } // Czas trwania animacji
+  });
+
+  const combinedStyles = { ...borderAnimationProps, ...menuAnimation };
+
 
   return (
     <div style={{ display: "flex", justifyContent: "center" }}>
-      <animated.div
-        className="main-ui"
-        style={{
-          ...borderAnimationProps,
-        }}
-      >
+      <animated.div className="main-ui" style={combinedStyles}>
         <MessageContainer
           messages={messages}
           showAnimation={waitForResponse}
@@ -384,7 +386,6 @@ const UiMenu = () => {
           />
 
           <button className="voice_button" onClick={toggleListening}>
-            {isListening ? "Stop" : "Start"}
           </button>
         </div>
       </animated.div>
