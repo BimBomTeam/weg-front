@@ -2,6 +2,7 @@ import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 
 const api = axios.create({
+  // baseURL: "https://localhost:7295/api/",
   baseURL: "https://aicademia.xyz/api/",
 });
 

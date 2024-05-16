@@ -24,3 +24,9 @@ export const setRoles = (roles) => {
     },
   };
 };
+export const setCurrentRole = (role) => {
+  return {
+    type: "SET_CURRENT_ROLE",
+    payload: role,
+  };
+};

@@ -152,7 +152,7 @@ export class StandartNPC {
     var words = [];
     let sessionStorageWords = sessionStorage.getItem("words");
     if (sessionStorageWords !== null) {
-      const parsed = JSON.parse(sessionStorageWords);
+      const parsed = (sessionStorageWords = JSON.parse(sessionStorageWords));
       if (parsed[roleIdStr] !== null && parsed[roleIdStr] !== undefined) {
         words = parsed[roleIdStr];
       }
@@ -162,10 +162,12 @@ export class StandartNPC {
       console.log("response", response);
 
       words = response.data;
+      console.log(sessionStorageWords);
       sessionStorageWords[roleIdStr] = words;
       sessionStorage.setItem("words", JSON.stringify(sessionStorageWords));
     }
 
+    store.dispatch(setWords(words));
     store.dispatch(setLoading(false));
   }
 
@@ -174,7 +176,7 @@ export class StandartNPC {
       if (this.mode == "freeRoam") {
         this.mode = "prepToInteract";
         // console.log("HINT", this.roleName + this.roleId);
-        this.fetchRoleWords(this.roleId, this.roleName);
+        if (this.roleId >= 0) this.fetchRoleWords(this.roleId, this.roleName);
         //TODO: E hint
         this.playAnimation("Idle");
       }

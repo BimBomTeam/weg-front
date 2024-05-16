@@ -23,9 +23,7 @@ export const generateWordsById = (id) => {
 export const setWords = (words) => {
   return {
     type: "CHECK_WORDS",
-    payload: {
-      words: words,
-    },
+    payload: words,
   };
 };
 export const setLoading = (loading) => {

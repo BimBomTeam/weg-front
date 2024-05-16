@@ -27,6 +27,7 @@ const Game = () => {
   const [isLoadedScene, setIsLoadedScene] = useState(false);
   const isHintVisible = useSelector((store) => store.interact.isHintVisible);
   const uiState = useSelector((store) => store.interact.uiState);
+  const firstLogin = useSelector((store) => store.auth.firstLogin);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -45,6 +46,8 @@ const Game = () => {
       } else {
         dispatch(setRoles(roles));
       }
+
+      console.log("game render");
 
       game.current = new GameScene(
         sceneLoaded,
@@ -120,7 +123,7 @@ const Game = () => {
       ) : (
         <>
           {renderUi()}
-          <WelcomeModal />
+          {firstLogin && <WelcomeModal />}
           <ToastContainer position="top-center" closeOnClick={true} />
         </>
       )}

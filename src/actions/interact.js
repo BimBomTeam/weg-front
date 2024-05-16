@@ -6,6 +6,22 @@ export const setBossHit = (bossHit) => {
     },
   };
 };
+export const finishInteraction = (finishInteraction) => {
+  return {
+    type: "FINISH_INTERACTION",
+    payload: {
+      finishInteraction,
+    },
+  };
+};
+export const setPlayerHit = (playerHit) => {
+  return {
+    type: "PLAYER_HIT",
+    payload: {
+      playerHit,
+    },
+  };
+};
 
 export const setHintVisibility = (visibility) => {
   return {

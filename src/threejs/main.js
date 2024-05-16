@@ -23,8 +23,15 @@ import SoundManager from "./soundManager";
 
 import store from "../store/store";
 import { ModelLoader } from "./modelLoaderService";
-import { setBossHit, setUiState } from "../actions/interact";
+import {
+  setBossHit,
+  setPlayerHit,
+  finishInteraction,
+  setUiState,
+} from "../actions/interact";
 import { UiStates } from "../reducers/interactReducer";
+import { setWords } from "../actions/words";
+import { setCurrentRole } from "../actions/roles";
 
 let sceneLoaded;
 
@@ -183,8 +190,16 @@ class MainScene extends Scene3D {
     const bossHitFunc = () => {
       this.bossNPC.hitPlayer(this.player.object.position);
     };
+    const playerHitFunc = () => {
+      this.player.hitBoss(this.bossNPC.object.position);
+    };
+    const finishInteractionFunc = () => {
+      this.finishInteraction();
+    };
 
     store.dispatch(setBossHit(bossHitFunc));
+    store.dispatch(setPlayerHit(playerHitFunc));
+    store.dispatch(finishInteraction(finishInteractionFunc));
 
     sceneLoaded();
   }
@@ -197,6 +212,7 @@ class MainScene extends Scene3D {
       sketch: this,
       gltf: this.modelLoader.modelsArray["boss"],
       playerPosition: this.player.object.position,
+      roleId: -1,
     });
     this.standNPC = new StandartNPC({
       pos: { x: -80, y: 10, z: -118 },
@@ -309,6 +325,7 @@ class MainScene extends Scene3D {
     if (NPC.mode == "prepToInteract" || NPC.mode == "interact") {
       if (this.KeyHandler.key.e.click && this.player.mode == "freeWalk") {
         store.dispatch(setUiState(UiStates.CHAT));
+        store.dispatch(setCurrentRole({ id: NPC.roleId, name: NPC.roleName }));
         //TODO: chat -true
         //TODO: hint - false
         this.player.mode = "interact";
@@ -337,6 +354,8 @@ class MainScene extends Scene3D {
 
       if (this.KeyHandler.key.esc.click && this.player.mode == "interact") {
         store.dispatch(setUiState(UiStates.NONE));
+        store.dispatch(setWords([]));
+        store.dispatch(setCurrentRole(null));
         //TODO: chat - false
         this.player.mode = "freeWalk";
         this.player.moveEvent = [];
@@ -345,6 +364,23 @@ class MainScene extends Scene3D {
         this.camOperator.addNPCzoomOut();
       }
     }
+  }
+
+  finishInteraction() {
+    store.dispatch(setUiState(UiStates.HINT));
+    store.dispatch(setWords([]));
+    store.dispatch(setCurrentRole(null));
+    //TODO: chat - false
+    this.player.mode = "freeWalk";
+    this.player.moveEvent = [];
+
+    this.npcArray.forEach((npc) => {
+      // this.bossNPC.mode = "prepToInteract";
+      npc.addEvents = [];
+      npc.actionEvents = [];
+    });
+
+    this.camOperator.addNPCzoomOut();
   }
 
   processBattle(NPC = BossNPC) {
@@ -360,6 +396,9 @@ class MainScene extends Scene3D {
       if (this.KeyHandler.key.esc.click && this.player.mode == "battle") {
         this.player.mode = "freeWalk";
         store.dispatch(setUiState(UiStates.NONE));
+        store.dispatch(setWords([]));
+        store.dispatch(setCurrentRole(null));
+
         // setBattleVisibility(false);
         //TODO : battleUI - false
         this.player.moveEvent = [];
@@ -377,6 +416,9 @@ class MainScene extends Scene3D {
       this.player.mode == "interact"
     ) {
       store.dispatch(setUiState(UiStates.NONE));
+      store.dispatch(setWords([]));
+      store.dispatch(setCurrentRole(null));
+
       //TODO: chat - false
       this.player.mode = "freeWalk";
       this.player.moveEvent = [];
@@ -448,6 +490,10 @@ class MainScene extends Scene3D {
 
     if (uiState !== this.previousUiState) {
       store.dispatch(setUiState(uiState));
+      if (uiState === UiStates.NONE) {
+        store.dispatch(setWords([]));
+        store.dispatch(setCurrentRole(null));
+      }
       this.previousUiState = uiState;
       this.isReduxDataGenerated = false;
     }
