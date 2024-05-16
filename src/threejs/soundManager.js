@@ -27,12 +27,15 @@ export default class SoundManager {
       this.waterSplashSound.setVolume(0.3);
     });
 
-    // this.backgroundSong = new THREE.Audio(this.listener);
+    this.backgroundSong = new THREE.Audio(this.listener);
 
-    // audioLoader.load("src/assets/sounds/Peritune_Zephyr_Fields-chosic.com_.mp3", (buffer) => {
-    //   this.backgroundSong.setBuffer(buffer);
-    //   this.backgroundSong.setLoop(true);
-    //   this.backgroundSong.setVolume(0.01);
-    // });
+    audioLoader.load(
+      "src/assets/sounds/Peritune_Zephyr_Fields-chosic.com_.mp3",
+      (buffer) => {
+        this.backgroundSong.setBuffer(buffer);
+        this.backgroundSong.setLoop(true);
+        this.backgroundSong.setVolume(0.01);
+      }
+    );
   }
 }
