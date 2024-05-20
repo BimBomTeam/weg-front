@@ -1,0 +1,151 @@
+:root {
+  --animationProps_height_true: 480px;
+  --animationProps_height_false: 90px;
+}
+
+.user-interface {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  left: 1%;
+  top: 10%;
+  align-items: center;
+  justify-content: flex-end;
+  z-index: 1;
+  gap: 5%;
+  width: 100px;
+  border-radius: 50px;
+  background-color: $button-gradient-start;
+  backdrop-filter: blur(18px);
+
+}
+
+@media only screen and (min-width: 2562px) {
+  :root
+  {
+    --animationProps_height_true: 900px;
+    --animationProps_height_false: 190px;
+    
+  }
+  .user-interface
+  {
+    gap: 10%;
+    width: 200px;
+    top: 15%;
+    border-radius: 60px;
+  }
+}
+
+@media only screen and (min-width: 2101px) and (max-width: 2561px) {
+  :root
+  {
+    --animationProps_height_true: 600px;
+    --animationProps_height_false: 120px;
+    
+  }
+  .user-interface
+  {
+    gap: 8%;
+    width: 120px;
+    top: 15%;
+    border-radius: 60px;
+  }
+}
+
+@media only screen and (min-width: 1801px) and (max-width: 2100px) {
+:root
+  {
+    --animationProps_height_true: 560px;
+    --animationProps_height_false: 120px;
+    
+  }
+  .user-interface
+  {
+    gap: 8%;
+    width: 110px;
+    top: 15%;
+    border-radius: 40px;
+    
+    
+  }
+}
+
+ @media only screen and (min-width: 1601px) and (max-width: 1800px) {
+ :root
+  {
+    --animationProps_height_true: 630px;
+    --animationProps_height_false: 100px;
+    
+  }
+  .user-interface
+  {
+    gap: 9%;
+    width: 110px;
+    top: 15%;
+    border-radius: 40px;
+  }
+}
+
+@media only screen and (min-width: 1401px) and (max-width: 1600px) {
+  :root
+  {
+    --animationProps_height_true: 580px;
+    --animationProps_height_false: 100px;
+    
+  }
+  .user-interface
+  {
+    gap: 8%;
+    width: 110px;
+    top: 15%;
+    border-radius: 40px;
+  }
+}
+
+@media only screen and (min-width: 1281px) and (max-width: 1400px) {
+  :root
+  {
+    --animationProps_height_true: 480px;
+    --animationProps_height_false: 95px;
+    
+  }
+  .user-interface
+  {
+    gap: 7%;
+    width: 100px;
+    top: 15%;
+    border-radius: 40px;
+  }
+}
+
+@media only screen and (min-width: 900px) and (max-width: 1280px) {
+  :root
+  {
+    --animationProps_height_true: 340px;
+    --animationProps_height_false: 65px;
+    
+  }
+  .user-interface
+  {
+    gap: 3%;
+    width: 65px;
+    top: 15%;
+    border-radius: 25px;
+  }
+}
+
+@media only screen and (max-width: 900px) {
+  :root
+  {
+    --animationProps_height_true: 300px;
+    --animationProps_height_false: 60px;
+    
+  }
+  .user-interface
+  {
+    gap: 1%;
+    width: 60px;
+    top: 15%;
+    border-radius: 25px;
+  }
+}

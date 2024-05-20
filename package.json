@@ -10,9 +10,33 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@babel/runtime": "^7.24.0",
+    "@react-spring/web": "^9.7.3",
+    "@redux-devtools/extension": "^3.3.0",
+    "axios": "^1.6.8",
+    "cannon": "^0.6.2",
+    "dotenv": "^16.4.5",
+    "enable3d": "^0.25.4",
+    "jwt-decode": "^4.0.0",
+    "oimo": "^1.0.9",
     "react": "^18.2.0",
+    "react-countdown-circle-timer": "^3.2.1",
     "react-dom": "^18.2.0",
-    "three": "^0.161.0"
+    "react-icons": "^5.2.1",
+    "react-modal": "^3.16.1",
+    "react-redux": "^9.1.0",
+    "react-router-dom": "^6.22.2",
+    "react-slider": "^2.0.6",
+    "react-speech-recognition": "^3.10.0",
+    "react-spring": "^9.7.3",
+    "react-toastify": "^10.0.4",
+    "redux": "^5.0.1",
+    "redux-thunk": "^3.1.0",
+    "regenerator-runtime": "^0.14.1",
+    "sass": "^1.71.1",
+    "stats.js": "^0.17.0",
+    "three": "^0.161.0",
+    "three-nebula": "^10.0.3"
   },
   "devDependencies": {
     "@types/react": "^18.2.56",
@@ -22,6 +46,6 @@
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.5",
-    "vite": "^5.1.4"
+    "vite": "^5.1.6"
   }
 }

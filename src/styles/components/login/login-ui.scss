@@ -1,0 +1,22 @@
+@import "../../variables/colors.scss";
+
+body {
+  background-image: url('/images/bg.png');
+  background-size: cover;
+  background-position: center;
+  margin: 0;
+  padding: 0;
+}
+
+.login-container {
+  z-index: 2;
+  position: absolute;
+  width: 50%;
+  height: 75%;
+  border-radius: 30px;
+  background-color: $button-gradient-start; 
+  backdrop-filter: blur(18px);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

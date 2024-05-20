@@ -1,0 +1,102 @@
+.main-ui {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  z-index: 2;
+  width: 50vw;
+  height: 85vh;
+  border-radius: 30px;
+  background-color: $button-gradient-start;
+  backdrop-filter: blur(18px);
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent;
+}
+
+.words {
+  z-index: 2;
+  flex-wrap: wrap;
+  background-color: transparent;
+  text-align: start;
+}
+
+.word {
+  background: linear-gradient(to top, #f8f0f0 0%, #c2e9ee 100%);
+  color: $label-color;
+  margin-bottom: 2%;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  padding: 2%;
+  margin-left: 1%;
+  border: none;
+}
+
+#chat-container {
+  
+  display: grid;
+  justify-items: center;
+  align-items: center;
+  grid-template-columns: 80% 20%;
+  flex-direction: row;
+  width: 100%;
+}
+
+.message-container {
+  flex-grow: 1;
+  padding: 10px;
+  // height: 60%;
+}
+
+.message-scroll {
+  max-height: 380px;
+  width: 100%;
+  overflow-y: auto;
+}
+
+.message-scroll::-webkit-scrollbar {
+  padding-right: 10%;
+  width: 10px;
+}
+
+.message-scroll::-webkit-scrollbar-track {
+  background: #a1b7d9;
+  border-radius: 10px;
+}
+
+.message-scroll::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background: #195e85;
+}
+
+.bouncing-dots {
+  display: inline-flex;
+  align-items: center;
+}
+
+.dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: $label-color;
+  margin: 0 5px;
+  animation: bounce 0.5s infinite alternate;
+}
+
+.dot:nth-child(2) {
+  animation-delay: 0.25s;
+}
+
+.dot:nth-child(3) {
+  animation-delay: 0.5s;
+}
+
+@keyframes bounce {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-10px);
+  }
+}

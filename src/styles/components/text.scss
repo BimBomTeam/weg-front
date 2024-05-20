@@ -1,0 +1,594 @@
+textarea {
+  border-radius: 10px;
+  resize: none;
+  // padding-right: 15%;
+  width: 100%;
+  left: 0;
+  bottom: 0;
+  padding: 5px;
+  font-family: "Roboto";
+  font-size: 18px;
+  overflow: auto;
+  color: $input-placeholder-color;
+  -ms-box-shadow: inset 0px 4px 4px 1px rgba(0, 0, 0, 0.25);
+  -o-box-shadow: inset 0px 4px 4px 1px rgba(0, 0, 0, 0.25);
+  -webkit-box-shadow: inset 0px 4px 4px 1px rgba(0, 0, 0, 0.25);
+  -moz-box-shadow: inset 0px 4px 4px 1px rgba(0, 0, 0, 0.25);
+  box-shadow: inset 0px 4px 4px 1px rgba(0, 0, 0, 0.25);
+  background: rgba(255, 255, 255, 0);
+  background: -webkit-linear-gradient(
+    -224.90398121603deg,
+    rgba(132.33, 191.39, 224.61, 0.5) 0%,
+    rgba(23.22, 73.75, 95.41, 0.15) 100%
+  );
+  background: -o-linear-gradient(
+    -224.90398121603deg,
+    rgba(132.33, 191.39, 224.61, 0.5) 0%,
+    rgba(23.22, 73.75, 95.41, 0.15) 100%
+  );
+  background: -moz-linear-gradient(
+    -224.90398121603deg,
+    rgba(132.33, 191.39, 224.61, 0.5) 0%,
+    rgba(23.22, 73.75, 95.41, 0.15) 100%
+  );
+  background: -ms-linear-gradient(
+    -224.90398121603deg,
+    rgba(132.33, 191.39, 224.61, 0.5) 0%,
+    rgba(23.22, 73.75, 95.41, 0.15) 100%
+  );
+  background: linear-gradient(
+    -224.90398121603deg,
+    rgba(132.33, 191.39, 224.61, 0.5) 0%,
+    rgba(23.22, 73.75, 95.41, 0.15) 100%
+  );
+
+  &::placeholder {
+    color: $input-placeholder-color;
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #195e85;
+    border-radius: 20px;
+  }
+}
+
+#textarea-container {
+  position: relative;
+  grid-row: 1;
+  width: 100%;
+  flex-grow: 6;
+}
+
+.word-counter {
+  position: absolute;
+  bottom: 7px;
+  right: 30px;
+  font-family: inherit;
+  font-size: 14px;
+  color: black;
+}
+
+label[for="register"],
+label[for="login"] {
+  position: absolute;
+  margin-top: 2%;
+  width: 80%;
+  font-family: "Roboto";
+  color: $label-color;
+  font-weight: bold;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+label[for="email-label"],
+label[for="email-register-label"],
+label[for="password-label"],
+label[for="password-register-label"],
+label[for="name-label"] {
+  position: absolute;
+  width: 300px;
+  height: auto;
+  left: 15%;
+  overflow: hidden;
+  font-family: "Roboto";
+  text-align: left;
+  color: $label-color;
+}
+
+label[for="email-label"],
+label[for="email-register-label"] {
+  top: 20%;
+}
+
+label[for="password-label"],
+label[for="name-label"] {
+  top: 45%;
+}
+
+label[for="password-register-label"] {
+  top: 70%;
+}
+
+#password,
+#password-reg,
+#name,
+#email {
+  position: absolute;
+  width: 70%;
+  height: 12%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding-left: 10px;
+  color: $black;
+  border-width: 1px;
+  border-radius: 10px;
+  box-shadow: inset 0px 4px 4px 1px $button-login-shadow;
+  background: $password-input-background;
+  background: -webkit-linear-gradient(
+    -224.90398121603deg,
+    $password-input-gradient-start 0%,
+    $password-input-gradient-end 100%
+  );
+  background: -o-linear-gradient(
+    -224.90398121603deg,
+    $password-input-gradient-start 0%,
+    $password-input-gradient-end 100%
+  );
+  background: -moz-linear-gradient(
+    -224.90398121603deg,
+    $password-input-gradient-start 0%,
+    $password-input-gradient-end 100%
+  );
+  background: -ms-linear-gradient(
+    -224.90398121603deg,
+    $password-input-gradient-start 0%,
+    $password-input-gradient-end 100%
+  );
+  background: linear-gradient(
+    -224.90398121603deg,
+    $password-input-gradient-start 0%,
+    $password-input-gradient-end 100%
+  );
+}
+
+#email {
+  top: 30%;
+}
+
+#name,
+#password {
+  top: 55%;
+}
+
+#password-reg {
+  top: 80%;
+}
+
+.instruction_content {
+  position: relative;
+  list-style-type: none;
+  padding-left: 5%;
+  padding-right: 5%;
+}
+
+.NPCname,
+.UserName {
+  position: absolute;
+  width: 150px;
+  height: 75px;
+  top: 15%;
+  left: -1%;
+  font-size: 20px;
+  font-family: "Roboto-Bold";
+  color: $label-color;
+}
+
+.message {
+  font-family: "Roboto-Bold";
+  font-size: 20px;
+  color: $label-color;
+  text-align: left;
+  margin-left: 1%;
+  padding: 1%;
+  padding-right: 20%;
+}
+
+.user-label {
+  font-family: "Roboto-Black";
+  color: #0e3246;
+}
+
+.npc-label {
+  font-family: "Roboto-Black";
+  color: #0e3246;
+}
+
+.slider-container {
+  position: relative;
+  width: 50%;
+  height: 50%;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.level-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  font-size: 20px;
+  font-family: "Roboto-Bold";
+}
+
+.slider-wrapper {
+  position: relative;
+}
+
+.thumb {
+  width: 20px;
+  height: 20px;
+  background-color: $input-placeholder-color;
+  border-radius: 50%;
+  cursor: pointer;
+  position: absolute;
+  top: -5px;
+}
+
+.track-container {
+  position: relative;
+}
+
+.track {
+  border-radius: 20px;
+  height: 10px;
+  background-color: #f8f0f0;
+}
+
+.new-track {
+  border-radius: 20px;
+  height: 10px;
+  background-color: $input-placeholder-color;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.Toastify__toast-container {
+  width: auto;
+}
+
+.Toastify__toast--default,
+.Toastify__toast--success,
+.Toastify__toast--error,
+.Toastify__toast--warning {
+  background-color: $button-gradient-start;
+  backdrop-filter: blur(18px);
+}
+
+.Toastify__toast-body {
+  font-family: "Roboto";
+}
+
+@media only screen and (min-width: 2561px) {
+  .word-counter {
+    font-size: 16px;
+    right: 2%;
+  }
+
+  .user-label {
+    font-size: 23px;
+  }
+
+  .user-message {
+    font-size: 23px;
+  }
+
+  .npc-message {
+    font-size: 23px;
+  }
+
+  .npc-label {
+    font-size: 23px;
+  }
+
+  .instruction_content {
+    font-size: 20px;
+  }
+
+  #paragraph {
+    font-size: 15px;
+    right: 45px;
+  }
+
+  label[for="register"],
+  label[for="login"] {
+    font-size: 50px;
+  }
+
+  label[for="email-label"],
+  label[for="email-register-label"],
+  label[for="password-label"],
+  label[for="password-register-label"],
+  label[for="name-label"] {
+    font-size: 45px;
+  }
+
+  #password,
+  #password-reg,
+  #name,
+  #email {
+    font-size: 35px;
+  }
+}
+
+@media only screen and (min-width: 2100px) and (max-width: 2561px) {
+  .word-counter {
+    font-size: 16px;
+    right: 3%;
+  }
+
+  .user-label {
+    font-size: 22px;
+  }
+
+  .user-message {
+    font-size: 22px;
+  }
+
+  .npc-message {
+    font-size: 22px;
+  }
+
+  .npc-label {
+    font-size: 22px;
+  }
+
+  .instruction_content {
+    font-size: 25px;
+  }
+
+  textarea {
+    font-size: 20px;
+  }
+  label[for="register"],
+  label[for="login"] {
+    font-size: 45px;
+  }
+
+  label[for="email-label"],
+  label[for="email-register-label"],
+  label[for="password-label"],
+  label[for="password-register-label"],
+  label[for="name-label"] {
+    font-size: 40px;
+  }
+
+  #password,
+  #password-reg,
+  #name,
+  #email {
+    font-size: 30px;
+  }
+}
+
+@media only screen and (min-width: 1801px) and (max-width: 2100px) {
+  .word-counter {
+    font-size: 15px;
+    right: 3%;
+  }
+
+  .user-label {
+    font-size: 20px;
+  }
+
+  .user-message {
+    font-size: 20px;
+  }
+
+  .npc-message {
+    font-size: 20px;
+  }
+
+  .npc-label {
+    font-size: 20px;
+  }
+
+  .instruction_content {
+    font-size: 23px;
+  }
+
+  textarea {
+    font-size: 20px;
+  }
+
+  label[for="register"],
+  label[for="login"] {
+    font-size: 40px;
+  }
+
+  label[for="email-label"],
+  label[for="email-register-label"],
+  label[for="password-label"],
+  label[for="password-register-label"],
+  label[for="name-label"] {
+    font-size: 35px;
+  }
+
+  #password,
+  #password-reg,
+  #name,
+  #email {
+    font-size: 25px;
+  }
+}
+
+@media only screen and (min-width: 1281px) and (max-width: 1800px) {
+  .word-counter {
+    font-size: 12px;
+    right: 4%;
+  }
+
+  label[for="register"],
+  label[for="login"] {
+    font-size: 35px;
+  }
+
+  label[for="email-label"],
+  label[for="email-register-label"],
+  label[for="password-label"],
+  label[for="password-register-label"],
+  label[for="name-label"] {
+    font-size: 30px;
+  }
+
+  #password,
+  #password-reg,
+  #name,
+  #email {
+    font-size: 20px;
+  }
+}
+
+@media only screen and (max-width: 1280px) {
+  .word-counter {
+    font-size: 12px;
+    right: 3%;
+  }
+
+  .user-label {
+    font-size: 13px;
+  }
+
+  .user-message {
+    font-size: 13px;
+  }
+
+  .npc-message {
+    font-size: 13px;
+  }
+
+  .npc-label {
+    font-size: 13px;
+  }
+
+  .instruction_content {
+    font-size: 15px;
+  }
+
+  textarea {
+    font-size: 15px;
+  }
+
+  label[for="register"],
+  label[for="login"] {
+    font-size: 30px;
+  }
+
+  label[for="email-label"],
+  label[for="email-register-label"],
+  label[for="password-label"],
+  label[for="password-register-label"],
+  label[for="name-label"] {
+    font-size: 25px;
+  }
+
+  #password,
+  #password-reg,
+  #name,
+  #email {
+    font-size: 15px;
+  }
+  textarea {
+    font-size: 15px;
+  }
+  .instruction_content {
+    font-size: 13px;
+  }
+  .modal h1,
+  .welcomeModal h1 {
+    font-size: 35px;
+  }
+  .slider {
+    width: 100%;
+    font-size: 20px;
+  }
+  .slider-container {
+    font-size: 12px;
+  }
+}
+
+@media only screen and (max-width: 900px) {
+  .word-counter {
+    font-size: 12px;
+    right: 2%;
+  }
+
+  .user-label {
+    font-size: 12px;
+  }
+
+  .user-message {
+    font-size: 12px;
+  }
+
+  .npc-message {
+    font-size: 12px;
+  }
+  .npc-label {
+    font-size: 12px;
+  }
+  label[for="register"],
+  label[for="login"] {
+    font-size: 25px;
+  }
+
+  label[for="email-label"],
+  label[for="email-register-label"],
+  label[for="password-label"],
+  label[for="password-register-label"],
+  label[for="name-label"] {
+    font-size: 20px;
+  }
+
+  #password,
+  #password-reg,
+  #name,
+  #email {
+    font-size: 12px;
+  }
+  textarea {
+    font-size: 12px;
+  }
+  .instruction_content {
+    font-size: 12px;
+  }
+  .modal h1,
+  .welcomeModal h1 {
+    font-size: 30px;
+  }
+  .welcomeModal #welcomeText {
+    font-size: 15px;
+  }
+  .slider {
+    width: 100%;
+    font-size: 20px;
+  }
+  .slider-container {
+    font-size: 12px;
+  }
+  #paragraphLeft,
+  #paragraphRight {
+    font-size: 18px;
+  }
+}
